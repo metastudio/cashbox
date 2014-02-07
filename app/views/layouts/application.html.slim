@@ -9,6 +9,7 @@ html
     = javascript_include_tag 'application'
     = csrf_meta_tags
   body
-    = render 'layouts/header'
+    = render 'shared/layout/header'
     .container-fluid
+      = render 'shared/layout/flash_messages'
       = yield
