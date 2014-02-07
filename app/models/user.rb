@@ -21,5 +21,11 @@
 #
 
 class User < ActiveRecord::Base
+  has_one :profile, inverse_of: :user, dependent: :destroy
+
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
+
+  before_create :build_profile, if: ->{ profile.blank? }
+
+  delegate :full_name, :avatar, to: :profile
 end
