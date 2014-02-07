@@ -17,3 +17,10 @@
 
 # Ignore editor files
 *.sublime-*
+
+# Ignore config files
+/config/database.yml
+/config/config.yml
+
+# Ignore file uploads
+public/uploads
