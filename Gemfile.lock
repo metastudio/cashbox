@@ -30,6 +30,8 @@ GEM
       rake (>= 0.8.7)
     arel (4.0.2)
     atomic (1.1.14)
+    bootstrap-sass (3.1.0.2)
+      sass (~> 3.2)
     builder (3.1.4)
     capybara (2.2.1)
       mime-types (>= 1.16)
@@ -188,6 +190,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  bootstrap-sass
   capybara
   capybara-email
   capybara-webkit
