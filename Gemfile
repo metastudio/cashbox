@@ -24,7 +24,6 @@ gem 'jbuilder', '~> 1.2'
 gem 'slim-rails'
 gem 'recursive-open-struct'
 
-
 group :development, :test do
   gem 'rspec-rails'
 end
