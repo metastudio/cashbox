@@ -15,7 +15,7 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-# Use jquery as the JavaScript library
+# Asset libraries
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 
@@ -24,6 +24,7 @@ gem 'jbuilder', '~> 1.2'
 
 gem 'slim-rails'
 gem 'recursive-open-struct'
+gem 'devise'
 
 group :development, :test do
   gem 'rspec-rails'
