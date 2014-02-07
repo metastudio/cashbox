@@ -25,6 +25,7 @@ gem 'jbuilder', '~> 1.2'
 gem 'slim-rails'
 gem 'recursive-open-struct'
 gem 'devise'
+gem 'simple_form'
 
 group :development, :test do
   gem 'rspec-rails'
