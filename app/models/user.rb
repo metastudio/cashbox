@@ -22,6 +22,7 @@
 
 class User < ActiveRecord::Base
   has_one :profile, inverse_of: :user, dependent: :destroy
+  has_many :own_organizations, class_name: 'Organization', foreign_key: :owner_id, inverse_of: :owner, dependent: :restrict_with_error
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
