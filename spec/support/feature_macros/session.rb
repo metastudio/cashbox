@@ -3,9 +3,7 @@ module FeatureMacros
     def sign_in(user)
       visit new_user_session_path
       within('#new_user') do
-        p user.email
         fill_in 'Email', with: user.email
-        p user.password
         fill_in 'Password', with: user.password
         click_button 'Sign in'
       end
