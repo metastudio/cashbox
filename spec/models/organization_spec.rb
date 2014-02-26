@@ -11,4 +11,17 @@ describe Organization do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:owner) }
   end
+
+  context "callback" do
+    describe "#add_to_owner" do
+      let(:user) { create :user }
+      let(:organization) { build :organization, owner: user }
+
+      subject{ organization.save }
+
+      it "adds created organization to owner's users orgainzations" do
+        expect{ subject }.to change{ user.user_organizations.count }.by(1)
+      end
+    end
+  end
 end

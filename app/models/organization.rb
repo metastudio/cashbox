@@ -16,4 +16,12 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
   validates :owner, presence: true
+
+  after_create :add_to_owner
+
+  private
+
+  def add_to_owner
+    self.owner.organizations << self
+  end
 end
