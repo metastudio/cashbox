@@ -46,7 +46,7 @@ class OrganizationsController < ApplicationController
   end
 
   def find_own_organization
-    @organization = current_user.own_orgranizations.find(params[:id])
+    @organization = current_user.own_organizations.find(params[:id])
   end
 
   def organization_params
