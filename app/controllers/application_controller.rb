@@ -5,15 +5,20 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate_user!
 
+  helper_method :current_organization
+
   private
 
   def current_organization
+    return nil unless signed_in?
     @current_organization ||= current_user.organizations.find(session[:current_organization_id]) if session[:current_organization_id]
+    @current_organization ||= current_user.organizations.first
   end
 
   def require_organization
     unless current_organization
-      redirect_to organizations_path
+      flash.keep
+      redirect_to new_organization_path, alert: "You don't have any organization. Create a new one."
     end
   end
 end
