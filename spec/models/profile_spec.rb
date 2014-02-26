@@ -8,5 +8,6 @@ describe Profile do
   context "validation" do
     it { should validate_presence_of(:user) }
     it { should validate_uniqueness_of(:user_id) }
+    it { should validate_presence_of(:full_name) }
   end
 end

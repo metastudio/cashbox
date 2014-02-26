@@ -31,4 +31,8 @@ class User < ActiveRecord::Base
   before_create :build_profile, if: ->{ profile.blank? }
 
   delegate :full_name, :avatar, to: :profile
+
+  def to_s
+    full_name
+  end
 end
