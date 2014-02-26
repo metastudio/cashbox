@@ -1,9 +1,10 @@
-= simple_form_for(@organization) do |f|
-  = f.error_notification
+.row
+  .col-sm-6
+    = simple_form_for(@organization) do |f|
+      = f.error_notification
 
-  .form-inputs
-    = f.input :name
-    = f.association :owner
+      .form-inputs
+        = f.input :name, autofocus: true
 
-  .form-actions
-    = f.button :submit
+      .form-actions
+        = f.button :submit, class: 'btn-primary'

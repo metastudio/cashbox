@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
-  before_action :set_organization, only: [:show]
-  before_action :set_own_organization, only: [:edit, :update, :destroy]
+  before_action :find_organization, only: [:show]
+  before_action :find_own_organization, only: [:edit, :update, :destroy]
 
   def index
     @organizations = current_user.organizations
@@ -41,11 +41,11 @@ class OrganizationsController < ApplicationController
 
   private
 
-  def set_organization
-    @organization = current_user.orgranizations.find(params[:id])
+  def find_organization
+    @organization = current_user.organizations.find(params[:id])
   end
 
-  def set_own_organization
+  def find_own_organization
     @organization = current_user.own_orgranizations.find(params[:id])
   end
 
