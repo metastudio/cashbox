@@ -1,8 +1,9 @@
 FactoryGirl.define do
-  sequence(:email) { |n| "user#{n}@cashbox.dev" }
+  sequence(:email)    { |n| "user#{n}@cashbox.dev" }
+  sequence(:password) { SecureRandom.hex(10) }
   factory :user do
     email
-    password 'passw0rd'
+    password
   end
 
   sequence(:organization_name) { |n| "Organization #{n}" }

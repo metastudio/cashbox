@@ -3,3 +3,7 @@ header
     .container-fluid
       .navbar-header
         = link_to 'CashBox', root_path, class: 'navbar-brand'
+
+      ul.nav.navbar-nav.navbar-right
+        - if signed_in?
+          li= link_to 'Sign out', destroy_user_session_path, method: :delete
