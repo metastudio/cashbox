@@ -43,7 +43,7 @@ describe 'sign in proccess' do
     end
 
     it "signs in" do
-      expect(subject).to have_content("Signed in successfully")
+      expect(subject).to have_flash_message("Signed in successfully")
     end
   end
 end

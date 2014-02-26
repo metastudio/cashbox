@@ -7,7 +7,7 @@ module FeatureMacros
         fill_in 'Password', with: user.password
         click_button 'Sign in'
       end
-      expect(page).to have_content("Signed in successfully")
+      expect(page).to have_flash_message("Signed in successfully")
     end
 
     def sign_out
