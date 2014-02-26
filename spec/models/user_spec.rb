@@ -4,6 +4,8 @@ describe User do
   context "association" do
     it { should have_one(:profile).dependent(:destroy) }
     it { should have_many(:own_organizations).class_name('Organization').dependent(:restrict_with_error) }
+    it { should have_many(:user_organizations).dependent(:destroy) }
+    it { should have_many(:organizations).through(:user_organizations) }
   end
 
   context "validations" do

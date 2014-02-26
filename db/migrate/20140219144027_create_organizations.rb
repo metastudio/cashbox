@@ -1,8 +1,8 @@
 class CreateOrganizations < ActiveRecord::Migration
   def change
     create_table :organizations do |t|
-      t.string :name
-      t.references :owner, index: true
+      t.string :name, null: false
+      t.references :owner, null: false, index: true
 
       t.timestamps
     end
