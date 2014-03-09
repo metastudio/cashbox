@@ -14,6 +14,7 @@ class Organization < ActiveRecord::Base
   has_many :user_organizations, inverse_of: :organization, dependent: :destroy
   has_many :users, through: :user_organizations
   has_many :categories, dependent: :destroy
+  accepts_nested_attributes_for :categories, allow_destroy: true
 
   validates :name, presence: true
   validates :owner, presence: true

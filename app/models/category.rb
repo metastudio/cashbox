@@ -1,4 +1,5 @@
 class Category < ActiveRecord::Base
+  self.inheritance_column = nil
   belongs_to :organization, inverse_of: :category
 
   CATEGORY_TYPE = %w[Income Expense]

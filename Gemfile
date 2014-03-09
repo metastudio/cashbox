@@ -26,6 +26,7 @@ gem 'slim-rails'
 gem 'recursive-open-struct'
 gem 'devise'
 gem 'simple_form'
+gem "cocoon"
 
 group :development, :test do
   gem 'rspec-rails'

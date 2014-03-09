@@ -48,6 +48,7 @@ GEM
       json
     celluloid (0.15.2)
       timers (~> 1.1.0)
+    cocoon (1.2.5)
     coderay (1.1.0)
     daemons (1.1.9)
     database_cleaner (1.2.0)
@@ -207,6 +208,7 @@ DEPENDENCIES
   capybara
   capybara-email
   capybara-webkit
+  cocoon
   database_cleaner
   devise
   factory_girl_rails
