@@ -4,7 +4,7 @@ class Category < ActiveRecord::Base
   CATEGORY_TYPE = %w[Income Expense]
 
   validates :type, presence: true
-  validates :type, inclusion: { in: %w(Income Expense),
+  validates :type, inclusion: { in: CATEGORY_TYPE,
                      message: "%{value} is not a valid category" }
   validates :name, presence: true
 
