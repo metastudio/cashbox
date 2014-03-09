@@ -10,7 +10,7 @@ class InvoicesController < ApplicationController
   end
 
   def create
-    @invoice = @organization.invoices.create(invoice_params)
+    @invoice = @organization.invoices.build(invoice_params)
 
     if @invoice.save
       redirect_to organization_path(@organization), notice: 'Invoice was successfully created.'
