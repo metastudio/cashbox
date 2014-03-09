@@ -6,10 +6,5 @@
       .form-inputs
         = f.input :name, autofocus: true
 
-      = f.simple_fields_for :categories do |category|
-        = render 'category_fields', f: category
-      .links
-        = link_to_add_association 'add category', f, :categories
-
       .form-actions
         = f.button :submit, class: 'btn-primary'

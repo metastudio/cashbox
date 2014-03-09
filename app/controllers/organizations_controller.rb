@@ -50,6 +50,6 @@ class OrganizationsController < ApplicationController
   end
 
   def organization_params
-    params.require(:organization).permit(:name, categories_attributes: [:id, :type, :name, :_destroy])
+    params.require(:organization).permit(:name)
   end
 end
