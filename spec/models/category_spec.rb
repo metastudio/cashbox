@@ -11,3 +11,4 @@ describe Category do
     it { should ensure_inclusion_of(:type).in_array(%w[Income Expense]) }
   end
 end
+

@@ -11,3 +11,4 @@ class Category < ActiveRecord::Base
   scope :incomes,  -> { where(type: 'Income')  }
   scope :expenses, -> { where(type: 'Expense') }
 end
+
