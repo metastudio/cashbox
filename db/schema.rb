@@ -16,13 +16,23 @@ ActiveRecord::Schema.define(version: 20140309012103) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "categories", force: true do |t|
+    t.string   "type",            null: false
+    t.string   "name",            null: false
+    t.integer  "organization_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
+
   create_table "invoices", force: true do |t|
-    t.string   "name",                             null: false
-    t.string   "currency",                         null: false
+    t.string   "name",                                       null: false
+    t.string   "currency",         limit: 3, default: "USD", null: false
     t.string   "description"
-    t.integer  "balance_cents",    default: 0,     null: false
-    t.string   "balance_currency", default: "USD", null: false
-    t.integer  "organization_id",                  null: false
+    t.integer  "balance_cents",              default: 0,     null: false
+    t.string   "balance_currency",           default: "USD", null: false
+    t.integer  "organization_id",                            null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,16 +1,46 @@
-h1 Organization
+.row
+  .col-sm-4
+    h1 Organization
 
-p#notice = notice
+    p#notice = notice
 
-p
-  strong Name:
-  br
-    = @organization.name
-p
-  strong Owner:
-  br
-    = @organization.owner
-.form-group
-  = link_to 'Back', organizations_path, class: 'btn btn-default'
-  = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default'
-  = link_to 'Delete', organization_path(@organization), method: 'delete', confirm: 'Are you sure?', class: 'btn btn-danger'
+    p
+      strong Name:
+      br
+        = @organization.name
+    p
+      strong Owner:
+      br
+        = @organization.owner
+    .form-group
+      = link_to 'Back', organizations_path, class: 'btn btn-default'
+      = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default'
+      = link_to 'Delete', organization_path(@organization), method: 'delete', confirm: 'Are you sure?', class: 'btn btn-danger'
+
+  .col-sm-8
+    .pull-right
+      = link_to 'New invoice', new_organization_invoice_path(@organization, @invoice), class: 'btn btn-success'
+    h1 Listing invoices
+
+
+    - if @invoices.present?
+      table.table.table-stripped.table-hover
+        thead
+          tr
+            th Name
+            th[style="width:30%"] Description
+            th Currency
+            th Balance cents
+            th Balance currency
+        tbody
+          - @invoices.each do |invoice|
+            tr
+              td = invoice.name
+              td = invoice.description
+              td = invoice.currency
+              td = invoice.balance_cents
+              td = invoice.balance_currency
+              td = link_to 'Edit', edit_organization_invoice_path(@organization, invoice)
+              td = link_to 'Destroy', [@organization, invoice], data: {confirm: 'Are you sure?'}, method: :delete
+    - else
+      .alert.alert-warning No invoices

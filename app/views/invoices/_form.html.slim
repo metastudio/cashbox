@@ -1,0 +1,23 @@
+.row
+  .col-sm-6
+    = simple_form_for([@organization, @invoice]) do |f|
+      = f.error_notification
+
+      .form-inputs
+        = f.input :name, autofocus: true
+
+      .form-inputs
+        = f.input :description
+
+      .form-inputs
+        = f.input :currency
+
+      .form-inputs
+        = f.input :balance_cents
+
+      .form-inputs
+        = f.input :balance_currency    
+
+      .form-actions
+        = f.button :submit, class: 'btn-primary'
+

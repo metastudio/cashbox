@@ -7,6 +7,7 @@ class OrganizationsController < ApplicationController
   end
 
   def show
+    @invoices = Invoice.all
   end
 
   def new
