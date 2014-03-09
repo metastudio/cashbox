@@ -18,8 +18,8 @@
         tr
           td = organization.name
           td = organization.owner
-          td = link_to 'Show', organization, class: 'btn btn-warning btn-small'
-          td = link_to 'Edit', edit_organization_path(organization), class: 'btn btn-info btn-small'
+          td = link_to 'Show', organization, class: 'btn btn-default btn-small'
+          td = link_to 'Edit', edit_organization_path(organization), class: 'btn btn-default btn-small'
           td = link_to 'Destroy', organization, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-small'
 - else
   .alert.alert-warning No organizations
