@@ -10,4 +10,8 @@ class Invoice < ActiveRecord::Base
   validates :name,             presence: true
   validates :balance_cents,    presence: true
   validates :balance_currency, presence: true
+
+  def self.total_balance
+    sum(&:balance)
+  end
 end

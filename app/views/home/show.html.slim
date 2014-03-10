@@ -3,4 +3,4 @@
     == render 'invoices/invoice'
     .pull-right
       strong The total balance:
-      = money_without_cents_and_with_symbol total_balance(@invoices)
+      = money_without_cents_and_with_symbol @invoices.total_balance
