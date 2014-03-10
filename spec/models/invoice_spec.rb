@@ -6,8 +6,9 @@ describe Invoice do
   end
 
   context "validation" do
-    it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:currency) }
+    it { should validate_presence_of(:name)             }
+    it { should validate_presence_of(:balance_cents)    }
+    it { should validate_presence_of(:balance_currency) }
   end
 end
 

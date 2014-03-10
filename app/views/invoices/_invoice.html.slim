@@ -8,7 +8,6 @@ h1 Listing invoices
       tr
         th Name
         th[style="width:30%"] Description
-        th Currency
         th Balance cents
         th Balance currency
     tbody
@@ -16,7 +15,6 @@ h1 Listing invoices
         tr
           td = invoice.name
           td = invoice.description
-          td = invoice.currency
           td = invoice.balance_cents
           td = invoice.balance_currency
           td = link_to 'Edit', edit_organization_invoice_path(@organization, invoice)
