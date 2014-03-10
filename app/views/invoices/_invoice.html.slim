@@ -12,7 +12,7 @@ h1 Listing invoices
         tr
           td = invoice.name
           td = invoice.description
-          td = money_without_cents_and_with_symbol invoice.balance
+          td = humanized_money_with_symbol invoice.balance
           - if @organization.present?
             td = link_to 'Edit', edit_organization_invoice_path(@organization, invoice)
             td = link_to 'Destroy', [@organization, invoice], data: {confirm: 'Are you sure?'}, method: :delete

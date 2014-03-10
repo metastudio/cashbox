@@ -1,0 +1,2 @@
+$('.transactions_list').html("<%=j render('transactions/transactions')%>");
+$('.paginator').html("<%=j paginate(@transactions, remote: true) %>");

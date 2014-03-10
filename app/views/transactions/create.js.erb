@@ -1,0 +1,7 @@
+<% if @transaction.persisted? %>
+  $(".transactions_list").replaceWith("<%=j render('transactions/transactions')%>");
+  $(".transaction_form").replaceWith("<%=j render('transactions/form', transaction: Transaction.new)%>");
+  scrollTo($("#<%= dom_id(@transaction) %>"));
+<% else %>
+  $(".transaction_form").replaceWith("<%=j render('transactions/form', transaction: @transaction)%>");
+<% end %>

@@ -1,0 +1,13 @@
+.row
+  .col-sm-6
+    = simple_form_for(transaction, remote: true) do |f|
+      = f.error_notification
+
+      .form-inputs
+        = f.input :amount_cents
+        = f.input :amount_currency
+        = f.association :category, include_blank: "Select a category"
+        = f.association :invoice, include_blank: "Select a invoice"
+
+      .form-actions
+        = f.button :submit

@@ -3,5 +3,6 @@ class HomeController < ApplicationController
 
   def show
     @invoices = Invoice.balance
+    @transactions = Transaction.all.page(params[:page]).per(10)
   end
 end

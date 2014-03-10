@@ -8,4 +8,6 @@ Cashbox::Application.routes.draw do
     resources :invoices,   except: [:show, :index]
     resources :categories, except: :show
   end
+
+  resources :transactions, only: [:create, :destroy]
 end
