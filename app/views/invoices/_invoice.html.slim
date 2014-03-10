@@ -1,5 +1,3 @@
-.pull-right
-  = link_to 'New invoice', new_organization_invoice_path(@organization, @invoice), class: 'btn btn-success'
 h1 Listing invoices
 
 - if @invoices.present?
@@ -8,17 +6,16 @@ h1 Listing invoices
       tr
         th Name
         th[style="width:30%"] Description
-        th Balance cents
-        th Balance currency
+        th Balance
     tbody
       - @invoices.each do |invoice|
         tr
           td = invoice.name
           td = invoice.description
-          td = invoice.balance_cents
-          td = invoice.balance_currency
-          td = link_to 'Edit', edit_organization_invoice_path(@organization, invoice)
-          td = link_to 'Destroy', [@organization, invoice], data: {confirm: 'Are you sure?'}, method: :delete
+          td = money_without_cents_and_with_symbol invoice.balance
+          - if @organization.present?
+            td = link_to 'Edit', edit_organization_invoice_path(@organization, invoice)
+            td = link_to 'Destroy', [@organization, invoice], data: {confirm: 'Are you sure?'}, method: :delete
 - else
   .alert.alert-warning No invoices
 

@@ -1,2 +1,6 @@
-h1 Home#show
-p Find me in app/views/home/show.html.slim
+.row
+  .col-sm-12
+    == render 'invoices/invoice'
+    .pull-right
+      strong The total balance:
+      = money_without_cents_and_with_symbol total_balance(@invoices)
