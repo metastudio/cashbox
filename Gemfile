@@ -27,7 +27,6 @@ gem 'recursive-open-struct'
 gem 'devise'
 gem 'simple_form'
 gem 'money-rails'
-gem 'goog_currency'
 
 group :development, :test do
   gem 'rspec-rails'
