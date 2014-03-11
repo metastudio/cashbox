@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Invoice do
+describe BankAccount do
   context "association" do
     it { should belong_to(:organization) }
   end

@@ -1,5 +1,5 @@
-class Invoice < ActiveRecord::Base
-  belongs_to :organization, inverse_of: :invoice
+class BankAccount < ActiveRecord::Base
+  belongs_to :organization, inverse_of: :bank_account
 
   scope :balance, -> { where("balance_cents > 0")}
   

@@ -1,6 +1,6 @@
 .row
   .col-sm-12
-    == render 'invoices/invoice'
+    == render 'bank_accounts/bank_account'
     .pull-right
       strong The total balance:
-      = money_without_cents_and_with_symbol @invoices.total_balance
+      = money_without_cents_and_with_symbol @bank_accounts.total_balance

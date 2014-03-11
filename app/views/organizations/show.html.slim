@@ -19,5 +19,5 @@
 
   .col-sm-8
     .pull-right
-      = link_to 'New invoice', new_organization_invoice_path(@organization, @invoice), class: 'btn btn-success'
-    == render 'invoices/invoice'
+      = link_to 'New bank account', new_organization_bank_account_path(@organization, @bank_account), class: 'btn btn-success'
+    == render 'bank_accounts/bank_account'
