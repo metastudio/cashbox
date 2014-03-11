@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 20140310174310) do
 
   add_index "bank_accounts", ["organization_id"], name: "index_bank_accounts_on_organization_id", using: :btree
 
+  create_table "categories", force: true do |t|
+    t.string   "type",            null: false
+    t.string   "name",            null: false
+    t.integer  "organization_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
+
   create_table "organizations", force: true do |t|
     t.string   "name",       null: false
     t.integer  "owner_id",   null: false

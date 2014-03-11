@@ -1,5 +1,3 @@
-require 'uri'
-
 class BankAccount < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
 

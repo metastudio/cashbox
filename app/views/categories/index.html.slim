@@ -1,5 +1,5 @@
 .pull-right
-  = link_to 'New categories', new_organization_category_path, class: 'btn btn-success'
+  = link_to 'New categories', new_category_path, class: 'btn btn-success'
 h1 Listing categories
 
 - if @categories.present?
@@ -13,7 +13,7 @@ h1 Listing categories
         tr
           td = category.name
           td = category.type
-          td = link_to 'Edit', edit_organization_category_path(@organization, category)
-          td = link_to 'Destroy', [@organization, category], data: {confirm: 'Are you sure?'}, method: :delete
+          td = link_to 'Edit', edit_category_path(category)
+          td = link_to 'Destroy', category, data: {confirm: 'Are you sure?'}, method: :delete
 - else
   .alert.alert-warning No categories
