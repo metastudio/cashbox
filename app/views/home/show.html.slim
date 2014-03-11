@@ -1,9 +1,9 @@
 .row
   .col-sm-12
-    == render 'invoices/invoice'
+    == render partial: 'bank_accounts/bank_accounts', locals: { bank_accounts: @bank_accounts, current_organization: @current_organization }
     .pull-right
       strong The total balance:
-      = humanized_money_with_symbol @invoices.total_balance
+      = money_without_cents_and_with_symbol @bank_accounts.total_balance
 .row
   .col-sm-12
     .page-header
@@ -11,6 +11,6 @@
     .transaction_form
       = render 'transactions/form', transaction: Transaction.new
     .transactions_list
-      = render 'transactions/transactions'
+      = render partial: 'transactions/transactions', locals: { transactions: @transactions }
     .paginator.col-md-offset-5
       = paginate @transactions, remote: true

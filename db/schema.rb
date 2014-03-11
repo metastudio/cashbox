@@ -16,17 +16,7 @@ ActiveRecord::Schema.define(version: 20140310181619) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "categories", force: true do |t|
-    t.string   "type",            null: false
-    t.string   "name",            null: false
-    t.integer  "organization_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
-
-  create_table "invoices", force: true do |t|
+  create_table "bank_accounts", force: true do |t|
     t.string   "name",                             null: false
     t.string   "description"
     t.integer  "balance_cents",    default: 0,     null: false
@@ -36,7 +26,17 @@ ActiveRecord::Schema.define(version: 20140310181619) do
     t.datetime "updated_at"
   end
 
-  add_index "invoices", ["organization_id"], name: "index_invoices_on_organization_id", using: :btree
+  add_index "bank_accounts", ["organization_id"], name: "index_bank_accounts_on_organization_id", using: :btree
+
+  create_table "categories", force: true do |t|
+    t.string   "type",            null: false
+    t.string   "name",            null: false
+    t.integer  "organization_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
 
   create_table "organizations", force: true do |t|
     t.string   "name",       null: false
@@ -63,13 +63,13 @@ ActiveRecord::Schema.define(version: 20140310181619) do
     t.integer  "amount_cents",    default: 0,     null: false
     t.string   "amount_currency", default: "USD", null: false
     t.integer  "category_id",                     null: false
-    t.integer  "invoice_id",                      null: false
+    t.integer  "bank_account_id",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
   add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
-  add_index "transactions", ["invoice_id"], name: "index_transactions_on_invoice_id", using: :btree
 
   create_table "user_organizations", force: true do |t|
     t.integer  "user_id",         null: false

@@ -5,9 +5,9 @@ Cashbox::Application.routes.draw do
   root 'home#show'
 
   resources :organizations do
-    resources :invoices,   except: [:show, :index]
-    resources :categories, except: :show
+    resources :bank_accounts, except: [:show, :index]
   end
 
   resources :transactions, only: [:create, :destroy]
+  resources :categories, except: :show
 end
