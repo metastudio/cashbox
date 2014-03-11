@@ -1,0 +1,11 @@
+.row
+  .col-sm-6
+    = simple_form_for(@category) do |f|
+      = f.error_notification
+
+      .form-inputs
+        = f.input :type, collection: Category::CATEGORY_TYPES, include_blank: false
+        = f.input :name
+
+      .form-actions
+        = f.button :submit

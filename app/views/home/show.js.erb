@@ -1,0 +1,2 @@
+$('.transactions_list').html("<%=j render partial: 'transactions/transactions', locals: { transactions: @transactions } %>");
+$('.paginator').html("<%=j paginate(@transactions, remote: true) %>");
