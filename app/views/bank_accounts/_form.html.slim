@@ -1,20 +1,13 @@
 .row
   .col-sm-6
-    = simple_form_for([@organization, @invoice]) do |f|
+    = simple_form_for([@current_organization, @bank_account]) do |f|
       = f.error_notification
 
       .form-inputs
         = f.input :name, autofocus: true
-
-      .form-inputs
         = f.input :description
-
-      .form-inputs
-        = f.input :balance_cents
-
-      .form-inputs
-        = f.input :balance_currency
+        = f.input :balance
+        = f.input :balance_currency, collection: BankAccount::CURRENCIES
 
       .form-actions
         = f.button :submit, class: 'btn-primary'
-

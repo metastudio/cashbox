@@ -2,6 +2,6 @@ class HomeController < ApplicationController
   before_filter :require_organization
 
   def show
-    @invoices = Invoice.balance
+    @bank_accounts = current_organization.bank_accounts
   end
 end
