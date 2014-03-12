@@ -16,3 +16,8 @@
       = link_to 'Back', organizations_path, class: 'btn btn-default'
       = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default'
       = link_to 'Delete', organization_path(@organization), method: 'delete', confirm: 'Are you sure?', class: 'btn btn-danger'
+
+  .col-sm-8
+    .pull-right
+      = link_to 'New bank account', new_bank_account_path(@bank_account), class: 'btn btn-success'
+    == render partial: 'bank_accounts/bank_accounts', locals: { bank_accounts: @bank_accounts }

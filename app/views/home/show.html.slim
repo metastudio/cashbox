@@ -1,9 +1,14 @@
 .row
   .col-sm-12
-    == render partial: 'bank_accounts/bank_accounts', locals: { bank_accounts: @bank_accounts, current_organization: @current_organization }
+    == render partial: 'bank_accounts/bank_accounts', locals: { bank_accounts: @bank_accounts }
     .pull-right
-      strong The total balance:
-      = money_without_cents_and_with_symbol @bank_accounts.total_balance
+      strong The total balance in dollars:
+      | &nbsp;
+      = humanized_money_with_symbol @bank_accounts.total_balance_in_dollars
+      br
+      strong The total balance in rubles:
+      | &nbsp;
+      = humanized_money_with_symbol @bank_accounts.total_balance_in_rubles
 .row
   .col-sm-12
     .page-header
