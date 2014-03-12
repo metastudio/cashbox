@@ -1,6 +1,6 @@
 .row
   .col-sm-6
-    = simple_form_for([@current_organization, @bank_account]) do |f|
+    = simple_form_for(@bank_account) do |f|
       = f.error_notification
 
       .form-inputs
