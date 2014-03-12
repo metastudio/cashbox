@@ -1,2 +1,21 @@
-h1 Home#show
-p Find me in app/views/home/show.html.slim
+.row
+  .col-sm-12
+    == render partial: 'bank_accounts/bank_accounts', locals: { bank_accounts: @bank_accounts }
+    .pull-right
+      strong The total balance in dollars:
+      | &nbsp;
+      = humanized_money_with_symbol @bank_accounts.total_balance_in_dollars
+      br
+      strong The total balance in rubles:
+      | &nbsp;
+      = humanized_money_with_symbol @bank_accounts.total_balance_in_rubles
+.row
+  .col-sm-12
+    .page-header
+      h1 New transaction
+    .transaction_form
+      = render 'transactions/form', transaction: Transaction.new
+    .transactions_list
+      = render partial: 'transactions/transactions', locals: { transactions: @transactions }
+    .paginator.col-md-offset-5
+      = paginate @transactions, remote: true

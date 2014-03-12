@@ -1,21 +1,25 @@
-h1 Listing organizations
+.page-header
+  .pull-right
+    = link_to 'New Organization', new_organization_path, class: 'btn btn-success'
+  h1 Listing organizations
 
-table
-  tr
-    th Name
-    th Owner
-    th
-    th
-    th
 
-  - @organizations.each do |organization|
-    tr
-      td = organization.name
-      td = organization.owner
-      td = link_to 'Show', organization
-      td = link_to 'Edit', edit_organization_path(organization)
-      td = link_to 'Destroy', organization, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-br
-
-= link_to 'New Organization', new_organization_path
+- if @organizations.present?
+  table.table.table-stripped.table-hover
+    thead
+      tr
+        th Name
+        th Owner
+        th[style="width:5%"]
+        th[style="width:5%"]
+        th[style="width:5%"]
+    tbody
+      - @organizations.each do |organization|
+        tr
+          td = organization.name
+          td = organization.owner
+          td = link_to 'Show', organization, class: 'btn btn-default btn-small'
+          td = link_to 'Edit', edit_organization_path(organization), class: 'btn btn-default btn-small'
+          td = link_to 'Destroy', organization, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-small'
+- else
+  .alert.alert-warning No organizations

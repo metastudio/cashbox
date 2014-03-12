@@ -1,0 +1,20 @@
+h1 Listing bank accounts
+
+- if bank_accounts.present?
+  table.table.table-stripped.table-hover
+    thead
+      tr
+        th Name
+        th[style="width:30%"] Description
+        th Balance
+    tbody
+      - bank_accounts.each do |bank_account|
+        tr
+          td = bank_account.name
+          td = bank_account.description
+          td = humanized_money_with_symbol bank_account.balance
+          - if current_organization.present?
+            td = link_to 'Edit', edit_bank_account_path(bank_account)
+            td = link_to 'Destroy', bank_account, data: {confirm: 'Are you sure?'}, method: :delete
+- else
+  .alert.alert-warning No bank accounts
