@@ -1,4 +1,5 @@
 class TransactionsController < ApplicationController
+  before_action :require_organization
   before_action :set_transaction,  only: :destroy
   before_action :set_transactions, only: :create
 
