@@ -1,20 +1,20 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:edit, :update, :destroy]
-  before_action :current_organization
+  before_action :require_organization
 
   def index
-    @categories = @current_organization.categories
+    @categories = current_organization.categories
   end
 
   def new
-    @category = @current_organization.categories.build
+    @category = current_organization.categories.build
   end
 
   def edit
   end
 
   def create
-    @category = @current_organization.categories.build(category_params)
+    @category = current_organization.categories.build(category_params)
 
     if @category.save
       redirect_to categories_path, notice: 'Category was successfully created.'
@@ -39,7 +39,7 @@ class CategoriesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_category
-      @category = Category.find(params[:id])
+      @category = current_organization.categories.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
