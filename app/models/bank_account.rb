@@ -10,7 +10,11 @@ class BankAccount < ActiveRecord::Base
   validates :balance_currency, presence: true
   validates :balance_currency, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
 
-  def self.total_balance
-    sum(&:balance)
+  def self.total_balance_in_dollars
+    BankAccount.where(balance_currency: 'USD').sum(&:balance)
+  end
+
+  def self.total_balance_in_rubles
+    BankAccount.where(balance_currency: 'RUB').sum(&:balance)
   end
 end
