@@ -4,8 +4,6 @@ Cashbox::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'home#show'
 
-  resources :organizations do
-    resources :bank_accounts, except: [:show, :index]
-  end
+  resources :organizations
   resources :categories, except: :show
 end

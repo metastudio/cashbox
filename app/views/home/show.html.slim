@@ -1,6 +1,2 @@
-.row
-  .col-sm-12
-    == render partial: 'bank_accounts/bank_accounts', locals: { bank_accounts: @bank_accounts, current_organization: @current_organization }
-    .pull-right
-      strong The total balance:
-      = money_without_cents_and_with_symbol @bank_accounts.total_balance
+h1 Home#show
+p Find me in app/views/home/show.html.slim

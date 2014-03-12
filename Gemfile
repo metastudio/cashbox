@@ -26,7 +26,6 @@ gem 'slim-rails'
 gem 'recursive-open-struct'
 gem 'devise'
 gem 'simple_form'
-gem 'money-rails'
 
 group :development, :test do
   gem 'rspec-rails'
