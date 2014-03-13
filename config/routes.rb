@@ -4,4 +4,5 @@ Cashbox::Application.routes.draw do
   root 'home#show'
 
   resources :organizations
+  resources :categories, except: :show
 end
