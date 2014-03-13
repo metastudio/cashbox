@@ -3,17 +3,17 @@ class BankAccount < ActiveRecord::Base
   CURRENCY_RUB = 'RUB'
   CURRENCIES = [CURRENCY_USD, CURRENCY_RUB]
 
-  belongs_to :organization, inverse_of: :bank_account
+  belongs_to :organization, inverse_of: :bank_accounts
   has_many :transactions, dependent: :destroy, inverse_of: :bank_account
 
-  monetize :balance_cents, with_model_currency: :balance_currency
+  monetize :balance_cents, with_model_currency: :currency
 
-  validates :name,             presence: true
-  validates :balance,          presence: true
-  validates :balance_currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
+  validates :name,     presence: true
+  validates :balance,  presence: true
+  validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
 
   def self.total_balance_cents(currency)
-    where(balance_currency: currency).sum(:balance_cents)
+    where(currency: currency).sum(:balance_cents)
   end
 
   def recalculate_amount

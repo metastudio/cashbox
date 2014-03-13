@@ -1,18 +1,19 @@
 class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
 
-  belongs_to :category
-  belongs_to :bank_account
+  belongs_to :category, inverse_of: :transactions
+  belongs_to :bank_account, inverse_of: :transactions
+  has_one :organization, through: :bank_account, inverse_of: :transactions
 
-  monetize :amount_cents, with_model_currency: :amount_currency, allow_nil: true
+  monetize :amount_cents, with_model_currency: :currency
+
+  delegate :currency, to: :bank_account, allow_nil: true
 
   default_scope { order(created_at: :desc) }
 
-  validates :amount,          presence: true
-  validates :amount_currency, presence: true
-  validates :amount_currency, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
-  validates :category_id, presence: true
-  validates :bank_account_id,  presence: true
+  validates :amount,   presence: true
+  validates :category, presence: true
+  validates :bank_account, presence: true
 
   after_save do |transaction|
     recalculate_amount(transaction)

@@ -26,4 +26,25 @@ FactoryGirl.define do
     user
     organization
   end
+
+  sequence(:bank_account_name) { |n| "Bank account #{n}" }
+  factory :bank_account do
+    organization
+    name { generate :bank_account_name }
+    balance 0
+    currency 'RUB'
+  end
+
+  sequence(:category_name) { |n| "Category #{n}" }
+  factory :category do
+    organization
+    name { generate :category_name }
+    type 'Income'
+  end
+
+  factory :transaction do
+    bank_account
+    category
+    amount 100.00
+  end
 end

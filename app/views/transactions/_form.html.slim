@@ -5,9 +5,8 @@
 
       .form-inputs
         = f.input :amount
-        = f.input :amount_currency, collection: Transaction::CURRENCIES
-        = f.association :category, include_blank: "Select a category"
-        = f.association :bank_account, include_blank: "Select a bank account"
+        = f.association :category, prompt: "Select a category"
+        = f.association :bank_account, prompt: "Select a bank account"
 
       .form-actions
         = f.button :submit

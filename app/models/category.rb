@@ -1,6 +1,8 @@
 class Category < ActiveRecord::Base
   self.inheritance_column = nil
-  belongs_to :organization, inverse_of: :category
+
+  belongs_to :organization, inverse_of: :categories
+  has_many :transactions, inverse_of: :category, dependent: :restrict_with_exception
 
   CATEGORY_TYPES = %w[Income Expense]
 

@@ -14,7 +14,8 @@ class Organization < ActiveRecord::Base
   has_many :user_organizations, inverse_of: :organization, dependent: :destroy
   has_many :categories, dependent: :destroy
   has_many :users, through: :user_organizations
-  has_many :bank_accounts, dependent: :destroy
+  has_many :bank_accounts, dependent: :destroy, inverse_of: :organization
+  has_many :transactions, through: :bank_accounts, inverse_of: :organization
 
   validates :name, presence: true
   validates :owner, presence: true

@@ -7,6 +7,7 @@ describe Organization do
     it { should have_many(:bank_accounts).dependent(:destroy) }
     it { should have_many(:users).through(:user_organizations) }
     it { should have_many(:categories).dependent(:destroy) }
+    it { should have_many(:transactions).through(:bank_accounts) }
   end
 
   context "validation" do
