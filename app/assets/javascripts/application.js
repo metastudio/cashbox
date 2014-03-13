@@ -13,3 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
+
+function scrollTo($el) {
+  $("html, body").animate({scrollTop: $el.offset().top}, 300);
+}
