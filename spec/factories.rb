@@ -1,9 +1,11 @@
 FactoryGirl.define do
-  sequence(:email)    { |n| "user#{n}@cashbox.dev" }
-  sequence(:password) { SecureRandom.hex(10) }
+  sequence(:email)     { |n| "user#{n}@cashbox.dev" }
+  sequence(:password)  { SecureRandom.hex(10) }
+  sequence(:full_name) { |n| "Test User#{n}" }
   factory :user do
     email
     password
+    full_name
 
     trait :with_organization do
       after(:create) { |u| create :user_organization, user: u }

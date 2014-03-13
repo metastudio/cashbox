@@ -28,9 +28,11 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
+  validates :full_name, presence: true
+
   before_create :build_profile, if: ->{ profile.blank? }
 
-  delegate :full_name, :avatar, to: :profile
+  delegate :avatar, to: :profile
 
   def to_s
     full_name
