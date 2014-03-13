@@ -4,11 +4,11 @@
     .pull-right
       strong The total balance in dollars:
       | &nbsp;
-      = humanized_money_with_symbol @bank_accounts.total_balance_in_dollars
+      = humanized_money_with_symbol @bank_accounts.total_balance_cents(BankAccount::CURRENCY_USD)
       br
       strong The total balance in rubles:
       | &nbsp;
-      = humanized_money_with_symbol @bank_accounts.total_balance_in_rubles
+      = humanized_money_with_symbol @bank_accounts.total_balance_cents(BankAccount::CURRENCY_RUB)
 .row
   .col-sm-12
     .page-header
