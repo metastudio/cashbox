@@ -9,3 +9,13 @@
       strong The total balance in rubles:
       | &nbsp;
       = humanized_money_with_symbol @bank_accounts.total_balance_in_rubles
+.row
+  .col-sm-12
+    .page-header
+      h1 New transaction
+    .transaction_form
+      = render 'transactions/form', transaction: Transaction.new
+    .transactions_list
+      = render partial: 'transactions/transactions', locals: { transactions: @transactions }
+    .paginator.col-md-offset-5
+      = paginate @transactions, remote: true

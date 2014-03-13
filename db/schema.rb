@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140313002129) do
+ActiveRecord::Schema.define(version: 20140313005756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,16 @@ ActiveRecord::Schema.define(version: 20140313002129) do
   end
 
   add_index "bank_accounts", ["organization_id"], name: "index_bank_accounts_on_organization_id", using: :btree
+
+  create_table "categories", force: true do |t|
+    t.string   "type",            null: false
+    t.string   "name",            null: false
+    t.integer  "organization_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
 
   create_table "organizations", force: true do |t|
     t.string   "name",       null: false
@@ -48,6 +58,18 @@ ActiveRecord::Schema.define(version: 20140313002129) do
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", unique: true, using: :btree
+
+  create_table "transactions", force: true do |t|
+    t.integer  "amount_cents",    default: 0,     null: false
+    t.string   "amount_currency", default: "USD", null: false
+    t.integer  "category_id",                     null: false
+    t.integer  "bank_account_id",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
+  add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
 
   create_table "user_organizations", force: true do |t|
     t.integer  "user_id",         null: false

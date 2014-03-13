@@ -27,6 +27,7 @@ gem 'recursive-open-struct'
 gem 'devise'
 gem 'simple_form'
 gem 'money-rails'
+gem 'kaminari'
 
 group :development, :test do
   gem 'rspec-rails'
