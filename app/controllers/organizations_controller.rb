@@ -7,6 +7,7 @@ class OrganizationsController < ApplicationController
   end
 
   def show
+    @bank_accounts = current_organization.bank_accounts
   end
 
   def new
