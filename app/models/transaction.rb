@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: transactions
+#
+#  id              :integer          not null, primary key
+#  amount_cents    :integer          default(0), not null
+#  category_id     :integer          not null
+#  bank_account_id :integer          not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+
 class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
 

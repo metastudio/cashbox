@@ -18,6 +18,7 @@
 #  locked_at              :datetime
 #  created_at             :datetime
 #  updated_at             :datetime
+#  full_name              :string(255)      not null
 #
 
 class User < ActiveRecord::Base

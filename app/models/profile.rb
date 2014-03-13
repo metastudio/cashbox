@@ -4,7 +4,6 @@
 #
 #  id           :integer          not null, primary key
 #  user_id      :integer          not null
-#  full_name    :string(255)
 #  position     :string(255)
 #  avatar       :string(255)
 #  phone_number :string(255)

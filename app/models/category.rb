@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: categories
+#
+#  id              :integer          not null, primary key
+#  type            :string(255)      not null
+#  name            :string(255)      not null
+#  organization_id :integer          not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+
 class Category < ActiveRecord::Base
   self.inheritance_column = nil
 
