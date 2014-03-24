@@ -1,14 +1,6 @@
-.row
-  .col-sm-12
-    == render partial: 'bank_accounts/bank_accounts', locals: { bank_accounts: @bank_accounts }
-    .pull-right
-      strong The total balance in dollars:
-      | &nbsp;
-      = humanized_money_with_symbol @bank_accounts.total_balance_cents(BankAccount::CURRENCY_USD)
-      br
-      strong The total balance in rubles:
-      | &nbsp;
-      = humanized_money_with_symbol @bank_accounts.total_balance_cents(BankAccount::CURRENCY_RUB)
+=content_for :sidebar
+  =render 'home/sidebar'
+
 .row
   .col-sm-12
     .page-header

@@ -26,8 +26,8 @@ class BankAccount < ActiveRecord::Base
   validates :balance,  presence: true
   validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
 
-  def self.total_balance_cents(currency)
-    where(currency: currency).sum(:balance_cents)
+  def self.total_balance(currency)
+    Money.new(where(currency: currency).sum(:balance_cents), currency)
   end
 
   def recalculate_amount

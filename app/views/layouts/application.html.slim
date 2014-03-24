@@ -12,4 +12,8 @@ html
     = render 'shared/layout/header'
     .container-fluid
       = render 'shared/layout/flash_messages'
-      = yield
+      .row
+        .col-md-9
+          = yield
+        .col-md-3
+          = yield :sidebar

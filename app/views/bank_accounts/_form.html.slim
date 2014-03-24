@@ -7,7 +7,7 @@
         = f.input :name, autofocus: true
         = f.input :description
         = f.input :balance
-        = f.input :balance_currency, collection: BankAccount::CURRENCIES
+        = f.input :currency, collection: BankAccount::CURRENCIES, prompt: 'Select currency'
 
       .form-actions
         = f.button :submit, class: 'btn-primary'
