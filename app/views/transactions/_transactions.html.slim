@@ -2,13 +2,13 @@
   = render 'transactions/form', transaction: Transaction.new
 
 .row
-  .col-xs-2
-    h3 Amount
-  .col-xs-2
-    h3 Category
-  .col-xs-2
-    h3 Account
-  .col-xs-4
-    h3 Comment
-.transactions
-  = render transactions
+  .col-xs-12
+    table.table.table-hover.transactions
+      thead
+        tr
+          td Amount
+          td Category
+          td Account
+          td Comment
+      tbody
+        = render transactions

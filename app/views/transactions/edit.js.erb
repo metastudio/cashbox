@@ -1,0 +1,3 @@
+if($("#<%= dom_id(@transaction, 'edit_row') %>").length == 0) {
+  $("<%=j render 'transactions/edit_transaction', transaction: @transaction %>").hide().insertAfter(".transaction#<%= dom_id(@transaction) %>").slideDown();
+}

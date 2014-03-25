@@ -1,10 +1,17 @@
 class TransactionsController < ApplicationController
   before_action :require_organization
-  before_action :set_transaction,  only: :destroy
+  before_action :set_transaction,  only: [:edit, :update, :destroy]
 
   def create
     @transaction = Transaction.new(transaction_params)
     @transaction.save
+  end
+
+  def edit
+  end
+
+  def update
+    @success = @transaction.update_attributes(transaction_params)
   end
 
   def destroy
@@ -18,6 +25,6 @@ class TransactionsController < ApplicationController
   end
 
   def transaction_params
-    params.require(:transaction).permit(:amount, :amount_currency, :category_id, :bank_account_id, :comment)
+    params.require(:transaction).permit(:amount, :category_id, :bank_account_id, :comment)
   end
 end

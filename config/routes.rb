@@ -6,5 +6,5 @@ Cashbox::Application.routes.draw do
   resources :organizations
   resources :bank_accounts, except: [:show, :index]
   resources :categories,    except: :show
-  resources :transactions,  only: [:create, :destroy]
+  resources :transactions,  only: [:create, :edit, :update, :destroy]
 end

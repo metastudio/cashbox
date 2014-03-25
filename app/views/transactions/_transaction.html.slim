@@ -1,5 +1,5 @@
-.row.transaction id=dom_id(transaction) class=(transaction.income? ? 'bg-success' : 'bg-danger')
-  .col-xs-2= humanized_money_with_symbol transaction.amount
-  .col-xs-2= transaction.category.name if transaction.category.present?
-  .col-xs-2= transaction.bank_account.name if transaction.bank_account.present?
-  .col-xs-4= transaction.comment
+tr.transaction id=dom_id(transaction) class=(transaction.income? ? 'success' : 'danger') data-edit-url=edit_transaction_path(transaction)
+  td= humanized_money_with_symbol transaction.amount
+  td= transaction.category.name if transaction.category.present?
+  td= transaction.bank_account.name if transaction.bank_account.present?
+  td= transaction.comment
