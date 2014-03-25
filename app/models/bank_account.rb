@@ -30,12 +30,7 @@ class BankAccount < ActiveRecord::Base
     Money.new(where(currency: currency).sum(:balance_cents), currency)
   end
 
-  def recalculate_amount
-    due = self.balance
-    self.transactions.each do |transaction|
-      due -= transaction.amount
-    end
-
-    self.balance = due
+  def recalculate_amount!
+    update_attributes(balance: Money.new(transactions.sum(:amount_cents), currency))
   end
 end

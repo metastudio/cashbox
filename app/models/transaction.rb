@@ -25,20 +25,23 @@ class Transaction < ActiveRecord::Base
 
   default_scope { order(created_at: :desc) }
 
-  validates :amount,   presence: true, numericality: { greater_than: 0 }
+  validates :amount,   presence: true
   validates :category, presence: true
   validates :bank_account, presence: true
 
-  after_save do |transaction|
-    recalculate_amount(transaction)
-  end
+  before_save :check_negative
+  after_save :recalculate_amount
 
   private
 
-  def recalculate_amount(p_transaction)
-    unless p_transaction.bank_account.nil?
-      p_transaction.bank_account.recalculate_amount
-      p_transaction.bank_account.save!
-    end
+  def check_negative
+    self.amount = Money.new(amount_cents.abs, currency) if income? && amount_cents < 0
+    self.amount = Money.new(-amount_cents.abs, currency) if expense? && amount_cents > 0
+    nil
+  end
+
+  def recalculate_amount
+    bank_account.recalculate_amount!
+    nil
   end
 end

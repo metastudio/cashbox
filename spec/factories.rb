@@ -62,5 +62,13 @@ FactoryGirl.define do
     bank_account
     category
     amount 100.00
+
+    trait :income do
+      association :category, :income
+    end
+
+    trait :expense do
+      association :category, :expense
+    end
   end
 end
