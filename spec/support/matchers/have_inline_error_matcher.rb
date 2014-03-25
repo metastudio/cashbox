@@ -13,7 +13,14 @@ RSpec::Matchers.define :have_inline_error do |expected|
     if @field
       [".form-group", text: @field]
     elsif @field_name
-      [:xpath, "//*[contains(@class,'form-group') and (descendant::input[@name='#{@field_name}'] or descendant::textarea[@name='#{@field_name}'])]"]
+      selectors = [
+        "descendant::input[@name='#{@field_name}']",
+        "descendant::textarea[@name='#{@field_name}']",
+        "descendant::select[@name='#{@field_name}']",
+      ]
+      xpath = %Q{//*[contains(@class,'form-group') and (#{selectors.join(' or ')})]}
+      p xpath
+      [:xpath, xpath]
     end
   end
 
