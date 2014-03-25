@@ -19,7 +19,6 @@ RSpec::Matchers.define :have_inline_error do |expected|
         "descendant::select[@name='#{@field_name}']",
       ]
       xpath = %Q{//*[contains(@class,'form-group') and (#{selectors.join(' or ')})]}
-      p xpath
       [:xpath, xpath]
     end
   end
