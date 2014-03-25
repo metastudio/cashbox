@@ -1,7 +1,7 @@
 <% if @transaction.persisted? %>
-  $(".transactions_list").replaceWith("<%=j render partial: 'transactions/transactions', locals: { transactions: @transactions } %>");
-  $(".transaction_form").replaceWith("<%=j render('transactions/form', transaction: Transaction.new)%>");
+  $(".transactions").prepend("<%=j render('transactions/transaction', transaction: @transaction) %>");
+  $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new) %>");
   scrollTo($("#<%= dom_id(@transaction) %>"));
 <% else %>
-  $(".transaction_form").replaceWith("<%=j render('transactions/form', transaction: @transaction)%>");
+  $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: @transaction) %>");
 <% end %>

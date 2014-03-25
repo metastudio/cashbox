@@ -20,6 +20,14 @@ FactoryGirl.define do
   factory :organization do |o|
     name { generate :organization_name }
     association :owner, factory: :user
+
+    ignore do
+      with_user nil
+    end
+
+    after(:create) do |organization, evaluator|
+      create :user_organization, organization: organization, user: evaluator.with_user if evaluator.with_user
+    end
   end
 
   factory :user_organization do
@@ -40,6 +48,14 @@ FactoryGirl.define do
     organization
     name { generate :category_name }
     type 'Income'
+
+    trait :income do
+      type 'Income'
+    end
+
+    trait :expense do
+      type 'Expense'
+    end
   end
 
   factory :transaction do

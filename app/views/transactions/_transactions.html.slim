@@ -1,22 +1,14 @@
-.page-header
-  h1 Listing transactions
+.row
+  = render 'transactions/form', transaction: Transaction.new
 
-- if transactions.present?
-  table.table.table-stripped.table-hover
-    thead
-      tr
-        th Amount
-        th Category
-        th Organization
-        th
-        th
-        th
-    tbody
-      - transactions.each do |transaction|
-        tr id=dom_id(transaction)
-          td = humanized_money_with_symbol transaction.amount
-          td = transaction.category.name if transaction.category.present?
-          td = transaction.bank_account.name if transaction.bank_account.present?
-          td = link_to 'Destroy', transaction, remote: true, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-small'
-- else
-  .alert.alert-warning No transactions
+.row
+  .col-xs-2
+    h3 Amount
+  .col-xs-2
+    h3 Category
+  .col-xs-2
+    h3 Account
+  .col-xs-4
+    h3 Comment
+.transactions
+  = render transactions

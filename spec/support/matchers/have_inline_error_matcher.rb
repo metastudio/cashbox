@@ -36,14 +36,14 @@ RSpec::Matchers.define :have_inline_error do |expected|
   end
 
   failure_message_for_should do |page|
-    %Q{expected to have inline error \"#{expected}\" for field \"#{@field}\"}
+    %Q{expected to have inline error \"#{expected}\" for field \"#{@field || @field_name}\"}
   end
 
   failure_message_for_should_not do |page|
-    %Q{expected to not have inline error \"#{expected}\" for field \"#{@field}\"}
+    %Q{expected to not have inline error \"#{expected}\" for field \"#{@field || @field_name}\"}
   end
 
   description do
-    %Q{have inline error \"#{expected}\" for field \"#{@field}\"}
+    %Q{have inline error \"#{expected}\" for field \"#{@field || @field_name}\"}
   end
 end

@@ -8,6 +8,7 @@
 #  bank_account_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
+#  comment         :string(255)
 #
 
 class Transaction < ActiveRecord::Base
@@ -20,10 +21,11 @@ class Transaction < ActiveRecord::Base
   monetize :amount_cents, with_model_currency: :currency
 
   delegate :currency, to: :bank_account, allow_nil: true
+  delegate :income?, :expense?, to: :category
 
   default_scope { order(created_at: :desc) }
 
-  validates :amount,   presence: true
+  validates :amount,   presence: true, numericality: { greater_than: 0 }
   validates :category, presence: true
   validates :bank_account, presence: true
 
