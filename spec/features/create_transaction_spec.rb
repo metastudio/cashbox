@@ -36,8 +36,11 @@ describe 'create transaction', js: true do
       expect{ subject }.to change{ transactions.count }.by(1)
     end
 
-    it "shows created transaction at the top of transactions list" do
-      pending
+    it "shows created transaction in transactions list" do
+      create_transaction
+      within ".transactions" do
+        expect(page).to have_content(amount)
+      end
     end
 
     context "when income category selected" do
