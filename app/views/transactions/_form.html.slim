@@ -1,4 +1,6 @@
 = simple_form_for(transaction, remote: true) do |f|
+  = f.error_notification
+
   .col-sm-2
     = f.input :amount, label: false, placeholder: 'Amount'
   .col-sm-2

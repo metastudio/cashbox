@@ -22,7 +22,7 @@ describe 'create transaction', js: true do
       fill_in 'transaction[comment]', with: comment
       click_on 'Create Transaction'
     end
-    page.has_content?(amount) # wait after page rerender
+    page.has_content?(/(Please review the problems below)|(#{amount})/) # wait after page rerender
   end
 
   subject{ create_transaction; page }
