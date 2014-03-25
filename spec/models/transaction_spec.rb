@@ -65,6 +65,16 @@ describe Transaction do
           expect{ subject }.to change(account, :balance_cents).by((finish_amount - start_amount) * 100)
         end
       end
+
+      context "for remove transaction" do
+        let!(:transaction) { create :transaction, :income, bank_account: account }
+
+        subject{ transaction.destroy }
+
+        it "substracts amount from account's balance" do
+          expect{ subject }.to change(account, :balance_cents).by(-transaction.amount_cents)
+        end
+      end
     end
 
     describe "#check_negative" do
