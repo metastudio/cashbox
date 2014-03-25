@@ -35,10 +35,6 @@ class Category < ActiveRecord::Base
     end
   end
 
-  def to_s
-    name
-  end
-
   def income?
     type == CATEGORY_INCOME
   end

@@ -14,10 +14,6 @@ describe 'create transaction', js: true do
   let(:transactions) { organization.transactions.where(bank_account_id: account.id, category_id: category.id) }
 
   def create_transaction
-    # puts "organization = #{organization.inspect}"
-    # puts "all categories = #{Category.all.inspect}"
-    # puts "category name = #{category_name.inspect}"
-    # puts page.body.to_s.inspect
     visit root_path
     within '#new_transaction' do
       fill_in 'transaction[amount]', with: amount
@@ -48,7 +44,7 @@ describe 'create transaction', js: true do
       let!(:category) { create :category, :income, organization: organization }
 
       it "creates transaction with positive amount" do
-        expect{ subject }.to change{ transactions.where(amount_cents: amount * 100.0).count }.by(1)
+        expect{ subject }.to change{ transactions.where(amount_cents: amount * 100).count }.by(1)
       end
     end
 
@@ -56,7 +52,9 @@ describe 'create transaction', js: true do
       let!(:category) { create :category, :expense, organization: organization }
 
       it "creates transaction with negative amount" do
-        expect{ subject }.to change{ transactions.where(amount_cents: amount * -100.0).count }.by(1)
+        expect{
+          subject
+        }.to change{ transactions.where(amount_cents: amount * -100).count }.by(1)
       end
     end
   end
@@ -66,42 +64,6 @@ describe 'create transaction', js: true do
 
     it "creates transaction without errors" do
       expect{ subject }.to change{ transactions.count }.by(1)
-    end
-  end
-
-  context "with negative amount" do
-    let(:amount) { -1234 }
-
-    it "doesn't create transaction" do
-      expect{ subject }.to_not change{ transactions.count }
-    end
-
-    it "shows error for amount field" do
-      expect(subject).to have_inline_error("must be greater than 0").for_field_name('transaction[amount]')
-    end
-  end
-
-  context "with non numeric data in amount field" do
-    let(:amount) { "abc" }
-
-    it "doesn't create transaction" do
-      expect{ subject }.to_not change{ transactions.count }
-    end
-
-    it "shows error for amount field" do
-      expect(subject).to have_inline_error("must be greater than 0").for_field_name('transaction[amount]')
-    end
-  end
-
-  context "with blank data in amount field" do
-    let(:amount) { nil }
-
-    it "doesn't create transaction" do
-      expect{ subject }.to_not change{ transactions.count }
-    end
-
-    it "shows error for amount field" do
-      expect(subject).to have_inline_error("must be greater than 0").for_field_name('transaction[amount]')
     end
   end
 
