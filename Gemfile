@@ -40,6 +40,8 @@ group :development do
   gem 'guard', require: false
   gem 'guard-rspec', require: false
   gem 'annotate', require: false
+
+  # Deployment
   gem 'capistrano', '~> 3.2.1', require: false
   gem 'capistrano-rails',   '~> 1.1.1', require: false
   gem 'capistrano-bundler', '~> 1.1.3', require: false
@@ -58,6 +60,5 @@ group :test do
 end
 
 group :staging do
-  gem 'therubyracer', '~> 0.12.1', require: false
   gem 'unicorn'
 end
