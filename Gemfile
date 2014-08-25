@@ -56,3 +56,8 @@ group :test do
   gem 'capybara-webkit'
   gem 'headless'
 end
+
+group :staging do
+  gem 'therubyracer', '~> 0.12.1', require: false
+  gem 'unicorn'
+end
