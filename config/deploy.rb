@@ -12,7 +12,6 @@ set :keep_releases, 5
 namespace :deploy do
   task :restart do
     invoke 'unicorn:restart'
-    invoke 'delayed_job:restart'
   end
 
   after :publishing, :restart
