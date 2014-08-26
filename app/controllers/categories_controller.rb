@@ -37,6 +37,7 @@ class CategoriesController < ApplicationController
   end
 
   def show
+    @transactions = @category.transactions.page(params[:page])
   end
 
   private
