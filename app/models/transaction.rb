@@ -33,8 +33,6 @@ class Transaction < ActiveRecord::Base
   after_save :recalculate_amount
   after_destroy :recalculate_amount
 
-  attr_accessor :fixed_category_id
-
   private
 
   def check_negative

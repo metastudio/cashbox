@@ -3,9 +3,7 @@ class TransactionsController < ApplicationController
   before_action :set_transaction,  only: [:edit, :update, :destroy]
 
   def create
-    @fixed_category = Category.find(params[:transaction][:fixed_category_id]) if params[:transaction][:fixed_category_id].present?
     @transaction = Transaction.new(transaction_params)
-    @transaction.category = @fixed_category if @fixed_category.present?
     @transaction.save
   end
 
@@ -27,6 +25,6 @@ class TransactionsController < ApplicationController
   end
 
   def transaction_params
-    params.require(:transaction).permit(:amount, :category_id, :bank_account_id, :comment, :fixed_category_id)
+    params.require(:transaction).permit(:amount, :category_id, :bank_account_id, :comment)
   end
 end
