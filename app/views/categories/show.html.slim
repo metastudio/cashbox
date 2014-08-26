@@ -2,6 +2,8 @@
   .col-sm-12
     h1= @category.name
 
-    = render partial: 'transactions/transactions', locals: { transactions: @transactions }
+    .row
+      = render 'transactions/form', transaction: Transaction.new(fixed_category_id: @category.id), fixed_category: @category
+    = render 'transactions/transactions_table', transactions: @transactions
     .paginator.col-md-offset-5
       = paginate @transactions, remote: true

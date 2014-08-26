@@ -2,6 +2,7 @@ FactoryGirl.define do
   sequence(:email)     { |n| "user#{n}@cashbox.dev" }
   sequence(:password)  { SecureRandom.hex(10) }
   sequence(:full_name) { |n| "Test User#{n}" }
+  sequence(:transaction_comment) { |n| "Test transaction comment #{n}" }
   factory :user do
     email
     password
