@@ -23,7 +23,7 @@ describe 'category page' do
 
   it { expect(subject).to have_content category1.name }
   it { expect(subject).to have_content comment1 }
-  it { expect(subject).not_to have_content comment2 }
+  it { expect(subject).to have_no_content comment2 }
 
   describe 'create transaction', js: true do
     before do

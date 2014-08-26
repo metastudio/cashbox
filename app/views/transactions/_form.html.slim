@@ -5,7 +5,6 @@
     = f.input :amount, label: false, placeholder: 'Amount'
   .col-sm-2
     - if local_assigns[:fixed_category_id].present?
-      - f.object.category_id = fixed_category_id
       = f.input :category, as: :select, collection: [f.object.category.name], disabled: true, include_blank: false, label: false
       = f.input :category_id, as: :hidden
       = f.input :fixed_category_id, as: :hidden, input_html: { value: fixed_category_id }
