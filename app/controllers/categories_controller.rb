@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:edit, :update, :destroy]
+  before_action :set_category, only: [:edit, :update, :destroy, :show]
   before_action :require_organization
 
   def index
@@ -34,6 +34,10 @@ class CategoriesController < ApplicationController
   def destroy
     @category.destroy
     redirect_to categories_path
+  end
+
+  def show
+    @transactions = @category.transactions.page(params[:page])
   end
 
   private
