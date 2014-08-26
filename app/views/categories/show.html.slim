@@ -1,0 +1,5 @@
+.row
+  .col-sm-12
+    h1= @category.name
+
+    = render partial: 'transactions/transactions', locals: { transactions: @category.transactions }
