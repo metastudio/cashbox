@@ -44,7 +44,6 @@ class BankAccount < ActiveRecord::Base
   end
 
   def set_initial_residue
-    c = organization.categories.find_or_create_by(name: 'Initial residue', type: 'Income')
-    c.transactions.create(amount: residue, bank_account_id: self.id)
+    transactions.create(amount: residue, transaction_type: 'Residue') if residue > 0
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324143157) do
+ActiveRecord::Schema.define(version: 20140828093104) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,16 +59,18 @@ ActiveRecord::Schema.define(version: 20140324143157) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", unique: true, using: :btree
 
   create_table "transactions", force: true do |t|
-    t.integer  "amount_cents",    default: 0, null: false
-    t.integer  "category_id",                 null: false
-    t.integer  "bank_account_id",             null: false
+    t.integer  "amount_cents",     default: 0, null: false
+    t.integer  "category_id"
+    t.integer  "bank_account_id",              null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "comment"
+    t.string   "transaction_type"
   end
 
   add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
   add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
+  add_index "transactions", ["transaction_type"], name: "index_transactions_on_transaction_type", using: :btree
 
   create_table "user_organizations", force: true do |t|
     t.integer  "user_id",         null: false
