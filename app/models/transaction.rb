@@ -27,7 +27,7 @@ class Transaction < ActiveRecord::Base
   default_scope { order(created_at: :desc) }
 
   validates :amount,   presence: true
-  validates :category, presence: true, unless: ->(transaction){ transaction.transaction_type == 'Residue' }
+  validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
 

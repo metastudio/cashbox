@@ -70,7 +70,6 @@ ActiveRecord::Schema.define(version: 20140828093104) do
 
   add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
   add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
-  add_index "transactions", ["transaction_type"], name: "index_transactions_on_transaction_type", using: :btree
 
   create_table "user_organizations", force: true do |t|
     t.integer  "user_id",         null: false
