@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   has_many :own_organizations, class_name: 'Organization', foreign_key: :owner_id, inverse_of: :owner, dependent: :restrict_with_error
   has_many :user_organizations, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :user_organizations
+  has_many :roles, dependent: :destroy, inverse_of: :user
+
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 

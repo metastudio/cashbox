@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140828093104) do
+ActiveRecord::Schema.define(version: 20140828124416) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,18 @@ ActiveRecord::Schema.define(version: 20140828093104) do
   end
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", unique: true, using: :btree
+
+  create_table "roles", force: true do |t|
+    t.string   "name",            null: false
+    t.integer  "user_id",         null: false
+    t.integer  "organization_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "roles", ["organization_id"], name: "index_roles_on_organization_id", using: :btree
+  add_index "roles", ["user_id", "organization_id"], name: "index_roles_on_user_id_and_organization_id", unique: true, using: :btree
+  add_index "roles", ["user_id"], name: "index_roles_on_user_id", using: :btree
 
   create_table "transactions", force: true do |t|
     t.integer  "amount_cents",     default: 0, null: false
