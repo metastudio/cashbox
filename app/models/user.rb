@@ -37,6 +37,8 @@ class User < ActiveRecord::Base
 
   delegate :avatar, to: :profile
 
+  scope :without, ->(user) { where("id <> ?", user.id) }
+
   def to_s
     full_name
   end
