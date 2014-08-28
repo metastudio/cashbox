@@ -13,6 +13,7 @@
 
 class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
+  TRANSACTION_TYPES = %w(Residue)
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
@@ -21,13 +22,14 @@ class Transaction < ActiveRecord::Base
   monetize :amount_cents, with_model_currency: :currency
 
   delegate :currency, to: :bank_account, allow_nil: true
-  delegate :income?, :expense?, to: :category
+  delegate :income?, :expense?, to: :category, allow_nil: true
 
   default_scope { order(created_at: :desc) }
 
   validates :amount,   presence: true
-  validates :category, presence: true
+  validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
+  validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
 
   before_save :check_negative
   after_save :recalculate_amount
@@ -36,7 +38,7 @@ class Transaction < ActiveRecord::Base
   private
 
   def check_negative
-    self.amount = Money.new(amount_cents.abs, currency) if income? && amount_cents < 0
+    self.amount = Money.new(amount_cents.abs, currency) if (income? || residue?) && amount_cents < 0
     self.amount = Money.new(-amount_cents.abs, currency) if expense? && amount_cents > 0
     nil
   end
@@ -44,5 +46,9 @@ class Transaction < ActiveRecord::Base
   def recalculate_amount
     bank_account.recalculate_amount!
     nil
+  end
+
+  def residue?
+    self.transaction_type == 'Residue'
   end
 end

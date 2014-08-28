@@ -6,7 +6,7 @@
       .form-inputs
         = f.input :name, autofocus: true
         = f.input :description
-        = f.input :balance
+        = f.input :residue unless f.object.persisted?
         = f.input :currency, collection: BankAccount::CURRENCIES, prompt: 'Select currency'
 
       .form-actions
