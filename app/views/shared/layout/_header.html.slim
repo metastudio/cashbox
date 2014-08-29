@@ -4,7 +4,7 @@ header
       .navbar-header
         = link_to 'CashBox', root_path, class: 'navbar-brand'
       - if current_organization
-        p#current_organization.navbar-text= current_organization.name
+        p#current_organization.navbar-text= link_to current_organization.name, organization_path(current_organization)
 
       ul.nav.navbar-nav.navbar-right
         - if signed_in?
