@@ -46,4 +46,8 @@ class BankAccount < ActiveRecord::Base
   def set_initial_residue
     transactions.create(amount: residue, transaction_type: 'Residue') if residue > 0
   end
+
+  def name_with_currency
+    "#{name} (#{currency})"
+  end
 end
