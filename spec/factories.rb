@@ -72,4 +72,22 @@ FactoryGirl.define do
       association :category, :expense
     end
   end
+
+  factory :role do
+    name { ['owner', 'admin', 'user'].sample }
+    user
+    organization
+
+    trait :owner do
+      name 'owner'
+    end
+
+    trait :admin do
+      'admin'
+    end
+
+    trait :user do
+      'user'
+    end
+  end
 end

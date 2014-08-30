@@ -42,4 +42,16 @@ class User < ActiveRecord::Base
   def to_s
     full_name
   end
+
+  def owner_in?(organization)
+    roles.where(organization: organization, name: 'owner').first.present?
+  end
+
+  def admin_in?(organization)
+    roles.where(organization: organization, name: 'admin').first.present?
+  end
+
+  def user_in?(organization)
+    roles.where(organization: organization, name: 'user').first.present?
+  end
 end

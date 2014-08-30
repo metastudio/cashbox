@@ -16,14 +16,22 @@ describe Organization do
   end
 
   context "callback" do
-    describe "#add_to_owner" do
-      let(:user) { create :user }
-      let(:organization) { build :organization, owner: user }
+    let(:user) { create :user }
+    let(:organization) { build :organization, owner: user }
 
+    describe "#add_to_owner" do
       subject{ organization.save }
 
       it "adds created organization to owner's users orgainzations" do
         expect{ subject }.to change{ user.user_organizations.count }.by(1)
+      end
+    end
+
+    describe "#add_owner_role" do
+      subject{ organization.save; organization.reload }
+
+      it "adds role owner for creator" do
+        expect(subject.owner).to be_owner_in(subject)
       end
     end
   end
