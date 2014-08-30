@@ -8,6 +8,10 @@ class RolesController < ApplicationController
     @role = current_organization.roles.build
   end
 
+  def edit
+    @role = current_organization.roles.find(params[:id])
+  end
+
   def create
     @role = Role.new(role_params)
 
