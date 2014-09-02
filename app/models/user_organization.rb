@@ -10,10 +10,15 @@
 #
 
 class UserOrganization < ActiveRecord::Base
+  extend Enumerize
+
+  ROLES = [:user, :admin, :owner]
   belongs_to :user
   belongs_to :organization
 
   validates :user, presence: true
   validates :organization, presence: true
   validates :organization_id, uniqueness: { scope: :user_id }
+
+  enumerize :role, in: ROLES, default: :user, predicates: true
 end

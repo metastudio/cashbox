@@ -15,6 +15,7 @@
 //= require bootstrap
 
 //= require transactions
+//= require users
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);

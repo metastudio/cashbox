@@ -1,0 +1,18 @@
+#role_modal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close type="button" data-dismiss="modal"
+          span aria-hidden="true" &times;
+          span.sr-only Close
+
+        h4.modal-title
+          Modal Select Role
+
+      .modal-body
+        = form_tag update_role_user_path(user), method: :put, remote: true do
+          = select_tag :new_role, options_for_select(UserOrganization::ROLES, current_role)
+
+      .modal-footer
+        button.btn.btn-default type="button" data-dismiss="modal" Close
+        #save_role.button.btn.btn-primary type="button" Save changes

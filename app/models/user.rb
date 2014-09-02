@@ -42,15 +42,26 @@ class User < ActiveRecord::Base
     full_name
   end
 
-  def owner_in?(organization)
-    roles.where(organization: organization, name: 'owner').first.present?
+  def role_in(organization)
+    UserOrganization.find_by(user_id: self.id, organization_id: organization.id).role
   end
 
   def admin_in?(organization)
-    roles.where(organization: organization, name: 'admin').first.present?
+    role_in(organization) == 'admin'
   end
 
-  def user_in?(organization)
-    roles.where(organization: organization, name: 'user').first.present?
+  def owner_in?(organization)
+    role_in(organization) == 'owner'
+  end
+
+  def owner_or_admin_in?(organization)
+    owner_in?(organization) || admin_in?(organization)
+  end
+
+  def set_role!(organization, role)
+    UserOrganization.find_by(user_id: self.id, organization_id: organization.id).tap do |user_organization|
+      user_organization.role = role
+      user_organization.save
+    end
   end
 end

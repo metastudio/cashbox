@@ -25,6 +25,11 @@ describe Organization do
       it "adds created organization to owner's users orgainzations" do
         expect{ subject }.to change{ user.user_organizations.count }.by(1)
       end
+
+      it "sets role owner for the creator" do
+        subject
+        expect(UserOrganization.last.role).to eq 'owner'
+      end
     end
   end
 end

@@ -2,14 +2,7 @@ require 'spec_helper'
 
 describe OrganizationPolicy do
 
-  let(:owner) { create :user }
-  let(:admin) { create :user }
-  let(:user) { create :user }
-  let(:ordinary_user) { create :user }
-  let(:organization) { create :organization }
-  let!(:owner_role) { create :role, :owner, user: owner, organization: organization }
-  let!(:admin_role) { create :role, :admin, user: admin, organization: organization }
-  let!(:user_role) { create :role, :user, user: user, organization: organization }
+  include_context 'organization with roles'
 
   subject { OrganizationPolicy }
 
@@ -31,7 +24,9 @@ describe OrganizationPolicy do
   end
 
   permissions :destroy? do
-    it { expect(owner_policy).to permit(:destroy) }
+    it { expect(subject).to permit(owner, organization) }
+    it { expect(subject).not_to permit(admin, organization) }
+    it { expect(subject).not_to permit(user, organization) }
   end
 
 end
