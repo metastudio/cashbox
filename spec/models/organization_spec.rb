@@ -26,13 +26,5 @@ describe Organization do
         expect{ subject }.to change{ user.user_organizations.count }.by(1)
       end
     end
-
-    describe "#add_owner_role" do
-      subject{ organization.save; organization.reload }
-
-      it "adds role owner for creator" do
-        expect(subject.owner).to be_owner_in(subject)
-      end
-    end
   end
 end
