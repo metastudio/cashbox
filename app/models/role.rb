@@ -6,4 +6,17 @@ class Role < ActiveRecord::Base
   validates :name, inclusion: { in: ROLE_NAMES }
   validates :user, presence: true
   validates :organization, presence: true
+
+  def owner?
+    name == 'owner'
+  end
+
+  def admin?
+    name == 'admin'
+  end
+
+  def user?
+    name == 'user'
+  end
+
 end

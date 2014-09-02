@@ -83,11 +83,11 @@ FactoryGirl.define do
     end
 
     trait :admin do
-      'admin'
+      name 'admin'
     end
 
     trait :user do
-      'user'
+      name 'user'
     end
   end
 end
