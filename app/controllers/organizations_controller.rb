@@ -20,6 +20,7 @@ class OrganizationsController < ApplicationController
 
   def create
     @organization = current_user.own_organizations.build(organization_params)
+    authorize @organization
 
     if @organization.save
       redirect_to @organization, notice: 'Organization was successfully created.'

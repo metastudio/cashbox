@@ -29,4 +29,12 @@ class ApplicationController < ActionController::Base
     flash[:error] = "You are not authorized to perform this action."
     redirect_to(request.referrer || root_path)
   end
+
+  def pundit_user
+    if current_organization
+      current_user.user_organizations.find_by(organization: current_organization)
+    else
+      current_user
+    end
+  end
 end

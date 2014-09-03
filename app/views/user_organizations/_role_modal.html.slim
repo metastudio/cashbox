@@ -10,8 +10,8 @@
           Modal Select Role
 
       .modal-body
-        = form_tag update_role_user_path(user), method: :put, remote: true do
-          = select_tag :new_role, options_for_select(UserOrganization::ROLES, current_role)
+        = form_for user_organization, remote: true do |f|
+          = f.select :role, UserOrganization.role.options
 
       .modal-footer
         button.btn.btn-default type="button" data-dismiss="modal" Close

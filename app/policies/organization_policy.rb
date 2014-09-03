@@ -5,10 +5,10 @@ class OrganizationPolicy < ApplicationPolicy
   end
 
   def update?
-    user.owner_in?(record) || user.admin_in?(record)
+    user.owner? || user.admin?
   end
 
   def destroy?
-    user.owner_in?(record)
+    user.owner?
   end
 end

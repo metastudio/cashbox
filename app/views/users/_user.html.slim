@@ -1,4 +1,0 @@
-- user_role = user.role_in(current_organization)
-tr id=dom_id(user)
-  td= user.full_name
-  td= (current_user.owner_or_admin_in? current_organization) ? link_to(user_role, edit_role_user_path(user), remote: true) : user_role

@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def role_in(organization)
-    UserOrganization.find_by(user_id: self.id, organization_id: organization.id).role
+    user_organizations.find_by(organization_id: organization.id).role
   end
 
   def admin_in?(organization)
@@ -58,10 +58,5 @@ class User < ActiveRecord::Base
     owner_in?(organization) || admin_in?(organization)
   end
 
-  def set_role!(organization, role)
-    UserOrganization.find_by(user_id: self.id, organization_id: organization.id).tap do |user_organization|
-      user_organization.role = role
-      user_organization.save
-    end
-  end
+
 end

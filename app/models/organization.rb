@@ -25,9 +25,6 @@ class Organization < ActiveRecord::Base
   private
 
   def add_to_owner
-    self.owner.organizations << self
-    user_organization = UserOrganization.find_by(user_id: self.owner.id, organization_id: self.id)
-    user_organization.role = :owner
-    user_organization.save
+    self.user_organizations.create(user: self.owner, role: :owner)
   end
 end

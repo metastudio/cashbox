@@ -13,20 +13,20 @@ describe OrganizationPolicy do
   end
 
   permissions :show? do
-    it { expect(subject).to permit(owner, organization) }
-    it { expect(subject).to permit(admin, organization) }
-    it { expect(subject).to permit(user, organization) }
+    it { expect(subject).to permit(owner_organization, organization) }
+    it { expect(subject).to permit(admin_organization, organization) }
+    it { expect(subject).to permit(user_organization, organization) }
   end
 
   permissions :update? do
-    it { expect(subject).to permit(owner, organization) }
-    it { expect(subject).to permit(admin, organization) }
+    it { expect(subject).to permit(owner_organization, organization) }
+    it { expect(subject).to permit(admin_organization, organization) }
   end
 
   permissions :destroy? do
-    it { expect(subject).to permit(owner, organization) }
-    it { expect(subject).not_to permit(admin, organization) }
-    it { expect(subject).not_to permit(user, organization) }
+    it { expect(subject).to permit(owner_organization, organization) }
+    it { expect(subject).not_to permit(admin_organization, organization) }
+    it { expect(subject).not_to permit(user_organization, organization) }
   end
 
 end
