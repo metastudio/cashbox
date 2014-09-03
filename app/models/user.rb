@@ -41,22 +41,4 @@ class User < ActiveRecord::Base
   def to_s
     full_name
   end
-
-  def role_in(organization)
-    user_organizations.find_by(organization_id: organization.id).role
-  end
-
-  def admin_in?(organization)
-    role_in(organization) == 'admin'
-  end
-
-  def owner_in?(organization)
-    role_in(organization) == 'owner'
-  end
-
-  def owner_or_admin_in?(organization)
-    owner_in?(organization) || admin_in?(organization)
-  end
-
-
 end

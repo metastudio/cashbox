@@ -23,15 +23,15 @@ class UserOrganization < ActiveRecord::Base
 
   delegate :full_name, to: :user, prefix: true
 
-  def admin?
-    role == 'admin'
-  end
-
-  def owner?
-    role == 'owner'
-  end
-
   def owner_or_admin?
     owner? || admin?
+  end
+
+  def self.available_roles_for(role)
+    unless role == 'owner'
+      UserOrganization.role.options(except: 'owner')
+    else
+      UserOrganization.role.options
+    end
   end
 end

@@ -1,18 +1,18 @@
 #role_modal.modal.fade
   .modal-dialog
     .modal-content
-      .modal-header
-        button.close type="button" data-dismiss="modal"
-          span aria-hidden="true" &times;
-          span.sr-only Close
+      = form_for user_organization, remote: true do |f|
+        .modal-header
+          button.close type="button" data-dismiss="modal"
+            span aria-hidden="true" &times;
+            span.sr-only Close
 
-        h4.modal-title
-          Modal Select Role
+          h4.modal-title
+            Modal Select Role
 
-      .modal-body
-        = form_for user_organization, remote: true do |f|
-          = f.select :role, UserOrganization.role.options
+        .modal-body
+          = f.select :role, UserOrganization.available_roles_for(current_user_organization.role), {}, { class: "form-control" }
 
-      .modal-footer
-        button.btn.btn-default type="button" data-dismiss="modal" Close
-        #save_role.button.btn.btn-primary type="button" Save changes
+        .modal-footer
+          button.btn.btn-default type="button" data-dismiss="modal" Close
+          = f.button :submit, class: "button btn btn-primary"
