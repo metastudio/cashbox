@@ -1,6 +1,5 @@
 class UserOrganizationsController < ApplicationController
   before_filter :find_user_organization, only: [:edit, :update]
-  before_filter :authorize_user_organization, except: [:index]
 
   def index
     @user_organizations = current_organization.user_organizations.includes(:user)
@@ -10,20 +9,20 @@ class UserOrganizationsController < ApplicationController
   end
 
   def update
-    if params[:user_organization][:role] == 'owner' && !current_user_organization.owner?
-      raise Pundit::NotAuthorizedError, "You have no permissions"
-    end
-
-    @user_organization.update_attributes(role: params[:user_organization][:role])
+    @user_organization.update_attributes(user_organization_params)
   end
 
   private
 
   def find_user_organization
-    @user_organization = current_organization.user_organizations.find(params[:id])
+    authorize(@user_organization = current_organization.user_organizations.find(params[:id]))
   end
 
-  def authorize_user_organization
-    authorize @user_organization
+  def user_organization_params
+    params.require(:user_organization).permit(:role)
+  end
+
+  def pundit_user
+    UserContext.new(super, params)
   end
 end
