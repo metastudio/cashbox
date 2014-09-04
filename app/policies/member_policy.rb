@@ -1,11 +1,11 @@
 class MemberPolicy < ApplicationPolicy
 
   def update?
-    if user.params[:member] && user.params[:member][:role] == 'owner'
-      return false unless user.owner?
+    if member.params[:member] && member.params[:member][:role] == 'owner'
+      return false unless member.owner?
     end
 
-    user.owner? || (user.admin? && record.role != 'owner')
+    member.owner? || (member.admin? && record.role != 'owner')
   end
 
 end

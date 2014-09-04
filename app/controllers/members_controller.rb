@@ -24,6 +24,6 @@ class MembersController < ApplicationController
   end
 
   def pundit_user
-    UserContext.new(super, params)
+    MemberContext.new(super, params)
   end
 end

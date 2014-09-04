@@ -1,4 +1,4 @@
-class UserContext
+class MemberContext
   attr_reader :params
 
   def initialize(member, params = {})
