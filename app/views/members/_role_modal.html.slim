@@ -1,7 +1,7 @@
 #role_modal.modal.fade
   .modal-dialog
     .modal-content
-      = form_for user_organization, remote: true do |f|
+      = form_for member, remote: true do |f|
         .modal-header
           button.close type="button" data-dismiss="modal"
             span aria-hidden="true" &times;
@@ -11,7 +11,7 @@
             Modal Select Role
 
         .modal-body
-          = f.select :role, UserOrganization.available_roles_for(current_user_organization.role), {}, { class: "form-control" }
+          = f.select :role, Member.available_roles_for(current_member.role), {}, { class: "form-control" }
 
         .modal-footer
           button.btn.btn-default type="button" data-dismiss="modal" Close

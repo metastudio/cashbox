@@ -3,9 +3,9 @@ require 'spec_helper'
 describe Organization do
   context "assocation" do
     it { should belong_to(:owner).class_name('User') }
-    it { should have_many(:user_organizations).dependent(:destroy) }
+    it { should have_many(:members).dependent(:destroy) }
     it { should have_many(:bank_accounts).dependent(:destroy) }
-    it { should have_many(:users).through(:user_organizations) }
+    it { should have_many(:users).through(:members) }
     it { should have_many(:categories).dependent(:destroy) }
     it { should have_many(:transactions).through(:bank_accounts) }
   end
@@ -23,12 +23,12 @@ describe Organization do
       subject{ organization.save }
 
       it "adds created organization to owner's users orgainzations" do
-        expect{ subject }.to change{ user.user_organizations.count }.by(1)
+        expect{ subject }.to change{ user.members.count }.by(1)
       end
 
       it "sets role owner for the creator" do
         subject
-        expect(UserOrganization.last.role).to eq 'owner'
+        expect(Member.last.role).to eq 'owner'
       end
     end
   end

@@ -9,11 +9,11 @@ FactoryGirl.define do
     full_name
 
     trait :with_organization do
-      after(:create) { |u| create :user_organization, user: u }
+      after(:create) { |u| create :member, user: u }
     end
 
     trait :with_organizations do
-      after(:create) { |u| create_list :user_organization, 3, user: u }
+      after(:create) { |u| create_list :member, 3, user: u }
     end
   end
 
@@ -27,11 +27,11 @@ FactoryGirl.define do
     end
 
     after(:create) do |organization, evaluator|
-      create :user_organization, organization: organization, user: evaluator.with_user if evaluator.with_user
+      create :member, organization: organization, user: evaluator.with_user if evaluator.with_user
     end
   end
 
-  factory :user_organization do
+  factory :member do
     user
     organization
   end
