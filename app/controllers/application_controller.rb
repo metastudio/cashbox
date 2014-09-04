@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
 
   helper_method :current_organization
-  helper_method :current_user_organization
+  helper_method :current_member
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -19,8 +19,8 @@ class ApplicationController < ActionController::Base
     @current_organization ||= current_user.organizations.first
   end
 
-  def current_user_organization
-    @current_user_organization ||= current_user.user_organizations.find_by(organization: current_organization) if current_organization
+  def current_member
+    @current_member ||= current_user.members.find_by(organization: current_organization) if current_organization
   end
 
   def require_organization
@@ -36,6 +36,6 @@ class ApplicationController < ActionController::Base
   end
 
   def pundit_user
-    current_user_organization
+    current_member
   end
 end

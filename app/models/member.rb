@@ -9,7 +9,7 @@
 #  updated_at      :datetime
 #
 
-class UserOrganization < ActiveRecord::Base
+class Member < ActiveRecord::Base
   extend Enumerize
 
   belongs_to :user
@@ -29,9 +29,9 @@ class UserOrganization < ActiveRecord::Base
 
   def self.available_roles_for(role)
     unless role == 'owner'
-      UserOrganization.role.options(except: 'owner')
+      Member.role.options(except: 'owner')
     else
-      UserOrganization.role.options
+      Member.role.options
     end
   end
 end

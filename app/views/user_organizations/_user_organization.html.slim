@@ -1,3 +1,0 @@
-tr id=dom_id(user_organization)
-  td= user_organization.user_full_name
-  td= policy(user_organization).update? ? link_to(user_organization.role, edit_user_organization_path(user_organization), remote: true) : user_organization.role

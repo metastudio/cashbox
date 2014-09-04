@@ -11,9 +11,9 @@
 
 class Organization < ActiveRecord::Base
   belongs_to :owner, class_name: 'User', inverse_of: :own_organizations
-  has_many :user_organizations, inverse_of: :organization, dependent: :destroy
+  has_many :members, inverse_of: :organization, dependent: :destroy
   has_many :categories, dependent: :destroy
-  has_many :users, through: :user_organizations
+  has_many :users, through: :members
   has_many :bank_accounts, dependent: :destroy, inverse_of: :organization
   has_many :transactions, through: :bank_accounts, inverse_of: :organization
 
@@ -25,6 +25,6 @@ class Organization < ActiveRecord::Base
   private
 
   def add_to_owner
-    self.user_organizations.create(user: self.owner, role: :owner)
+    self.members.create(user: self.owner, role: :owner)
   end
 end

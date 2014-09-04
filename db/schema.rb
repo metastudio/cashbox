@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140902125836) do
+ActiveRecord::Schema.define(version: 20140904150019) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,16 @@ ActiveRecord::Schema.define(version: 20140902125836) do
   end
 
   add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
+
+  create_table "members", force: true do |t|
+    t.integer  "user_id",         null: false
+    t.integer  "organization_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "role",            null: false
+  end
+
+  add_index "members", ["user_id", "organization_id"], name: "index_members_on_user_id_and_organization_id", unique: true, using: :btree
 
   create_table "organizations", force: true do |t|
     t.string   "name",       null: false
@@ -70,16 +80,6 @@ ActiveRecord::Schema.define(version: 20140902125836) do
 
   add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
   add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
-
-  create_table "user_organizations", force: true do |t|
-    t.integer  "user_id",         null: false
-    t.integer  "organization_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "role",            null: false
-  end
-
-  add_index "user_organizations", ["user_id", "organization_id"], name: "index_user_organizations_on_user_id_and_organization_id", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

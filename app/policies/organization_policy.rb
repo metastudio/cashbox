@@ -1,10 +1,10 @@
 class OrganizationPolicy < ApplicationPolicy
 
   def update?
-    user.owner? || user.admin?
+    member.owner? || member.admin?
   end
 
   def destroy?
-    user.owner?
+    member.owner?
   end
 end
