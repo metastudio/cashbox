@@ -27,8 +27,9 @@ class User < ActiveRecord::Base
   has_many :members, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :members
 
+  accepts_nested_attributes_for :profile, update_only: true
 
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :registerable
 
   validates :full_name, presence: true
 

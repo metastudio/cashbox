@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   before_filter :authenticate_user!
+  before_filter :configure_permitted_parameters, if: :devise_controller?
 
   helper_method :current_organization
   helper_method :current_member
@@ -37,5 +38,9 @@ class ApplicationController < ActionController::Base
 
   def pundit_user
     current_member
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:account_update) << [:full_name, profile_attributes: [:phone_number, :avatar]]
   end
 end
