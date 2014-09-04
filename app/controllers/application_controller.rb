@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_organization
-    current_user.user_organizations.find_by(organization: current_organization) if current_organization
+    @current_user_organization ||= current_user.user_organizations.find_by(organization: current_organization) if current_organization
   end
 
   def require_organization
