@@ -29,6 +29,8 @@ gem 'simple_form'
 # Removes annoying deprecation warning https://github.com/RubyMoney/money-rails/issues/151
 gem 'money-rails', github: 'RubyMoney/money-rails', branch: 'upgrade_to_money_6_1'
 gem 'kaminari'
+gem 'pundit'
+gem 'enumerize'
 
 group :development, :test do
   gem 'rspec-rails'

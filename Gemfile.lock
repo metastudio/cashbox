@@ -85,6 +85,8 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    enumerize (0.8.0)
+      activesupport (>= 3.2)
     erubis (2.7.0)
     eventmachine (1.0.3)
     execjs (2.0.2)
@@ -148,6 +150,8 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.2)
       pry (>= 0.9.10)
+    pundit (0.3.0)
+      activesupport (>= 3.0.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -260,6 +264,7 @@ DEPENDENCIES
   capybara-webkit
   database_cleaner
   devise
+  enumerize
   factory_girl_rails
   guard
   guard-rspec
@@ -270,6 +275,7 @@ DEPENDENCIES
   money-rails!
   pg
   pry-rails
+  pundit
   rails (= 4.0.2)
   recursive-open-struct
   rspec-rails

@@ -1,6 +1,7 @@
 class OrganizationsController < ApplicationController
   before_action :find_organization, only: [:show]
   before_action :find_own_organization, only: [:edit, :update, :destroy]
+  before_action :authorize_organization, only: [:show, :edit, :update, :destroy]
 
   def index
     @organizations = current_user.organizations
@@ -48,6 +49,10 @@ class OrganizationsController < ApplicationController
 
   def find_own_organization
     @organization = current_user.own_organizations.find(params[:id])
+  end
+
+  def authorize_organization
+    authorize @organization
   end
 
   def organization_params

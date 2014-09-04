@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :user_organizations, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :user_organizations
 
+
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
   validates :full_name, presence: true
@@ -34,6 +35,8 @@ class User < ActiveRecord::Base
   before_create :build_profile, if: ->{ profile.blank? }
 
   delegate :avatar, to: :profile
+
+  scope :without, ->(user) { where("id <> ?", user.id) }
 
   def to_s
     full_name

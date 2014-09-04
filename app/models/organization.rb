@@ -25,6 +25,6 @@ class Organization < ActiveRecord::Base
   private
 
   def add_to_owner
-    self.owner.organizations << self
+    self.user_organizations.create(user: self.owner, role: :owner)
   end
 end
