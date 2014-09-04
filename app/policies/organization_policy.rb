@@ -1,9 +1,5 @@
 class OrganizationPolicy < ApplicationPolicy
 
-  def create?
-    user.persisted?
-  end
-
   def update?
     user.owner? || user.admin?
   end

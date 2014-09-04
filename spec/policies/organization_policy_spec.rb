@@ -6,12 +6,6 @@ describe OrganizationPolicy do
 
   subject { OrganizationPolicy }
 
-
-
-  permissions :create? do
-    it { expect(subject).to permit(ordinary_user, Organization.new) }
-  end
-
   permissions :show? do
     it { expect(subject).to permit(owner_organization, organization) }
     it { expect(subject).to permit(admin_organization, organization) }

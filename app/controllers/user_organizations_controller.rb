@@ -15,7 +15,8 @@ class UserOrganizationsController < ApplicationController
   private
 
   def find_user_organization
-    authorize(@user_organization = current_organization.user_organizations.find(params[:id]))
+    @user_organization = current_organization.user_organizations.find(params[:id])
+    authorize @user_organization
   end
 
   def user_organization_params

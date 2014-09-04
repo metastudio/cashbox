@@ -36,6 +36,6 @@ class ApplicationController < ActionController::Base
   end
 
   def pundit_user
-    current_user_organization.present? ? current_user_organization : current_user
+    current_user_organization
   end
 end
