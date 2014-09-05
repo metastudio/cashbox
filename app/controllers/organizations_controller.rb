@@ -1,5 +1,5 @@
 class OrganizationsController < ApplicationController
-  before_action :find_organization, only: [:show]
+  before_action :find_organization, only: [:show, :switch]
   before_action :find_own_organization, only: [:edit, :update, :destroy]
   before_action :authorize_organization, only: [:show, :edit, :update, :destroy]
 
@@ -39,6 +39,11 @@ class OrganizationsController < ApplicationController
   def destroy
     @organization.destroy
     redirect_to organizations_url, notice: 'Organization was successfully removed.'
+  end
+
+  def switch
+    session[:current_organization_id] = @organization.id
+    redirect_to root_path
   end
 
   private
