@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :profile, update_only: true
 
-  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable, :registerable
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
   validates :full_name, presence: true
 

@@ -14,7 +14,7 @@ describe 'Change profile' do
 
     subject { page }
 
-    it { expect(subject).to have_css('a', text: 'Profile') }
+    it { expect(subject).to have_link('Profile') }
 
     context 'profile editing' do
 
@@ -31,6 +31,19 @@ describe 'Change profile' do
 
       context 'with valid params' do
         it { expect(subject).to have_content 'You updated your account successfully.' }
+
+        describe 'updated profile' do
+          subject { user.reload }
+
+          it { expect(subject.email).to eq email }
+          it { expect(subject.full_name).to eq full_name }
+          it { expect(subject.profile.phone_number).to eq phone_number }
+        end
+      end
+
+      context 'without full name' do
+        let(:full_name) { nil }
+        it { expect(subject).to have_inline_error("can't be blank").for_field('Full name') }
       end
     end
   end
@@ -38,6 +51,6 @@ describe 'Change profile' do
   context 'unsigned in user' do
     before { visit root_path }
 
-    it { expect(page).to have_no_content 'Profile' }
+    it { expect(page).to have_no_link 'Profile' }
   end
 end
