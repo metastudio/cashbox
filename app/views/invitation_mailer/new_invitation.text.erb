@@ -1,0 +1,7 @@
+<%= "You are invited to #{@organization.name}" %>
+
+<% if @user.full_name == 'Please change' %>
+  <%= "Your temporary password is #{@invitation.token}" %>
+<% end %>
+
+<%= link_to "Accept", accept_invitation_url(token: @invitation.token) %>

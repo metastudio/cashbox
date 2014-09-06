@@ -17,4 +17,9 @@ Cashbox::Application.routes.draw do
   resources :categories
   resources :transactions,  only: [:create, :edit, :update, :destroy]
   resources :members, only: [:index, :edit, :update]
+  resource :invitation, only: [:new, :create] do
+    member do
+      get :accept
+    end
+  end
 end

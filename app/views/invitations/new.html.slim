@@ -1,0 +1,4 @@
+= form_tag invitation_path do
+  = label_tag :email, 'Email'
+  = email_field_tag :email, params[:email]
+  = button_tag 'Invite'

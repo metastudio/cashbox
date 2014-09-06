@@ -28,4 +28,6 @@ Cashbox::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.default_url_options = { host: 'cashbox.dev' }
+  config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
+  config.action_mailer.default_options     = { :from => 'no-reply@cashbox.dev' }
 end

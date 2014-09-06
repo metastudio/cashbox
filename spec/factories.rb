@@ -16,6 +16,10 @@ FactoryGirl.define do
     trait :with_organizations do
       after(:create) { |u| create_list :member, 3, user: u }
     end
+
+    trait :admin do
+      after(:create) { |u| create :member, user: u, role: 'admin' }
+    end
   end
 
   sequence(:organization_name) { |n| "Organization #{n}" }
