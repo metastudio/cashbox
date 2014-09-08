@@ -8,10 +8,6 @@
       strong Name:
       br
         = @organization.name
-    p
-      strong Owner:
-      br
-        = @organization.owner
     .form-group
       = link_to 'Back', organizations_path, class: 'btn btn-default'
       = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default'
