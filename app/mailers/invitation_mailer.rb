@@ -1,9 +1,9 @@
 class InvitationMailer < ActionMailer::Base
   def new_invitation(invitation)
     @invitation = invitation
-    @user = invitation.user
-    @organization = invitation.organization
+    @member = invitation.member
+    @organization = @member.organization
 
-    mail(to: @user.email, subject: 'Invitation', from: '<no-reply@cashbox.dev>')
+    mail(to: @invitation.email, subject: 'Invitation', from: '<no-reply@cashbox.dev>')
   end
 end

@@ -1,4 +1,6 @@
-= form_tag invitation_path do
-  = label_tag :email, 'Email'
-  = email_field_tag :email, params[:email]
-  = button_tag 'Invite'
+.row
+  .col-sm-6
+    = simple_form_for @invitation, url: invitation_path do |f|
+      = f.input :email
+      = f.input :role, as: :select, collection: Member.available_roles_for(current_member.role), include_blank: false
+      = f.submit 'Invite', class: 'btn btn-primary'

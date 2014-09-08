@@ -1,11 +1,11 @@
 class Invitation < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :organization
+  belongs_to :member
 
   after_create :send_invitation
 
-  validates :user, presence: true
-  validates :organization, presence: true
+  validates :member, presence: true
+  validates :role, presence: true
+  validates :email, presence: true
 
   private
 

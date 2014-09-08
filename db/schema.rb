@@ -39,16 +39,16 @@ ActiveRecord::Schema.define(version: 20140905170044) do
   add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
 
   create_table "invitations", force: true do |t|
-    t.string   "token",           null: false
-    t.integer  "user_id",         null: false
-    t.integer  "organization_id", null: false
+    t.string   "token",      null: false
+    t.string   "email",      null: false
+    t.string   "role",       null: false
+    t.integer  "member_id",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "invitations", ["organization_id"], name: "index_invitations_on_organization_id", using: :btree
+  add_index "invitations", ["member_id"], name: "index_invitations_on_member_id", using: :btree
   add_index "invitations", ["token"], name: "index_invitations_on_token", using: :btree
-  add_index "invitations", ["user_id"], name: "index_invitations_on_user_id", using: :btree
 
   create_table "members", force: true do |t|
     t.integer  "user_id",         null: false
