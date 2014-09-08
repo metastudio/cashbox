@@ -1,0 +1,9 @@
+- if signed_in?
+  li#switch_organization.dropdown
+    = link_to '#', class: 'navbar-brand dropdown-toggle', data: {toggle: 'dropdown'} do
+      | CashBox
+      b.caret
+    ul.dropdown-menu
+      - current_user.organizations.each do |org|
+        li class=(org.id == current_organization.id ? 'active' : '')
+          = link_to org.name, switch_organization_path(org), method: :put
