@@ -20,6 +20,7 @@ Cashbox::Application.routes.draw do
   resource :invitation, only: [:new, :create] do
     member do
       get :accept
+      post :create_user
     end
   end
 end
