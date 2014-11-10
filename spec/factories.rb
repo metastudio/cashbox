@@ -3,6 +3,7 @@ FactoryGirl.define do
   sequence(:password)  { SecureRandom.hex(10) }
   sequence(:full_name) { |n| "Test User#{n}" }
   sequence(:transaction_comment) { |n| "Test transaction comment #{n}" }
+  sequence(:phone_number) { |n| "12345#{n}" }
   factory :user do
     email
     password
