@@ -44,7 +44,7 @@ class BankAccount < ActiveRecord::Base
   end
 
   def set_initial_residue
-    transactions.create(amount: residue, transaction_type: 'Residue') if residue > 0
+    transactions.create(amount_cents: residue_cents, transaction_type: 'Residue') if residue > 0
   end
 
   def to_s
