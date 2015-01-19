@@ -22,10 +22,10 @@ describe 'Accept invitation' do
 
     subject { page }
 
-    it { expect(subject).to have_content "You joined to #{admin_member.organization.name}" }
+    it { save_and_open_page; expect(subject).to have_content "You joined to #{admin_member.organization.name}" }
     it { expect(subject).to have_content "Sign out" }
-    it "removes invite" do
-      expect(Invitation.count).to eq 0
+    it "flags invitation as accepted" do
+      expect(Invitation.last.accepted).to eq true
     end
 
     context 'a invited user already exists with different email and is logged in' do

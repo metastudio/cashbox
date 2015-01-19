@@ -23,7 +23,7 @@ describe 'Invite user' do
       subject { Invitation.last }
 
       it { expect(subject.email).to eq email }
-      it { expect(subject.member_id).to eq admin_member.id  }
+      it { expect(subject.invited_by_id).to eq admin_member.id  }
     end
 
     describe 'Sent email' do

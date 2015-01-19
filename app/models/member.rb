@@ -15,6 +15,8 @@ class Member < ActiveRecord::Base
   belongs_to :user
   belongs_to :organization
 
+  has_many :invitations, foreign_key: :invited_by_id
+
   validates :user, presence: true
   validates :organization, presence: true
   validates :organization_id, uniqueness: { scope: :user_id }

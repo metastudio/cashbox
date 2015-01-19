@@ -31,6 +31,7 @@ gem 'money-rails', github: 'RubyMoney/money-rails', branch: 'upgrade_to_money_6_
 gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
+gem 'has_secure_token', '~>0.0.2'
 
 group :development, :test do
   gem 'rspec-rails'
