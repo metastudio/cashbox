@@ -49,6 +49,7 @@ group :development do
   gem 'capistrano-bundler', '~> 1.1.3', require: false
   gem 'capistrano-rvm',   '~> 0.1.1', require: false
   gem 'capistrano3-unicorn', '~> 0.2.1', require: false
+  gem 'slackistrano', '~> 0.1.0', require: false
 end
 
 group :test do
