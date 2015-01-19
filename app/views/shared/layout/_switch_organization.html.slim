@@ -1,12 +1,10 @@
 - if signed_in?
   li#switch_organization.dropdown
     - if current_user.organizations.count > 0
-      = link_to '#', class: 'navbar-brand dropdown-toggle', data: {toggle: 'dropdown'}do
-        - if current_organization
+      = link_to '#', class: 'navbar-brand dropdown-toggle', data: {toggle: 'dropdown'} do
+        #current_organization
           = current_organization.name
-        - else
-          | Select organization
-        b.caret
+          b.caret
       ul.dropdown-menu
         - current_user.organizations.each do |org|
           li class=active_org(org)
