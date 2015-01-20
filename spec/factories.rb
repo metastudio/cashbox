@@ -21,7 +21,6 @@ FactoryGirl.define do
   sequence(:organization_name) { |n| "Organization #{n}" }
   factory :organization do |o|
     name { generate :organization_name }
-    association :owner, factory: :user
 
     ignore do
       with_user nil
@@ -35,6 +34,10 @@ FactoryGirl.define do
   factory :member do
     user
     organization
+
+    trait :owner do
+      role 'owner'
+    end
   end
 
   sequence(:bank_account_name) { |n| "Bank account #{n}" }
