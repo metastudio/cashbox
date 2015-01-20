@@ -18,6 +18,10 @@ class TransactionsController < ApplicationController
     @transaction.destroy
   end
 
+  def transfer
+
+  end
+
   private
 
   def set_transaction

@@ -1,0 +1,12 @@
+.col-sm-4.btn-group.pull-right
+  = f.button :submit, class: 'btn-primary'
+  - if transaction.persisted?
+    = link_to 'Remove', transaction_path(transaction), remote: true, method: :delete, data: { confirm: 'Are you sure?', disable_with: 'Removing...'}, class: 'btn btn-danger'
+  - else
+    .btn-group
+      = link_to '#', class: 'btn btn-warning dropdown-toggle', data: {toggle: 'dropdown'} do
+        | Advanced
+        b.caret
+      ul.dropdown-menu
+        li
+          = link_to 'Transfer', transfer_transactions_path, remote: true

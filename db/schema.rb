@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140908161521) do
+ActiveRecord::Schema.define(version: 20150120104438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,19 @@ ActiveRecord::Schema.define(version: 20140908161521) do
   end
 
   add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
+
+  create_table "invitations", force: true do |t|
+    t.string   "token",                         null: false
+    t.string   "email",                         null: false
+    t.string   "role",                          null: false
+    t.integer  "invited_by_id",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "accepted",      default: false
+  end
+
+  add_index "invitations", ["invited_by_id"], name: "index_invitations_on_invited_by_id", using: :btree
+  add_index "invitations", ["token"], name: "index_invitations_on_token", unique: true, using: :btree
 
   create_table "members", force: true do |t|
     t.integer  "user_id",         null: false
@@ -73,6 +86,7 @@ ActiveRecord::Schema.define(version: 20140908161521) do
     t.datetime "updated_at"
     t.string   "comment"
     t.string   "transaction_type"
+    t.integer  "reference_id"
   end
 
   add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
