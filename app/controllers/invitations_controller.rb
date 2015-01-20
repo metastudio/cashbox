@@ -20,33 +20,16 @@ class InvitationsController < ApplicationController
   end
 
   def accept
-    if current_user
-      if current_user.email == @invitation.email
-        @invitation.accept!(current_user)
-        redirect_to root_path, notice:
-          "You joined to #{@invitation.member.organization.name}."
-      else
-        @user = User.new
-      end
+    msg = { notice: "You joined to #{@invitation.member.organization.name}." }
+    if current_user.try(:email) == @invitation.email
+      @invitation.accept!(current_user)
+      redirect_to root_path, msg
     elsif found_by_email = User.find_by(email: @invitation.email)
       @invitation.accept!(found_by_email)
-      redirect_to new_user_session_path, notice:
-        "You joined to #{@invitation.member.organization.name}.
-        Please Log In."
+      sign_in found_by_email
+      redirect_to root_path, msg
     else
       @user = User.new
-    end
-  end
-
-  def create_user
-    @user = User.new(user_params)
-    @user.email = @invitation.email
-
-    if @user.save
-      redirect_to accept_invitation_path(token: @invitation.token)
-    else
-      raise [@user.errors].inspect
-      render :accept
     end
   end
 

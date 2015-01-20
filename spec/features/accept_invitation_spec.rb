@@ -22,7 +22,7 @@ describe 'Accept invitation' do
 
     subject { page }
 
-    it { save_and_open_page; expect(subject).to have_content "You joined to #{admin_member.organization.name}" }
+    it { expect(subject).to have_content "You joined to #{admin_member.organization.name}" }
     it { expect(subject).to have_content "Sign out" }
     it "flags invitation as accepted" do
       expect(Invitation.last.accepted).to eq true
@@ -68,5 +68,12 @@ describe 'Accept invitation' do
       expect { open_email(email); current_email.click_link 'Accept' }.not_to change(User, :count)
     end
 
+  end
+
+  context 'with invalid token' do
+    before do
+      token = SecureRandom.urlsafe_base64(nil, false)
+      visit accept_invitation_path(token: token)
+    end
   end
 end

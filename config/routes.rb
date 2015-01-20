@@ -3,6 +3,7 @@ Cashbox::Application.routes.draw do
   as :user do
     get 'users/edit' => 'devise/registrations#edit', :as => 'edit_user_registration'
     put 'users' => 'devise/registrations#update', :as => 'user_registration'
+    post 'invitation/create_user' => 'users/registrations#create_user', :as => 'create_user_invitation'
   end
 
   # You can have the root of your site routed with "root"
@@ -20,7 +21,6 @@ Cashbox::Application.routes.draw do
   resource :invitation, only: [:new, :create] do
     member do
       get :accept
-      post :create_user
     end
   end
 end

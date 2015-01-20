@@ -30,7 +30,7 @@ describe 'Invite user' do
       before { open_email email }
 
       it { expect(current_email).to have_content("You are invited to #{admin_member.organization.name} as admin")  }
-      it { expect(current_email).to have_link("Accept") }
+      it { expect(current_email).to have_link(accept_invitation_url(token: Invitation.last.token))}
     end
   end
 end
