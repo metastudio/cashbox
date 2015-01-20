@@ -11,7 +11,7 @@ describe 'Switch organization' do
 
   it "displays first organization as current initially" do
     within "#current_organization" do
-      expect(subject).to have_link user.organizations.first.name
+      expect(subject).to have_text user.organizations.first.name
     end
   end
 
@@ -24,7 +24,7 @@ describe 'Switch organization' do
 
     it "displays selected organization" do
       within "#current_organization" do
-        expect(subject).to have_link user.organizations.last.name
+        expect(subject).to have_text user.organizations.last.name
       end
     end
   end

@@ -23,7 +23,9 @@
 
 class User < ActiveRecord::Base
   has_one :profile, inverse_of: :user, dependent: :destroy
-  has_many :own_organizations, class_name: 'Organization', foreign_key: :owner_id, inverse_of: :owner, dependent: :restrict_with_error
+  has_many :own_organizations,
+    -> { where members: { role: "owner" } },
+    class_name: 'Organization', through: :members, dependent: :restrict_with_error, inverse_of: :owners
   has_many :members, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :members
 
