@@ -38,4 +38,25 @@ describe 'Transactions list' do
       expect(subject).to_not have_content org1_transaction.amount }
     end
   end
+
+  context "pagination" do
+    before do
+      20.times do |i|
+        FactoryGirl.create(:transaction, bank_account: org1, amount: i)
+      end
+    end
+
+    (0..9).each do |i|
+      it "has right transactions on the first page" do
+        expect(subject).to_not have_content i }
+      end
+    end
+
+    10.times do |i|
+      it "doesn't have wrong transactions on the first page" do
+        expect(subject).to_not have_content i }
+      end
+    end
+
+  end
 end
