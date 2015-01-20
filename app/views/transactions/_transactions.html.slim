@@ -1,5 +1,5 @@
 .row
   = render 'transactions/form', transaction: Transaction.new
-  #new_transfer_transaction
+  = render 'transactions/transfer_form', transaction: Transaction.new
 
 = render 'transactions/transactions_table', transactions: transactions

@@ -1,7 +1,9 @@
-<% if @transaction.persisted? %>
-  $("<%=j render('transactions/transaction', transaction: @transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
-  $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new(category_id: params[:transaction][:fixed_category_id]), fixed_category_id: params[:transaction][:fixed_category_id]) %>");
-  scrollTo($("#<%= dom_id(@transaction) %>"));
-<% else %>
-  $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: @transaction, fixed_category_id: params[:transaction][:fixed_category_id]) %>");
+<% if @transaction %>
+  <% if @transaction.persisted? %>
+    $("<%=j render('transactions/transaction', transaction: @transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
+    $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new(category_id: params[:transaction][:fixed_category_id]), fixed_category_id: params[:transaction][:fixed_category_id]) %>");
+    scrollTo($("#<%= dom_id(@transaction) %>"));
+  <% else %>
+    $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: @transaction, fixed_category_id: params[:transaction][:fixed_category_id]) %>");
+  <% end %>
 <% end %>

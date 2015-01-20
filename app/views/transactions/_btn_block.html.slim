@@ -9,4 +9,5 @@
         b.caret
       ul.dropdown-menu
         li
-          = link_to 'Transfer', transfer_transactions_path, remote: true
+          = link_to 'Transfer', '#', remote: true, id: 'new_transfer_btn'
+          = link_to 'Residue', '#', remote: true, id: 'new_residue_btn'

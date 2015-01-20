@@ -13,12 +13,14 @@
 
 class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
-  TRANSACTION_TYPES = %w(Residue, Receipts, Transfer)
+  TRANSACTION_TYPES = %w(Residue Receipts Transfer)
 
   attr_accessor :comission
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
+  belongs_to :bank_account, inverse_of: :transactions
+  belongs_to :reference, class_name: 'BankAccount', inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency
@@ -31,6 +33,7 @@ class Transaction < ActiveRecord::Base
   validates :amount,   presence: true
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
+  validates :reference, presence: true, if: :transfer?
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
 
   before_save :check_negative
@@ -52,5 +55,9 @@ class Transaction < ActiveRecord::Base
 
   def residue?
     self.transaction_type == 'Residue'
+  end
+
+  def transfer?
+    !comission.nil?
   end
 end
