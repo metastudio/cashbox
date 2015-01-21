@@ -31,7 +31,6 @@ class Transaction < ActiveRecord::Base
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
 
-  after_create :set_date
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
@@ -51,9 +50,5 @@ class Transaction < ActiveRecord::Base
 
   def residue?
     self.transaction_type == 'Residue'
-  end
-
-  def set_date
-    update_attribute(:date, created_at)
   end
 end
