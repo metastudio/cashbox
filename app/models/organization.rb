@@ -11,8 +11,8 @@
 
 class Organization < ActiveRecord::Base
   has_many :owners,
-    -> { where members: { role: "owner" } },
-    class_name: 'User', through: :members, inverse_of: :own_organizations
+    -> { where members: { role: "owner" } }, through: :members,
+    source: :user, inverse_of: :own_organizations
   has_many :members, inverse_of: :organization, dependent: :destroy
   has_many :categories, dependent: :destroy
   has_many :users, through: :members
