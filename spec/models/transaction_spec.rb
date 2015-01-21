@@ -13,6 +13,14 @@ describe Transaction do
   end
 
   context "callback" do
+    describe "#set_date" do
+      let(:transaction) { create :transaction }
+
+      it "after create sets date to created_at" do
+        expect(transaction.date).to eq transaction.created_at
+      end
+    end
+
     describe "#recalculate_amount" do
       let(:account) { create :bank_account }
 

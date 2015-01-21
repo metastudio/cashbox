@@ -3,3 +3,4 @@ tr.transaction id=dom_id(transaction) class=(transaction.income? ? 'success' : '
   td= link_to transaction.category.name, category_path(transaction.category) if transaction.category.present?
   td= transaction.bank_account.name if transaction.bank_account.present?
   td= transaction.comment
+  td= transaction.date.strftime("%Y-%m-%d")
