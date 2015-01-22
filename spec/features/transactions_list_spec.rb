@@ -42,9 +42,9 @@ describe 'Transactions list' do
   end
 
   context "pagination" do
-    let(:transactions) { [] }
+    let!(:transactions) { FactoryGirl.create_list(:transaction, 15, bank_account: org1_ba).reverse }
+
     before do
-      transactions = FactoryGirl.create_list :transaction, 15, bank_account: org1_ba
       visit root_path
     end
 
