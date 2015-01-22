@@ -1,4 +1,4 @@
 .row
   = render 'transactions/form', transaction: Transaction.new
-
-= render 'transactions/transactions_table', transactions: transactions
+.transactions_list
+  = render 'transactions/transactions_table', transactions: transactions
