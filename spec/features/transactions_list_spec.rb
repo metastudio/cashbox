@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'Transactions list' do
-  require "money-rails/test_helpers"
   include MoneyRails::ActionViewExtension
 
   let(:user) { create :user, :with_organizations }
@@ -43,16 +42,15 @@ describe 'Transactions list' do
   end
 
   context "pagination" do
+    let(:transactions) { [] }
     before do
-      15.times do
-        FactoryGirl.create(:transaction, bank_account: org1_ba, amount: rand(1..9999.99))
-      end
+      transactions = FactoryGirl.create_list :transaction, 15, bank_account: org1_ba
       visit root_path
     end
 
     it "lists 10 first transactions" do
       within ".transactions" do
-        org1_ba.transactions.first(10).each do |transaction|
+        transactions.first(10).each do |transaction|
           expect(subject).to have_selector('td', text: humanized_money_with_symbol(transaction.amount))
         end
       end
@@ -60,7 +58,7 @@ describe 'Transactions list' do
 
     it "doesnt list after 10  transactions" do
       within ".transactions" do
-        org1_ba.transactions.last(5).each do |transaction|
+        transactions.last(5).each do |transaction|
           expect(subject).to_not have_selector('td', text: humanized_money_with_symbol(transaction.amount))
         end
       end
@@ -75,7 +73,7 @@ describe 'Transactions list' do
 
       it "doesnt list 10 first transactions" do
         within ".transactions" do
-          org1_ba.transactions.first(10).each do |transaction|
+          transactions.first(10).each do |transaction|
             expect(subject).to_not have_selector('td', text: humanized_money_with_symbol(transaction.amount))
           end
         end
@@ -83,7 +81,7 @@ describe 'Transactions list' do
 
       it "lists 5 last transactions" do
         within ".transactions" do
-          org1_ba.transactions.last(5).each do |transaction|
+          transactions.last(5).each do |transaction|
             expect(subject).to have_selector('td', text: humanized_money_with_symbol(transaction.amount))
           end
         end
