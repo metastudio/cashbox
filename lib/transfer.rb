@@ -1,7 +1,7 @@
 class Transfer
   include ActiveModel::Validations
 
-  attr_accessor :amount, :category_id, :comment,
+  attr_accessor :amount, :comment,
     :bank_account_id, :reference_id, :comission
 
   validates :amount, presence: :true, numericality: { greater_than: 0 }
@@ -16,6 +16,14 @@ class Transfer
     attributes.each do |name, value|
       send("#{name}=", value)
     end
+  end
+
+  def initialize()
+    @amount = nil
+    @comment = nil
+    @bank_account_id = nil
+    @reference_id = nil
+    @comission = nil
   end
 
   def save(transaction)
@@ -50,7 +58,7 @@ class Transfer
   private
 
     def transfer_amount
-      if !bank_account_id.empty? &&
+      if !bank_account_id.blank? &&
           BankAccount.find(bank_account_id).balance.to_f < amount.to_f + comission.to_f
         errors.add(:amount, 'Not enough money')
       end
@@ -58,7 +66,7 @@ class Transfer
     end
 
     def transfer_currency
-      if !bank_account_id.empty? && !reference_id.empty? &&
+      if !bank_account_id.blank? && !reference_id.blank? &&
           BankAccount.find(bank_account_id).currency != BankAccount.find(reference_id).currency
         errors.add(:reference_id, "Can't transfer to account with different currency")
       end
