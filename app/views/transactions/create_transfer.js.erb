@@ -1,0 +1,9 @@
+<% unless @transaction.errors.any? %>
+  $("<%=j render('transactions/transaction', transaction: @out_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
+  $("<%=j render('transactions/transaction', transaction: @inc_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
+  $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transaction: Transaction.new) %>");
+  scrollTo($("#<%= dom_id(@out_transaction) %>"));
+<% else %>
+  $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transaction: @transaction) %>");
+<% end %>
+$("#new_transfer_form").show();

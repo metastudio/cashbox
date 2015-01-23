@@ -13,7 +13,7 @@
 
 class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
-  TRANSACTION_TYPES = %w(Residue Receipts Transfer)
+  TRANSACTION_TYPES = %w(Residue Receipt Transfer)
 
   attr_accessor :comission
 
@@ -30,7 +30,7 @@ class Transaction < ActiveRecord::Base
 
   default_scope { order(created_at: :desc) }
 
-  validates :amount,   presence: true
+  validates :amount,   presence: true, numericality: { greater_than: 0 }
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :reference, presence: true, if: :transfer?
