@@ -39,19 +39,6 @@ ActiveRecord::Schema.define(version: 20150120143346) do
 
   add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
 
-  create_table "invitations", force: true do |t|
-    t.string   "token",                         null: false
-    t.string   "email",                         null: false
-    t.string   "role",                          null: false
-    t.integer  "invited_by_id",                 null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "accepted",      default: false
-  end
-
-  add_index "invitations", ["invited_by_id"], name: "index_invitations_on_invited_by_id", using: :btree
-  add_index "invitations", ["token"], name: "index_invitations_on_token", unique: true, using: :btree
-
   create_table "members", force: true do |t|
     t.integer  "user_id",         null: false
     t.integer  "organization_id", null: false
