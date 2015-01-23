@@ -4,7 +4,7 @@ class Transfer
   attr_accessor :amount, :category_id, :comment,
     :bank_account_id, :reference_id, :comission
 
-  # validates :amount, presence: :true, numericality: { greater_than: 0 }
+  validates :amount, presence: :true, numericality: { greater_than: 0 }
   validates_presence_of :bank_account_id
   validates :reference_id, presence: true
   validates :comission, numericality: { greater_than: 0 }
@@ -22,14 +22,14 @@ class Transfer
     if valid?
       out_transaction = Transaction.create(
         amount: amount.to_f + comission.to_f, bank_account_id: bank_account_id,
-        reference_id: reference_id, comment: comment,
+        reference_id: reference_id, comment: comment + "\nCommission: " + comission,
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_EXPENSE_PARAMS).id,
         transaction_type: 'Transfer')
 
       inc_transaction = Transaction.create(
         amount: amount, bank_account_id: reference_id,
-        reference_id: bank_account_id, comment: comment,
+        reference_id: bank_account_id, comment: comment + "\nCommission: " + comission,
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_INCOME_PARAMS).id,
         transaction_type: 'Receipt')

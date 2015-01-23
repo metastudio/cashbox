@@ -33,7 +33,6 @@ class Transaction < ActiveRecord::Base
   validates :amount,   presence: true
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
-  validates :reference, presence: true, if: :transfer?
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
 
   before_save :check_negative
@@ -55,9 +54,5 @@ class Transaction < ActiveRecord::Base
 
   def residue?
     self.transaction_type == 'Residue'
-  end
-
-  def transfer?
-    !comission.nil?
   end
 end
