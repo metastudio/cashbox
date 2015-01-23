@@ -30,7 +30,7 @@ class Transaction < ActiveRecord::Base
 
   default_scope { order(created_at: :desc) }
 
-  validates :amount,   presence: true, numericality: { greater_than: 0 }
+  validates :amount,   presence: true
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :reference, presence: true, if: :transfer?
