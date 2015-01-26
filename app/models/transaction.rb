@@ -13,14 +13,12 @@
 
 class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
-  TRANSACTION_TYPES = %w(Residue Receipt Transfer)
+  TRANSACTION_TYPES = %w(Residue)
 
   attr_accessor :comission
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
-  belongs_to :bank_account, inverse_of: :transactions
-  belongs_to :reference, class_name: 'BankAccount', inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency

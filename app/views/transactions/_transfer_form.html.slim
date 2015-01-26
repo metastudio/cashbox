@@ -1,4 +1,4 @@
-= simple_form_for(transaction, url: transactions_transfer_path, remote: true, html: {id: 'new_transfer_form'} ) do |f|
+= simple_form_for(transfer, url: transactions_transfer_path, remote: true, html: {id: 'new_transfer_form'} ) do |f|
   = f.error_notification
   = f.error :base
 
@@ -13,4 +13,5 @@
   .col-sm-2
     = f.input :comment, label: false, placeholder: 'Comment'
 
-  = render 'transactions/btn_block', f: f, transaction: transaction
+  .col-sm-4
+    = render 'transactions/btn_block', f: f, transaction: transaction

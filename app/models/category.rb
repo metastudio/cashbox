@@ -13,17 +13,17 @@
 class Category < ActiveRecord::Base
   CATEGORY_INCOME = 'Income'
   CATEGORY_EXPENSE = 'Expense'
-  CATEGORY_BANK_INCOME  = 'Bank receipt'
-  CATEGORY_BANK_EXPENSE = 'Bank transfer'
+  CATEGORY_TRANSFER_INCOME  = 'Receipt'
+  CATEGORY_TRANSFER_OUTCOME = 'Transfer'
   CATEGORY_TYPES = [CATEGORY_INCOME, CATEGORY_EXPENSE]
   CATEGORY_BANK_INCOME_PARAMS = {
     type: Category::CATEGORY_INCOME,
-    name: Category::CATEGORY_BANK_INCOME,
+    name: Category::CATEGORY_TRANSFER_INCOME,
     system: true
   }
   CATEGORY_BANK_EXPENSE_PARAMS = {
     type: Category::CATEGORY_EXPENSE,
-    name: Category::CATEGORY_BANK_EXPENSE,
+    name: Category::CATEGORY_TRANSFER_OUTCOME,
     system: true
   }
 
