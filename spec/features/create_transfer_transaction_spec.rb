@@ -20,7 +20,7 @@ describe 'create transfer transaction', js: true do
 
   def create_transfer
     visit root_path
-    click_on 'Advanced'
+    click_on 'Transaction'
     click_on 'Transfer'
     within '#new_transfer_form' do
       fill_in 'transaction[amount]', with: amount
@@ -55,7 +55,7 @@ describe 'create transfer transaction', js: true do
     it "appends comission to the comment" do
       create_transfer
       within ".transactions" do
-        expect(page).to have_content(comment + "\nCommission: " + comission.to_s)
+        expect(page).to have_content(comment + "\nComission: " + comission.to_s)
       end
     end
 

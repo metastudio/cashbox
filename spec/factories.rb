@@ -75,11 +75,15 @@ FactoryGirl.define do
     trait :expense do
       association :category, :expense
     end
+
+    trait :transfer do
+      reference { create :bank_account }
+    end
   end
 
   sequence(:bank_account_id)
   factory :transfer do
-    bank_account_id { create(:bank_account).id }
+    bank_account_id { create(:bank_account, balance: 5000).id }
     reference_id    { create(:bank_account).id }
     amount    500
     comment   "Long long time ago"

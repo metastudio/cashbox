@@ -12,32 +12,27 @@ class Transfer
   validate :transfer_currency
   validate :transfer_account
 
-  def initialize(attributes = {})
+  def initialize(attributes = { amount: nil, comment: nil, bank_account_id: nil,
+    reference_id: nil, comission: nil } )
     attributes.each do |name, value|
       send("#{name}=", value)
     end
   end
 
-  def initialize()
-    @amount = nil
-    @comment = nil
-    @bank_account_id = nil
-    @reference_id = nil
-    @comission = nil
-  end
-
   def save(transaction)
     if valid?
       out_transaction = Transaction.create(
-        amount: amount.to_f + comission.to_f, bank_account_id: bank_account_id,
-        reference_id: reference_id, comment: comment + "\nCommission: " + comission,
+        amount_cents: (amount.to_f + comission.to_f) * 100, bank_account_id: bank_account_id,
+        reference_id: reference_id, comission: comission,
+        comment: form_comment(comment),
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_EXPENSE_PARAMS).id,
         transaction_type: 'Transfer')
 
       inc_transaction = Transaction.create(
-        amount: amount, bank_account_id: reference_id,
-        reference_id: bank_account_id, comment: comment + "\nCommission: " + comission,
+        amount_cents: amount.to_f * 100, bank_account_id: reference_id,
+        reference_id: bank_account_id, comission: comission,
+        comment: form_comment(comment),
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_INCOME_PARAMS).id,
         transaction_type: 'Receipt')
@@ -62,7 +57,6 @@ class Transfer
           BankAccount.find(bank_account_id).balance.to_f < amount.to_f + comission.to_f
         errors.add(:amount, 'Not enough money')
       end
-
     end
 
     def transfer_currency
@@ -76,5 +70,9 @@ class Transfer
       if bank_account_id == reference_id
         errors.add(:reference_id, "Can't transfer to same account")
       end
+    end
+
+    def form_comment(comment)
+      comment.to_s + "\nComission: " + comission.to_s
     end
 end
