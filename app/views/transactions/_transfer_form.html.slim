@@ -1,17 +1,18 @@
-= simple_form_for(transfer, url: transactions_transfer_path, remote: true, html: {id: 'new_transfer_form'} ) do |f|
+= simple_form_for(transfer, url: transfer_transactions_path, remote: true, html: {id: 'new_transfer_form'} ) do |f|
   = f.error_notification
   = f.error :base
 
   .col-sm-2
     = f.input :amount, label: false, as: :float, placeholder: 'Amount'
   .col-sm-2
-    = f.association :bank_account, collection: current_organization.bank_accounts, prompt: 'From', include_blank: false, label: false, label_method: :to_s
-  .col-sm-2
-    = f.association :reference, collection: current_organization.bank_accounts, prompt: 'To', include_blank: false, label: false, label_method: :to_s
-  .col-sm-2
     = f.input :comission, label: false, as: :float, placeholder: 'Comission'
   .col-sm-2
+    = f.input :bank_account_id, collection: current_organization.bank_accounts,
+      prompt: 'From', include_blank: false, label: false, label_method: :to_s
+  .col-sm-2
+    = f.input :reference_id, collection: current_organization.bank_accounts,
+      prompt: 'To', include_blank: false, label: false, label_method: :to_s
+  .col-sm-2
     = f.input :comment, label: false, placeholder: 'Comment'
-
-  .col-sm-4
-    = render 'transactions/btn_block', f: f, transaction: transaction
+  .col-sm-2
+    = render 'transactions/btn_block', f: f, transaction: Transaction.new

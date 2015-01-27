@@ -20,7 +20,7 @@ describe 'create transaction', js: true do
       select category_name, from: 'transaction[category_id]' if category_name.present?
       select account_name, from: 'transaction[bank_account_id]' if account_name.present?
       fill_in 'transaction[comment]', with: comment
-      click_on 'Create Transaction'
+      click_on 'Create'
     end
     page.has_content?(/(Please review the problems below)|(#{amount})/) # wait after page rerender
   end

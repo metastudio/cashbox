@@ -31,7 +31,7 @@ describe 'category page' do
         fill_in 'transaction[amount]', with: amount
         select account_name, from: 'transaction[bank_account_id]'
         fill_in 'transaction[comment]', with: comment3
-        click_on 'Create Transaction'
+        click_on 'Create'
       end
     end
     context 'valid params' do

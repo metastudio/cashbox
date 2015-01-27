@@ -23,12 +23,12 @@ describe 'create transfer transaction', js: true do
     click_on 'Transaction'
     click_on 'Transfer'
     within '#new_transfer_form' do
-      fill_in 'transaction[amount]', with: amount
-      select ba1.name, from: 'transaction[bank_account_id]' if ba1_name.present?
-      select ba2.name, from: 'transaction[reference_id]' if ba2_name.present?
-      fill_in 'transaction[comission]', with: comission
-      fill_in 'transaction[comment]',   with: comment
-      click_on 'Create Transaction'
+      fill_in 'transfer[amount_cents]', with: amount
+      select ba1.name, from: 'transfer[bank_account_id]' if ba1_name.present?
+      select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
+      fill_in 'transfer[comission_cents]', with: comission
+      fill_in 'transfer[comment]',   with: comment
+      click_on 'Create'
     end
     page.has_content?(/(Please review the problems below)|(#{amount})/) # wait after page rerender
   end
@@ -62,7 +62,7 @@ describe 'create transfer transaction', js: true do
     context "when outcome transfer" do
       it "creates transaction with negative amount" do
         expect{ subject }.
-          to change{ transactions.where(amount_cents: (amount + comission)* -100).count }.by(1)
+          to change{ transactions.where(amount_cents: (amount + comission) * -  100).count }.by(1)
       end
     end
 
@@ -90,7 +90,7 @@ describe 'create transfer transaction', js: true do
     end
 
     it "shows error for FROM field" do
-      expect(subject).to have_inline_error("can't be blank").for_field_name('transaction[bank_account_id]')
+      expect(subject).to have_inline_error("can't be blank").for_field_name('transfer[bank_account_id]')
     end
   end
 
@@ -102,7 +102,7 @@ describe 'create transfer transaction', js: true do
     end
 
     it "shows error for TO field" do
-      expect(subject).to have_inline_error("can't be blank").for_field_name('transaction[reference_id]')
+      expect(subject).to have_inline_error("can't be blank").for_field_name('transfer[reference_id]')
     end
   end
 end

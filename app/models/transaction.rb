@@ -10,12 +10,9 @@
 #  updated_at      :datetime
 #  comment         :string(255)
 #
-
 class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
   TRANSACTION_TYPES = %w(Residue)
-
-  attr_accessor :comission
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions

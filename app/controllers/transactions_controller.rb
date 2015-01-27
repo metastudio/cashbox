@@ -12,8 +12,6 @@ class TransactionsController < ApplicationController
     if @transfer.save
       @inc_transaction = @transfer.inc_transaction
       @out_transaction = @transfer.out_transaction
-    else
-
     end
   end
 

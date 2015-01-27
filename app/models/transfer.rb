@@ -1,62 +1,78 @@
 class Transfer
   include ActiveModel::Validations
 
-  attr_accessor :amount_cents, :comment,
-    :bank_account_id, :reference_id, :comission_cents,
-    :inc_transaction, :out_transaction,
-    :bank_account
-
-  monetize :amount_cents, with_model_currency: :currency
-  monetize :comission_cents, with_model_currency: :currency
-
-  delegate :currency, to: :bank_account, allow_nil: true
+  attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
+    :bank_account, :bank_account_id, :reference_id,
+    :inc_transaction, :out_transaction
 
   validates :amount, presence: :true, numericality: { greater_than: 0 }
+  validates :comission, numericality: { greater_than: 0 }
   validates_presence_of :bank_account_id
   validates :reference_id, presence: true
-  validates :comission, numericality: { greater_than: 0 }
   validate :transfer_amount
   validate :transfer_currency
   validate :transfer_account
 
-  def initialize(attributes = { amount: nil, comment: nil, bank_account_id: nil,
-    reference_id: nil, comission: nil, inc_transaction: nil, out_transaction: nil,
-    bank_account: nil } )
+  # def initialize(attributes = { amount_cents: nil, comment: nil, bank_account_id: nil,
+  #   reference_id: nil, comission_cents: nil, inc_transaction: nil, out_transaction: nil,
+  #   bank_account: nil, amount: nil, comission: nil } )
+
+  def initialize(attributes = { amount_cents: nil, comment: nil, bank_account_id: nil,
+    reference_id: nil, comission_cents: nil, inc_transaction: nil, out_transaction: nil,
+    bank_account: nil, amount: nil, comission: nil } )
     attributes.each do |name, value|
       send("#{name}=", value)
     end
   end
 
-  def save(transaction)
+  def save
+    # raise [self, self.valid?, self.errors].inspect
     if valid?
       @out_transaction = Transaction.create(
-        amount_cents: (amount.to_f + comission.to_f) * 100, bank_account_id: bank_account_id,
-        reference_id: reference_id, comission: comission,
-        comment: form_comment(comment),
+        amount_cents: amount_cents + comission_cents, bank_account_id: bank_account_id,
+        reference_id: reference_id, comment: form_comment(comment),
         category_id: Category.find_or_create_by(
-          Category::CATEGORY_BANK_EXPENSE_PARAMS).id,
-        transaction_type: 'Transfer')
+          Category::CATEGORY_BANK_EXPENSE_PARAMS).id)
 
       @inc_transaction = Transaction.create(
-        amount_cents: amount.to_f * 100, bank_account_id: reference_id,
-        reference_id: bank_account_id, comission: comission,
-        comment: form_comment(comment),
+        amount_cents: amount_cents, bank_account_id: reference_id,
+        reference_id: bank_account_id, comment: form_comment(comment),
         category_id: Category.find_or_create_by(
-          Category::CATEGORY_BANK_INCOME_PARAMS).id,
-        transaction_type: 'Receipt')
+          Category::CATEGORY_BANK_INCOME_PARAMS).id)
 
       if (@out_transaction.errors.any? || @inc_transaction.errors.any?)
-        errors[:base] << out_transaction.errors.full_messages
-        errors[:base] << inc_transaction.errors.full_messages
+        errors[:base] << @out_transaction.errors
+        errors[:base] << @inc_transaction.errors
+
+        return false
       end
+
+      true
+    else
+      false
     end
   end
 
-  private
+  # is needed for simple form for non db model
+  def to_key
+  end
 
+  def persisted?
+    false
+  end
+
+  def money_amount
+    Money.new(@amount_cents)
+  end
+
+  def money_comission
+    Money.new(@comission_cents)
+  end
+
+  private
     def transfer_amount
       if !bank_account_id.blank? &&
-          bank_account.balance.to_f < amount.to_f + comission.to_f
+          bank_account.balance < amount + comission
         errors.add(:amount, 'Not enough money')
       end
     end
@@ -79,6 +95,7 @@ class Transfer
     end
 
     def bank_account
-      @bank_account ||= BankAccount.find(bank_account_id)
+      @bank_account ||= BankAccount.find(bank_account_id) if bank_account_id
     end
+
 end

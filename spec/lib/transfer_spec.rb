@@ -5,11 +5,10 @@ describe Transfer do
   subject { Transfer.new }
 
   context "validation" do
-    it { should validate_presence_of(:amount) }
+    it { should validate_presence_of(:amount_cents) }
     it { should validate_presence_of(:bank_account_id) }
-    it { should validate_presence_of(:reference_id) }
-    it { should validate_numericality_of(:comission).is_greater_than(0) }
-    it { should validate_numericality_of(:amount).is_greater_than(0) }
+    it { should validate_numericality_of(:comission_cents).is_greater_than(0) }
+    it { should validate_numericality_of(:amount_cents).is_greater_than(0) }
 
     context "custom validations" do
       let(:bank_account1) { create :bank_account, balance: 100 }
@@ -19,15 +18,6 @@ describe Transfer do
         reference_id: reference_id }
 
       subject { transfer }
-      describe "transfer_account" do
-        let(:reference_id) { bank_account1.id }
-        it 'is invalid' do
-          expect(subject).to be_invalid
-          expect(subject.errors_on(:reference_id)).
-            to include("Can't transfer to same account")
-        end
-      end
-
       describe "transfer_amount" do
         it 'is invalid' do
           expect(subject).to be_invalid
@@ -38,47 +28,43 @@ describe Transfer do
     end
   end
 
-  describe "#save(transaction)" do
+  describe "#save" do
     let(:bank_account) { create :bank_account, balance: 99999 }
     let(:reference)    { create :bank_account, balance: 99999 }
-    let(:transaction)  { build :transaction, :transfer, bank_account: bank_account,
-       reference: reference, amount: 700, comission: 500 }
-    let(:transfer)     { Transfer.new(amount: transaction.amount, comment:
-      transaction.comment, comission: transaction.comission, bank_account_id:
-      transaction.bank_account_id, reference_id: transaction.reference_id) }
+    let(:transfer)     { Transfer.new(amount_cents: 5000, comission_cents: 400,
+      bank_account_id: bank_account.id, reference_id: reference.id) }
 
-    subject { transfer.save(transaction) }
+    subject { transfer.save }
 
     context 'with valid data' do
       context "create 2 transactions" do
         it { expect{subject}.to change{Transaction.count}.by(2) }
 
         describe 'attributes' do
-          let(:inc) { subject.first }
-          let(:out) { subject.last }
+          before do
+            transfer.save
+          end
 
           describe 'income' do
-            it { expect(inc.amount.to_f).to eq transaction.amount.to_f }
-            it { expect(inc.comission).to eq transaction.comission }
-            it { expect(inc.comment).to eq (transaction.comment.to_s +
-              "\nComission: " + transaction.comission.to_s) }
-            it { expect(inc.bank_account_id).to eq transaction.reference_id }
-            it { expect(inc.reference_id).to eq transaction.bank_account_id }
+            let(:inc) { transfer.inc_transaction }
+            it { expect(inc.amount_cents).to eq transfer.amount_cents }
+            it { expect(inc.comment).to eq (transfer.comment.to_s +
+              "\nComission: " + transfer.comission.to_s) }
+            it { expect(inc.bank_account_id).to eq transfer.reference_id }
+            it { expect(inc.reference_id).to eq transfer.bank_account_id }
             it { expect(inc.category_id).to eq Category.find_by(
               Category::CATEGORY_BANK_INCOME_PARAMS).id }
-            it { expect(inc.transaction_type).to eq 'Receipt' }
           end
 
           describe 'outcome' do
-            it { expect(out.amount.to_f).to eq (transaction.amount.to_f + transaction.comission) * (-1) }
-            it { expect(out.comission).to eq transaction.comission }
-            it { expect(out.comment).to eq transaction.comment.to_s +
-              "\nComission: " + transaction.comission.to_s }
-            it { expect(out.bank_account_id).to eq transaction.bank_account_id }
-            it { expect(out.reference_id).to eq transaction.reference_id }
+            let(:out) { transfer.out_transaction }
+            it { expect(out.amount_cents).to eq (transfer.amount_cents + transfer.comission_cents) * (-1) }
+            it { expect(out.comment).to eq (transfer.comment.to_s +
+              "\nComission: " + transfer.comission.to_s) }
+            it { expect(out.bank_account_id).to eq transfer.bank_account_id }
+            it { expect(out.reference_id).to eq transfer.reference_id }
             it { expect(out.category_id).to eq Category.find_by(
               Category::CATEGORY_BANK_EXPENSE_PARAMS).id}
-            it { expect(out.transaction_type).to eq 'Transfer'}
           end
         end
       end
@@ -95,10 +81,10 @@ describe Transfer do
           let(:bank_account) { create :bank_account, balance: 0 }
 
           before do
-            transfer.save(transaction)
+            transfer.save
           end
 
-          it { expect(transaction.errors.messages[:amount]).to include("Not enough money") }
+          it { expect(transfer.errors.messages[:amount]).to include("Not enough money") }
         end
       end
     end
