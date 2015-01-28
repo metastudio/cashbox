@@ -5,10 +5,10 @@ describe Transfer do
   subject { Transfer.new }
 
   context "validation" do
-    it { should validate_presence_of(:amount_cents) }
+    it { should validate_presence_of(:amount) }
     it { should validate_presence_of(:bank_account_id) }
-    it { should validate_numericality_of(:comission_cents).is_greater_than(0) }
-    it { should validate_numericality_of(:amount_cents).is_greater_than(0) }
+    it { should validate_numericality_of(:comission).is_greater_than(0) }
+    it { should validate_numericality_of(:amount).is_greater_than(0) }
 
     context "custom validations" do
       let(:bank_account1) { create :bank_account, balance: 100 }
@@ -29,10 +29,7 @@ describe Transfer do
   end
 
   describe "#save" do
-    let(:bank_account) { create :bank_account, balance: 99999 }
-    let(:reference)    { create :bank_account, balance: 99999 }
-    let(:transfer)     { Transfer.new(amount_cents: 5000, comission_cents: 400,
-      bank_account_id: bank_account.id, reference_id: reference.id) }
+    let(:transfer) { build :transfer }
 
     subject { transfer.save }
 
@@ -71,14 +68,15 @@ describe Transfer do
     end
 
     context 'with invalid data' do
+      let(:bank_account) { create :bank_account, balance: 0 }
+      let(:transfer) { build :transfer, bank_account_id: bank_account.id }
+
       context "doesn't create transactions" do
-        let(:bank_account) { create :bank_account, balance: 0 }
         it { expect{subject}.to change{Transaction.count}.by(0) }
       end
 
       context "add errors on transaction" do
         context "when transfer params wrong" do
-          let(:bank_account) { create :bank_account, balance: 0 }
 
           before do
             transfer.save

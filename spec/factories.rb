@@ -81,8 +81,8 @@ FactoryGirl.define do
   factory :transfer do
     bank_account_id { create(:bank_account, balance: 5000).id }
     reference_id    { create(:bank_account, balance: 5000).id }
-    amount_cents    50000
+    amount          500
+    comission       50
     comment         "comment"
-    comission_cents 5000
   end
 end

@@ -23,10 +23,10 @@ describe 'create transfer transaction', js: true do
     click_on 'Transaction'
     click_on 'Transfer'
     within '#new_transfer_form' do
-      fill_in 'transfer[amount_cents]', with: amount
+      fill_in 'transfer[amount]', with: amount
       select ba1.name, from: 'transfer[bank_account_id]' if ba1_name.present?
       select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
-      fill_in 'transfer[comission_cents]', with: comission
+      fill_in 'transfer[comission]', with: comission
       fill_in 'transfer[comment]',   with: comment
       click_on 'Create'
     end
