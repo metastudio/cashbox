@@ -13,7 +13,7 @@ class Transfer
   validate :transfer_currency
   validate :transfer_account
 
-  def initialize(attributes = {} )
+  def initialize(attributes = {})
     attributes.each do |name, value|
       send("#{name}=", value)
     end
@@ -22,14 +22,14 @@ class Transfer
   def save
     if valid?
       @out_transaction = Transaction.create(
-        amount_cents: @amount_cents + @comission_cents, bank_account_id: @bank_account_id,
-        reference_id: @reference_id, comment: form_comment(@comment),
+        amount_cents: @amount_cents + @comission_cents,
+        bank_account_id: @bank_account_id, comment: form_comment(@comment),
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_EXPENSE_PARAMS).id)
 
       @inc_transaction = Transaction.create(
-        amount_cents: @amount_cents, bank_account_id: @reference_id,
-        reference_id: @bank_account_id, comment: form_comment(@comment),
+        amount_cents: @amount_cents,
+        bank_account_id: @reference_id, comment: form_comment(@comment),
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_INCOME_PARAMS).id)
 

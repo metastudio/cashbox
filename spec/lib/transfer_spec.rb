@@ -48,7 +48,6 @@ describe Transfer do
             it { expect(inc.comment).to eq (transfer.comment.to_s +
               "\nComission: " + transfer.comission.to_s) }
             it { expect(inc.bank_account_id).to eq transfer.reference_id }
-            it { expect(inc.reference_id).to eq transfer.bank_account_id }
             it { expect(inc.category_id).to eq Category.find_by(
               Category::CATEGORY_BANK_INCOME_PARAMS).id }
           end
@@ -59,7 +58,6 @@ describe Transfer do
             it { expect(out.comment).to eq (transfer.comment.to_s +
               "\nComission: " + transfer.comission.to_s) }
             it { expect(out.bank_account_id).to eq transfer.bank_account_id }
-            it { expect(out.reference_id).to eq transfer.reference_id }
             it { expect(out.category_id).to eq Category.find_by(
               Category::CATEGORY_BANK_EXPENSE_PARAMS).id}
           end
