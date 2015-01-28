@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(version: 20150120143346) do
     t.datetime "updated_at"
     t.string   "comment"
     t.string   "transaction_type"
-    t.integer  "reference_id"
   end
 
   add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
