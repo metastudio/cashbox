@@ -45,7 +45,7 @@ class Transfer
     end
   end
 
-  # is needed for simple form for non db model
+  # needed for simple form for non db model
   def to_key
   end
 
