@@ -1,5 +1,4 @@
 require 'spec_helper'
-
 describe 'update transaction', js: true do
   include MoneyRails::ActionViewExtension
 
@@ -7,6 +6,7 @@ describe 'update transaction', js: true do
   let!(:organization) { create :organization, with_user: user }
   let!(:category)     { create :category, organization: organization }
   let!(:account)      { create :bank_account, organization: organization}
+
   let!(:transactions) { create_list :transaction, 25, bank_account: account,
     category: category, amount_cents: 1000000 }
 
@@ -16,6 +16,36 @@ describe 'update transaction', js: true do
   end
 
   subject{ page }
+
+  context "pagination" do
+    let!(:transactions) { create_list :transaction, 25, bank_account: account,
+      category: category }
+
+    context "first page" do
+      before do
+        find(".transactions",
+          text: humanized_money_with_symbol(organization.transactions.first.amount)).click
+        page.has_css?('simple_form edit_transaction')
+      end
+
+      it "shows update form on row click" do
+        expect(subject).to have_selector("input[type=submit][value='Update Transaction']")
+      end
+    end
+
+    context "next page" do
+      before do
+        click_on 'Last'
+        find(".transactions ",
+          text: humanized_money_with_symbol(organization.transactions.last.amount)).click
+        page.has_css?('simple_form edit_transaction')
+      end
+
+      it "shows update form on row click" do
+        expect(subject).to have_selector("input[type=submit][value='Update Transaction']")
+      end
+    end
+  end
 
   context "when updating" do
     let(:transaction) { organization.transactions.first }
@@ -47,5 +77,4 @@ describe 'update transaction', js: true do
           text: humanized_money_with_symbol(new_total))
     end
   end
-
 end
