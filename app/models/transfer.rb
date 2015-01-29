@@ -21,26 +21,25 @@ class Transfer
 
   def save
     if valid?
-      @out_transaction = Transaction.create(
+      @out_transaction = Transaction.new(
         amount_cents: @amount_cents + @comission_cents,
         bank_account_id: @bank_account_id, comment: form_comment(@comment),
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_EXPENSE_PARAMS).id)
 
-      @inc_transaction = Transaction.create(
+      @inc_transaction = Transaction.new(
         amount_cents: @amount_cents,
         bank_account_id: @reference_id, comment: form_comment(@comment),
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_INCOME_PARAMS).id)
 
-      if (@out_transaction.errors.any? || @inc_transaction.errors.any?)
+      if !@out_transaction.save || !@inc_transaction.save
         errors[:base] << @out_transaction.errors
         errors[:base] << @inc_transaction.errors
-
         return false
+      else
+        return true
       end
-
-      true
     else
       false
     end
@@ -66,6 +65,8 @@ class Transfer
     if value
       @amount_cents = value.to_d * 100
       @amount = value
+    else
+      @amount, @amount_cents = nil, nil
     end
   end
 
@@ -73,6 +74,8 @@ class Transfer
     if value
       @comission_cents = value.to_d * 100
       @comission = value
+    else
+      @comission, @comission_cents = nil, nil
     end
   end
 
