@@ -105,4 +105,70 @@ describe 'create transfer transaction', js: true do
       expect(subject).to have_inline_error("can't be blank").for_field_name('transfer[reference_id]')
     end
   end
+
+  context "transfer to different currency", js: true do
+    let!(:ba2) { create :bank_account, organization: organization, currency: "USD",
+      balance: 99999 }
+    let!(:ba3) { create :bank_account, organization: organization, currency: "USD",
+      balance: 99999 }
+
+    before do
+      visit root_path
+      click_on 'Transaction'
+      click_on 'Transfer'
+    end
+
+    subject{ page }
+
+    context "when nothing selected" do
+      it "doesn't show exchange rate" do
+        expect(page).to_not have_field("transfer[exchange_rate]")
+      end
+    end
+
+    context "when select banks with same currency" do
+      before do
+        within '#new_transfer_form' do
+          select ba2.name, from: 'transfer[bank_account_id]'
+          select ba3.name, from: 'transfer[reference_id]'
+        end
+      end
+
+      it "doesn't show exchange rate" do
+        within '#new_transfer_form' do
+          expect(page).to_not have_field("transfer[exchange_rate]")
+        end
+      end
+    end
+
+    context "when select banks with different currency" do
+      before do
+        within '#new_transfer_form' do
+          select ba1.name, from: 'transfer[bank_account_id]'
+          select ba2.name, from: 'transfer[reference_id]'
+        end
+      end
+
+      it "show exchange rate" do
+        within '#new_transfer_form' do
+          expect(page).to have_field("transfer[exchange_rate]")
+        end
+      end
+
+      context "and select same currency" do
+        before do
+          within '#new_transfer_form' do
+            select ba2.name, from: 'transfer[bank_account_id]'
+            select ba3.name, from: 'transfer[reference_id]'
+          end
+        end
+
+        it "doesn't show exchange rate" do
+          within '#new_transfer_form' do
+            expect(page).to_not have_field("transfer[exchange_rate]")
+          end
+        end
+      end
+    end
+  end
 end
