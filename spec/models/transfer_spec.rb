@@ -39,28 +39,30 @@ describe Transfer do
         it { expect{subject}.to change{Transaction.count}.by(2) }
 
         describe 'attributes' do
+          let(:inc) { transfer.inc_transaction }
+          let(:out) { transfer.out_transaction }
+
           before do
             transfer.save
           end
 
-          describe 'income' do
-            let(:inc) { transfer.inc_transaction }
-            it { expect(inc.amount_cents).to eq transfer.amount_cents }
-            it { expect(inc.comment).to eq (transfer.comment.to_s +
-              "\nComission: " + transfer.comission.to_s) }
-            it { expect(inc.bank_account_id).to eq transfer.reference_id }
-            it { expect(inc.category_id).to eq Category.find_by(
-              Category::CATEGORY_BANK_INCOME_PARAMS).id }
+          describe 'same currency' do
+            it_behaves_like 'income transaction' do
+              let(:amount) { transfer.amount_cents }
+            end
+            it_behaves_like 'outcome transaction'
           end
 
-          describe 'outcome' do
-            let(:out) { transfer.out_transaction }
-            it { expect(out.amount_cents).to eq (transfer.amount_cents + transfer.comission_cents) * (-1) }
-            it { expect(out.comment).to eq (transfer.comment.to_s +
-              "\nComission: " + transfer.comission.to_s) }
-            it { expect(out.bank_account_id).to eq transfer.bank_account_id }
-            it { expect(out.category_id).to eq Category.find_by(
-              Category::CATEGORY_BANK_EXPENSE_PARAMS).id}
+          describe 'with different currencies' do
+            let(:transfer) { build :transfer, :with_different_currencies,
+              exchange_rate: 0.5}
+
+            it_behaves_like 'income transaction' do
+              let(:amount) {
+                Money.new(transfer.amount_cents, transfer.from_currency).
+                  exchange_to(transfer.to_currency).cents }
+            end
+            it_behaves_like 'outcome transaction'
           end
         end
       end
