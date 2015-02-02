@@ -65,3 +65,11 @@ MoneyRails.configure do |config|
   # config.no_cents_if_whole = nil
   # config.symbol = nil
 end
+
+module MoneyRails
+  module ActionViewExtension
+    def humanized_money_with_symbol(val, options={})
+      humanized_money(val, options.merge(symbol: true, symbol_position: :before))
+    end
+  end
+end
