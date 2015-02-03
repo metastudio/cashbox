@@ -63,6 +63,8 @@ group :test do
   gem 'capybara-email'
   gem 'capybara-webkit'
   gem 'headless'
+  gem 'capybara-screenshot'
+  gem 'timecop'
 end
 
 group :staging do
