@@ -1,4 +1,7 @@
 .row
   = render 'transactions/form', transaction: Transaction.new
+hr Filters:
+.row
+  = render 'transactions/filter'
 .transactions_list
   = render 'transactions/transactions_table', transactions: transactions

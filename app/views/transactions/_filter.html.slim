@@ -1,0 +1,20 @@
+= search_form_for @q, url: root_path do |f|
+  .col-sm-2
+    = f.input :amount_eq, label: false, placeholder: 'Amount'
+  .col-sm-2
+    = f.input :comment_cont, label: false, placeholder: 'Comment'
+  .col-sm-2
+    = f.input :simple_period, collection: [['Current month', 'current_month'],
+      ['Last month', 'last_month'], ['Last 3 months', 'last_3_months'],
+      ['Quarter', 'quarter'], ['This year', 'this_year']],
+      include_blank: 'For period', label: false
+  / .col-sm-2.hidden
+    = f.input :quarter, disabled: true, collection: [['Jan, Feb, Mar', 'first'],
+      ['Apr, May Jun', 'second'],
+      ['Jul, Aug, Sep', 'third'], ['Oct, Nov, Dec', 'forth']],
+      label: false, include_blank: false
+  / .col-sm-2.hidden
+    = f.input :custom_period, disabled: true, input_html: { class: 'daterange' },
+      label: false, placeholder: '__/__/__/ - __/__/__'
+
+  = f.button :submit, class: 'btn-primary'

@@ -18,6 +18,8 @@ gem 'uglifier', '>= 1.3.0'
 # Asset libraries
 gem 'jquery-rails'
 gem 'bootstrap-sass'
+gem 'momentjs-rails'
+gem 'bootstrap-daterangepicker-rails'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
@@ -31,6 +33,7 @@ gem 'money-rails', github: 'RubyMoney/money-rails', branch: 'upgrade_to_money_6_
 gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
+gem 'ransack'
 
 group :development, :test do
   gem 'rspec-rails'
