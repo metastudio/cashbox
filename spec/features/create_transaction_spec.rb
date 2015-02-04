@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'create transaction', js: true do
+  include MoneyRails::ActionViewExtension
+
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
   let!(:category)     { create :category, organization: organization }
@@ -58,6 +60,25 @@ describe 'create transaction', js: true do
         expect{
           subject
         }.to change{ transactions.where(amount_cents: amount * -100).count }.by(1)
+      end
+    end
+
+    context "updates sidebar" do
+      let(:new_amount) { Money.new(amount * 100, account.currency) }
+      let!(:new_account_balance) { account.balance + new_amount }
+      let!(:new_total) { organization.bank_accounts.
+        total_balance(account.currency) + new_amount }
+
+      it "recalculates bank account amount" do
+        expect(subject).
+          to have_css("#bank_account_#{account.id} td.amount",
+            text: humanized_money_with_symbol(new_account_balance))
+      end
+
+      it "recalculates total balance" do
+        expect(subject).
+          to have_css("#sidebar",
+            text: humanized_money_with_symbol(new_total))
       end
     end
   end
