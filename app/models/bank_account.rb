@@ -32,7 +32,7 @@ class BankAccount < ActiveRecord::Base
   validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
 
   after_create :set_initial_residue
-  before_restore :recalculate_amount!
+  before_restore "recalculate_amount!(with_deleted = true)"
 
   def residue_cents
     @residue_cents ||= 0
@@ -42,8 +42,9 @@ class BankAccount < ActiveRecord::Base
     Money.new(where(currency: currency).sum(:balance_cents), currency)
   end
 
-  def recalculate_amount!
-    update_attributes(balance: Money.new(transactions.with_deleted.sum(:amount_cents), currency))
+  def recalculate_amount!(with_deleted)
+    transactions = with_deleted ? self.transactions.with_deleted : self.transactions
+    update_attributes(balance: Money.new(transactions.sum(:amount_cents), currency))
   end
 
   def set_initial_residue
