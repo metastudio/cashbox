@@ -39,15 +39,13 @@ function show_hide_exchange_rate() {
   toCurr = $('#transfer_reference_id option:selected').attr('data_currency')
 
   if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr) {
-    $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1');
-    $('#transfer_comission').parents('.col-sm-2').removeClass('col-sm-2');
+    $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
     $('#transfer_exchange_rate').parents('.col-sm-1').removeClass('hidden');
   }
   else {
     if ($('#transfer_exchange_rate').is(":visible")) {
       $('#transfer_exchange_rate').parents('.col-sm-1').addClass('hidden')
-      $('#transfer_comission').parents('.col-sm-1').addClass('col-sm-2');
-      $('#transfer_comission').parents('.col-sm-1').removeClass('col-sm-1');
+      $('#transfer_comission').parents('.col-sm-1').addClass('col-sm-2').removeClass('col-sm-1');
     }
   }
 }
