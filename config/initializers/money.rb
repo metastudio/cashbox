@@ -46,17 +46,17 @@ MoneyRails.configure do |config|
   # Register a custom currency
   #
   # Example:
-  # config.register_currency = {
-  #   :priority            => 1,
-  #   :iso_code            => "EU4",
-  #   :name                => "Euro with subunit of 4 digits",
-  #   :symbol              => "€",
-  #   :symbol_first        => true,
-  #   :subunit             => "Subcent",
-  #   :subunit_to_unit     => 10000,
-  #   :thousands_separator => ".",
-  #   :decimal_mark        => ","
-  # }
+  config.register_currency = {
+    :priority            => 2,
+    :iso_code            => "RUB",
+    :name                => "Russian Ruble",
+    :symbol              => "р.",
+    :symbol_first        => true,
+    :subunit             => "Kopek",
+    :subunit_to_unit     => 100,
+    :thousands_separator => ".",
+    :decimal_mark        => ","
+  }
 
   # Set money formatted output globally.
   # Default value is nil meaning "ignore this option".
@@ -64,12 +64,4 @@ MoneyRails.configure do |config|
   #
   # config.no_cents_if_whole = nil
   # config.symbol = nil
-end
-
-module MoneyRails
-  module ActionViewExtension
-    def humanized_money_with_symbol(val, options={})
-      humanized_money(val, options.merge(symbol: true, symbol_position: :before))
-    end
-  end
 end
