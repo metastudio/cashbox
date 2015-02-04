@@ -39,6 +39,10 @@ class Transaction < ActiveRecord::Base
   after_save :recalculate_amount
   after_destroy :recalculate_amount
 
+  def date
+    created_at.strftime("%Y-%m-%d")
+  end
+
   private
 
   def check_negative
@@ -78,6 +82,6 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    %i(amount_eq period)
+    %i(amount_eq period amount_sort)
   end
 end
