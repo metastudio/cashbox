@@ -14,8 +14,8 @@ describe 'Transactions filter' do
   subject { page }
 
   context "filter by amount" do
-    let!(:transaction)  { create :transaction, bank_account: ba, amount: 100 }
-    let!(:transaction2) { create :transaction, bank_account: ba, amount: 100 }
+    let!(:transaction)  { create :transaction, bank_account: ba, amount: 100123.23 }
+    let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction3) { create :transaction, bank_account: ba, amount: 300 }
     let!(:transaction4) { create :transaction, bank_account: ba, amount: 600 }
     let(:correct_items) { [transaction,  transaction2] }
@@ -23,7 +23,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
-      fill_in 'q[amount_eq]', with: 100
+      fill_in 'q[amount_eq]', with: "100,123.23"
       click_on 'Search'
     end
 

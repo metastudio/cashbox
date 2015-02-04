@@ -62,7 +62,7 @@ class Transaction < ActiveRecord::Base
       where("transactions.created_at >= ?", (Time.now - 3.months).beginning_of_day)
     when "last_month"
       last_month_begins = Time.now.beginning_of_month - 1.months
-      where("transactions.created_at >= ? AND transactions.created_at <= ?", last_month_begins,
+      where("transactions.created_at between ? AND ?", last_month_begins,
         last_month_begins.end_of_month)
     when "this_year"
       where("transactions.created_at >= ?", Time.now.beginning_of_year)
@@ -72,6 +72,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.amount_eq(amount)
+    amount.delete!(',')
     where(amount_cents: Money.new(amount.to_d * 100).cents)
   end
 
