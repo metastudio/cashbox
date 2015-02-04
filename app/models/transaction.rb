@@ -35,6 +35,7 @@ class Transaction < ActiveRecord::Base
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
+  before_restore :recalculate_amount
 
   private
 
