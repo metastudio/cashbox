@@ -26,8 +26,7 @@ class Transaction < ActiveRecord::Base
   delegate :income?, :expense?, to: :category, allow_nil: true
 
   default_scope { order(created_at: :desc) }
-  scope :rub, -> { joins(:bank_account).where('bank_accounts.currency' => "RUB") }
-  scope :usd, -> { joins(:bank_account).where('bank_accounts.currency' => "USD") }
+  scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
 
   validates :amount, presence: true
   validates :category, presence: true, unless: :residue?

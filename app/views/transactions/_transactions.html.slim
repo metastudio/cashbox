@@ -6,7 +6,7 @@ hr
 .row
   = render 'transactions/filter'
 .row
-  = render 'transactions/flow'
+  = render 'transactions/flow' if params[:q]
 
 .transactions_list
   = render 'transactions/transactions_table', transactions: transactions
