@@ -14,6 +14,8 @@ class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
   TRANSACTION_TYPES = %w(Residue)
 
+  acts_as_paranoid
+
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
