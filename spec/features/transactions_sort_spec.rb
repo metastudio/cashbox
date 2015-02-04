@@ -29,7 +29,7 @@ describe 'Transactions sort' do
   end
 
   context "by bank_account name" do
-    it_behaves_like 'sortable object', 'Bank account', :bank_account
+    it_behaves_like 'sortable object', 'Account', :bank_account
   end
 
   context "by category" do
