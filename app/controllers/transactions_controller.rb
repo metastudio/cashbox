@@ -7,6 +7,14 @@ class TransactionsController < ApplicationController
     @transaction.save
   end
 
+  def create_transfer
+    @transfer = Transfer.new(transfer_params)
+    if @transfer.save
+      @inc_transaction = @transfer.inc_transaction
+      @out_transaction = @transfer.out_transaction
+    end
+  end
+
   def edit
   end
 
@@ -25,6 +33,12 @@ class TransactionsController < ApplicationController
   end
 
   def transaction_params
-    params.require(:transaction).permit(:amount, :category_id, :bank_account_id, :comment)
+    params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
+     :comment, :comission, :reference_id)
+  end
+
+  def transfer_params
+    params.require(:transfer).permit(:amount, :bank_account_id, :reference_id,
+     :comment, :comission)
   end
 end

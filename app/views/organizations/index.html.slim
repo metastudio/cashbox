@@ -9,7 +9,7 @@
     thead
       tr
         th Name
-        th Owner
+        th Owners
         th[style="width:5%"]
         th[style="width:5%"]
         th[style="width:5%"]
@@ -17,7 +17,7 @@
       - @organizations.each do |organization|
         tr
           td = organization.name
-          td = organization.owner
+          td = organization.owners.map(&:email).join(', ')
           td = link_to 'Show', organization, class: 'btn btn-default btn-small'
           td = link_to 'Edit', edit_organization_path(organization), class: 'btn btn-default btn-small'
           td = link_to 'Destroy', organization, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-small'

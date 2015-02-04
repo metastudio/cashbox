@@ -43,7 +43,7 @@ describe 'Change profile' do
 
       context 'without full name' do
         let(:full_name) { nil }
-        it { expect(subject).to have_inline_error("can't be blank").for_field('Full name') }
+        it { expect(page).to have_inline_error("can't be blank").for_field('Full name') }
       end
     end
   end

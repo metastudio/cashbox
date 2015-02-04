@@ -10,7 +10,6 @@
 #  updated_at      :datetime
 #  comment         :string(255)
 #
-
 class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
   TRANSACTION_TYPES = %w(Residue)

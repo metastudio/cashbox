@@ -23,4 +23,9 @@ en:
     #   defaults:
     #     username: 'User name to sign in.'
     #     password: 'No special characters, please.'
+  helpers:
+    submit:
+      transaction:
+        create: "Create"
+        update: "Update Transaction"
 
