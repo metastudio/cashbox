@@ -76,4 +76,13 @@ FactoryGirl.define do
       association :category, :expense
     end
   end
+
+  sequence(:bank_account_id)
+  factory :transfer do
+    bank_account_id { create(:bank_account, balance: 5000).id }
+    reference_id    { create(:bank_account, balance: 5000).id }
+    amount          500
+    comission       50
+    comment         "comment"
+  end
 end

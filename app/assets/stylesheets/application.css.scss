@@ -9,7 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require daterangepicker-bs3
  */
 
 @import "bootstrap";
+@import "transactions";
