@@ -88,4 +88,48 @@ describe 'Transactions list' do
       end
     end
   end
+
+  context "table" do
+    before do
+      visit root_path
+    end
+
+    it "shows right column names" do
+      within ".transactions thead tr" do
+        expect(subject).to have_content('Amount')
+        expect(subject).to have_content('Category')
+        expect(subject).to have_content('Account')
+        expect(subject).to have_content('Comment')
+        expect(subject).to have_content('Date')
+      end
+    end
+
+    it "shows right columns content" do
+      within "#transaction_#{org1_transaction.id}" do
+        expect(subject).to have_content(humanized_money_with_symbol(org1_transaction.amount))
+        expect(subject).to have_content(org1_transaction.category.name)
+        expect(subject).to have_content(org1_transaction.bank_account.name)
+        expect(subject).to have_content(org1_transaction.comment)
+        expect(subject).to have_content(org1_transaction.created_at.strftime("%Y-%m-%d"))
+      end
+    end
+
+    context "paint right css-class" do
+      let(:expense) { create :category, :expense, organization: org1 }
+      let!(:org1_transaction2) { create :transaction, category: expense,
+        bank_account: org1_ba, amount: -700 }
+
+      before do
+        visit root_path
+      end
+
+      it "'success' for positive transaction" do
+        expect(subject).to have_selector(".transaction.success#transaction_#{org1_transaction.id}")
+      end
+
+      it "'danger' for negative transaction" do
+        expect(subject).to have_selector(".transaction.danger#transaction_#{org1_transaction2.id}")
+      end
+    end
+  end
 end
