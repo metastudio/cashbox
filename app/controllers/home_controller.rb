@@ -3,7 +3,7 @@ class HomeController < ApplicationController
 
   def show
     @q = current_organization.transactions.ransack(params[:q])
-    @transactions = @q.result
+    @transactions = @q.result.order(created_at: :desc)
     @rub_flow = Money.new(@transactions.by_currency("RUB").sum(:amount_cents), 'rub')
     @usd_flow = Money.new(@transactions.by_currency("USD").sum(:amount_cents), 'usd')
     @transactions = @transactions.page(params[:page]).per(10)

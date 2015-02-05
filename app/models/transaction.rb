@@ -30,6 +30,7 @@ class Transaction < ActiveRecord::Base
   default_scope { order(created_at: :desc) }
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
+      AND transactions.deleted_at IS NULL
       AND bank_account_transactions.deleted_at IS NULL
       AND bank_accounts.currency = '#{currency}'") }
 
@@ -40,9 +41,16 @@ class Transaction < ActiveRecord::Base
 
   before_save :check_negative
   after_save :recalculate_amount
-  after_destroy :recalculate_amount
   before_restore do
     recalculate_amount(with_deleted = true)
+  end
+
+  def bank_account
+    BankAccount.unscoped { super }
+  end
+
+  def category
+    Category.unscoped { super }
   end
 
   private

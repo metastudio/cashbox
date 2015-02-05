@@ -1,3 +1,4 @@
-tr id=dom_id(transaction, 'edit_row')
-  td colspan=4
-    = render 'transactions/form', transaction: transaction
+- if transaction.deleted_at.nil?
+  tr id=dom_id(transaction, 'edit_row')
+    td colspan=4
+      = render 'transactions/form', transaction: transaction
