@@ -17,6 +17,8 @@ shared_examples_for "sortable object" do |sort_by, field|
       elem.send(field).name
     when :category
       elem.send(field).name
+    when :created_at
+      I18n.l elem.send(field)
     else
       elem.send(field)
     end

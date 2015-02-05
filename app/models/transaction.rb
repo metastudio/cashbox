@@ -37,10 +37,6 @@ class Transaction < ActiveRecord::Base
   after_save :recalculate_amount
   after_destroy :recalculate_amount
 
-  def date
-    created_at.strftime("%Y-%m-%d")
-  end
-
   private
 
   def check_negative
