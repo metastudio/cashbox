@@ -46,6 +46,10 @@ FactoryGirl.define do
     name { generate :bank_account_name }
     balance 0
     currency 'RUB'
+
+    trait :with_transactions do
+      after(:create) { |b| create_list :transaction, 2, bank_account: b }
+    end
   end
 
   sequence(:category_name) { |n| "Category #{n}" }
