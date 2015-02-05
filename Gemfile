@@ -31,6 +31,7 @@ gem 'money-rails', github: 'RubyMoney/money-rails', branch: 'upgrade_to_money_6_
 gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
+gem 'ransack'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -60,6 +61,8 @@ group :test do
   gem 'capybara-email'
   gem 'capybara-webkit'
   gem 'headless'
+  gem 'capybara-screenshot'
+  gem 'timecop'
 end
 
 group :staging do
