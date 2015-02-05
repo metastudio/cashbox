@@ -1,0 +1,10 @@
+= search_form_for @q, url: root_path do |f|
+  .col-sm-2
+    = f.input :amount_eq, label: false, placeholder: 'Amount'
+  .col-sm-2
+    = f.input :comment_cont, label: false, placeholder: 'Comment'
+  .col-sm-2
+    = f.input :period, collection: Transaction::FILTER_PERIOD,
+      include_blank: 'For period', label: false
+
+  = f.button :submit, class: 'btn-primary'
