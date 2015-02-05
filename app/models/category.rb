@@ -32,15 +32,11 @@ class Category < ActiveRecord::Base
   self.inheritance_column = nil
 
   belongs_to :organization, inverse_of: :categories
-  has_many :transactions, inverse_of: :category, dependent: :destroy
+  has_many :transactions, inverse_of: :category, dependent: :restrict_with_exception
 
   validates :type, presence: true, inclusion: { in: CATEGORY_TYPES, message: "%{value} is not a valid category type" }
   validates :name, presence: true
   validates :organization_id, presence: true, unless: :system?
-
-  before_restore do
-    bank_account.recalculate_amount!(with_deleted = true)
-  end
 
   scope :incomes,  -> { where(type: CATEGORY_INCOME)  }
   scope :expenses, -> { where(type: CATEGORY_EXPENSE) }
