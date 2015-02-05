@@ -1,19 +1,20 @@
 require 'spec_helper'
 
 describe 'create transfer transaction', js: true do
+  include MoneyRails::ActionViewExtension
+
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
-  let!(:ba1)          { create :bank_account, organization: organization,
-    balance: 50000 }
-  let!(:ba2)          { create :bank_account, organization: organization,
-    balance: 99999 }
+  let!(:ba1)          { create :bank_account, :with_transactions, organization: organization }
+  let!(:ba2)          { create :bank_account, :with_transactions, organization: organization }
 
-  let(:ba1_name)      { ba1.name }
-  let(:ba2_name)      { ba2.name }
+  let(:ba1_name)    { ba1.name }
+  let(:ba2_name)    { ba2.name }
 
-  let(:amount)        { 123.23 }
-  let(:comment)       { "Test transaction" }
-  let(:comission)     { 0.25 }
+  let(:amount)     { 123.25 }
+  let(:comission)  { 0.25 }
+  let(:comment)    { "Test transaction" }
+
 
   let(:transactions)  { organization.transactions.where(
     bank_account_id: [ba1.id, ba2.id]) }
@@ -28,6 +29,7 @@ describe 'create transfer transaction', js: true do
       select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
       fill_in 'transfer[comission]', with: comission
       fill_in 'transfer[comment]',   with: comment
+      screenshot_and_save_page
       click_on 'Create'
     end
     page.has_content?(/(Please review the problems below)|(#{amount})/) # wait after page rerender
@@ -56,6 +58,30 @@ describe 'create transfer transaction', js: true do
       create_transfer
       within ".transactions" do
         expect(page).to have_content(comment + "\nComission: " + comission.to_s)
+      end
+    end
+
+    context "recalculates sidebar" do
+      let!(:ba1_new_amount) { ba1.balance - Money.new((amount + comission) * 100, ba1.currency) }
+      let!(:ba2_new_amount) { ba2.balance + Money.new(amount * 100, ba2.currency) }
+      let!(:new_total){ ba1.organization.bank_accounts.total_balance(ba1.currency) -
+        Money.new(comission * 100, ba1.currency) }
+
+      it "from account" do
+        expect(subject).
+          to have_css("#bank_account_#{ba1.id} td.amount",
+            text: humanized_money_with_symbol(ba1_new_amount))
+      end
+
+      it "to account" do
+        expect(subject).
+          to have_css("#bank_account_#{ba2.id} td.amount",
+            text: humanized_money_with_symbol(ba2_new_amount))
+      end
+
+      it "total balance" do
+        expect(subject).
+          to have_css("#sidebar", text: humanized_money_with_symbol(new_total))
       end
     end
 
