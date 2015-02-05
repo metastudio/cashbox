@@ -10,8 +10,8 @@ class Transfer
   validates :comission, numericality: { greater_than_or_equal_to: 0 }
   validates_presence_of :bank_account_id
   validates :reference_id, presence: true
-  validates :exchange_rate, presence: true,
-    numericality: { greater_than: 0 }, if: "@from_currency != @to_currency"
+  validates :exchange_rate, presence: true, numericality: { greater_than: 0 },
+    if: Proc.new { @from_currency != @to_currency }
   validate :transfer_amount, unless: 'bank_account_id.blank?'
   validate :transfer_account
 
