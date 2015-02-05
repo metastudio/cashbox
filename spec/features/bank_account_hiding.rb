@@ -25,6 +25,19 @@ describe 'bank account hiding' do
           text: humanized_money_with_symbol(transaction.amount))
     end
 
+    it "shows transaction in total" do
+      expect(subject).
+        to have_css("#sidebar",
+          text: humanized_money_with_symbol(transaction.amount))
+    end
+
+    it "shows account on sidebar" do
+      expect(subject).
+        to have_css("#bank_account_#{bank_account.id}",
+          text: humanized_money_with_symbol(transaction.amount))
+    end
+  end
+
   context "when hide account" do
     before do
       visit organization_path(organization)
@@ -35,6 +48,18 @@ describe 'bank account hiding' do
     it "shows hidden transaction" do
       expect(subject).
         to have_css(".transaction.bg-warning#transaction_#{transaction.id}",
+          text: humanized_money_with_symbol(transaction.amount))
+    end
+
+    it "doesnt show transaction in total" do
+      expect(subject).
+        to_not have_css("#sidebar",
+          text: humanized_money_with_symbol(transaction.amount))
+    end
+
+    it "doesnt show account on sidebar" do
+      expect(subject).
+        to_not have_css("#bank_account_#{bank_account.id}",
           text: humanized_money_with_symbol(transaction.amount))
     end
   end

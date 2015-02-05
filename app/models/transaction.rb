@@ -33,6 +33,7 @@ class Transaction < ActiveRecord::Base
       AND transactions.deleted_at IS NULL
       AND bank_account_transactions.deleted_at IS NULL
       AND bank_accounts.currency = '#{currency}'") }
+  scope :without_hidden, -> { where('bank_accounts.hidden' => false) }
 
   validates :amount, presence: true
   validates :category, presence: true, unless: :residue?
@@ -42,8 +43,10 @@ class Transaction < ActiveRecord::Base
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
-  before_restore do
-    recalculate_amount(with_deleted = true)
+  after_restore :recalculate_amount
+
+  def bank_account
+    BankAccount.unscoped { super }
   end
 
   private
@@ -54,8 +57,8 @@ class Transaction < ActiveRecord::Base
     nil
   end
 
-  def recalculate_amount(with_deleted = false)
-    bank_account.recalculate_amount!(with_deleted)
+  def recalculate_amount
+    bank_account.recalculate_amount!
     nil
   end
 
