@@ -13,8 +13,14 @@ Cashbox::Application.routes.draw do
       put :switch
     end
   end
-  resources :bank_accounts, except: [:show, :index]
-  resources :categories
+  resources :bank_accounts, except: [:show, :index] do
+    put :hide, on: :member
+    put :unhide, on: :member
+  end
+  resources :categories do
+    put :hide, on: :member
+    put :unhide, on: :member
+  end
   resources :transactions,  only: [:create, :edit, :update, :destroy] do
     post :transfer, action: :create_transfer, on: :collection
   end

@@ -1,6 +1,8 @@
 class BankAccountsController < ApplicationController
-  before_action :set_bank_account, only: [:edit, :update, :destroy]
-  before_action :require_organization, only: [:edit, :update, :new, :create, :destroy]
+  before_action :set_bank_account, only: [:edit, :update, :destroy, :hide,
+    :unhide]
+  before_action :require_organization, only: [:edit, :update, :new, :create,
+    :destroy, :hide, :unhide]
 
   def new
     @bank_account = current_organization.bank_accounts.build
@@ -27,15 +29,25 @@ class BankAccountsController < ApplicationController
     end
   end
 
-  def destroy
+  def hide
     @bank_account.destroy
+    redirect_to organization_path(current_organization)
+  end
+
+  def unhide
+    @bank_account.restore(recursive: true)
+    redirect_to organization_path(current_organization)
+  end
+
+  def destroy
+    @bank_account.really_destroy!
     redirect_to organization_path(current_organization)
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bank_account
-      @bank_account = current_organization.bank_accounts.find(params[:id])
+      @bank_account = current_organization.bank_accounts.with_deleted.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

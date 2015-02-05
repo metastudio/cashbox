@@ -14,6 +14,10 @@ h1 Listing categories
           td = category.name
           td = category.type
           td = link_to 'Edit', edit_category_path(category)
+          - if category.deleted_at.nil?
+            td = link_to 'Hide', hide_category_path(category), method: :put
+          - else
+            td = link_to 'Show', unhide_category_path(category), method: :put
           td = link_to 'Destroy', category, data: {confirm: 'Are you sure?'}, method: :delete
 - else
   .alert.alert-warning No categories

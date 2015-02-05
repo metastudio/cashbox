@@ -21,4 +21,7 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
 
+  def transactions
+    super.with_deleted.unscope(where: :deleted_at)
+  end
 end
