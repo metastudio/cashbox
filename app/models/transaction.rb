@@ -77,6 +77,6 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    %i(amount_eq period)
+    %i(amount_eq period amount_sort)
   end
 end

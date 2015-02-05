@@ -37,7 +37,8 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @transactions = @category.transactions.page(params[:page])
+    @q = @category.transactions.ransack(params[:q])
+    @transactions = @q.result.page(params[:page])
   end
 
   private
