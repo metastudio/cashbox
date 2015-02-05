@@ -32,6 +32,7 @@ gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
 gem "paranoia", "~> 2.0"
+gem 'ransack'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -61,6 +62,8 @@ group :test do
   gem 'capybara-email'
   gem 'capybara-webkit'
   gem 'headless'
+  gem 'capybara-screenshot'
+  gem 'timecop'
 end
 
 group :staging do
