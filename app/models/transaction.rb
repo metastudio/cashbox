@@ -41,6 +41,8 @@ class Transaction < ActiveRecord::Base
 
   before_save :check_negative
   after_save :recalculate_amount
+  after_destroy :recalculate_amount
+
   before_restore do
     recalculate_amount(with_deleted = true)
   end
