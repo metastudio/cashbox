@@ -21,4 +21,28 @@ describe Category do
       it { should validate_presence_of(:organization_id) }
     end
   end
+
+  context "soft delete" do
+    let(:bank_account)  { create :bank_account }
+    let(:amount)        { Money.new(100, bank_account.currency) }
+    let(:category)      { create :category, organization: bank_account.organization }
+    let!(:transaction)  { create :transaction, bank_account: bank_account,
+      amount: amount, category: category }
+
+    describe "category destroy" do
+      it "changes balance" do
+        expect{category.destroy}.to change{bank_account.balance}.by(-amount)
+      end
+
+      context "then restore" do
+        before do
+          category.destroy
+        end
+
+        it "changes balance" do
+          expect{category.restore}.to change{bank_account.balance}.by(amount)
+        end
+      end
+    end
+  end
 end
