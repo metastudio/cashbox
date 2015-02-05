@@ -27,6 +27,8 @@ class BankAccount < ActiveRecord::Base
   monetize :balance_cents, with_model_currency: :currency
   monetize :residue_cents, with_model_currency: :currency
 
+  scope :without_hidden, -> { where(hidden: false) }
+
   validates :name,     presence: true
   validates :balance,  presence: true
   validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }

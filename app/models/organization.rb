@@ -20,8 +20,4 @@ class Organization < ActiveRecord::Base
   has_many :transactions, through: :bank_accounts, inverse_of: :organization
 
   validates :name, presence: true
-
-  def transactions
-    super.with_deleted.unscope(where: :deleted_at)
-  end
 end

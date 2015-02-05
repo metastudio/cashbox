@@ -1,10 +1,10 @@
 class CategoriesController < ApplicationController
   before_action :set_category, only: [:edit, :update, :destroy, :show,
-    :hide, :unhide]
+    :hide]
   before_action :require_organization
 
   def index
-    @categories = current_organization.categories.with_deleted.order(created_at: :desc)
+    @categories = current_organization.categories.order(created_at: :desc)
   end
 
   def new
@@ -33,7 +33,7 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    @category.really_destroy!
+    @category.destroy
     redirect_to categories_path
   end
 
@@ -41,20 +41,10 @@ class CategoriesController < ApplicationController
     @transactions = @category.transactions.page(params[:page])
   end
 
-  def hide
-    @category.destroy
-    redirect_to categories_path
-  end
-
-  def unhide
-    @category.restore(recursive: true)
-    redirect_to categories_path
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_category
-      @category = current_organization.categories.with_deleted.find(params[:id])
+      @category = current_organization.categories.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -19,8 +19,8 @@ describe Transaction do
       amount: amount }
 
     describe "transaction destroy" do
-      it "doesn't change balance" do
-        expect{transaction.destroy}.to_not change{bank_account.balance}.by(-amount)
+      it "change balance" do
+        expect{transaction.destroy}.to change{bank_account.balance}.by(-amount)
       end
 
       context "then restore" do
@@ -29,7 +29,7 @@ describe Transaction do
         end
 
         it "changes balance" do
-          expect{transaction.restore}.to_not change{bank_account.balance}.by(amount)
+          expect{transaction.restore}.to change{bank_account.balance}.by(amount)
         end
       end
     end
