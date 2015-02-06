@@ -29,6 +29,7 @@ class Transaction < ActiveRecord::Base
   scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
 
   validates :amount, presence: true, length: { maximum: 10 }
+  validate  :amount_balance, if: :expense?
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
@@ -78,5 +79,9 @@ class Transaction < ActiveRecord::Base
 
   def self.ransackable_scopes(auth_object = nil)
     %i(amount_eq period amount_sort)
+  end
+
+  def amount_balance
+    errors.add(:amount, 'Not enough money') if amount > bank_account.balance
   end
 end
