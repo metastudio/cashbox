@@ -15,7 +15,7 @@ describe Transaction do
       let(:transaction) { Transaction.new }
 
       before do
-        transaction.amount = "1" * 256
+        transaction.amount = "1" * 11
       end
 
       subject { transaction }
