@@ -1,9 +1,15 @@
 $(function () {
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
+    e.preventDefault();
+
     $.ajax({
       url: $(this).data("edit-url"),
       dataType: "script"
     });
+  });
+
+  $(document).on('click', '.category-link', function(e) {
+    e.stopPropagation();
   });
 
   $(document).on('click', '#new_transfer_btn', function(e) {
