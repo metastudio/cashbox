@@ -6,7 +6,8 @@ class Transfer
     :inc_transaction, :out_transaction
 
   validates :amount, presence: :true, numericality: { greater_than: 0 }
-  validates :comission, numericality: { greater_than: 0 }
+  validates :comission, numericality: { greater_than: 0 }, length: { maximum: 255 }
+  validates :comment, length: { maximum: 255 }
   validates_presence_of :bank_account_id
   validates :reference_id, presence: true
   validate :transfer_amount

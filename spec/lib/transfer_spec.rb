@@ -7,6 +7,8 @@ describe Transfer do
   context "validation" do
     it { should validate_presence_of(:amount) }
     it { should validate_presence_of(:bank_account_id) }
+    it { should ensure_length_of(:comment).is_at_most(255) }
+    it { should ensure_length_of(:comission).is_at_most(255) }
     it { should validate_numericality_of(:comission).is_greater_than(0) }
     it { should validate_numericality_of(:amount).is_greater_than(0) }
 
