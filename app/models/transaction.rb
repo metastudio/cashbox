@@ -37,10 +37,6 @@ class Transaction < ActiveRecord::Base
   after_save :recalculate_amount
   after_destroy :recalculate_amount
 
-  def bank_account
-    BankAccount.unscoped { super }
-  end
-
   private
 
   def check_negative
