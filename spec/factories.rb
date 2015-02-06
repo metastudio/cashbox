@@ -48,7 +48,7 @@ FactoryGirl.define do
     currency 'RUB'
 
     trait :with_transactions do
-      after(:create) { |b| create_list :transaction, 2, bank_account: b }
+      after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 5000 }
     end
   end
 
