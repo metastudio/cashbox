@@ -89,4 +89,10 @@ FactoryGirl.define do
     comission       50
     comment         "comment"
   end
+
+  trait :with_different_currencies do
+    bank_account_id { create(:bank_account, balance: 5000, currency: "USD").id }
+    reference_id    { create(:bank_account, balance: 5000, currency: "RUB").id }
+    exchange_rate   0.5
+  end
 end

@@ -6,12 +6,14 @@
     = f.input :amount, label: false, as: :float, placeholder: 'Amount'
   .col-sm-2
     = f.input :comission, label: false, as: :float, placeholder: 'Comission'
+  .col-sm-1.hidden
+    = f.input :exchange_rate, label: false, as: :float, placeholder: 'Rate'
   .col-sm-2
-    = f.input :bank_account_id, collection: current_organization.bank_accounts,
-      prompt: 'From', include_blank: false, label: false, label_method: :to_s
+    = f.input :bank_account_id, label: false
+      = f.select :bank_account_id, current_organization.bank_accounts.map { |b| [ b.to_s, b.id, { data_currency: b.currency } ] }, { prompt: 'From' }, class: 'form-control'
   .col-sm-2
-    = f.input :reference_id, collection: current_organization.bank_accounts,
-      prompt: 'To', include_blank: false, label: false, label_method: :to_s
+    = f.input :reference_id, label: false
+      = f.select :reference_id, current_organization.bank_accounts.map { |b| [ b.to_s, b.id, { data_currency: b.currency } ] }, { prompt: 'To' }, class: 'form-control'
   .col-sm-2
     = f.input :comment, label: false, placeholder: 'Comment'
   .col-sm-2
