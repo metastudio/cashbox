@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.2'
+gem 'rails', '4.2.0'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails', '~> 5.0.1'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -26,8 +26,7 @@ gem 'slim-rails'
 gem 'recursive-open-struct'
 gem 'devise'
 gem 'simple_form'
-# Removes annoying deprecation warning https://github.com/RubyMoney/money-rails/issues/151
-gem 'money-rails', github: 'RubyMoney/money-rails', branch: 'upgrade_to_money_6_1'
+gem 'money-rails'
 gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
@@ -45,7 +44,7 @@ group :development do
   gem 'annotate', require: false
 
   # Deployment
-  gem 'capistrano', '~> 3.2.1', require: false
+  gem 'capistrano', '~> 3.3.0', require: false
   gem 'capistrano-rails',   '~> 1.1.1', require: false
   gem 'capistrano-bundler', '~> 1.1.3', require: false
   gem 'capistrano-rvm',   '~> 0.1.1', require: false

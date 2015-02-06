@@ -22,7 +22,7 @@ FactoryGirl.define do
   factory :organization do |o|
     name { generate :organization_name }
 
-    ignore do
+    transient do
       with_user nil
     end
 
