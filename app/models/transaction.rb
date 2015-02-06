@@ -41,9 +41,7 @@ class Transaction < ActiveRecord::Base
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
-  before_restore do
-    recalculate_amount(with_deleted = true)
-  end
+  after_restore :recalculate_amount
 
   private
 
@@ -53,8 +51,8 @@ class Transaction < ActiveRecord::Base
     nil
   end
 
-  def recalculate_amount(with_deleted = false)
-    bank_account.recalculate_amount!(with_deleted)
+  def recalculate_amount
+    bank_account.recalculate_amount!
     nil
   end
 

@@ -41,8 +41,7 @@ class BankAccount < ActiveRecord::Base
     Money.new(where(currency: currency).sum(:balance_cents), currency)
   end
 
-  def recalculate_amount!(with_deleted)
-    transactions = with_deleted ? self.transactions.with_deleted : self.transactions
+  def recalculate_amount!
     update_attributes(balance: Money.new(transactions.sum(:amount_cents), currency))
   end
 
