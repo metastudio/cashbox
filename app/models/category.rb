@@ -27,12 +27,10 @@ class Category < ActiveRecord::Base
     system: true
   }
 
-  acts_as_paranoid
-
   self.inheritance_column = nil
 
   belongs_to :organization, inverse_of: :categories
-  has_many :transactions, inverse_of: :category, dependent: :destroy
+  has_many :transactions, inverse_of: :category, dependent: :restrict_with_exception
 
   validates :type, presence: true, inclusion: { in: CATEGORY_TYPES, message: "%{value} is not a valid category type" }
   validates :name, presence: true

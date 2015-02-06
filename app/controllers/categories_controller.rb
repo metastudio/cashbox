@@ -1,10 +1,9 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:edit, :update, :destroy, :show,
-    :hide]
+  before_action :set_category, only: [:edit, :update, :destroy, :show]
   before_action :require_organization
 
   def index
-    @categories = current_organization.categories.order(created_at: :desc)
+    @categories = current_organization.categories
   end
 
   def new

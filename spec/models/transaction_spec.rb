@@ -12,29 +12,6 @@ describe Transaction do
     it { should validate_presence_of(:bank_account) }
   end
 
-  context 'soft delete' do
-    let(:bank_account)  { create :bank_account }
-    let(:amount)        { Money.new(100, bank_account.currency) }
-    let!(:transaction)  { create :transaction, bank_account: bank_account,
-      amount: amount }
-
-    describe "transaction destroy" do
-      it "change balance" do
-        expect{transaction.destroy}.to change{bank_account.balance}.by(-amount)
-      end
-
-      context "then restore" do
-        before do
-          transaction.destroy
-        end
-
-        it "changes balance" do
-          expect{transaction.restore}.to change{bank_account.balance}.by(amount)
-        end
-      end
-    end
-  end
-
   context "callback" do
     describe "#recalculate_amount" do
       let(:account) { create :bank_account }

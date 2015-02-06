@@ -11,7 +11,7 @@
   h1 Accounts
   - if current_organization.bank_accounts.present?
     table.table.table-hover
-      - current_organization.bank_accounts.without_hidden.each do |account|
+      - current_organization.bank_accounts.visible.each do |account|
         tr class=(account.balance_cents > 0 ? 'success' : 'danger') id="bank_account_#{account.id}"
           td= account.name
           td class='amount'

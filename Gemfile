@@ -31,7 +31,6 @@ gem 'money-rails', github: 'RubyMoney/money-rails', branch: 'upgrade_to_money_6_
 gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
-gem "paranoia", "~> 2.0"
 gem 'ransack'
 
 group :development, :test do

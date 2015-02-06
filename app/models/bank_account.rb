@@ -17,8 +17,6 @@ class BankAccount < ActiveRecord::Base
   CURRENCY_RUB = 'RUB'
   CURRENCIES = [CURRENCY_USD, CURRENCY_RUB]
 
-  acts_as_paranoid
-
   belongs_to :organization, inverse_of: :bank_accounts
   has_many :transactions, dependent: :destroy, inverse_of: :bank_account
 
@@ -27,7 +25,7 @@ class BankAccount < ActiveRecord::Base
   monetize :balance_cents, with_model_currency: :currency
   monetize :residue_cents, with_model_currency: :currency
 
-  scope :without_hidden, -> { where(hidden: false) }
+  scope :visible, -> { where(visible: true) }
 
   validates :name,     presence: true
   validates :balance,  presence: true
@@ -40,7 +38,7 @@ class BankAccount < ActiveRecord::Base
   end
 
   def self.total_balance(currency)
-    Money.new(without_hidden.where(currency: currency).sum(:balance_cents), currency)
+    Money.new(where(currency: currency).sum(:balance_cents), currency)
   end
 
   def recalculate_amount!

@@ -29,7 +29,7 @@ class BankAccountsController < ApplicationController
   end
 
   def hide
-    @bank_account.toggle!(:hidden)
+    @bank_account.toggle!(:visible)
     redirect_to organization_path(current_organization)
   end
 

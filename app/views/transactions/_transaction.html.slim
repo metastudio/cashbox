@@ -1,4 +1,4 @@
-tr.transaction id=dom_id(transaction) class=bg_color(transaction) data-edit-url=edit_transaction_path(transaction)
+tr.transaction id=dom_id(transaction) class=(transaction.income? ? 'success' : 'danger') data-edit-url=edit_transaction_path(transaction)
   td= humanized_money_with_symbol transaction.amount
   td= link_to transaction.category.name, category_path(transaction.category) if transaction.category.present?
   td= transaction.bank_account.name if transaction.bank_account.present?
