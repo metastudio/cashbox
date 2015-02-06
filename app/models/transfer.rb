@@ -7,7 +7,9 @@ class Transfer
     :from_currency, :to_currency
 
   validates :amount, presence: :true, numericality: { greater_than: 0 }
-  validates :comission, numericality: { greater_than_or_equal_to: 0 }
+  validates :comission, numericality: { greater_than_or_equal_to: 0 },
+    length: { maximum: 10 }, allow_blank: true
+  validates :comment, length: { maximum: 255 }
   validates_presence_of :bank_account_id
   validates :reference_id, presence: true
   validates :exchange_rate, presence: true, numericality: { greater_than: 0 },
@@ -100,7 +102,7 @@ class Transfer
     end
 
     def form_comment(comment)
-      comment.to_s + "\nComission: #{comission}"
+      comment.to_s + "\nComission: " + (comission.blank? ? "0" : comission.to_s)
     end
 
     def set_currencies
