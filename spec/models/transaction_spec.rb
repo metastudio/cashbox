@@ -11,22 +11,6 @@ describe Transaction do
     it { should validate_presence_of(:category)     }
     it { should validate_presence_of(:bank_account) }
 
-    context "validate length of :amount" do
-      let(:transaction) { Transaction.new }
-
-      before do
-        transaction.amount = "1" * 21
-      end
-
-      subject { transaction }
-
-      it "is invalid" do
-        expect(subject).to be_invalid
-        expect(subject.errors_on(:amount)).
-          to include("is too long (maximum is 20 characters)")
-      end
-    end
-
     context "custom" do
       context "when expense and not enough money on account" do
         let(:account) { create :bank_account }
