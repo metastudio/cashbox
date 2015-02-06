@@ -12,7 +12,7 @@ describe BankAccount do
     it { should ensure_inclusion_of(:currency).in_array(%w(USD RUB)) }
   end
 
-  context "soft delete" do
+  describe "soft delete" do
     let(:bank_account)  { create :bank_account }
     let(:amount)        { Money.new(100, bank_account.currency) }
     let!(:transaction)  { create :transaction, bank_account: bank_account,
