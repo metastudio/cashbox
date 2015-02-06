@@ -16,6 +16,10 @@ $(function () {
     $('#new_transfer_form').show();
   });
 
+  $(document).on('change', '#q_period', function(e) {
+    show_hide_period_additional_input();
+  });
+
   $(document).on('click', '#new_transaction_btn', function(e) {
     e.preventDefault();
 
@@ -48,4 +52,23 @@ function show_hide_exchange_rate() {
       $('#transfer_comission').parents('.col-sm-1').addClass('col-sm-2').removeClass('col-sm-1');
     }
   }
+}
+
+function show_hide_period_additional_input() {
+  if($('#q_period').val() == 'custom') {
+    $('#q_custom_period.daterange').daterangepicker({ format: 'DD/MM/YYYY' });
+    show_input($('#q_custom_period.daterange'));
+  }
+  else {
+    hide_input($('#q_custom_period.daterange'));
+  }
+}
+
+function show_input(input) {
+  input.parents('.col-sm-2').removeClass('hidden');
+  input.attr('disabled', false);
+}
+function hide_input(input) {
+  input.parents('.col-sm-2').addClass('hidden');
+  input.attr('disabled', true);
 }
