@@ -10,6 +10,22 @@ describe Transaction do
   context "validation" do
     it { should validate_presence_of(:category)     }
     it { should validate_presence_of(:bank_account) }
+
+    context "validate length of :amount" do
+      let(:transaction) { Transaction.new }
+
+      before do
+        transaction.amount = "1" * 256
+      end
+
+      subject { transaction }
+
+      it "is invalid" do
+        expect(subject).to be_invalid
+        expect(subject.errors_on(:amount)).
+          to include("is too long (maximum is 255 characters)")
+      end
+    end
   end
 
   context "callback" do
