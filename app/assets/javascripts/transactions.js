@@ -10,7 +10,6 @@ $(function () {
     });
   });
 
-
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();
 

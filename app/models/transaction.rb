@@ -77,10 +77,12 @@ class Transaction < ActiveRecord::Base
 
   def self.custom_period(custom_period)
     from_to_arr = custom_period.split('-')
-    from = DateTime.parse(from_to_arr[0])
-    to   = DateTime.parse(from_to_arr[1]).try(:end_of_day)
+    from = DateTime.parse(from_to_arr[0]) rescue nil
+    to   = DateTime.parse(from_to_arr[1]).try(:end_of_day) rescue nil
     if from && to
       where("transactions.created_at between ? AND ?", from, to)
+    else
+      all
     end
   end
 
