@@ -1,4 +1,6 @@
 $(function () {
+  show_hide_period_additional_input();
+
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
     e.preventDefault();
 
@@ -7,6 +9,7 @@ $(function () {
       dataType: "script"
     });
   });
+
 
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();
