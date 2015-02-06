@@ -48,7 +48,7 @@ FactoryGirl.define do
     currency 'RUB'
 
     trait :with_transactions do
-      after(:create) { |b| create_list :transaction, 2, bank_account: b }
+      after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 5000 }
     end
   end
 
@@ -88,5 +88,11 @@ FactoryGirl.define do
     amount          500
     comission       50
     comment         "comment"
+  end
+
+  trait :with_different_currencies do
+    bank_account_id { create(:bank_account, balance: 5000, currency: "USD").id }
+    reference_id    { create(:bank_account, balance: 5000, currency: "RUB").id }
+    exchange_rate   0.5
   end
 end
