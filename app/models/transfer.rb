@@ -12,7 +12,7 @@ class Transfer
   validates :reference_id, presence: true
   validates :exchange_rate, presence: true, numericality: { greater_than: 0 },
     if: Proc.new { @from_currency != @to_currency }
-  validate :transfer_amount, unless: 'bank_account_id.blank?'
+  validate :transfer_amount, unless: Proc.new { bank_account_id.blank? }
   validate :transfer_account
 
   def initialize(attributes = {})
