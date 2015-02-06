@@ -15,7 +15,7 @@ describe Transaction do
       let(:transaction) { Transaction.new }
 
       before do
-        transaction.amount = "1" * 11
+        transaction.amount = "1" * 21
       end
 
       subject { transaction }
@@ -23,7 +23,7 @@ describe Transaction do
       it "is invalid" do
         expect(subject).to be_invalid
         expect(subject.errors_on(:amount)).
-          to include("is too long (maximum is 10 characters)")
+          to include("is too long (maximum is 20 characters)")
       end
     end
 
