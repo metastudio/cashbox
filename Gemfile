@@ -32,6 +32,7 @@ gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
 gem 'ransack'
+gem 'rollbar', '~> 1.4.2'
 
 group :development, :test do
   gem 'rspec-rails'
