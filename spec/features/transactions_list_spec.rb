@@ -6,7 +6,7 @@ describe 'Transactions list' do
   let(:user) { create :user, :with_organizations }
   let(:org1) { user.organizations.first }
   let(:org2) { user.organizations.last }
-  let(:org1_ba) { create :bank_account, :with_transactions, organization: org1 }
+  let(:org1_ba) { create :bank_account, organization: org1 }
   let(:org2_ba) { create :bank_account, organization: org2 }
   let(:category_org1)     { create :category, organization: org1 }
   let!(:org1_transaction) { create :transaction, bank_account: org1_ba,
