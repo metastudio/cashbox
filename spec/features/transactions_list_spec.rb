@@ -8,8 +8,11 @@ describe 'Transactions list' do
   let(:org2) { user.organizations.last }
   let(:org1_ba) { create :bank_account, organization: org1 }
   let(:org2_ba) { create :bank_account, organization: org2 }
-  let!(:org1_transaction) { create :transaction, bank_account: org1_ba, amount: 100 }
-  let!(:org2_transaction) { create :transaction, bank_account: org2_ba, amount: 500 }
+  let(:category_org1)     { create :category, organization: org1 }
+  let!(:org1_transaction) { create :transaction, bank_account: org1_ba,
+    category: category_org1, amount: 100 }
+  let!(:org2_transaction) { create :transaction, bank_account: org2_ba,
+    category: category_org1, amount: 500 }
 
   before do
     sign_in user
@@ -23,6 +26,21 @@ describe 'Transactions list' do
 
   it "root page doesn't display another transactions" do
     expect(subject).to_not have_content(humanized_money_with_symbol(org2_transaction.amount))
+  end
+
+  describe "links" do
+    describe "category" do
+      let(:category) { org1_transaction.category.name }
+
+      before do
+        within "#transaction_#{org1_transaction.id}" do
+          click_on category
+        end
+      end
+      it "opens category page" do
+        expect(page).to have_selector('h1', text: category)
+      end
+    end
   end
 
   context 'when switch organization' do
