@@ -3,11 +3,12 @@
 # Table name: categories
 #
 #  id              :integer          not null, primary key
-#  type            :string(255)      not null
-#  name            :string(255)      not null
-#  organization_id :integer          not null
+#  type            :string           not null
+#  name            :string           not null
+#  organization_id :integer
 #  created_at      :datetime
 #  updated_at      :datetime
+#  system          :boolean          default("false")
 #
 
 class Category < ActiveRecord::Base

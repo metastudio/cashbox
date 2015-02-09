@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: transactions
+#
+#  id               :integer          not null, primary key
+#  amount_cents     :integer          default("0"), not null
+#  category_id      :integer
+#  bank_account_id  :integer          not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#  comment          :string
+#  transaction_type :string
+#
+
 require 'spec_helper'
 
 describe Transaction do

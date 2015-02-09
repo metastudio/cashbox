@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'validate FactoryGirl factories' do
   FactoryGirl.factories.each do |factory|
@@ -6,8 +6,7 @@ describe 'validate FactoryGirl factories' do
       subject { FactoryGirl.build(factory.name) }
 
       it "is valid" do
-        is_valid = subject.valid?
-        is_valid.should be_true, subject.errors.full_messages.join(',')
+        expect(subject.valid?).to be_truthy, subject.errors.full_messages.join(',')
       end
     end
   end

@@ -1,11 +1,11 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'category page' do
-  let(:user)         { create :user }
-  let(:organization) { create :organization, with_user: user }
+  let(:user)          { create :user }
+  let(:organization)  { create :organization, with_user: user }
   let(:category1)     { create :category, organization: organization }
   let(:category2)     { create :category, organization: organization }
-  let(:account)      { create :bank_account, organization: organization}
+  let(:account)       { create :bank_account, organization: organization}
   let(:comment1)      { generate :transaction_comment }
   let(:comment2)      { generate :transaction_comment }
   let(:comment3)      { generate :transaction_comment }

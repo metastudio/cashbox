@@ -1,12 +1,13 @@
 # == Schema Information
 #
-# Table name: user_organizations
+# Table name: members
 #
 #  id              :integer          not null, primary key
 #  user_id         :integer          not null
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
+#  role            :string           not null
 #
 
 class Member < ActiveRecord::Base

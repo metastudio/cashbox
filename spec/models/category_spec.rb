@@ -1,4 +1,17 @@
-require 'spec_helper'
+# == Schema Information
+#
+# Table name: categories
+#
+#  id              :integer          not null, primary key
+#  type            :string           not null
+#  name            :string           not null
+#  organization_id :integer
+#  created_at      :datetime
+#  updated_at      :datetime
+#  system          :boolean          default("false")
+#
+
+require 'rails_helper'
 
 describe Category do
   context "association" do

@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: bank_accounts
+#
+#  id              :integer          not null, primary key
+#  name            :string           not null
+#  description     :string
+#  balance_cents   :integer          default("0"), not null
+#  currency        :string           default("USD"), not null
+#  organization_id :integer          not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+
 require 'spec_helper'
 
 describe BankAccount do

@@ -19,7 +19,7 @@ RSpec::Matchers.define :have_flash_message do |message|
     %Q{expected to have flash message "#{message}" in "#{page.find(flash_message_selector).try(:text)}"}
   end
 
-  failure_message_for_should_not do |page|
+  failure_message do |page|
     %Q{expected to not have flash message "#{message}" in "#{page.find(flash_message_selector).try(:text)}"}
   end
 
