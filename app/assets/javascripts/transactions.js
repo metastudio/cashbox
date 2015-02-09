@@ -35,7 +35,6 @@ $(function () {
   $(document).on('change', '#transfer_reference_id', function(e) {
     show_hide_exchange_rate();
   });
-
 });
 
 function show_hide_exchange_rate() {
