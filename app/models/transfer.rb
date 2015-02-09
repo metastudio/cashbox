@@ -92,8 +92,6 @@ class Transfer
   end
 
   private
-
-
     def transfer_amount
       if bank_account.balance < money_amount + money_comission
         errors.add(:amount, 'Not enough money')
