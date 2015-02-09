@@ -20,6 +20,11 @@ $(function () {
     $('#new_transfer_form').show();
   });
 
+  $(document).on('click', '#hide_transaction_edit_form[data-edit-url]', function(e) {
+    $($('#hide_transaction_edit_form').data('edit-url')).hide();
+  });
+
+
   $(document).on('click', '#new_transaction_btn', function(e) {
     e.preventDefault();
 
