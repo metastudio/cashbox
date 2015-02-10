@@ -47,7 +47,7 @@ class BankAccount < ActiveRecord::Base
     transactions.create(amount_cents: residue_cents, transaction_type: 'Residue') if residue > 0
   end
 
-  def to_s
-    "#{name} (#{Money::Currency.new(currency).symbol})"
+  def to_label
+    "#{name} (#{Money::Currency.new(currency).symbol})".truncate(30)
   end
 end

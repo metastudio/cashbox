@@ -8,8 +8,8 @@ describe 'create transfer transaction', js: true do
   let!(:ba1)          { create :bank_account, :with_transactions, organization: organization }
   let!(:ba2)          { create :bank_account, :with_transactions, organization: organization }
 
-  let(:ba1_name)    { ba1.name }
-  let(:ba2_name)    { ba2.name }
+  let(:ba1_label)    { ba1.to_label }
+  let(:ba2_label)    { ba2.to_label }
 
   let(:amount)     { 123.25 }
   let(:comission)  { 0.25 }
@@ -25,8 +25,8 @@ describe 'create transfer transaction', js: true do
     click_on 'Transfer'
     within '#new_transfer_form' do
       fill_in 'transfer[amount]', with: amount
-      select ba1.name, from: 'transfer[bank_account_id]' if ba1_name.present?
-      select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
+      select ba1.to_label, from: 'transfer[bank_account_id]' if ba1_label.present?
+      select ba2.to_label, from: 'transfer[reference_id]' if ba2_label.present?
       fill_in 'transfer[comission]', with: comission
       fill_in 'transfer[comment]',   with: comment
       screenshot_and_save_page
@@ -109,7 +109,7 @@ describe 'create transfer transaction', js: true do
   end
 
   context "with not selected FROM" do
-    let(:ba1_name) { nil }
+    let(:ba1_label) { nil }
 
     it "doesn't create transactions" do
       expect{ subject }.to_not change{ transactions.count }
@@ -121,7 +121,7 @@ describe 'create transfer transaction', js: true do
   end
 
   context "with not selected TO" do
-    let(:ba2_name) { nil }
+    let(:ba2_label) { nil }
 
     it "doesn't create transactions" do
       expect{ subject }.to_not change{ transactions.count }
