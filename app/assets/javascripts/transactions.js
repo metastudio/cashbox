@@ -24,7 +24,6 @@ $(function () {
     $($(this).attr('data-edit-remove')).remove();
   });
 
-
   $(document).on('click', '#new_transaction_btn', function(e) {
     e.preventDefault();
 
