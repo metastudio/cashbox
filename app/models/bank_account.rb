@@ -26,7 +26,7 @@ class BankAccount < ActiveRecord::Base
   monetize :residue_cents, with_model_currency: :currency
 
   validates :name,     presence: true
-  validates :balance,  presence: true
+  validates :balance,  presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
 
   after_create :set_initial_residue
