@@ -11,7 +11,9 @@ describe 'update transaction', js: true do
   subject{ page }
 
   context "pagination" do
-    let!(:transactions) { create_list :transaction, 25, bank_account: account }
+    include_context 'transactions pagination'
+    let!(:transactions) { create_list :transaction, transactions_count,
+      bank_account: account }
 
     before { visit root_path }
 

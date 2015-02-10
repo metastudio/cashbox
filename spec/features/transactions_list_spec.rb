@@ -60,21 +60,23 @@ describe 'Transactions list' do
   end
 
   context "pagination" do
-    let!(:transactions) { FactoryGirl.create_list(:transaction, 15, bank_account: org1_ba).reverse }
+    include_context 'transactions pagination'
+    let!(:transactions) { FactoryGirl.create_list(:transaction,
+      transactions_count, bank_account: org1_ba).reverse }
 
     before do
       visit root_path
     end
 
-    it "lists 10 first transactions" do
+    it "lists first page transactions" do
       within ".transactions" do
-        transactions.first(10).each do |transaction|
+        transactions.first(paginated).each do |transaction|
           expect(subject).to have_selector('td', text: humanized_money_with_symbol(transaction.amount))
         end
       end
     end
 
-    it "doesnt list after 10  transactions" do
+    it "doesnt list second page transactions" do
       within ".transactions" do
         transactions.last(5).each do |transaction|
           expect(subject).to_not have_selector('td', text: humanized_money_with_symbol(transaction.amount))
@@ -89,9 +91,9 @@ describe 'Transactions list' do
         end
       end
 
-      it "doesnt list 10 first transactions" do
+      it "doesnt list first page transactions" do
         within ".transactions" do
-          transactions.first(10).each do |transaction|
+          transactions.first(paginated).each do |transaction|
             expect(subject).to_not have_selector('td', text: humanized_money_with_symbol(transaction.amount))
           end
         end
