@@ -51,6 +51,10 @@ class Transfer
     end
   end
 
+  def save!
+    save ? self : ActiveRecord::RecordInvalid
+  end
+
   # needed for simple form for non db model
   def to_key
   end

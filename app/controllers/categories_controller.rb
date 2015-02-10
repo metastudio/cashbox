@@ -37,14 +37,19 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @q = @category.transactions.ransack(params[:q])
+    @q = if @category.system?
+      current_organization.transactions.where(category_id: @category.id).ransack(params[:q])
+    else
+      @category.transactions.ransack(params[:q])
+    end
     @transactions = @q.result.page(params[:page])
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_category
-      @category = current_organization.categories.find(params[:id])
+      category = Category.find(params[:id])
+      @category = category.system? ? category : current_organization.categories.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
