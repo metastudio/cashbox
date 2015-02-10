@@ -20,8 +20,8 @@ $(function () {
     $('#new_transfer_form').show();
   });
 
-  $(document).on('click', '#hide_transaction_edit_form[data-edit-url]', function(e) {
-    $($('#hide_transaction_edit_form').data('edit-url')).hide();
+  $(document).on('click', '.close[data-edit-hide]', function(e) {
+    $($(this).attr('data-edit-hide')).hide();
   });
 
 
