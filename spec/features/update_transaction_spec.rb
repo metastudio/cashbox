@@ -4,29 +4,24 @@ describe 'update transaction', js: true do
 
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
-  let!(:category)     { create :category, organization: organization }
   let!(:account)      { create :bank_account, organization: organization}
 
-  let!(:transactions) { create_list :transaction, 25, bank_account: account,
-    category: category, amount_cents: 1000000 }
-
-  before do
-    sign_in user
-    visit root_path
-  end
+  before { sign_in user }
 
   subject{ page }
 
   context "pagination" do
     include_context 'transactions pagination'
     let!(:transactions) { create_list :transaction, transactions_count,
-      bank_account: account, category: category }
+      bank_account: account }
+
+    before { visit root_path }
 
     context "first page" do
       before do
-        find(".transactions",
-          text: humanized_money_with_symbol(organization.transactions.first.amount)).click
-        page.has_css?('simple_form edit_transaction')
+        id = transactions.last.id
+        find("#transaction_#{id}").click
+        page.has_css?("#edit_row_transaction_#{id}")
       end
 
       it "shows update form on row click" do
@@ -34,12 +29,12 @@ describe 'update transaction', js: true do
       end
     end
 
-    context "next page" do
+    context "last page" do
       before do
         click_on 'Last'
-        find(".transactions ",
-          text: humanized_money_with_symbol(organization.transactions.last.amount)).click
-        page.has_css?('simple_form edit_transaction')
+        id = transactions.first.id
+        find("#transaction_#{id}").click
+        page.has_css?("#edit_row_transaction_#{id}")
       end
 
       it "shows update form on row click" do
@@ -49,7 +44,7 @@ describe 'update transaction', js: true do
   end
 
   context "when updating" do
-    let(:transaction) { organization.transactions.first }
+    let(:transaction) { create :transaction, bank_account: account, amount: 10000 }
     let(:new_amount)  { 5000 }
     let!(:difference) { transaction.amount - Money.new(new_amount * 100, transaction.currency) }
     let!(:new_total)  { transaction.bank_account.balance - difference }
@@ -57,8 +52,8 @@ describe 'update transaction', js: true do
       total_balance(transaction.currency) - difference }
 
     before do
-      find(".transactions",
-        text: humanized_money_with_symbol(transaction.amount)).click
+      visit root_path
+      find("#transaction_#{transaction.id}").click
       page.has_css?("#edit_row_transaction_#{transaction.id}")
       within ".transactions_list" do
         fill_in 'transaction[amount]', with: new_amount
@@ -76,6 +71,23 @@ describe 'update transaction', js: true do
        expect(subject).
         to have_css("#sidebar",
           text: humanized_money_with_symbol(new_total))
+    end
+  end
+
+  context "close form" do
+    let!(:transaction) { create :transaction, bank_account: account }
+
+    before do
+      visit root_path
+      find("#transaction_#{transaction.id}").click
+      page.has_css?("#edit_row_transaction_#{transaction.id}")
+      within "#edit_row_transaction_#{transaction.id}" do
+        click_on '×'
+      end
+    end
+
+    it "removes form" do
+      expect(page).to_not have_selector('.close')
     end
   end
 end
