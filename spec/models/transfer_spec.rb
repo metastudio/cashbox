@@ -17,10 +17,7 @@ describe Transfer do
     it { should validate_presence_of(:reference_id) }
 
     context "custom validations" do
-      let(:bank_account1) { from }
-      let(:bank_account2) { to }
-      let(:transfer)      { build :transfer, bank_account_id: bank_account1.id,
-        reference_id: to.id }
+      let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id }
 
       subject { transfer }
 
@@ -47,12 +44,20 @@ describe Transfer do
       end
 
       context "diff currency" do
-        let(:from) { create :bank_account, currency: "USD" }
-        let(:to)   { create :bank_account, currency: "RUB" }
+        let(:from) { create :bank_account, currency: "USD", balance: 9999999 }
+        let(:to)   { create :bank_account, currency: "RUB", balance: 9999999 }
 
+        describe 'exchange_rate' do
+          let(:transfer) { build :transfer, exchange_rate: 10_001,
+            bank_account_id: from.id, reference_id: to.id,
+            from_currency: from.currency, to_currency: to.currency }
 
-        it { should validate_numericality_of(:exchange_rate).
-          is_greater_than(0).is_less_than(10_000) }
+          it "is invalid" do
+            expect(subject).to be_invalid
+            expect(subject.errors_on(:exchange_rate)).
+              to include("must be less than 10000")
+          end
+        end
       end
     end
   end
