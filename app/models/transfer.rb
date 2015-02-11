@@ -52,7 +52,7 @@ class Transfer
   end
 
   def save!
-    save ? self : ActiveRecord::RecordInvalid
+    save ? self : (raise self.inspect)
   end
 
   # needed for simple form for non db model
