@@ -20,6 +20,10 @@ $(function () {
     $('#new_transfer_form').show();
   });
 
+  $(document).on('click', '.close[data-edit-remove]', function(e) {
+    $($(this).attr('data-edit-remove')).remove();
+  });
+
   $(document).on('click', '#new_transaction_btn', function(e) {
     e.preventDefault();
 
