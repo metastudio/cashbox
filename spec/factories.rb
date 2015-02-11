@@ -36,7 +36,15 @@ FactoryGirl.define do
     organization
 
     trait :owner do
-      role 'owner'
+      role :owner
+    end
+
+    trait :admin do
+      role :admin
+    end
+
+    trait :user do
+      role :user
     end
   end
 
