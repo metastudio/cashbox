@@ -24,6 +24,13 @@ describe Transaction do
             to include("Not enough money")
         end
       end
+
+      context "amount value" do
+        it_behaves_like "has money ceiling", "amount" do
+          let(:max)    { Transaction::AMOUNT_MAX }
+          let!(:model) { build :transaction, amount: amount }
+        end
+      end
     end
   end
 
@@ -114,12 +121,10 @@ describe Transaction do
         context "and negative amount" do
           let(:amount) { -123.32 }
 
-          it "changes amount to positive" do
-            expect{ subject }.to change{ transaction.amount.to_f }.to(amount.abs)
-          end
-
-          it "doesn't break saving" do
-            expect(subject).to be_true
+          it 'is invalid' do
+            expect(transaction).to be_invalid
+            expect(transaction.errors_on(:amount)).
+              to include("must be greater than 0")
           end
         end
       end
@@ -144,12 +149,10 @@ describe Transaction do
         context "and negative amount" do
           let(:amount) { -123.32 }
 
-          it "stays amount negative" do
-            expect{ subject }.to_not change(transaction, :amount)
-          end
-
-          it "doesn't break saving" do
-            expect(subject).to be_true
+          it 'is invalid' do
+            expect(transaction).to be_invalid
+            expect(transaction.errors_on(:amount)).
+              to include("must be greater than 0")
           end
         end
       end

@@ -11,6 +11,7 @@
 #  comment         :string(255)
 #
 class Transaction < ActiveRecord::Base
+  AMOUNT_MAX = 21_474_836.47
   CURRENCIES = %w(USD RUB)
   TRANSACTION_TYPES = %w(Residue)
   FILTER_PERIOD = [['Current month', 'current_month'], ['Last month', 'last_month'],
@@ -28,7 +29,8 @@ class Transaction < ActiveRecord::Base
   default_scope { order(created_at: :desc) }
   scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
 
-  validates :amount, presence: true
+  validates :amount, presence: true, numericality: { greater_than: 0,
+    less_than_or_equal_to: AMOUNT_MAX }
   validate  :amount_balance, if: :expense?
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
