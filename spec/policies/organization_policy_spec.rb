@@ -7,20 +7,20 @@ describe OrganizationPolicy do
   subject { OrganizationPolicy }
 
   permissions :show? do
-    it { expect(subject).to permit(owner_member, organization) }
-    it { expect(subject).to permit(admin_member, organization) }
-    it { expect(subject).to permit(user_member, organization) }
+    it { expect(subject).to permit(owner, organization) }
+    it { expect(subject).to permit(admin, organization) }
+    it { expect(subject).to permit(user, organization) }
   end
 
   permissions :update? do
-    it { expect(subject).to permit(owner_member, organization) }
-    it { expect(subject).to permit(admin_member, organization) }
+    it_behaves_like "permit owner and admin but user"
   end
 
   permissions :destroy? do
-    it { expect(subject).to permit(owner_member, organization) }
-    it { expect(subject).not_to permit(admin_member, organization) }
-    it { expect(subject).not_to permit(user_member, organization) }
+    it_behaves_like "permit owner and admin but user"
   end
 
+  permissions :edit? do
+    it_behaves_like "permit owner and admin but user"
+  end
 end

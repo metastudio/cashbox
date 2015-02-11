@@ -36,7 +36,15 @@ FactoryGirl.define do
     organization
 
     trait :owner do
-      role 'owner'
+      role :owner
+    end
+
+    trait :admin do
+      role :admin
+    end
+
+    trait :user do
+      role :user
     end
   end
 
@@ -70,7 +78,7 @@ FactoryGirl.define do
   factory :transaction do
     bank_account
     category
-    amount { rand(100.00..200000.00) }
+    amount { rand(50000) }
 
     trait :income do
       association :category, :income

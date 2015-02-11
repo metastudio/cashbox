@@ -15,8 +15,9 @@ describe 'delete transaction', js: true do
   subject{ page }
 
   context "within pagination" do
-    let!(:transactions) { create_list :transaction, 25, bank_account: account,
-      category: category }
+    include_context 'transactions pagination'
+    let!(:transactions) { create_list :transaction, transactions_count,
+      bank_account: account, category: category }
     let(:first_transaction) { transactions.last }
     let(:last_transaction)  { transactions.first }
 
@@ -36,7 +37,7 @@ describe 'delete transaction', js: true do
       end
     end
 
-    context "next page" do
+    context "last page" do
       before do
         click_on 'Last'
         find("#transaction_#{last_transaction.id}",

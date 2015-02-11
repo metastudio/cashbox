@@ -1,5 +1,8 @@
 $(function () {
-  show_hide_period_additional_input();
+  if ($('#transfer_exchange_rate').size()) {
+    console.log(1);
+    show_hide_exchange_rate();
+  }
 
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
     e.preventDefault();
@@ -8,6 +11,10 @@ $(function () {
       url: $(this).data("edit-url"),
       dataType: "script"
     });
+  });
+
+  $(document).on('click', '.category-link', function(e) {
+    e.stopPropagation();
   });
 
   $(document).on('click', '#new_transfer_btn', function(e) {
@@ -19,7 +26,13 @@ $(function () {
   });
 
   $(document).on('change', '#q_period', function(e) {
-    show_hide_period_additional_input();
+    if ($('#transfer_exchange_rate').size()) {
+      show_hide_exchange_rate();
+    }
+  });
+
+  $(document).on('click', '.close[data-edit-remove]', function(e) {
+    $($(this).attr('data-edit-remove')).remove();
   });
 
   $(document).on('click', '#new_transaction_btn', function(e) {
@@ -31,11 +44,15 @@ $(function () {
   });
 
   $(document).on('change', '#transfer_bank_account_id', function(e) {
-    show_hide_exchange_rate();
+    if ($('#transfer_exchange_rate').size()) {
+      show_hide_exchange_rate();
+    }
   });
 
   $(document).on('change', '#transfer_reference_id', function(e) {
-    show_hide_exchange_rate();
+    if ($('#transfer_exchange_rate').size()) {
+      show_hide_exchange_rate();
+    }
   });
 
 });
