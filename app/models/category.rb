@@ -56,7 +56,7 @@ class Category < ActiveRecord::Base
     type == CATEGORY_EXPENSE
   end
 
-  def to_label
+  def to_s
     name.truncate(30);
   end
 end
