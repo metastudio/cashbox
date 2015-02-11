@@ -1,6 +1,5 @@
 $(function () {
   if ($('#transfer_exchange_rate').size()) {
-    console.log(1);
     show_hide_exchange_rate();
   }
 
