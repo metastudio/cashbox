@@ -15,6 +15,8 @@ h1 Listing bank accounts
           td = humanized_money_with_symbol bank_account.balance
           - if current_organization.present?
             td = link_to 'Edit', edit_bank_account_path(bank_account)
+            td = link_to (bank_account.visible ? 'Hide' : 'Show'),
+              hide_bank_account_path(bank_account), method: :put
             td = link_to 'Destroy', bank_account, data: {confirm: 'Are you sure?'}, method: :delete
 - else
   .alert.alert-warning No bank accounts

@@ -1,6 +1,7 @@
 class BankAccountsController < ApplicationController
-  before_action :set_bank_account, only: [:edit, :update, :destroy]
-  before_action :require_organization, only: [:edit, :update, :new, :create, :destroy]
+  before_action :set_bank_account, only: [:edit, :update, :destroy, :hide]
+  before_action :require_organization, only: [:edit, :update, :new, :create,
+    :destroy, :hide]
 
   def new
     @bank_account = current_organization.bank_accounts.build
@@ -25,6 +26,11 @@ class BankAccountsController < ApplicationController
     else
       render action: 'edit'
     end
+  end
+
+  def hide
+    @bank_account.toggle!(:visible)
+    redirect_to organization_path(current_organization)
   end
 
   def destroy
