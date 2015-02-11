@@ -24,8 +24,6 @@ describe 'Organizations list' do
         expect(subject).to have_selector('td',
           text: organization.owners.map(&:email).join(', '))
         expect(subject).to have_link('Show')
-        expect(subject).to have_link('Edit')
-        expect(subject).to have_link('Destroy')
       end
     end
   end
