@@ -1,10 +1,11 @@
 class OrganizationPolicy < ApplicationPolicy
 
-  def edit?
-    member.owner? || member.admin?
+  def initialize(user, record)
+    @member = user.members.find_by(organization: record) if record
+    @record = record
   end
 
-  def delete?
+  def edit?
     member.owner? || member.admin?
   end
 

@@ -48,6 +48,10 @@ class OrganizationsController < ApplicationController
 
   private
 
+  def pundit_user
+    current_user
+  end
+
   def find_organization
     @organization = current_user.organizations.find(params[:id])
   end

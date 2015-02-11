@@ -10,10 +10,10 @@
         = @organization.name
     .form-group
       = link_to 'Back', organizations_path, class: 'btn btn-default'
-      - if policy(:organization).edit?
+      - if policy(@organization).edit?
         = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default'
-      - if policy(:organization).delete?
-        = link_to 'Delete', organization_path(@organization), method: 'delete', data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'
+      - if policy(@organization).destroy?
+        = link_to 'Destroy', organization_path(@organization), method: 'delete', data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'
 
   .col-sm-8
     .pull-right

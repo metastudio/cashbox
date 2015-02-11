@@ -1,17 +1,4 @@
-require 'spec_helper'
-
-describe 'organization page' do
-  let(:user)   { create :user }
-  let(:member) { member }
-  let(:org)    { member.organization }
-
-  before do
-    sign_in user
-    visit organization_path org
-  end
-
-  subject{ page }
-
+shared_examples_for "organization buttons permissions" do
   context 'admin user' do
     let!(:member) { create :member, :admin, user: user }
 
@@ -20,7 +7,7 @@ describe 'organization page' do
     end
 
     it "is able to delete organization" do
-      expect(subject).to have_content('Delete')
+      expect(subject).to have_content('Destroy')
     end
   end
 
@@ -32,7 +19,7 @@ describe 'organization page' do
     end
 
     it "is able to delete organization" do
-      expect(subject).to have_content('Delete')
+      expect(subject).to have_content('Destroy')
     end
   end
 
@@ -44,7 +31,7 @@ describe 'organization page' do
     end
 
     it "is NOT able to delete organization" do
-      expect(subject).to_not have_content('Delete')
+      expect(subject).to_not have_content('Destroy')
     end
   end
 end
