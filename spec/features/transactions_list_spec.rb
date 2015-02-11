@@ -137,7 +137,7 @@ describe 'Transactions list' do
     context "paint right css-class" do
       let(:expense) { create :category, :expense, organization: org1 }
       let!(:org1_transaction2) { create :transaction, category: expense,
-        bank_account: org1_ba, amount: -700 }
+        bank_account: org1_ba, amount: 50 }
 
       before do
         visit root_path

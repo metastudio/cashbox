@@ -1,3 +1,7 @@
 tr id=dom_id(transaction, 'edit_row')
   td colspan=4
     = render 'transactions/form', transaction: transaction
+  td
+    button type="button" class="close" data-edit-remove=dom_id(transaction, '#edit_row')
+      | &times;
+

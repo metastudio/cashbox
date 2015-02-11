@@ -28,7 +28,7 @@ class Transaction < ActiveRecord::Base
   default_scope { order(created_at: :desc) }
   scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
 
-  validates :amount, presence: true, length: { maximum: 20 }
+  validates :amount, presence: true, numericality: { greater_than: 0 }
   validate  :amount_balance, if: :expense?
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
