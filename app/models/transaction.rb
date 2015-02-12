@@ -34,7 +34,7 @@ class Transaction < ActiveRecord::Base
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
       AND bank_account_transactions.deleted_at IS NULL
-      AND bank_accounts.currency = ?", currency) }
+      AND bank_accounts.currency = #{currency}") }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
