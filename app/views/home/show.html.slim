@@ -1,5 +1,5 @@
 = content_for :sidebar
-  = render 'home/sidebar'
+  = render partial: 'home/sidebar', locals: { q: @q }
 
 .row
   .col-sm-12
