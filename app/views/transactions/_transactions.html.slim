@@ -5,8 +5,6 @@ hr
   h4 Filters:
 .row
   = render 'transactions/filter'
-.row
-  = render 'transactions/flow' if params[:q]
 
 .transactions_list
   = render 'transactions/transactions_table', transactions: transactions
