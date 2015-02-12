@@ -89,7 +89,7 @@ describe 'Transactions filter' do
       it_behaves_like 'filterable object'
     end
 
-    context "when last month" do
+    context "when previous month" do
       let!(:transaction)  { Timecop.travel(1.month.ago) {
         create :transaction, bank_account: ba } }
       let!(:transaction2) { Timecop.travel(1.month.ago) {
@@ -101,7 +101,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
-        select 'Last month', from: 'q[period]'
+        select 'Previous month', from: 'q[period]'
         click_on 'Search'
       end
 
@@ -188,7 +188,7 @@ describe 'Transactions filter' do
     before do
       visit root_path
       fill_in 'q[amount_eq]', with: 100
-      select 'Last month', from: 'q[period]'
+      select 'Previous month', from: 'q[period]'
       click_on 'Search'
     end
 
