@@ -39,7 +39,8 @@ class Category < ActiveRecord::Base
   scope :incomes,  -> { where(type: CATEGORY_INCOME)  }
   scope :expenses, -> { where(type: CATEGORY_EXPENSE) }
   scope :for_organization, ->(organization) {
-    where("system = true or organization_id = ?", organization.id) }
+    where("categories.system = ? OR catgories.organization_id =?",
+      true, organization.id) }
 
   class << self
     def grouped_by_type

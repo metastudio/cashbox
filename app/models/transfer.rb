@@ -52,7 +52,7 @@ class Transfer
   end
 
   def save!
-    save ? self : (raise self.inspect)
+    (raise self.inspect) unless save
   end
 
   # needed for simple form for non db model
