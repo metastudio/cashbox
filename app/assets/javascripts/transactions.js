@@ -53,7 +53,6 @@ $(function () {
       show_hide_exchange_rate();
     }
   });
-
 });
 
 function show_hide_exchange_rate() {
