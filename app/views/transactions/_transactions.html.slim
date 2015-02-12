@@ -1,6 +1,10 @@
 .row
   = render 'transactions/form', transaction: Transaction.new
   = render 'transactions/transfer_form', transfer: Transfer.new
+hr
+  h4 Filters:
+.row
+  = render 'transactions/filter'
 
 .transactions_list
   = render 'transactions/transactions_table', transactions: transactions

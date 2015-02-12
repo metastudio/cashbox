@@ -25,7 +25,9 @@ $(function () {
   });
 
   $(document).on('change', '#q_period', function(e) {
-      show_hide_period_additional_input();
+    if ($('#transfer_exchange_rate').size()) {
+      show_hide_exchange_rate();
+    }
   });
 
   $(document).on('click', '.close[data-edit-remove]', function(e) {
@@ -80,10 +82,10 @@ function show_hide_period_additional_input() {
 }
 
 function show_input(input) {
-  input.removeClass('hidden');
+  input.parents('.col-sm-2').removeClass('hidden');
   input.attr('disabled', false);
 }
 function hide_input(input) {
-  input.addClass('hidden');
+  input.parents('.col-sm-2').addClass('hidden');
   input.attr('disabled', true);
 }
