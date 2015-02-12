@@ -6,6 +6,7 @@ describe 'create transaction', js: true do
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
   let!(:category)     { create :category, organization: organization }
+
   let!(:account)      { create :bank_account, :with_transactions,
     organization: organization}
 
@@ -47,8 +48,6 @@ describe 'create transaction', js: true do
     end
 
     context "when income category selected" do
-      let!(:category) { create :category, :income, organization: organization }
-
       it "creates transaction with positive amount" do
         expect{ subject }.to change{ transactions.where(amount_cents: amount * 100).count }.by(1)
       end
