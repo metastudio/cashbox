@@ -13,6 +13,7 @@
 #
 
 class BankAccount < ActiveRecord::Base
+  AMOUNT_MAX = 21_474_836.47
   CURRENCY_USD = 'USD'
   CURRENCY_RUB = 'RUB'
   CURRENCIES = [CURRENCY_USD, CURRENCY_RUB]
@@ -28,7 +29,9 @@ class BankAccount < ActiveRecord::Base
   scope :visible, -> { where(visible: true) }
 
   validates :name,     presence: true
-  validates :balance,  presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :balance,  presence: true, numericality: {
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: AMOUNT_MAX }
   validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
 
   after_create :set_initial_residue
