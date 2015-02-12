@@ -1,12 +1,12 @@
+hr
+  h4 Filters:
+
 = search_form_for @q, url: root_path do |f|
-  .col-sm-2
-    = f.input :amount_eq, label: false, placeholder: 'Amount'
-  .col-sm-2
-    = f.input :comment_cont, label: false, placeholder: 'Comment'
-  .col-sm-2
-    = f.input :period, collection: Transaction::FILTER_PERIOD,
-      include_blank: 'For period', label: false
-  .col-sm-2.hidden
-    = f.input :custom_period, disabled: true, input_html: { class: 'daterange' },
-      label: false, placeholder: '__/__/__/ - __/__/__'
-  = f.button :submit, class: 'btn-primary'
+  = f.input :amount_eq, label: false, placeholder: 'Amount'
+  = f.input :comment_cont, label: false, placeholder: 'Comment'
+  = f.input :period, collection: Transaction::FILTER_PERIOD,
+    include_blank: 'For period', label: false
+  = f.input :custom_period, disabled: true, input_html: { class: 'hidden daterange' },
+    label: false, placeholder: '__/__/__/ - __/__/__'
+  .pull-right
+    = f.button :submit, class: 'btn-primary'
