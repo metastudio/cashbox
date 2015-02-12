@@ -14,16 +14,17 @@ describe Transfer do
     it { should validate_numericality_of(:comission).
       is_greater_than_or_equal_to(0) }
     it { should ensure_length_of(:comission).is_at_most(10) }
+    it { should validate_presence_of(:reference_id) }
 
     context "custom validations" do
-      let(:bank_account1) { create :bank_account, balance: 100 }
-      let(:bank_account2) { create :bank_account, balance: 200 }
-      let(:reference_id ) { bank_account2.id }
-      let(:transfer)      { build :transfer, bank_account_id: bank_account1.id,
-        reference_id: reference_id }
+      let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id }
 
       subject { transfer }
+
       describe "transfer_amount" do
+        let(:from) { create :bank_account, balance: 100 }
+        let(:to)   { create :bank_account, balance: 200 }
+
         it 'is invalid' do
           expect(subject).to be_invalid
           expect(subject.errors_on(:amount)).
@@ -31,8 +32,32 @@ describe Transfer do
         end
       end
 
-      context "same currency" do
-        it { should validate_presence_of(:reference_id) }
+      context "transfer_account" do
+        let(:from) { create :bank_account, balance: 100 }
+        let(:to)   { from }
+
+        it 'is invalid' do
+          expect(subject).to be_invalid
+          expect(subject.errors_on(:reference_id)).
+            to include("Can't transfer to same account")
+        end
+      end
+
+      context "diff currency" do
+        let(:from) { create :bank_account, currency: "USD", balance: 9999999 }
+        let(:to)   { create :bank_account, currency: "RUB", balance: 9999999 }
+
+        describe 'exchange_rate' do
+          let(:transfer) { build :transfer, exchange_rate: 10_001,
+            bank_account_id: from.id, reference_id: to.id,
+            from_currency: from.currency, to_currency: to.currency }
+
+          it "is invalid" do
+            expect(subject).to be_invalid
+            expect(subject.errors_on(:exchange_rate)).
+              to include("must be less than 10000")
+          end
+        end
       end
     end
   end

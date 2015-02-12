@@ -27,5 +27,7 @@ en:
     submit:
       transaction:
         create: "Create"
+      transaction:
+        create: "Create"
         update: "Update Transaction"
 

@@ -13,8 +13,8 @@ class Transfer
   validates :comment, length: { maximum: 255 }
   validates_presence_of :bank_account_id
   validates :reference_id, presence: true
-  validates :exchange_rate, presence: true, numericality: { greater_than: 0 },
-    if: Proc.new { @from_currency != @to_currency }
+  validates :exchange_rate, presence: true, numericality: { greater_than: 0,
+    less_than: 10_000 }, if: :currency_mismatch?
   validate :transfer_amount, unless: Proc.new { bank_account_id.blank? }
   validate :transfer_account
 
@@ -22,20 +22,21 @@ class Transfer
     attributes.each do |name, value|
       send("#{name}=", value)
     end
+    @from_currency = bank_account.try(:currency)
+    @to_currency   = BankAccount.find_by(id: reference_id).try(:currency)
   end
 
   def save
     if valid?
-      set_currencies
       @out_transaction = Transaction.new(
         amount_cents: estimate_amount(out = true),
-        bank_account_id: @bank_account_id, comment: form_comment(@comment),
+        bank_account_id: bank_account_id, comment: form_comment(comment),
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_EXPENSE_PARAMS).id)
 
       @inc_transaction = Transaction.new(
         amount_cents: estimate_amount(inc = false),
-        bank_account_id: @reference_id, comment: form_comment(@comment),
+        bank_account_id: reference_id, comment: form_comment(comment),
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_INCOME_PARAMS).id)
 
@@ -60,11 +61,11 @@ class Transfer
   end
 
   def money_amount
-    Money.new(@amount_cents, bank_account.currency)
+    Money.new(amount_cents, bank_account.currency)
   end
 
   def money_comission
-    Money.new(@comission_cents, bank_account.currency)
+    Money.new(comission_cents, bank_account.currency)
   end
 
   def amount=(value)
@@ -85,6 +86,10 @@ class Transfer
     end
   end
 
+  def currency_mismatch?
+    from_currency != to_currency
+  end
+
   private
     def transfer_amount
       if bank_account.balance < money_amount + money_comission
@@ -93,32 +98,27 @@ class Transfer
     end
 
     def transfer_account
-      if @bank_account_id == @reference_id
+      if bank_account_id == reference_id
         errors.add(:reference_id, "Can't transfer to same account")
       end
     end
 
     def bank_account
-     @bank_account ||= BankAccount.find(@bank_account_id)
+     @bank_account ||= BankAccount.find_by(id: bank_account_id)
     end
 
     def form_comment(comment)
       comment.to_s + "\nComission: " + (comission.blank? ? "0" : comission.to_s)
     end
 
-    def set_currencies
-      @from_currency = bank_account.currency
-      @to_currency   = BankAccount.find(reference_id).currency
-    end
-
     def estimate_amount(out)
-      estimated_amount = out ? (@amount_cents + @comission_cents) : @amount_cents
-      if @from_currency != @to_currency
-        Money.add_rate(@from_currency, @to_currency, @exchange_rate)
+      estimated_amount = out ? (amount_cents + comission_cents) : amount_cents
+      if currency_mismatch?
+        Money.add_rate(from_currency, to_currency, exchange_rate)
         estimated_amount = if out
-          Money.new(estimated_amount, @from_currency).cents
+          Money.new(estimated_amount, from_currency).cents
         else
-          Money.new(estimated_amount, @from_currency).exchange_to(@to_currency).cents
+          Money.new(estimated_amount, from_currency).exchange_to(to_currency).cents
         end
       end
       estimated_amount
