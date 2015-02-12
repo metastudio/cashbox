@@ -1,7 +1,0 @@
-h4
-  .col-sm-2
-    | Total:
-  .col-sm-2 class=(@rub_flow > 0 ? 'bg-success' : 'bg-danger')
-    = humanized_money_with_symbol(@rub_flow)
-  .col-sm-2 class=(@usd_flow > 0 ? 'bg-success' : 'bg-danger')
-    = humanized_money_with_symbol(@usd_flow)

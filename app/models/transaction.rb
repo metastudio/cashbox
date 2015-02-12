@@ -28,6 +28,8 @@ class Transaction < ActiveRecord::Base
 
   default_scope { order(created_at: :desc) }
   scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
+  scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
+  scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
   validates :amount, presence: true, numericality: { greater_than: 0,
     less_than_or_equal_to: AMOUNT_MAX }
