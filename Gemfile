@@ -18,6 +18,8 @@ gem 'uglifier', '>= 1.3.0'
 # Asset libraries
 gem 'jquery-rails'
 gem 'bootstrap-sass'
+gem 'momentjs-rails'
+gem 'bootstrap-daterangepicker-rails'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'

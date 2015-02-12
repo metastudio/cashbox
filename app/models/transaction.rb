@@ -15,7 +15,8 @@ class Transaction < ActiveRecord::Base
   CURRENCIES = %w(USD RUB)
   TRANSACTION_TYPES = %w(Residue)
   FILTER_PERIOD = [['Current month', 'current_month'], ['Previous month', 'prev_month'],
-   ['Last 3 months', 'last_3_months'],['Quarter', 'quarter'], ['This year', 'this_year']]
+   ['Last 3 months', 'last_3_months'],['Quarter', 'quarter'],
+   ['This year', 'this_year'], ['Custom', 'custom']]
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
@@ -73,6 +74,19 @@ class Transaction < ActiveRecord::Base
       where("transactions.created_at >= ?", Time.now.beginning_of_year)
     when "quarter"
       where("transactions.created_at >= ?", Time.now.beginning_of_quarter)
+    else
+      all
+    end
+  end
+
+  def self.custom_period(custom_period)
+    from_to_arr = custom_period.split('-')
+    from = DateTime.parse(from_to_arr[0]) rescue nil
+    to   = DateTime.parse(from_to_arr[1]).try(:end_of_day) rescue nil
+    if from && to
+      where("transactions.created_at between ? AND ?", from, to)
+    else
+      all
     end
   end
 
@@ -82,7 +96,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    %i(amount_eq period amount_sort)
+    %i(amount_eq period amount_sort custom_period)
   end
 
   def amount_balance
