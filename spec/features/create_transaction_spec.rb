@@ -35,6 +35,20 @@ describe 'create transaction', js: true do
     sign_in user
   end
 
+  context 'form select' do
+    context 'choose bank account' do
+      before do
+        visit root_path
+      end
+
+      it "displays account name with currency" do
+        within '#transaction_bank_account_id' do
+          expect(page).to have_content account.to_s
+        end
+      end
+    end
+  end
+
   context "with valid data" do
     it "creates a new transaction" do
       expect{ subject }.to change{ transactions.count }.by(1)
