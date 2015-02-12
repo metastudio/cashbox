@@ -54,7 +54,7 @@ describe 'create transaction', js: true do
     end
 
     context "when expense category selected" do
-      let!(:category)  { create :category, :expense, organization: organization }
+      let!(:category) { create :category, :expense, organization: organization }
 
       it "creates transaction with negative amount" do
         expect{
