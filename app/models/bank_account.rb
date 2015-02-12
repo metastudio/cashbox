@@ -55,6 +55,6 @@ class BankAccount < ActiveRecord::Base
   end
 
   def to_s
-    "#{name} (#{Money::Currency.new(currency).symbol})"
+    "#{name.truncate(30)} (#{Money::Currency.new(currency).symbol})"
   end
 end

@@ -8,8 +8,8 @@ describe 'create transfer transaction', js: true do
   let!(:ba1)          { create :bank_account, :with_transactions, organization: organization }
   let!(:ba2)          { create :bank_account, :with_transactions, organization: organization }
 
-  let(:ba1_name)    { ba1.name }
-  let(:ba2_name)    { ba2.name }
+  let(:ba1_name)    { ba1.to_s }
+  let(:ba2_name)    { ba2.to_s }
 
   let(:amount)     { 123.25 }
   let(:comission)  { 0.25 }

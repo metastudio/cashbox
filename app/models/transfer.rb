@@ -52,6 +52,10 @@ class Transfer
     end
   end
 
+  def save!
+    (raise self.inspect) unless save
+  end
+
   # needed for simple form for non db model
   def to_key
   end

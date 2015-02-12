@@ -6,5 +6,7 @@
   .col-sm-2
     = f.input :period, collection: Transaction::FILTER_PERIOD,
       include_blank: 'For period', label: false
-
+  .col-sm-2.hidden
+    = f.input :custom_period, disabled: true, input_html: { class: 'daterange' },
+      label: false, placeholder: '__/__/__/ - __/__/__'
   = f.button :submit, class: 'btn-primary'
