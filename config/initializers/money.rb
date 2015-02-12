@@ -46,17 +46,17 @@ MoneyRails.configure do |config|
   # Register a custom currency
   #
   # Example:
-  config.register_currency = {
-    :priority            => 2,
-    :iso_code            => "RUB",
-    :name                => "Russian Ruble",
-    :symbol              => "р.",
-    :symbol_first        => true,
-    :subunit             => "Kopek",
-    :subunit_to_unit     => 100,
-    :thousands_separator => ".",
-    :decimal_mark        => ","
-  }
+  # config.register_currency = {
+  #   :priority            => 2,
+  #   :iso_code            => "RUB",
+  #   :name                => "Russian Ruble",
+  #   :symbol              => "р.",
+  #   :symbol_first        => false,
+  #   :subunit             => "Kopek",
+  #   :subunit_to_unit     => 100,
+  #   :thousands_separator => ".",
+  #   :decimal_mark        => ","
+  # }
 
   # Set money formatted output globally.
   # Default value is nil meaning "ignore this option".
@@ -64,4 +64,5 @@ MoneyRails.configure do |config|
   #
   # config.no_cents_if_whole = nil
   # config.symbol = nil
+  config.sign_before_symbol = true
 end
