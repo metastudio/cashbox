@@ -11,9 +11,10 @@
 #  comment         :string(255)
 #
 class Transaction < ActiveRecord::Base
+  AMOUNT_MAX = 21_474_836.47
   CURRENCIES = %w(USD RUB)
   TRANSACTION_TYPES = %w(Residue)
-  FILTER_PERIOD = [['Current month', 'current_month'], ['Last month', 'last_month'],
+  FILTER_PERIOD = [['Current month', 'current_month'], ['Previous month', 'prev_month'],
    ['Last 3 months', 'last_3_months'],['Quarter', 'quarter'], ['This year', 'this_year']]
 
   acts_as_paranoid
@@ -28,12 +29,17 @@ class Transaction < ActiveRecord::Base
   delegate :income?, :expense?, to: :category, allow_nil: true
 
   default_scope { order(created_at: :desc) }
+  # scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
       AND bank_account_transactions.deleted_at IS NULL
-      AND bank_accounts.currency = '#{currency}'") }
+      AND bank_accounts.currency = ?", currency) }
+  scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
+  scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
-  validates :amount, presence: true
+  validates :amount, presence: true, numericality: { greater_than: 0,
+    less_than_or_equal_to: AMOUNT_MAX }
+  validate  :amount_balance, if: :expense?
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
@@ -66,10 +72,10 @@ class Transaction < ActiveRecord::Base
       where("transactions.created_at >= ?", Time.now.beginning_of_month)
     when "last_3_months"
       where("transactions.created_at >= ?", (Time.now - 3.months).beginning_of_day)
-    when "last_month"
-      last_month_begins = Time.now.beginning_of_month - 1.months
-      where("transactions.created_at between ? AND ?", last_month_begins,
-        last_month_begins.end_of_month)
+    when "prev_month"
+      prev_month_begins = Time.now.beginning_of_month - 1.months
+      where("transactions.created_at between ? AND ?", prev_month_begins,
+        prev_month_begins.end_of_month)
     when "this_year"
       where("transactions.created_at >= ?", Time.now.beginning_of_year)
     when "quarter"
@@ -83,6 +89,10 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    %i(amount_eq period)
+    %i(amount_eq period amount_sort)
+  end
+
+  def amount_balance
+    errors.add(:amount, 'Not enough money') if amount > bank_account.balance
   end
 end

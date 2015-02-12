@@ -1,5 +1,5 @@
 # paths
-app_path = "/var/www/rails/cashbox.metastudiohq.com"
+app_path = "/var/www/rails/staging.cashbox.metastudiohq.com"
 
 working_directory "#{app_path}/current"
 pid               "#{app_path}/current/tmp/pids/unicorn.pid"

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Category do
   context "association" do
     it { should belong_to(:organization) }
-    it { should have_many(:transactions).dependent(:restrict_with_exception) }
+    it { should have_many(:transactions).dependent(:destroy) }
   end
 
   context "validation" do

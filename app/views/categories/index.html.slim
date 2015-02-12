@@ -3,7 +3,7 @@
 h1 Listing categories
 
 - if @categories.present?
-  table.table.table-stripped.table-hover
+  table.table.table-stripped.table-hover.categories
     thead
       tr
         th Name
@@ -17,3 +17,6 @@ h1 Listing categories
           td = link_to 'Destroy', category, data: {confirm: 'Are you sure?'}, method: :delete
 - else
   .alert.alert-warning No categories
+
+.paginator.col-md-offset-5
+  = paginate @categories, remote: true

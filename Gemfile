@@ -33,6 +33,7 @@ gem 'pundit'
 gem 'enumerize'
 gem "paranoia", "~> 2.0"
 gem 'ransack'
+gem 'rollbar', '~> 1.4.2'
 
 group :development, :test do
   gem 'rspec-rails'

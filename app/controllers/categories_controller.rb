@@ -3,7 +3,7 @@ class CategoriesController < ApplicationController
   before_action :require_organization
 
   def index
-    @categories = current_organization.categories
+    @categories = current_organization.categories.page(params[:page]).per(10)
   end
 
   def new
@@ -37,7 +37,8 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @transactions = @category.transactions.page(params[:page])
+    @q = @category.transactions.ransack(params[:q])
+    @transactions = @q.result.page(params[:page])
   end
 
   private

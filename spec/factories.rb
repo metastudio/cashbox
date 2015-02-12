@@ -36,7 +36,15 @@ FactoryGirl.define do
     organization
 
     trait :owner do
-      role 'owner'
+      role :owner
+    end
+
+    trait :admin do
+      role :admin
+    end
+
+    trait :user do
+      role :user
     end
   end
 
@@ -46,6 +54,10 @@ FactoryGirl.define do
     name { generate :bank_account_name }
     balance 0
     currency 'RUB'
+
+    trait :with_transactions do
+      after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 5000 }
+    end
   end
 
   sequence(:category_name) { |n| "Category #{n}" }
@@ -66,7 +78,7 @@ FactoryGirl.define do
   factory :transaction do
     bank_account
     category
-    amount { rand(100.00..200000.00) }
+    amount { rand(50000) }
 
     trait :income do
       association :category, :income
@@ -84,5 +96,11 @@ FactoryGirl.define do
     amount          500
     comission       50
     comment         "comment"
+  end
+
+  trait :with_different_currencies do
+    bank_account_id { create(:bank_account, balance: 5000, currency: "USD").id }
+    reference_id    { create(:bank_account, balance: 5000, currency: "RUB").id }
+    exchange_rate   0.5
   end
 end

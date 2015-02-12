@@ -10,26 +10,25 @@ describe Transaction do
   context "validation" do
     it { should validate_presence_of(:category)     }
     it { should validate_presence_of(:bank_account) }
-  end
 
-  describe 'soft delete' do
-    let(:bank_account)  { create :bank_account }
-    let(:amount)        { Money.new(100, bank_account.currency) }
-    let!(:transaction)  { create :transaction, bank_account: bank_account,
-      amount: amount }
+    context "custom" do
+      context "when expense and not enough money on account" do
+        let(:account) { create :bank_account }
+        let(:transaction) { build :transaction, :expense, bank_account: account }
 
-    describe "transaction destroy" do
-      it "changes balance" do
-        expect{transaction.destroy}.to change{bank_account.balance}.by(-amount)
+        subject { transaction }
+
+        it 'is invalid' do
+          expect(subject).to be_invalid
+          expect(subject.errors_on(:amount)).
+            to include("Not enough money")
+        end
       end
 
-      context "then restore" do
-        before do
-          transaction.destroy
-        end
-
-        it "changes balance" do
-          expect{transaction.restore}.to change{bank_account.balance}.by(amount)
+      context "amount value" do
+        it_behaves_like "has money ceiling", "amount" do
+          let(:max)    { Transaction::AMOUNT_MAX }
+          let!(:model) { build :transaction, amount: amount }
         end
       end
     end
@@ -37,7 +36,7 @@ describe Transaction do
 
   context "callback" do
     describe "#recalculate_amount" do
-      let(:account) { create :bank_account }
+      let(:account) { create :bank_account, :with_transactions }
 
       subject{ transaction.save }
 
@@ -51,7 +50,8 @@ describe Transaction do
         end
 
         context "expense transaction" do
-          let(:transaction)  { build :transaction, :expense, bank_account: account }
+          let(:transaction)  { build :transaction, :expense, bank_account: account,
+          amount: 500 }
 
           it "subtracts transaction amount from account's balance" do
             expect{ subject }.to change(account, :balance_cents).by(-transaction.amount_cents)
@@ -121,18 +121,18 @@ describe Transaction do
         context "and negative amount" do
           let(:amount) { -123.32 }
 
-          it "changes amount to positive" do
-            expect{ subject }.to change{ transaction.amount.to_f }.to(amount.abs)
-          end
-
-          it "doesn't break saving" do
-            expect(subject).to be_true
+          it 'is invalid' do
+            expect(transaction).to be_invalid
+            expect(transaction.errors_on(:amount)).
+              to include("must be greater than 0")
           end
         end
       end
 
       context "for expense category" do
-        let(:transaction) { build :transaction, :expense, amount: amount }
+        let(:account)  { create :bank_account, :with_transactions }
+        let(:transaction) { build :transaction, :expense, bank_account: account,
+          amount: amount }
 
         context "and positive amount" do
           let(:amount) { 123.32 }
@@ -149,13 +149,34 @@ describe Transaction do
         context "and negative amount" do
           let(:amount) { -123.32 }
 
-          it "stays amount negative" do
-            expect{ subject }.to_not change(transaction, :amount)
+          it 'is invalid' do
+            expect(transaction).to be_invalid
+            expect(transaction.errors_on(:amount)).
+              to include("must be greater than 0")
           end
+        end
+      end
+    end
+  end
 
-          it "doesn't break saving" do
-            expect(subject).to be_true
-          end
+  describe 'soft delete' do
+    let(:bank_account)  { create :bank_account }
+    let(:amount)        { Money.new(100, bank_account.currency) }
+    let!(:transaction)  { create :transaction, bank_account: bank_account,
+      amount: amount }
+
+    describe "transaction destroy" do
+      it "changes balance" do
+        expect{transaction.destroy}.to change{bank_account.balance}.by(-amount)
+      end
+
+      context "then restore" do
+        before do
+          transaction.destroy
+        end
+
+        it "changes balance" do
+          expect{transaction.restore}.to change{bank_account.balance}.by(amount)
         end
       end
     end
