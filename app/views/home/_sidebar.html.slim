@@ -22,6 +22,3 @@
       | You don't have any account.
       br
       = link_to 'Create a new one', new_bank_account_path
-hr
-  h4 Filters:
-= render partial: 'transactions/filter', locals: { q: @q }
