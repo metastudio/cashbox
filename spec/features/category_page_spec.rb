@@ -3,12 +3,7 @@ require 'spec_helper'
 describe 'category page' do
   let(:user)          { create :user }
   let(:organization)  { create :organization, with_user: user }
-  let(:account)       { create :bank_account, organization: organization}
-  let(:comment1)      { generate :transaction_comment }
-  let(:comment2)      { generate :transaction_comment }
-  let(:comment3)      { generate :transaction_comment }
-  let!(:transaction1) { create :transaction, bank_account: account, comment: comment1 }
-  let!(:transaction2) { create :transaction, bank_account: account, comment: comment2 }
+  let!(:account)       { create :bank_account, organization: organization }
   let(:amount)        { 150.66 }
   let(:account_name)  { account.name }
 
@@ -26,7 +21,6 @@ describe 'category page' do
       within '#new_transaction' do
         fill_in 'transaction[amount]', with: amount
         select account_name, from: 'transaction[bank_account_id]'
-        fill_in 'transaction[comment]', with: comment3
         click_on 'Create'
       end
     end
@@ -93,6 +87,40 @@ describe 'category page' do
             expect(subject).to have_selector('td', text: category.name)
           end
         end
+      end
+    end
+  end
+
+  describe "system" do
+    let(:from_account) { create :bank_account, organization: organization, balance: 999 }
+    let(:to_account)   { create :bank_account, organization: organization }
+    let!(:transfer)    { create :transfer, bank_account_id: from_account.id,
+      reference_id: to_account.id }
+
+    let(:another_org)  { create :organization, with_user: user }
+    let(:another_from) { create :bank_account, organization: another_org, balance: 999 }
+    let(:another_to)   { create :bank_account, organization: another_org }
+    let!(:another_transfer) { create :transfer, bank_account_id: another_from.id,
+      reference_id: another_to.id }
+
+    let(:category_transfer) { Category.find_by_name(Category::CATEGORY_TRANSFER_INCOME) }
+    let(:category_receipt)  { Category.find_by_name(Category::CATEGORY_TRANSFER_OUTCOME) }
+
+    before do
+      visit root_path
+    end
+
+    describe "Transfer" do
+      it_behaves_like 'system category', "Transfer" do
+        let(:right_transaction) { transfer.out_transaction }
+        let(:wrong_transaction) { another_transfer.out_transaction }
+      end
+    end
+
+    describe "Receipt" do
+      it_behaves_like 'system category', "Receipt" do
+        let(:right_transaction) { transfer.inc_transaction }
+        let(:wrong_transaction) { another_transfer.inc_transaction }
       end
     end
   end
