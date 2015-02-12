@@ -24,6 +24,13 @@ describe Transaction do
             to include("Not enough money")
         end
       end
+
+      context "amount value" do
+        it_behaves_like "has money ceiling", "amount" do
+          let(:max)    { Transaction::AMOUNT_MAX }
+          let!(:model) { build :transaction, amount: amount }
+        end
+      end
     end
   end
 
