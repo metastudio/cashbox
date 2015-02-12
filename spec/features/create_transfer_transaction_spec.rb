@@ -197,4 +197,16 @@ describe 'create transfer transaction', js: true do
       end
     end
   end
+
+  context "when account is hidden" do
+    let(:account) { create :bank_account, organization: organization, visible: false}
+
+    before do
+      visit root_path
+    end
+
+    it "doesn't display account in select" do
+      expect(page).to_not have_content(account.to_s)
+    end
+  end
 end

@@ -114,4 +114,16 @@ describe 'create transaction', js: true do
       expect(subject).to have_inline_error("can't be blank").for_field_name('transaction[bank_account_id]')
     end
   end
+
+  context "when account is hidden" do
+    let(:account) { create :bank_account, organization: organization, visible: false }
+
+    before do
+      visit root_path
+    end
+
+    it "doesn't display account in select" do
+      expect(page).to_not have_content(account.to_s)
+    end
+  end
 end
