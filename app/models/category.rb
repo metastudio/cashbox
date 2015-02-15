@@ -5,9 +5,10 @@
 #  id              :integer          not null, primary key
 #  type            :string(255)      not null
 #  name            :string(255)      not null
-#  organization_id :integer          not null
+#  organization_id :integer
 #  created_at      :datetime
 #  updated_at      :datetime
+#  system          :boolean          default(FALSE)
 #
 
 class Category < ActiveRecord::Base

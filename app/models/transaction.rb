@@ -2,14 +2,16 @@
 #
 # Table name: transactions
 #
-#  id              :integer          not null, primary key
-#  amount_cents    :integer          default(0), not null
-#  category_id     :integer          not null
-#  bank_account_id :integer          not null
-#  created_at      :datetime
-#  updated_at      :datetime
-#  comment         :string(255)
+#  id               :integer          not null, primary key
+#  amount_cents     :integer          default(0), not null
+#  category_id      :integer
+#  bank_account_id  :integer          not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#  comment          :string(255)
+#  transaction_type :string(255)
 #
+
 class Transaction < ActiveRecord::Base
   AMOUNT_MAX = 21_474_836.47
   CURRENCIES = %w(USD RUB)
