@@ -1,5 +1,5 @@
 class BankAccountsController < ApplicationController
-  before_action :set_bank_account, only: [:edit, :update, :destroy, :hide]
+  before_action :set_bank_account, only: [:edit, :update, :destroy, :hide, :sort]
   before_action :require_organization, only: [:edit, :update, :new, :create,
     :destroy, :hide]
 
@@ -36,6 +36,11 @@ class BankAccountsController < ApplicationController
   def destroy
     @bank_account.destroy
     redirect_to organization_path(current_organization)
+  end
+
+  def sort
+    @bank_account.insert_at(params[:position].to_i)
+    render nothing: true
   end
 
   private

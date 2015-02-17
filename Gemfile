@@ -20,6 +20,7 @@ gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'momentjs-rails'
 gem 'bootstrap-daterangepicker-rails'
+gem 'jquery-ui-rails'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
@@ -35,6 +36,7 @@ gem 'pundit'
 gem 'enumerize'
 gem 'ransack'
 gem 'rollbar', '~> 1.4.2'
+gem 'acts_as_list'
 
 group :development, :test do
   gem 'rspec-rails'

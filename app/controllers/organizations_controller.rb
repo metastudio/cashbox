@@ -7,7 +7,8 @@ class OrganizationsController < ApplicationController
   end
 
   def show
-    @bank_accounts = current_organization.bank_accounts.order(created_at: :desc)
+    @bank_accounts = current_organization.bank_accounts.
+      order(position: :asc, created_at: :desc)
   end
 
   def new

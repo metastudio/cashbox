@@ -12,11 +12,14 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui/sortable
+//= require jquery-ui/effect-highlight
 //= require bootstrap
 //= require moment
 //= require daterangepicker
 
 //= require transactions
+//= require bank_accounts
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);

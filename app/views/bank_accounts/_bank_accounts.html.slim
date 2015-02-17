@@ -1,7 +1,7 @@
 h1 Listing bank accounts
 
 - if bank_accounts.present?
-  table.table.table-stripped.table-hover
+  table#bank_accounts_table.table.table-stripped.table-hover data-url=sort_bank_accounts_path
     thead
       tr
         th Name
@@ -9,7 +9,7 @@ h1 Listing bank accounts
         th Balance
     tbody
       - bank_accounts.each do |bank_account|
-        tr
+        tr data-item-id="#{bank_account.id}" class="item"
           td = bank_account.name
           td = bank_account.description
           td = humanized_money_with_symbol bank_account.balance
