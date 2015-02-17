@@ -26,16 +26,34 @@ describe Transaction do
     it { should validate_presence_of(:bank_account) }
 
     context "custom" do
-      context "when expense and not enough money on account" do
+      context 'when expense' do
         let(:account) { create :bank_account }
-        let(:transaction) { build :transaction, :expense, bank_account: account }
 
         subject { transaction }
 
-        it 'is invalid' do
-          expect(subject).to be_invalid
-          expect(subject.errors_on(:amount)).
-            to include("Not enough money")
+        context 'when not enough money' do
+          let(:transaction) { build :transaction, :expense, bank_account: account }
+
+          it 'is invalid' do
+            expect(subject).to be_invalid
+            expect(subject.errors_on(:amount)).
+              to include("Not enough money")
+          end
+        end
+
+        describe 'on update' do
+          context 'compare amount to bank_account-amount_was' do
+            let!(:transaction) { create :transaction, bank_account: account }
+            let!(:category)    { create :category, :expense }
+
+            before { transaction.category = category }
+
+            it 'is invalid' do
+              expect(subject).to be_invalid
+              expect(subject.errors_on(:amount)).
+                to include("Not enough money")
+            end
+          end
         end
       end
 
