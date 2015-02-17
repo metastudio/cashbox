@@ -1,0 +1,10 @@
+.transactions_list
+h1
+  => @bank_account.to_s
+  | transactions
+
+= content_for :sidebar
+  = render 'transactions/filter', url: bank_account_path(@bank_account)
+
+= render 'transactions/transactions_table', transactions: @transactions
+
