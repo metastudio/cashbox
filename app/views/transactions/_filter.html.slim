@@ -6,7 +6,10 @@ hr
   = f.input :comment_cont, label: false, placeholder: 'Comment'
   = f.input :period, collection: Transaction::FILTER_PERIOD,
     include_blank: 'For period', label: false
-  = f.input :custom_period, disabled: true, input_html: { class: 'hidden daterange' },
-    label: false, placeholder: '__/__/__/ - __/__/__'
+  #custom-daterange.hidden
+    = f.input :date_from, input_html: { class: 'datepicker' },
+      placeholder: 'dd/mm/yyyy', label: 'From:'
+    = f.input :date_to, input_html: { class: 'datepicker' },
+      placeholder: 'dd/mm/yyyy', label: 'To:'
   .pull-right
     = f.button :submit, class: 'btn-primary'
