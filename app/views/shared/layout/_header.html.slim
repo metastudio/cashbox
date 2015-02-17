@@ -10,6 +10,7 @@ header
 
       ul.nav.navbar-nav.navbar-right
         - if signed_in?
-          li= link_to 'Settings', organization_path(current_organization)
+          - if current_organization
+            li= link_to 'Settings', organization_path(current_organization)
           li= link_to 'Profile', edit_user_registration_path
           li= link_to 'Sign out', destroy_user_session_path, method: :delete
