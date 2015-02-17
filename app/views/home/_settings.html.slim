@@ -1,0 +1,7 @@
+.list-group
+  li
+    = link_to 'Bank accounts', organization_path(current_organization), class: active_sett('organizations')
+  li
+    = link_to 'Categories', categories_path, class: active_sett('categories')
+  li
+    = link_to 'Members', members_path, class: active_sett('members')
