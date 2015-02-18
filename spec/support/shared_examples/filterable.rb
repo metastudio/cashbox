@@ -5,9 +5,9 @@ shared_examples_for "filterable object" do
 
   def expect_currencies(rub, usd)
     selector = rub > 0 ? '.bg-success' : '.bg-danger'
-    rub = humanized_money_with_symbol rub
+    rub = money_with_symbol rub
     selector = usd > 0 ? '.bg-success' : '.bg-danger'
-    usd = humanized_money_with_symbol usd
+    usd = money_with_symbol usd
 
     expect(page).to have_selector(selector, rub)
     expect(page).to have_selector(selector, usd)

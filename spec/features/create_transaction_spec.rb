@@ -86,13 +86,13 @@ describe 'create transaction', js: true do
       it "recalculates bank account amount" do
         expect(subject).
           to have_css("#bank_account_#{account.id} td.amount",
-            text: humanized_money_with_symbol(new_account_balance))
+            text: humanized_money(new_account_balance))
       end
 
       it "recalculates total balance" do
         expect(subject).
           to have_css("#sidebar",
-            text: humanized_money_with_symbol(new_total))
+            text: humanized_money(new_total))
       end
     end
   end

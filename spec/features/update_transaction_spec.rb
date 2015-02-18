@@ -64,13 +64,13 @@ describe 'update transaction', js: true do
     it "updates sidebar account balance" do
       expect(subject).
         to have_css("#bank_account_#{transaction.bank_account.id} td.amount",
-          text: humanized_money_with_symbol(new_account_balance))
+          text: humanized_money(new_account_balance))
     end
 
     it "updates sidebar total balance" do
        expect(subject).
         to have_css("#sidebar",
-          text: humanized_money_with_symbol(new_total))
+          text: humanized_money(new_total))
     end
   end
 

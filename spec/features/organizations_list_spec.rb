@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'Organizations list' do
-  include MoneyRails::ActionViewExtension
+  include MoneyHelper
 
   let!(:user) { create :user, :with_organizations }
   let(:organizations) { user.organizations }

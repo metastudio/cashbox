@@ -21,11 +21,11 @@ describe 'Transactions list' do
   subject { page }
 
   it "root page displays current organization's transactions" do
-    expect(subject).to have_content(humanized_money_with_symbol(org1_transaction.amount))
+    expect(subject).to have_content(humanized_money(org1_transaction.amount))
   end
 
   it "root page doesn't display another transactions" do
-    expect(subject).to_not have_content(humanized_money_with_symbol(org2_transaction.amount))
+    expect(subject).to_not have_content(humanized_money(org2_transaction.amount))
   end
 
   describe "links" do
@@ -51,11 +51,11 @@ describe 'Transactions list' do
     end
 
     it "displays right transactions" do
-      expect(subject).to have_content(humanized_money_with_symbol(org2_transaction.amount))
+      expect(subject).to have_content(humanized_money(org2_transaction.amount))
     end
 
     it "doesn't display another organization transactions" do
-      expect(subject).to_not have_content(humanized_money_with_symbol(org1_transaction.amount))
+      expect(subject).to_not have_content(humanized_money(org1_transaction.amount))
     end
   end
 
@@ -71,7 +71,7 @@ describe 'Transactions list' do
     it "lists first page transactions" do
       within ".transactions" do
         transactions.first(paginated).each do |transaction|
-          expect(subject).to have_selector('td', text: humanized_money_with_symbol(transaction.amount))
+          expect(subject).to have_selector('td', text: humanized_money(transaction.amount))
         end
       end
     end
@@ -79,7 +79,7 @@ describe 'Transactions list' do
     it "doesnt list second page transactions" do
       within ".transactions" do
         transactions.last(5).each do |transaction|
-          expect(subject).to_not have_selector('td', text: humanized_money_with_symbol(transaction.amount))
+          expect(subject).to_not have_selector('td', text: humanized_money(transaction.amount))
         end
       end
     end
@@ -94,7 +94,7 @@ describe 'Transactions list' do
       it "doesnt list first page transactions" do
         within ".transactions" do
           transactions.first(paginated).each do |transaction|
-            expect(subject).to_not have_selector('td', text: humanized_money_with_symbol(transaction.amount))
+            expect(subject).to_not have_selector('td', text: humanized_money(transaction.amount))
           end
         end
       end
@@ -102,7 +102,7 @@ describe 'Transactions list' do
       it "lists 5 last transactions" do
         within ".transactions" do
           transactions.last(5).each do |transaction|
-            expect(subject).to have_selector('td', text: humanized_money_with_symbol(transaction.amount))
+            expect(subject).to have_selector('td', text: humanized_money(transaction.amount))
           end
         end
       end
@@ -126,7 +126,7 @@ describe 'Transactions list' do
 
     it "shows right columns content" do
       within "#transaction_#{org1_transaction.id}" do
-        expect(subject).to have_content(humanized_money_with_symbol(org1_transaction.amount))
+        expect(subject).to have_content(humanized_money(org1_transaction.amount))
         expect(subject).to have_content(org1_transaction.category.name)
         expect(subject).to have_content(org1_transaction.bank_account.name)
         expect(subject).to have_content(org1_transaction.comment)
