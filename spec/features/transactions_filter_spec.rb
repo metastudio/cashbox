@@ -171,6 +171,29 @@ describe 'Transactions filter' do
 
       it_behaves_like 'filterable object'
     end
+
+    context 'when custom' do
+      let!(:transaction)  { create :transaction, bank_account: ba }
+      let!(:transaction2) { Timecop.travel( Time.now + 5.days) {
+        create :transaction, bank_account: ba } }
+      let!(:transaction3) { Timecop.travel( Time.now + 10.days) {
+        create :transaction, bank_account: ba } }
+      let!(:transaction4) { Timecop.travel( Time.now - 2.day) {
+        create :transaction, bank_account: ba } }
+      let(:correct_items) { [transaction2,  transaction3] }
+      let(:wrong_items)   { [transaction, transaction4] }
+
+      before do
+        visit root_path
+        select 'Custom', from: 'q[period]'
+        page.has_content?('To:')
+        fill_in 'From:', with: (Time.now + 1.day).strftime('%d/%m/%Y')
+        fill_in 'To:', with: (Time.now + 12.days).strftime('%d/%m/%Y')
+        click_on 'Search'
+      end
+
+      it_behaves_like 'filterable object'
+    end
   end
 
   context "filter by amount, comment, and date" do
