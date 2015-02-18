@@ -15,7 +15,7 @@
 //= require bootstrap
 //= require moment
 //= require daterangepicker
-//= require jquery.mask.min
+//= require jquery.mask
 
 //= require transactions
 

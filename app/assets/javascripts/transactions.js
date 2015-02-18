@@ -1,5 +1,5 @@
 $(function () {
-  $('.amount').mask('00,000,000.00');
+  $('.amount').mask('00,000,000.00', {reverse: true} );
   $('#q_custom_period').mask('00/00/0000 - 00/00/0000',
     { placeholder: "dd/mm/yyyy - dd/mm/yyyy" });
 
