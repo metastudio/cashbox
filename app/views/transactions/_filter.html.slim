@@ -1,6 +1,8 @@
 h4 Filters:
 
 = search_form_for @q, url: root_path do |f|
+  = f.error_notification
+
   = f.input :amount_eq, label: false, placeholder: 'Amount'
   = f.input :comment_cont, label: false, placeholder: 'Comment'
   = f.input :period, collection: Transaction::FILTER_PERIOD,
