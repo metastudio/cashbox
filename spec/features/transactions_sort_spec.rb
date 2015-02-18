@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'Transactions sort' do
-  include MoneyRails::ActionViewExtension
+  include MoneyHelper
 
   let(:user) { create :user, :with_organizations }
   let(:org)  { user.organizations.first }

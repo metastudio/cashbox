@@ -4,18 +4,18 @@ shared_examples_for "filterable object" do
   end
 
   def expect_currencies(rub, usd)
-    selector = rub > 0 ? '.bg-success' : '.bg-danger'
-    rub = humanized_money_with_symbol rub
-    selector = usd > 0 ? '.bg-success' : '.bg-danger'
-    usd = humanized_money_with_symbol usd
+    css = rub > 0 ? '.bg-success' : '.bg-danger'
+    rub = money_with_symbol rub
+    css = usd > 0 ? '.bg-success' : '.bg-danger'
+    usd = money_with_symbol usd
 
-    expect(page).to have_selector(selector, rub)
-    expect(page).to have_selector(selector, usd)
+    expect(page).to have_css(css, rub)
+    expect(page).to have_css(css, usd)
   end
 
   it "shows correct items" do
     correct_items.each do |correct_item|
-      expect(page).to have_selector(to_css_id(correct_item))
+      expect(page).to have_css(to_css_id(correct_item))
     end
   end
 
@@ -51,7 +51,7 @@ shared_examples_for "filterable object" do
 
   it "doesn't show filtered items" do
     wrong_items.each do |wrong_item|
-      expect(page).to_not have_selector(to_css_id(wrong_item))
+      expect(page).to_not have_css(to_css_id(wrong_item))
     end
   end
 end
