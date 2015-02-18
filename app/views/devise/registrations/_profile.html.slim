@@ -1,0 +1,11 @@
+h2
+  |Profile:
+
+= simple_form_for(resource, :as => resource_name, :url => user_update_profile_path, :html => { :method => :put }) do |f|
+  .form-inputs
+    = f.input :full_name, :required => true
+    = f.fields_for :profile do |p|
+      = p.input :phone_number
+  .form-actions
+    = f.button :submit, "Update profile"
+
