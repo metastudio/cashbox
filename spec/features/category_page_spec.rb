@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'category page' do
   let(:user)          { create :user }
   let(:organization)  { create :organization, with_user: user }
-  let!(:account)       { create :bank_account, organization: organization }
+  let!(:account)      { create :bank_account, organization: organization }
   let(:amount)        { 150.66 }
   let(:account_name)  { account.name }
 

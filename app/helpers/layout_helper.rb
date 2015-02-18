@@ -3,4 +3,8 @@ module LayoutHelper
     (org.id == current_organization.id ? 'active' : '')
   end
 
+  def total_amount(currency)
+    humanized_money_with_symbol current_organization.bank_accounts.
+      total_balance(currency)
+  end
 end
