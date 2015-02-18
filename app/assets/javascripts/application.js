@@ -16,7 +16,7 @@
 //= require jquery-ui/effect-highlight
 //= require bootstrap
 //= require moment
-//= require daterangepicker
+//= require bootstrap-datepicker
 //= require jquery.mask
 
 //= require transactions
