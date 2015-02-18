@@ -3,14 +3,18 @@ header
     .container-fluid
       .navbar-header
         = link_to 'CashBox', root_path, class: 'navbar-brand'
-
         - if signed_in?
+          button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
           ul.nav.navbar-nav.navbar-left
             = render 'shared/layout/switch_organization'
 
-      ul.nav.navbar-nav.navbar-right
-        - if signed_in?
-          - if current_organization
-            li= link_to 'Settings', organization_path(current_organization)
-          li= link_to 'Profile', edit_user_registration_path
-          li= link_to 'Sign out', destroy_user_session_path, method: :delete
+      - if signed_in?
+        #collapse-btn.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            - if current_organization
+              li= link_to 'Settings', organization_path(current_organization)
+            li= link_to 'Profile', edit_user_registration_path
+            li= link_to 'Sign out', destroy_user_session_path, method: :delete
