@@ -5,10 +5,9 @@ html
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
     title
-      |Cashbox |
-      =<> humanized_money_with_symbol current_organization.bank_accounts.total_balance(BankAccount::CURRENCY_RUB)
-      | |
-      =< humanized_money_with_symbol current_organization.bank_accounts.total_balance(BankAccount::CURRENCY_USD)
+      |Cashbox
+      - unless current_organization.nil?
+        =< "| #{total_amount(BankAccount::CURRENCY_RUB)} | #{total_amount(BankAccount::CURRENCY_USD)}"
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags
