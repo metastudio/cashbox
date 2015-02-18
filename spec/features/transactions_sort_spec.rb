@@ -28,9 +28,9 @@ describe 'Transactions sort' do
     it_behaves_like 'sortable object', 'Date', :created_at
   end
 
-  context "by bank_account name" do
-    it_behaves_like 'sortable object', 'Account', :bank_account
-  end
+  # context "by bank_account name" do
+  #   it_behaves_like 'sortable object', 'Account', :bank_account
+  # end
 
   context "by category" do
     it_behaves_like 'sortable object', 'Category', :category

@@ -19,6 +19,7 @@ class BankAccount < ActiveRecord::Base
   CURRENCIES = [CURRENCY_USD, CURRENCY_RUB]
 
   acts_as_list
+  acts_as_paranoid
 
   belongs_to :organization, inverse_of: :bank_accounts
   has_many :transactions, dependent: :destroy, inverse_of: :bank_account
