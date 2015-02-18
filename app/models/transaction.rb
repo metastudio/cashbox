@@ -102,6 +102,8 @@ class Transaction < ActiveRecord::Base
   end
 
   def amount_balance
-    errors.add(:amount, 'Not enough money') if amount > bank_account.balance
+    if amount > bank_account.balance - Money.new(amount_cents_was, bank_account.currency)
+      errors.add(:amount, 'Not enough money')
+    end
   end
 end
