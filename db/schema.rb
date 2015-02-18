@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205115443) do
+ActiveRecord::Schema.define(version: 20150217145200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,8 +25,11 @@ ActiveRecord::Schema.define(version: 20150205115443) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "visible",         default: true
+    t.integer  "position"
+    t.datetime "deleted_at"
   end
 
+  add_index "bank_accounts", ["deleted_at"], name: "index_bank_accounts_on_deleted_at", using: :btree
   add_index "bank_accounts", ["organization_id"], name: "index_bank_accounts_on_organization_id", using: :btree
 
   create_table "categories", force: true do |t|
@@ -36,8 +39,10 @@ ActiveRecord::Schema.define(version: 20150205115443) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "system",          default: false
+    t.datetime "deleted_at"
   end
 
+  add_index "categories", ["deleted_at"], name: "index_categories_on_deleted_at", using: :btree
   add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
 
   create_table "members", force: true do |t|
@@ -75,10 +80,12 @@ ActiveRecord::Schema.define(version: 20150205115443) do
     t.datetime "updated_at"
     t.string   "comment"
     t.string   "transaction_type"
+    t.datetime "deleted_at"
   end
 
   add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
   add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
+  add_index "transactions", ["deleted_at"], name: "index_transactions_on_deleted_at", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
