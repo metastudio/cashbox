@@ -25,7 +25,7 @@ en:
     #     password: 'No special characters, please.'
   helpers:
     submit:
-      transaction:
+      transfer:
         create: "Create"
       transaction:
         create: "Create"
