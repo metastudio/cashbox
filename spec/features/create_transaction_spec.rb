@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'create transaction', js: true do
-  include MoneyRails::ActionViewExtension
+  include MoneyHelper
 
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
@@ -86,13 +86,13 @@ describe 'create transaction', js: true do
       it "recalculates bank account amount" do
         expect(subject).
           to have_css("#bank_account_#{account.id} td.bank-amount",
-            text: humanized_money(new_account_balance))
+            text: money_with_symbol(new_account_balance))
       end
 
       it "recalculates total balance" do
         expect(subject).
           to have_css("#sidebar",
-            text: humanized_money(new_total))
+            text: money_with_symbol(new_total))
       end
     end
   end

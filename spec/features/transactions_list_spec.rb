@@ -71,7 +71,7 @@ describe 'Transactions list' do
     it "lists first page transactions" do
       within ".transactions" do
         transactions.first(paginated).each do |transaction|
-          expect(subject).to have_css('td', text: humanized_money(transaction.amount))
+          expect(subject).to have_css('td', text: money_with_symbol(transaction.amount))
         end
       end
     end
@@ -79,7 +79,7 @@ describe 'Transactions list' do
     it "doesnt list second page transactions" do
       within ".transactions" do
         transactions.last(5).each do |transaction|
-          expect(subject).to_not have_css('td', text: humanized_money(transaction.amount))
+          expect(subject).to_not have_css('td', text: money_with_symbol(transaction.amount))
         end
       end
     end
@@ -94,7 +94,7 @@ describe 'Transactions list' do
       it "doesnt list first page transactions" do
         within ".transactions" do
           transactions.first(paginated).each do |transaction|
-            expect(subject).to_not have_css('td', text: humanized_money(transaction.amount))
+            expect(subject).to_not have_css('td', text: money_with_symbol(transaction.amount))
           end
         end
       end
@@ -102,7 +102,7 @@ describe 'Transactions list' do
       it "lists 5 last transactions" do
         within ".transactions" do
           transactions.last(5).each do |transaction|
-            expect(subject).to have_css('td', text: humanized_money(transaction.amount))
+            expect(subject).to have_css('td', text: money_with_symbol(transaction.amount))
           end
         end
       end

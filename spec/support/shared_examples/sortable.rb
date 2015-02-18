@@ -12,7 +12,7 @@ shared_examples_for "sortable object" do |sort_by, field|
   def to_view(elem, field)
     case field
     when :amount
-      humanized_money(elem.send(field))
+      money_with_symbol(elem.send(field))
     when :bank_account
       elem.send(field).name
     when :category
