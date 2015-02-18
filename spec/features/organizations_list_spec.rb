@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'Organizations list' do
-  include MoneyHelper
-
   let!(:user) { create :user, :with_organizations }
   let(:organizations) { user.organizations }
 
