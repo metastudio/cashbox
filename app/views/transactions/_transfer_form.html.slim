@@ -3,7 +3,7 @@
   = f.error :base
 
   .col-sm-2
-    = f.input :amount, label: false, as: :float, placeholder: 'Amount'
+    = f.input :amount, label: false, placeholder: 'Amount', input_html: { class: 'amount' }
   .col-sm-2
     = f.input :comission, label: false, as: :float, placeholder: 'Comission'
   .col-sm-1.hidden
