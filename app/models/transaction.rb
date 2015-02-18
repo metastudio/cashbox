@@ -20,6 +20,8 @@ class Transaction < ActiveRecord::Base
    ['Last 3 months', 'last_3_months'],['Quarter', 'quarter'],
    ['This year', 'this_year'], ['Custom', 'custom']]
 
+  acts_as_paranoid
+
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
@@ -30,7 +32,11 @@ class Transaction < ActiveRecord::Base
   delegate :income?, :expense?, to: :category, allow_nil: true
 
   default_scope { order(created_at: :desc) }
-  scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
+  # scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
+  scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
+      ON bank_account_transactions.id = transactions.bank_account_id
+      AND bank_account_transactions.deleted_at IS NULL").
+      where('bank_accounts.currency' => currency) }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
@@ -44,6 +50,7 @@ class Transaction < ActiveRecord::Base
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
+  after_restore :recalculate_amount
 
   private
 

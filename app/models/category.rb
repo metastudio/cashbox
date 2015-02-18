@@ -28,6 +28,8 @@ class Category < ActiveRecord::Base
     system: true
   }
 
+  acts_as_paranoid
+
   self.inheritance_column = nil
 
   belongs_to :organization, inverse_of: :categories
