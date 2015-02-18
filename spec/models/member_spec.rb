@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: members
+#
+#  id              :integer          not null, primary key
+#  user_id         :integer          not null
+#  organization_id :integer          not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#  role            :string(255)      not null
+#
+
 require 'spec_helper'
 
 describe Member do

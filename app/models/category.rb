@@ -5,9 +5,10 @@
 #  id              :integer          not null, primary key
 #  type            :string(255)      not null
 #  name            :string(255)      not null
-#  organization_id :integer          not null
+#  organization_id :integer
 #  created_at      :datetime
 #  updated_at      :datetime
+#  system          :boolean          default(FALSE)
 #
 
 class Category < ActiveRecord::Base
@@ -26,6 +27,8 @@ class Category < ActiveRecord::Base
     name: Category::CATEGORY_TRANSFER_OUTCOME,
     system: true
   }
+
+  acts_as_paranoid
 
   self.inheritance_column = nil
 

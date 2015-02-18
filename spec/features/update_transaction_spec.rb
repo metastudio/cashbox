@@ -63,7 +63,7 @@ describe 'update transaction', js: true do
 
     it "updates sidebar account balance" do
       expect(subject).
-        to have_css("#bank_account_#{transaction.bank_account.id} td.amount",
+        to have_css("#bank_account_#{transaction.bank_account.id} td.bank-amount",
           text: humanized_money_with_symbol(new_account_balance))
     end
 
@@ -71,23 +71,6 @@ describe 'update transaction', js: true do
        expect(subject).
         to have_css("#sidebar",
           text: humanized_money_with_symbol(new_total))
-    end
-  end
-
-  context "close form" do
-    let!(:transaction) { create :transaction, bank_account: account }
-
-    before do
-      visit root_path
-      find("#transaction_#{transaction.id}").click
-      page.has_css?("#edit_row_transaction_#{transaction.id}")
-      within "#edit_row_transaction_#{transaction.id}" do
-        click_on '×'
-      end
-    end
-
-    it "removes form" do
-      expect(page).to_not have_selector('.close')
     end
   end
 end

@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: transactions
+#
+#  id               :integer          not null, primary key
+#  amount_cents     :integer          default(0), not null
+#  category_id      :integer
+#  bank_account_id  :integer          not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#  comment          :string(255)
+#  transaction_type :string(255)
+#
+
 require 'spec_helper'
 
 describe Transaction do
@@ -12,16 +26,34 @@ describe Transaction do
     it { should validate_presence_of(:bank_account) }
 
     context "custom" do
-      context "when expense and not enough money on account" do
+      context 'when expense' do
         let(:account) { create :bank_account }
-        let(:transaction) { build :transaction, :expense, bank_account: account }
 
         subject { transaction }
 
-        it 'is invalid' do
-          expect(subject).to be_invalid
-          expect(subject.errors_on(:amount)).
-            to include("Not enough money")
+        context 'when not enough money' do
+          let(:transaction) { build :transaction, :expense, bank_account: account }
+
+          it 'is invalid' do
+            expect(subject).to be_invalid
+            expect(subject.errors_on(:amount)).
+              to include("Not enough money")
+          end
+        end
+
+        describe 'on update' do
+          context 'compare amount to bank_account-amount_was' do
+            let!(:transaction) { create :transaction, bank_account: account }
+            let!(:category)    { create :category, :expense }
+
+            before { transaction.category = category }
+
+            it 'is invalid' do
+              expect(subject).to be_invalid
+              expect(subject.errors_on(:amount)).
+                to include("Not enough money")
+            end
+          end
         end
       end
 
@@ -154,6 +186,29 @@ describe Transaction do
             expect(transaction.errors_on(:amount)).
               to include("must be greater than 0")
           end
+        end
+      end
+    end
+  end
+
+  describe 'soft delete' do
+    let(:bank_account)  { create :bank_account }
+    let(:amount)        { Money.new(100, bank_account.currency) }
+    let!(:transaction)  { create :transaction, bank_account: bank_account,
+      amount: amount }
+
+    describe "transaction destroy" do
+      it "changes balance" do
+        expect{transaction.destroy}.to change{bank_account.balance}.by(-amount)
+      end
+
+      context "then restore" do
+        before do
+          transaction.destroy
+        end
+
+        it "changes balance" do
+          expect{transaction.restore}.to change{bank_account.balance}.by(amount)
         end
       end
     end

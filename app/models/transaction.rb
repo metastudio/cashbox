@@ -2,14 +2,16 @@
 #
 # Table name: transactions
 #
-#  id              :integer          not null, primary key
-#  amount_cents    :integer          default(0), not null
-#  category_id     :integer          not null
-#  bank_account_id :integer          not null
-#  created_at      :datetime
-#  updated_at      :datetime
-#  comment         :string(255)
+#  id               :integer          not null, primary key
+#  amount_cents     :integer          default(0), not null
+#  category_id      :integer
+#  bank_account_id  :integer          not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#  comment          :string(255)
+#  transaction_type :string(255)
 #
+
 class Transaction < ActiveRecord::Base
   AMOUNT_MAX = 21_474_836.47
   CURRENCIES = %w(USD RUB)
@@ -17,6 +19,8 @@ class Transaction < ActiveRecord::Base
   FILTER_PERIOD = [['Current month', 'current_month'], ['Previous month', 'prev_month'],
    ['Last 3 months', 'last_3_months'],['Quarter', 'quarter'],
    ['This year', 'this_year'], ['Custom', 'custom']]
+
+  acts_as_paranoid
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
@@ -28,7 +32,11 @@ class Transaction < ActiveRecord::Base
   delegate :income?, :expense?, to: :category, allow_nil: true
 
   default_scope { order(created_at: :desc) }
-  scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
+  # scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
+  scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
+      ON bank_account_transactions.id = transactions.bank_account_id
+      AND bank_account_transactions.deleted_at IS NULL").
+      where('bank_accounts.currency' => currency) }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
@@ -42,6 +50,7 @@ class Transaction < ActiveRecord::Base
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
+  after_restore :recalculate_amount
 
   private
 
@@ -79,12 +88,19 @@ class Transaction < ActiveRecord::Base
     end
   end
 
-  def self.custom_period(custom_period)
-    from_to_arr = custom_period.split('-')
-    from = DateTime.parse(from_to_arr[0]) rescue nil
-    to   = DateTime.parse(from_to_arr[1]).try(:end_of_day) rescue nil
-    if from && to
-      where("transactions.created_at between ? AND ?", from, to)
+  def self.date_from(from)
+    from = DateTime.parse(from) rescue nil
+    if from && from.year > 0
+      where("transactions.created_at >= ?", from)
+    else
+      all
+    end
+  end
+
+  def self.date_to(to)
+    to = DateTime.parse(to) rescue nil
+    if to && to.year > 0
+      where("transactions.created_at <= ?", to)
     else
       all
     end
@@ -96,10 +112,12 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    %i(amount_eq period amount_sort custom_period)
+    %i(amount_eq period amount_sort date_from date_to)
   end
 
   def amount_balance
-    errors.add(:amount, 'Not enough money') if amount > bank_account.balance
+    if amount > bank_account.balance - Money.new(amount_cents_was, bank_account.currency)
+      errors.add(:amount, 'Not enough money')
+    end
   end
 end
