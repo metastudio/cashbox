@@ -2,7 +2,8 @@
   = f.error_notification
 
   .col-sm-2
-    = f.input :amount, label: false, placeholder: 'Amount'
+    = f.input :amount, label: false, placeholder: 'Amount',
+      input_html: { class: 'amount', value: nil }
   .col-sm-2
     - if local_assigns[:fixed_category_id].present?
       = f.input :category, as: :select, collection: [f.object.category.name], disabled: true, include_blank: false, label: false

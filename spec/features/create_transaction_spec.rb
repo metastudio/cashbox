@@ -85,7 +85,7 @@ describe 'create transaction', js: true do
 
       it "recalculates bank account amount" do
         expect(subject).
-          to have_css("#bank_account_#{account.id} td.amount",
+          to have_css("#bank_account_#{account.id} td.bank-amount",
             text: humanized_money(new_account_balance))
       end
 
