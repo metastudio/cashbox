@@ -12,15 +12,13 @@ $(document).on("ready page:load", function () {
         return ui.item.children("td").effect("highlight", {}, 1000);
       },
       update: function(e, ui) {
-        var itemId   = ui.item.data("item-id");
-        var position = ui.item.index();
         return $.ajax({
           type: "POST",
           url: $('#bank_accounts_table').attr('data-url'),
           dataType: "json",
           data: {
-            id: itemId,
-            position: position
+            id: ui.item.data("item-id"),
+            position: ui.item.index()
           }
         });
       }
