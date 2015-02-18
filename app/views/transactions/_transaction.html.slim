@@ -4,5 +4,5 @@ tr.transaction id=dom_id(transaction) class=(transaction.income? ? 'success' : '
     = link_to transaction.category.name, category_path(transaction.category),
       data: { stop_propagation: true } if transaction.category.present?
   td.col-sm-3.word-break= transaction.bank_account.name if transaction.bank_account.present?
-  td.col-sm-3.word-break= transaction.comment
+  td.col-sm-3.word-break.hidden-xs = transaction.comment
   td.col-sm-1= I18n.l transaction.created_at
