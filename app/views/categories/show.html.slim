@@ -1,5 +1,5 @@
 = content_for :sidebar
-  = render 'transactions/filter'
+  = render 'transactions/filter', url: category_path(@category)
 
 .row
   .col-sm-12

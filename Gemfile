@@ -38,6 +38,7 @@ gem "paranoia", "~> 2.0"
 gem 'ransack'
 gem 'rollbar', '~> 1.4.2'
 gem 'acts_as_list'
+gem 'active_link_to'
 
 group :development, :test do
   gem 'rspec-rails'

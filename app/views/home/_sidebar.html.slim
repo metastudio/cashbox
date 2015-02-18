@@ -12,9 +12,9 @@
     table.table.table-hover
       - current_organization.bank_accounts.visible.each do |account|
         tr class=(account.balance_cents > 0 ? 'success' : 'danger') id="bank_account_#{account.id}"
-          td= account.name
+          td= link_to account.to_s, bank_account_path(account)
           td.bank-amount
-            = humanized_money_with_symbol account.balance
+            = money_with_symbol account.balance
     = link_to 'Create a new one', new_bank_account_path
   - else
     p

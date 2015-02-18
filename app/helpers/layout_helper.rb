@@ -4,7 +4,7 @@ module LayoutHelper
   end
 
   def total_amount(currency)
-    humanized_money_with_symbol current_organization.bank_accounts.
+    money_with_symbol current_organization.bank_accounts.
       total_balance(currency)
   end
 end

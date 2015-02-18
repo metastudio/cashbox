@@ -14,5 +14,7 @@ header
       - if signed_in?
         #collapse-btn.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
+            - if current_organization
+              li= link_to 'Settings', organization_path(current_organization)
             li= link_to 'Profile', edit_user_registration_path
             li= link_to 'Sign out', destroy_user_session_path, method: :delete

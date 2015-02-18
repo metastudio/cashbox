@@ -20,3 +20,6 @@ h1 Listing categories
 
 .paginator.col-md-offset-5
   = paginate @categories, remote: true
+
+= content_for :sidebar
+  = render 'home/settings'

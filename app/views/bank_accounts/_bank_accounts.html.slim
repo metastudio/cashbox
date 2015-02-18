@@ -12,7 +12,7 @@ h1 Listing bank accounts
         tr data-item-id="#{bank_account.id}" class="item"
           td.word-break = bank_account.name
           td.word-break = bank_account.description
-          td = humanized_money_with_symbol bank_account.balance
+          td = money_with_symbol bank_account.balance
           - if current_organization.present?
             td = link_to 'Edit', edit_bank_account_path(bank_account)
             td = link_to (bank_account.visible ? 'Hide' : 'Show'),
@@ -20,3 +20,6 @@ h1 Listing bank accounts
             td = link_to 'Destroy', bank_account, data: {confirm: 'Are you sure?'}, method: :delete
 - else
   .alert.alert-warning No bank accounts
+
+= content_for :sidebar
+  = render 'home/settings'

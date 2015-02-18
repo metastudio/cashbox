@@ -1,7 +1,8 @@
 .row
   .col-sm-4
-    h1 Organization
-
+    h1
+      = link_to 'Organizations', organizations_path
+      = "/#{params[:id]}"
     p#notice = notice
 
     p

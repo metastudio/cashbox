@@ -25,3 +25,6 @@
             td = link_to 'Destroy', organization, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-small'
 - else
   .alert.alert-warning No organizations
+
+= content_for :sidebar
+  = render 'home/settings'
