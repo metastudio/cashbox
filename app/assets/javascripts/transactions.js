@@ -6,6 +6,10 @@ $(function () {
   if ($('#transfer_exchange_rate').size()) {
     show_hide_exchange_rate();
   }
+  if ($('#q_period').size()) {
+    show_hide_period_additional_input();
+  }
+
 
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
     e.preventDefault();
@@ -75,19 +79,15 @@ function show_hide_exchange_rate() {
 
 function show_hide_period_additional_input() {
   if($('#q_period').val() == 'custom') {
-    $('#q_custom_period.daterange').daterangepicker({ format: 'DD/MM/YYYY' });
-    show_input($('#q_custom_period.daterange'));
+    $('#q_date_from.datepicker').datepicker({
+      format: 'dd/mm/yyyy'
+    });
+    $('#q_date_to.datepicker').datepicker({
+      format: 'dd/mm/yyyy'
+    });
+    $('#custom-daterange').removeClass('hidden');
   }
   else {
-    hide_input($('#q_custom_period.daterange'));
+    $('#custom-daterange').addClass('hidden');
   }
-}
-
-function show_input(input) {
-  input.removeClass('hidden');
-  input.attr('disabled', false);
-}
-function hide_input(input) {
-  input.addClass('hidden');
-  input.attr('disabled', true);
 }

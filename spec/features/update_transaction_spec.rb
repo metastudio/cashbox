@@ -73,21 +73,4 @@ describe 'update transaction', js: true do
           text: money_with_symbol(new_total))
     end
   end
-
-  context "close form" do
-    let!(:transaction) { create :transaction, bank_account: account }
-
-    before do
-      visit root_path
-      find("#transaction_#{transaction.id}").click
-      page.has_css?("#edit_row_transaction_#{transaction.id}")
-      within "#edit_row_transaction_#{transaction.id}" do
-        click_on '×'
-      end
-    end
-
-    it "removes form" do
-      expect(page).to_not have_selector('.close')
-    end
-  end
 end
