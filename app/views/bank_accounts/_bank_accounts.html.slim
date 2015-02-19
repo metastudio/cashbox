@@ -9,7 +9,7 @@ h1 Listing bank accounts
         th Balance
     tbody
       - bank_accounts.each do |bank_account|
-        tr data-item-id="#{bank_account.id}" class="item"
+        tr data-item-id=bank_account.id class='item'
           td.word-break = bank_account.name
           td.word-break = bank_account.description
           td = money_with_symbol bank_account.balance
