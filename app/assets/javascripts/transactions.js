@@ -24,6 +24,10 @@ $(function () {
     e.stopPropagation();
   });
 
+  $(document).on('click', '.account-link', function(e) {
+    e.stopPropagation();
+  });
+
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();
 
