@@ -20,4 +20,11 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
 
+  def total_rub
+    bank_accounts.total_balance("RUB")
+  end
+
+  def total_usd
+    bank_accounts.total_balance("USD")
+  end
 end

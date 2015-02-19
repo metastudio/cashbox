@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217145200) do
+ActiveRecord::Schema.define(version: 20150219095226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,9 +56,10 @@ ActiveRecord::Schema.define(version: 20150217145200) do
   add_index "members", ["user_id", "organization_id"], name: "index_members_on_user_id_and_organization_id", unique: true, using: :btree
 
   create_table "organizations", force: true do |t|
-    t.string   "name",       null: false
+    t.string   "name",                       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "currency",   default: "USD"
   end
 
   create_table "profiles", force: true do |t|

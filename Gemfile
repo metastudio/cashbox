@@ -37,6 +37,7 @@ gem "paranoia", "~> 2.0"
 gem 'ransack'
 gem 'rollbar', '~> 1.4.2'
 gem 'active_link_to'
+gem 'russian_central_bank'
 
 group :development, :test do
   gem 'rspec-rails'

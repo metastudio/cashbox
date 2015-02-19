@@ -14,9 +14,6 @@
 
 class BankAccount < ActiveRecord::Base
   AMOUNT_MAX = 21_474_836.47
-  CURRENCY_USD = 'USD'
-  CURRENCY_RUB = 'RUB'
-  CURRENCIES = [CURRENCY_USD, CURRENCY_RUB]
 
   acts_as_paranoid
 
@@ -34,7 +31,9 @@ class BankAccount < ActiveRecord::Base
   validates :balance,  presence: true, numericality: {
     greater_than_or_equal_to: 0,
     less_than_or_equal_to: AMOUNT_MAX }
-  validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
+  validates :currency, presence: true,
+    inclusion: { in: AppConfig.currencies.to_h.values.to_a,
+      message: "%{value} is not a valid currency" }
 
   after_create :set_initial_residue
 
