@@ -11,7 +11,7 @@ describe 'edit transaction', js: true do
   before do
     sign_in user
     visit root_path
-    find("#transaction_#{transaction.id}").click
+    find("#transaction_#{transaction.id} .comment").click
     page.has_css?("#edit_row_transaction_#{transaction.id}")
   end
 
