@@ -20,9 +20,4 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
 
-  def currencies_except_default
-    currencies_except_default = bank_accounts.pluck(:currency)
-    currencies_except_default.delete(default_currency)
-    currencies_except_default
-  end
 end
