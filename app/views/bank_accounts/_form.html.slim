@@ -2,6 +2,7 @@
   .col-sm-6
     = simple_form_for(@bank_account) do |f|
       = f.error_notification
+
       .form-inputs
         = f.input :name, autofocus: true
         = f.input :description
