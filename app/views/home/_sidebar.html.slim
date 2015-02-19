@@ -1,15 +1,16 @@
 #sidebar
-  h1 Total balance
+  #total_balance
+    h1 Total balance
 
-  .row
-    .col-xs-6
-      = money_with_symbol current_organization.total_rub
-    .col-xs-6
-      - total_usd = current_organization.total_usd
-      = money_with_symbol total_usd
-  .row
-    .col-xs-6.col-sm-offset-6
-      = money_with_symbol total_usd.exchange_to("RUB")
+    .row
+      .col-xs-6
+        = money_with_symbol current_organization.total_rub
+      .col-xs-6
+        - total_usd = current_organization.total_usd
+        = money_with_symbol total_usd
+    .row
+      .col-xs-6.col-sm-offset-6
+        = money_with_symbol total_usd.exchange_to("RUB")
 
   h1 Accounts
   - if current_organization.bank_accounts.present?

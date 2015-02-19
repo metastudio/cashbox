@@ -152,4 +152,13 @@ describe 'Transactions list' do
       end
     end
   end
+
+  context "sidebar" do
+    it 'display exhanged amount' do
+      within '#total_balance' do
+        expect(page).to have_content(
+          money_with_symbol org1.total_usd.exchange_to('RUB'))
+      end
+    end
+  end
 end
