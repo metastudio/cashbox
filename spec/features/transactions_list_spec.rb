@@ -154,10 +154,32 @@ describe 'Transactions list' do
   end
 
   context "sidebar" do
+    let!(:org1_ba2)        { create :bank_account, organization: org1, currency: 'RUB' }
+    let!(:ba2_transaction) { create :transaction, bank_account: org2_ba,
+      category: category_org1, amount: 500 }
+
+    before do
+      visit root_path
+    end
+
     it 'display exhanged amount' do
       within '#total_balance' do
         expect(page).to have_content(
-          money_with_symbol org1.total_usd.exchange_to('RUB'))
+          money_with_symbol org1_ba2.balance.exchange_to(org1.default_currency))
+      end
+    end
+
+    it 'display exchange time' do
+      within '#total_balance' do
+        expect(page).to have_content(
+          I18n.l(Money.default_bank.rates_updated_at))
+      end
+    end
+
+    it 'display exchange rate' do
+      within '#total_balance' do
+        expect(page).to have_content(
+          Money.default_bank.get_rate(org1_ba2.currency, org1.default_currency).round(4))
       end
     end
   end

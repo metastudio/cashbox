@@ -8,7 +8,7 @@
         = f.input :description
         = f.input :residue unless f.object.persisted?
         = f.input :currency, collection: AppConfig.currencies.to_h.values,
-          selected: @bank_account.organization.currency, prompt: 'Select currency'
+          selected: @bank_account.organization.default_currency, prompt: 'Select currency'
 
       .form-actions
         = f.button :submit, class: 'btn-primary'

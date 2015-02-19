@@ -24,9 +24,8 @@ ActiveRecord::Schema.define(version: 20150219095226) do
     t.integer  "organization_id",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "visible",         default: true
-    t.integer  "position"
     t.datetime "deleted_at"
+    t.boolean  "visible",         default: true
   end
 
   add_index "bank_accounts", ["deleted_at"], name: "index_bank_accounts_on_deleted_at", using: :btree
