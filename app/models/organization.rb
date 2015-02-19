@@ -20,11 +20,9 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
 
-  def total_rub
-    bank_accounts.total_balance("RUB")
-  end
-
-  def total_usd
-    bank_accounts.total_balance("USD")
+  def currencies_except_default
+    currencies_except_default = bank_accounts.pluck(:currency)
+    currencies_except_default.delete(default_currency)
+    currencies_except_default
   end
 end

@@ -7,7 +7,7 @@ html
     title
       |Cashbox
       - unless current_organization.nil?
-        =< "| #{money_with_symbol current_organization.total_rub} | #{money_with_symbol current_organization.total_usd}"
+        = currency_title(current_organization)
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'
     = csrf_meta_tags

@@ -1,0 +1,32 @@
+#total_balance
+  h1 Total balance
+
+  - totals, def_curr = [], current_organization.default_currency
+  - AppConfig.currencies.to_h.values.each_with_index do |curr, i|
+    - total = current_organization.bank_accounts.total_balance(curr)
+    - totals << total if curr != def_curr
+
+    - if i % 2 == 1
+      .row
+        .col-xs-6
+          = money_with_symbol total
+    - else
+      .col-xs-6
+        = money_with_symbol total
+  - unless totals.empty?
+    - cb = Money.default_bank
+    - totals.each_with_index do |total|
+      .row
+      br
+      .col-xs-6
+        = money_with_symbol total
+      .col-xs-6
+        = money_with_symbol total.exchange_to("USD")
+      .col-xs-6
+        |by Central Bank from
+      .col-xs-6
+        =< l cb.rates_updated_at
+      .col-xs-6
+        |rate
+      .col-xs-6
+        =<> cb.get_rate(total.currency, def_curr).round(4)

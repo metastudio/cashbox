@@ -1,5 +1,7 @@
 defaults: &defaults
-
+  currencies:
+    usd: USD
+    rub: RUB
 development:
   <<: *defaults
 

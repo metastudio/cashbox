@@ -26,6 +26,8 @@ class BankAccount < ActiveRecord::Base
   monetize :residue_cents, with_model_currency: :currency
 
   scope :visible, -> { where(visible: true) }
+  scope :by_currency, ->(currency) { where('bank_accounts.currency' => currency).
+    sum(:balance_cents) }
 
   validates :name,     presence: true
   validates :balance,  presence: true, numericality: {
