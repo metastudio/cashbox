@@ -13,7 +13,7 @@ $(document).on("ready page:load", function () {
       },
       update: function(e, ui) {
         return $.ajax({
-          type: "POST",
+          type: "PUT",
           url: $('#bank_accounts_table').attr('data-url'),
           dataType: "json",
           data: {

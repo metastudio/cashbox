@@ -29,7 +29,8 @@ class BankAccount < ActiveRecord::Base
   monetize :balance_cents, with_model_currency: :currency
   monetize :residue_cents, with_model_currency: :currency
 
-  scope :visible, -> { where(visible: true) }
+  scope :visible,    -> { where(visible: true) }
+  scope :positioned, -> { order(position: :asc) }
 
   validates :name,     presence: true
   validates :balance,  presence: true, numericality: {
