@@ -1,16 +1,21 @@
 $(function () {
   var options = { onKeyPress: function(input, e, field, options) {
     var mask = '';
-    var inputLength = input.length
+    var inputLength = input.length;
     if (input[0] == '-') {
-      if (inputLength <= 5)  { mask = 'M0.009' } else
-      if (inputLength <= 6)  { mask = 'M00.009' } else
-      if (inputLength <= 7)  { mask = 'M000.009' } else
-      if (inputLength <= 11) { mask = 'M000,000.009' } else
-      if (inputLength <= 14) { mask = 'M00,000,000.00' }
+      if (inputLength <= 5) {
+        mask = 'M0.009';
+      } else if (inputLength <= 6) {
+        mask = 'M00.009';
+      } else if (inputLength <= 7) {
+        mask = 'M000.009';
+      } else if (inputLength <= 11) {
+        mask = 'M000,000.009';
+      } else if (inputLength <= 14) {
+        mask = 'M00,000,000.00';
+      }
       $('.amount_filter').mask(mask, options);
-    }
-    else {
+    } else {
       mask = '00,000,000.00';
       $('.amount_filter').mask(mask, { reverse: true,
         translation: {
@@ -19,6 +24,7 @@ $(function () {
       });
     }
   }};
+
   $('.amount').mask('00,000,000.00', {reverse: true} );
   $('.amount_filter').mask('M00,000,000.00',  options);
 
