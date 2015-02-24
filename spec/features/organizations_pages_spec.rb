@@ -33,18 +33,14 @@ describe 'organizations pages' do
       end
 
       it "lists first page bank accounts" do
-        within ".bank-accounts" do
-          bank_accounts.first(paginated).each do |ba|
-            expect(subject).to have_content(ba.name)
-          end
+        bank_accounts.first(paginated).each do |ba|
+          expect(subject).to have_content(ba.name)
         end
       end
 
       it "doesnt list last page bank_accounts" do
-        within ".bank-accounts" do
-          bank_accounts.last(ba_count - paginated).each do |ba|
-            expect(subject).to_not have_content(ba.name)
-          end
+        bank_accounts.last(ba_count - paginated).each do |ba|
+          expect(subject).to_not have_content(ba.name)
         end
       end
 
@@ -56,18 +52,14 @@ describe 'organizations pages' do
         end
 
         it "doesnt list first page bank_accounts" do
-          within ".bank-accounts" do
-            bank_accounts.first(paginated).each do |ba|
-              expect(subject).to_not have_content(ba.name)
-            end
+          bank_accounts.first(paginated).each do |ba|
+            expect(subject).to_not have_content(ba.name)
           end
         end
 
         it "lists last bank_accounts" do
-          within ".bank-accounts" do
-            bank_accounts.last(ba_count - paginated).each do |ba|
-              expect(subject).to have_content(ba.name)
-            end
+          bank_accounts.last(ba_count - paginated).each do |ba|
+            expect(subject).to have_content(ba.name)
           end
         end
       end
