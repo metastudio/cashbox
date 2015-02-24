@@ -22,13 +22,6 @@ $(function () {
   $('.amount').mask('00,000,000.00', {reverse: true} );
   $('.amount_filter').mask('M00,000,000.00',  options);
 
-  // {
-  //   translation: {
-  //     'M': { pattern: /-/, optional: true },
-  //     'D': { pattern: /\d/ }
-  //   }
-  // }
-
   $('#q_custom_period').mask('00/00/0000 - 00/00/0000',
     { placeholder: "dd/mm/yyyy - dd/mm/yyyy" });
 
