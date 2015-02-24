@@ -18,6 +18,7 @@ class BankAccount < ActiveRecord::Base
   CURRENCY_RUB = 'RUB'
   CURRENCIES = [CURRENCY_USD, CURRENCY_RUB]
 
+  acts_as_list
   acts_as_paranoid
 
   belongs_to :organization, inverse_of: :bank_accounts
@@ -28,7 +29,8 @@ class BankAccount < ActiveRecord::Base
   monetize :balance_cents, with_model_currency: :currency
   monetize :residue_cents, with_model_currency: :currency
 
-  scope :visible, -> { where(visible: true) }
+  scope :visible,    -> { where(visible: true) }
+  scope :positioned, -> { order(position: :asc) }
 
   validates :name,     presence: true
   validates :balance,  presence: true, numericality: {
