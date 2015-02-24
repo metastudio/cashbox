@@ -83,15 +83,18 @@ function show_hide_exchange_rate() {
 
 function show_hide_period_additional_input() {
   if($('#q_period').val() == 'custom') {
-    $('#q_date_from.datepicker').datepicker({
-      format: 'dd/mm/yyyy'
-    });
-    $('#q_date_to.datepicker').datepicker({
-      format: 'dd/mm/yyyy'
-    });
+    datepicker_init($('#q_date_from.datepicker'));
+    datepicker_init($('#q_date_to.datepicker'));
     $('#custom-daterange').removeClass('hidden');
   }
   else {
     $('#custom-daterange').addClass('hidden');
   }
+}
+
+function datepicker_init(selector) {
+  selector.datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+  });
 }
