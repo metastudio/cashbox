@@ -20,7 +20,7 @@ describe 'update transaction', js: true do
     context "first page" do
       before do
         id = transactions.last.id
-        find("#transaction_#{id}").click
+        find("#transaction_#{id} .comment").click
         page.has_css?("#edit_row_transaction_#{id}")
       end
 
@@ -33,7 +33,7 @@ describe 'update transaction', js: true do
       before do
         click_on 'Last'
         id = transactions.first.id
-        find("#transaction_#{id}").click
+        find("#transaction_#{id} .comment").click
         page.has_css?("#edit_row_transaction_#{id}")
       end
 
@@ -53,7 +53,7 @@ describe 'update transaction', js: true do
 
     before do
       visit root_path
-      find("#transaction_#{transaction.id}").click
+      find("#transaction_#{transaction.id} .comment").click
       page.has_css?("#edit_row_transaction_#{transaction.id}")
       within ".transactions_list" do
         fill_in 'transaction[amount]', with: new_amount

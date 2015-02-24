@@ -25,7 +25,7 @@ describe 'delete transaction', js: true do
 
     context "first page" do
       before do
-        find("#transaction_#{first_transaction.id}").click
+        find("#transaction_#{first_transaction.id} .comment").click
         page.has_css?('simple_form edit_transaction')
       end
 
@@ -37,7 +37,7 @@ describe 'delete transaction', js: true do
     context "last page" do
       before do
         click_on 'Last'
-        find("#transaction_#{last_transaction.id}").click
+        find("#transaction_#{last_transaction.id} .comment").click
         page.has_css?('simple_form edit_transaction')
       end
 
@@ -47,14 +47,14 @@ describe 'delete transaction', js: true do
     end
   end
 
-  context "deleting", js: true do
+  context "deleting" do
     let!(:transactions) { create_list :transaction, 5, bank_account: account,
       category: category }
     let(:transaction)   { transactions.last }
 
     before do
       visit root_path
-      find("#transaction_#{transaction.id}").click
+      find("#transaction_#{transaction.id} .comment").click
       page.has_css?('simple_form edit_transaction')
       click_on "Remove"
     end
