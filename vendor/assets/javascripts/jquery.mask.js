@@ -466,8 +466,7 @@
             '9': {pattern: /\d/, optional: true},
             '#': {pattern: /\d/, recursive: true},
             'A': {pattern: /[a-zA-Z0-9]/},
-            'S': {pattern: /[a-zA-Z]/},
-            'M': {pattern: /-/, optional: true }
+            'S': {pattern: /[a-zA-Z]/} }
         }
     };
 
