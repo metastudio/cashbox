@@ -1,5 +1,6 @@
 $(function () {
   $('.amount').mask('00,000,000.00', {reverse: true} );
+
   $('#q_custom_period').mask('00/00/0000 - 00/00/0000',
     { placeholder: "dd/mm/yyyy - dd/mm/yyyy" });
 
@@ -20,9 +21,10 @@ $(function () {
     });
   });
 
-  $(document).on('click', '.category-link', function(e) {
+  $(document).on('click', '[data-stop-propagation=true]', function(e) {
     e.stopPropagation();
   });
+
 
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();
@@ -79,15 +81,18 @@ function show_hide_exchange_rate() {
 
 function show_hide_period_additional_input() {
   if($('#q_period').val() == 'custom') {
-    $('#q_date_from.datepicker').datepicker({
-      format: 'dd/mm/yyyy'
-    });
-    $('#q_date_to.datepicker').datepicker({
-      format: 'dd/mm/yyyy'
-    });
+    datepicker_init($('#q_date_from.datepicker'));
+    datepicker_init($('#q_date_to.datepicker'));
     $('#custom-daterange').removeClass('hidden');
   }
   else {
     $('#custom-daterange').addClass('hidden');
   }
+}
+
+function datepicker_init(selector) {
+  selector.datepicker({
+    format: 'dd/mm/yyyy',
+    autoclose: true
+  });
 }

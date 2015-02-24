@@ -108,7 +108,7 @@ class Transaction < ActiveRecord::Base
 
   def self.amount_eq(amount)
     amount.delete!(',')
-    where(amount_cents: Money.new(amount.to_d * 100).cents)
+    where('abs(amount_cents) = ?', Money.new(amount.to_d.abs * 100).cents)
   end
 
   def self.ransackable_scopes(auth_object = nil)

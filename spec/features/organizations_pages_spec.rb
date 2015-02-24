@@ -19,6 +19,53 @@ describe 'organizations pages' do
     it_behaves_like "organization buttons permissions"
   end
 
+  context 'lists bank accounts' do
+    let!(:member) { create :member, :user, user: user }
+
+    context 'pagination' do
+      let(:paginated)      { 10 }
+      let(:ba_count)       { paginated + 10 }
+      let!(:bank_accounts) { create_list :bank_account, ba_count,
+        organization: org }
+
+      before do
+        visit organization_path org
+      end
+
+      it "lists first page bank accounts" do
+        bank_accounts.first(paginated).each do |ba|
+          expect(subject).to have_content(ba.name)
+        end
+      end
+
+      it "doesnt list last page bank_accounts" do
+        bank_accounts.last(ba_count - paginated).each do |ba|
+          expect(subject).to_not have_content(ba.name)
+        end
+      end
+
+      context "switch to second page", js: true do
+        before do
+          within '.pagination' do
+            click_on '2'
+          end
+        end
+
+        it "doesnt list first page bank_accounts" do
+          bank_accounts.first(paginated).each do |ba|
+            expect(subject).to_not have_content(ba.name)
+          end
+        end
+
+        it "lists last bank_accounts" do
+          bank_accounts.last(ba_count - paginated).each do |ba|
+            expect(subject).to have_content(ba.name)
+          end
+        end
+      end
+    end
+  end
+
   context 'index' do
     before do
       visit organizations_path

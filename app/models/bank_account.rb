@@ -15,6 +15,7 @@
 class BankAccount < ActiveRecord::Base
   AMOUNT_MAX = 21_474_836.47
 
+  acts_as_list
   acts_as_paranoid
 
   belongs_to :organization, inverse_of: :bank_accounts
@@ -26,8 +27,10 @@ class BankAccount < ActiveRecord::Base
   monetize :residue_cents, with_model_currency: :currency
 
   scope :visible, -> { where(visible: true) }
+  scope :visible,    -> { where(visible: true) }
   scope :by_currency, ->(currency) { where('bank_accounts.currency' => currency).
     sum(:balance_cents) }
+  scope :positioned, -> { order(position: :asc) }
 
   validates :name,     presence: true
   validates :balance,  presence: true, numericality: {
