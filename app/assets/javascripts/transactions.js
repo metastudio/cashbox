@@ -20,13 +20,10 @@ $(function () {
     });
   });
 
-  $(document).on('click', '.category-link', function(e) {
+  $(document).on('click', '[data-stop-propagation=true]', function(e) {
     e.stopPropagation();
   });
 
-  $(document).on('click', '.account-link', function(e) {
-    e.stopPropagation();
-  });
 
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();
