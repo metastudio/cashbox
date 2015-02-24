@@ -1,7 +1,7 @@
 #total_balance
   h1 Total balance
 
-  - def_curr = current_organization.default_currency || 'USD'
+  - def_curr = current_organization.default_currency
   - cb = Money.default_bank
   - total_amount = Money.new(0, def_curr)
 
