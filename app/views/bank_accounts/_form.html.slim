@@ -7,7 +7,7 @@
         = f.input :name, autofocus: true
         = f.input :description
         = f.input :residue unless f.object.persisted?
-        = f.input :currency, collection: AppConfig.currencies.to_h.values,
+        = f.input :currency, collection: Dictionaries.currencies,
           selected: @bank_account.organization.default_currency, prompt: 'Select currency'
 
       .form-actions

@@ -5,7 +5,7 @@
 
       .form-inputs
         = f.input :name, autofocus: true
-        = f.input :default_currency, collection: AppConfig.currencies.to_h.values,
+        = f.input :default_currency, collection: Dictionaries.currencies,
           prompt: 'Select default currency'
 
       .form-actions

@@ -2,10 +2,11 @@
 #
 # Table name: organizations
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)      not null
-#  created_at :datetime
-#  updated_at :datetime
+#  id               :integer          not null, primary key
+#  name             :string(255)      not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#  default_currency :string(255)      default("USD")
 #
 
 require 'spec_helper'

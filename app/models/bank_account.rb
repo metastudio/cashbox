@@ -10,6 +10,9 @@
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
+#  deleted_at      :datetime
+#  visible         :boolean          default(TRUE)
+#  position        :integer
 #
 
 class BankAccount < ActiveRecord::Base
@@ -37,7 +40,7 @@ class BankAccount < ActiveRecord::Base
     greater_than_or_equal_to: 0,
     less_than_or_equal_to: AMOUNT_MAX }
   validates :currency, presence: true,
-    inclusion: { in: AppConfig.currencies.to_h.values.to_a,
+    inclusion: { in: Dictionaries.currencies,
       message: "%{value} is not a valid currency" }
 
   after_create :set_initial_residue

@@ -4,11 +4,6 @@ module LayoutHelper
   end
 
   def currency_title(current_organization)
-    title = ""
-    AppConfig.currencies.to_h.values.each do |curr|
-      title += " | "
-      title += money_with_symbol(current_organization.bank_accounts.total_balance(curr))
-    end
-    title
+    Dictionaries.currencies.map { |curr| money_with_symbol(current_organization.bank_accounts.total_balance(curr)) }.join(" | ")
   end
 end

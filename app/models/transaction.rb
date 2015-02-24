@@ -10,11 +10,11 @@
 #  updated_at       :datetime
 #  comment          :string(255)
 #  transaction_type :string(255)
+#  deleted_at       :datetime
 #
 
 class Transaction < ActiveRecord::Base
   AMOUNT_MAX = 21_474_836.47
-  CURRENCIES = %w(USD RUB)
   TRANSACTION_TYPES = %w(Residue)
   FILTER_PERIOD = [['Current month', 'current_month'], ['Previous month', 'prev_month'],
    ['Last 3 months', 'last_3_months'],['Quarter', 'quarter'],
