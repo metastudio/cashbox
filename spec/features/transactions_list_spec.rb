@@ -41,6 +41,17 @@ describe 'Transactions list' do
         expect(page).to have_selector('h1', text: category)
       end
     end
+
+    describe 'bank account' do
+      before do
+        within "#transaction_#{org1_transaction.id}" do
+          click_on org1_ba.name
+        end
+      end
+      it "opens bank account page" do
+        expect(page).to have_selector('h1', text: org1_ba.name)
+      end
+    end
   end
 
   context 'when switch organization' do
