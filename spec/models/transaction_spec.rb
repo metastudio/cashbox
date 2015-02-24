@@ -10,6 +10,7 @@
 #  updated_at       :datetime
 #  comment          :string(255)
 #  transaction_type :string(255)
+#  deleted_at       :datetime
 #
 
 require 'spec_helper'

@@ -10,6 +10,9 @@
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
+#  deleted_at      :datetime
+#  visible         :boolean          default(TRUE)
+#  position        :integer
 #
 
 require 'spec_helper'
