@@ -3,5 +3,15 @@
 }
 
 .word-break {
-  word-break: break-word;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.exchange-helper {
+  font-size: 80%;
+}
+#total_balance {
+  .totals {
+    margin-bottom: 15px;
+  }
 }

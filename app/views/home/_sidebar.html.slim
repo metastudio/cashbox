@@ -1,11 +1,5 @@
 #sidebar
-  h1 Total balance
-
-  .row
-    .col-xs-6
-      = total_amount(BankAccount::CURRENCY_RUB)
-    .col-xs-6
-      = total_amount(BankAccount::CURRENCY_USD)
+  = render 'home/total_balance'
 
   h1 Accounts
   - if current_organization.bank_accounts.present?

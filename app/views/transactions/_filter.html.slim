@@ -12,9 +12,11 @@ h4 Filters:
   = f.input :period, collection: Transaction::FILTER_PERIOD,
     include_blank: 'For period', label: false
   #custom-daterange.hidden
-    = f.input :date_from, input_html: { class: 'datepicker' },
-      placeholder: 'dd/mm/yyyy', label: 'From:'
-    = f.input :date_to, input_html: { class: 'datepicker' },
-      placeholder: 'dd/mm/yyyy', label: 'To:'
+    .col-sm-6
+      = f.input :date_from, input_html: { class: 'datepicker' },
+        placeholder: 'dd/mm/yyyy', label: 'From:'
+    .col-sm-6
+      = f.input :date_to, input_html: { class: 'datepicker' },
+        placeholder: 'dd/mm/yyyy', label: 'To:'
   .pull-right
     = f.button :submit, class: 'btn-primary'

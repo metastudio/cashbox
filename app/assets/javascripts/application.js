@@ -25,3 +25,7 @@
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);
 }
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

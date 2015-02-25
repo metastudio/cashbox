@@ -3,8 +3,7 @@ module LayoutHelper
     (org.id == current_organization.id ? 'active' : '')
   end
 
-  def total_amount(currency)
-    money_with_symbol current_organization.bank_accounts.
-      total_balance(currency)
+  def currency_title(current_organization)
+    Dictionaries.currencies.map { |curr| money_with_symbol(current_organization.bank_accounts.total_balance(curr)) }.join(" | ")
   end
 end
