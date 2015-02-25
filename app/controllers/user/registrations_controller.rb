@@ -6,6 +6,8 @@ class User::RegistrationsController < Devise::RegistrationsController
     if resource.update_without_password(update_profile_params)
       set_flash_message :notice, :updated if is_flashing_format?
       respond_with resource, location: after_update_path_for(resource)
+    else
+      render :edit
     end
   end
 
