@@ -3,8 +3,9 @@ require 'spec_helper'
 describe 'Transactions filter' do
   include MoneyHelper
 
-  let(:user) { create :user, :with_organizations }
-  let(:org)  { user.organizations.first }
+  let(:user) { create :user }
+  let(:org)  { create :organization, with_user: user }
+  let(:cat)  { create :category, organization: org }
   let(:ba)   { create :bank_account, organization: org }
 
   before do
@@ -13,7 +14,7 @@ describe 'Transactions filter' do
 
   subject { page }
 
-  context "filter by amount" do
+  context "by amount" do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction3) { create :transaction, bank_account: ba, amount: 300 }
@@ -30,7 +31,7 @@ describe 'Transactions filter' do
     it_behaves_like 'filterable object'
   end
 
-  context "filter by comment" do
+  context "by comment" do
     let!(:transaction)  { create :transaction, bank_account: ba, comment: 'Comment' }
     let!(:transaction2) { create :transaction, bank_account: ba, comment: 'Another text' }
     let!(:transaction3) { create :transaction, bank_account: ba, comment: 'Comment' }
@@ -47,7 +48,43 @@ describe 'Transactions filter' do
     it_behaves_like 'filterable object'
   end
 
-  context "filter by amount & comment" do
+  context 'by category' do
+    let(:cat2)  { create :category, organization: org }
+    let!(:transaction)  { create :transaction, bank_account: ba, category: cat }
+    let!(:transaction2) { create :transaction, bank_account: ba, category: cat2 }
+    let!(:transaction3) { create :transaction, bank_account: ba, category: cat2 }
+    let!(:transaction4) { create :transaction, bank_account: ba, category: cat2 }
+    let(:correct_items) { [transaction] }
+    let(:wrong_items)   { [transaction2, transaction4, transaction3] }
+
+    before do
+      visit root_path
+      select transaction.category.name, from: 'q[category_id_eq]'
+      click_on 'Search'
+    end
+
+    it_behaves_like 'filterable object'
+  end
+
+  context 'by bank_account' do
+    let(:ba2)           { create :bank_account, organization: org }
+    let!(:transaction)  { create :transaction, bank_account: ba }
+    let!(:transaction2) { create :transaction, bank_account: ba2 }
+    let!(:transaction3) { create :transaction, bank_account: ba2 }
+    let!(:transaction4) { create :transaction, bank_account: ba2 }
+    let(:correct_items) { [transaction] }
+    let(:wrong_items)   { [transaction2, transaction4, transaction3] }
+
+    before do
+      visit root_path
+      select transaction.bank_account.to_s, from: 'q[bank_account_id_eq]'
+      click_on 'Search'
+    end
+
+    it_behaves_like 'filterable object'
+  end
+
+  context "by amount & comment" do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100,
       comment: "Comment to find" }
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100,
@@ -69,7 +106,7 @@ describe 'Transactions filter' do
     it_behaves_like 'filterable object'
   end
 
-  context "filter by date" do
+  context "by date" do
     context "when current month" do
       let!(:transaction)  { create :transaction, bank_account: ba }
       let!(:transaction2) { create :transaction, bank_account: ba }
@@ -196,7 +233,7 @@ describe 'Transactions filter' do
     end
   end
 
-  context "filter by amount, comment, and date" do
+  context "by amount, comment, and date" do
     let!(:transaction)  { Timecop.travel(1.month.ago) {
       create :transaction, bank_account: ba, amount: 100, comment: "Comment" }}
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100,
