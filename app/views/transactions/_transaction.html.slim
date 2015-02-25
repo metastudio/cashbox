@@ -1,8 +1,10 @@
 tr.transaction id=dom_id(transaction) class=(transaction.income? ? 'success' : 'danger') data-edit-url=edit_transaction_path(transaction)
   td.col-sm-2 = money_with_symbol transaction.amount
-  td.col-sm-3.word-break class='category-link'
+  td.col-sm-3.word-break
     = link_to transaction.category.name, category_path(transaction.category),
       data: { stop_propagation: true } if transaction.category.present?
-  td.col-sm-3.word-break= transaction.bank_account.name if transaction.bank_account.present?
-  td.col-sm-3.word-break.hidden-xs = transaction.comment
+  td.col-sm-3.word-break
+    = link_to transaction.bank_account.name, bank_account_path(transaction.bank_account),
+      data: { stop_propagation: true }
+  td.col-sm-3.word-break.comment.hidden-xs = transaction.comment
   td.col-sm-1= I18n.l transaction.created_at

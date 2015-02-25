@@ -10,11 +10,11 @@
 #  updated_at       :datetime
 #  comment          :string(255)
 #  transaction_type :string(255)
+#  deleted_at       :datetime
 #
 
 class Transaction < ActiveRecord::Base
   AMOUNT_MAX = 21_474_836.47
-  CURRENCIES = %w(USD RUB)
   TRANSACTION_TYPES = %w(Residue)
   FILTER_PERIOD = [['Current month', 'current_month'], ['Previous month', 'prev_month'],
    ['Last 3 months', 'last_3_months'],['Quarter', 'quarter'],
@@ -89,7 +89,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.date_from(from)
-    from = DateTime.parse(from) rescue nil
+    from = DateTime.parse(from).beginning_of_day rescue nil
     if from && from.year > 0
       where("transactions.created_at >= ?", from)
     else
@@ -98,7 +98,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.date_to(to)
-    to = DateTime.parse(to) rescue nil
+    to = DateTime.parse(to).end_of_day rescue nil
     if to && to.year > 0
       where("transactions.created_at <= ?", to)
     else
@@ -108,7 +108,7 @@ class Transaction < ActiveRecord::Base
 
   def self.amount_eq(amount)
     amount.delete!(',')
-    where(amount_cents: Money.new(amount.to_d * 100).cents)
+    where('abs(amount_cents) = ?', Money.new(amount.to_d.abs * 100).cents)
   end
 
   def self.ransackable_scopes(auth_object = nil)

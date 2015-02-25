@@ -7,7 +7,8 @@ class OrganizationsController < ApplicationController
   end
 
   def show
-    @bank_accounts = current_organization.bank_accounts.page(params[:page]).per(10)
+    @bank_accounts = @organization.bank_accounts.
+      positioned.page(params[:page]).per(10)
   end
 
   def new
@@ -61,6 +62,6 @@ class OrganizationsController < ApplicationController
   end
 
   def organization_params
-    params.require(:organization).permit(:name)
+    params.require(:organization).permit(:name, :default_currency)
   end
 end

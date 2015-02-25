@@ -1,5 +1,6 @@
 $(function () {
   $('.amount').mask('00,000,000.00', {reverse: true} );
+
   $('#q_custom_period').mask('00/00/0000 - 00/00/0000',
     { placeholder: "dd/mm/yyyy - dd/mm/yyyy" });
 
@@ -20,9 +21,10 @@ $(function () {
     });
   });
 
-  $(document).on('click', '.category-link', function(e) {
+  $(document).on('click', '[data-stop-propagation=true]', function(e) {
     e.stopPropagation();
   });
+
 
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();

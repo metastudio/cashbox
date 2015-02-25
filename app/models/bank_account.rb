@@ -10,14 +10,15 @@
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
+#  deleted_at      :datetime
+#  visible         :boolean          default(TRUE)
+#  position        :integer
 #
 
 class BankAccount < ActiveRecord::Base
   AMOUNT_MAX = 21_474_836.47
-  CURRENCY_USD = 'USD'
-  CURRENCY_RUB = 'RUB'
-  CURRENCIES = [CURRENCY_USD, CURRENCY_RUB]
 
+  acts_as_list
   acts_as_paranoid
 
   belongs_to :organization, inverse_of: :bank_accounts
@@ -29,12 +30,18 @@ class BankAccount < ActiveRecord::Base
   monetize :residue_cents, with_model_currency: :currency
 
   scope :visible, -> { where(visible: true) }
+  scope :visible,    -> { where(visible: true) }
+  scope :by_currency, ->(currency) { where('bank_accounts.currency' => currency).
+    sum(:balance_cents) }
+  scope :positioned, -> { order(position: :asc) }
 
   validates :name,     presence: true
   validates :balance,  presence: true, numericality: {
     greater_than_or_equal_to: 0,
     less_than_or_equal_to: AMOUNT_MAX }
-  validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
+  validates :currency, presence: true,
+    inclusion: { in: Dictionaries.currencies,
+      message: "%{value} is not a valid currency" }
 
   after_create :set_initial_residue
 
