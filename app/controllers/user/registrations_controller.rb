@@ -1,20 +1,20 @@
 class User::RegistrationsController < Devise::RegistrationsController
+  prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy,
+    :update_profile]
 
   def update_profile
-    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
-    resource_updated = resource.update_without_password(account_update_params)
-
-    if resource_updated
+    if resource.update_without_password(update_profile_params)
       set_flash_message :notice, :updated if is_flashing_format?
-      sign_in resource_name, resource, bypass: true
       respond_with resource, location: after_update_path_for(resource)
-    else
-      clean_up_passwords resource
-      respond_with resource
     end
   end
 
   def after_update_path_for(resource)
     user_profile_path
   end
+
+  private
+    def update_profile_params
+      params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number])
+    end
 end
