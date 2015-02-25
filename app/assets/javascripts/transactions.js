@@ -21,6 +21,16 @@ $(function () {
     });
   });
 
+  $(document).on('click', '#filter-reset', function(e) {
+    e.preventDefault();
+
+    $('#q_amount_eq').val('');
+    $('#q_comment_cont').val('');
+    $('#q_category_id_eq').val('');
+    $('#q_bank_account_id_eq').val('');
+    $('#q_period').val('');
+  });
+
   $(document).on('click', '[data-stop-propagation=true]', function(e) {
     e.stopPropagation();
   });

@@ -19,4 +19,5 @@ h4 Filters:
       = f.input :date_to, input_html: { class: 'datepicker' },
         placeholder: 'dd/mm/yyyy', label: 'To:'
   .pull-right
+    = link_to 'Reset', '', class: 'btn btn-default', id: 'filter-reset'
     = f.button :submit, class: 'btn-primary'
