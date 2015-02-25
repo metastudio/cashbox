@@ -3,6 +3,10 @@ $(document).on("ready page:load", function () {
     return $("#bank_accounts_table").sortable({
       axis:   "y",
       items:  ".item",
+      delay: 200,
+      helper: "clone",
+      opacity: 0.5,
+      tolerance: "pointer",
       cursor: "move",
       sort: function(e, ui) {
         return ui.item.addClass("active-item-shadow");
