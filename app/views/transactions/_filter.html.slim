@@ -10,7 +10,7 @@ h4 Filters:
   = f.input :bank_account_id_eq, label: false, prompt: 'Account',
     collection: current_organization.bank_accounts, label_method: :to_s
   = f.input :period, collection: Transaction::FILTER_PERIOD,
-    include_blank: 'For period', label: false
+    include_blank: 'Choose period...', label: false
   #custom-daterange.hidden
     .col-sm-6
       = f.input :date_from, input_html: { class: 'datepicker' },
