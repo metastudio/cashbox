@@ -1,18 +1,13 @@
 tr.transaction id=dom_id(transaction) class=(transaction.income? ? 'success' : 'danger') data-edit-url=edit_transaction_path(transaction)
   td.col-sm-2 = money_with_symbol transaction.amount
 
-  - add_cat_filter = params.deep_dup
-  - add_cat_filter[:q] ||= {}
   td.col-sm-3.word-break
-    - add_cat_filter[:q].merge!(category_id_eq: transaction.category.id)
-    = link_to transaction.category.name, root_path(add_cat_filter),
+    = link_to transaction.category.name,
+      root_path(q: (params[:q] || {}).merge(category_id_eq: transaction.category.id)),
       data: { stop_propagation: true } if transaction.category.present?
-
-  - add_account_filter = params.deep_dup
-  - add_account_filter[:q] ||= {}
   td.col-sm-3.word-break
-    - add_account_filter[:q].merge!(bank_account_id_eq: transaction.bank_account.id)
-    = link_to transaction.bank_account.name, root_path(add_account_filter),
+    = link_to transaction.bank_account.name,
+      root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.bank_account.id)),
       data: { stop_propagation: true }
   td.col-sm-3.word-break.comment.hidden-xs = transaction.comment
   td.col-sm-1= I18n.l transaction.created_at

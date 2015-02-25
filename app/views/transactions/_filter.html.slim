@@ -9,7 +9,7 @@ h4 Filters:
     group_method: :last
   = f.input :bank_account_id_eq, label: false, prompt: 'Account',
     collection: current_organization.bank_accounts, label_method: :to_s
-  = f.input :period, collection: Transaction::FILTER_PERIOD,
+  = f.input :period, collection: Transaction.custom_dates,
     include_blank: 'Choose period...', label: false
   #custom-daterange.hidden
     .col-sm-6
@@ -18,6 +18,6 @@ h4 Filters:
     .col-sm-6
       = f.input :date_to, input_html: { class: 'datepicker' },
         placeholder: 'dd/mm/yyyy', label: 'To:'
-  .pull-right
-    = link_to 'Reset', '', class: 'btn btn-default', id: 'filter-reset'
+  .pull-right.btn-group
+    = f.button :submit, 'Reset', type: 'reset', class: 'btn-default'
     = f.button :submit, class: 'btn-primary'

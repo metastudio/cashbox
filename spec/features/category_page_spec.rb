@@ -79,6 +79,10 @@ describe 'category page' do
         expect(subject).to have_content(cat.name)
       end
     end
+
+    it "is root_path now" do
+      expect(current_path).to eq root_path
+    end
   end
 
   describe "system" do

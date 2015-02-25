@@ -12,19 +12,13 @@
 #  transaction_type :string(255)
 #  deleted_at       :datetime
 #
+require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
   include TimeRange
   AMOUNT_MAX = 21_474_836.47
   TRANSACTION_TYPES = %w(Residue)
-  FILTER_PERIOD = [
-    ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
-    ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
-    ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
-    ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
-    ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
-    ["Custom", "custom"]
-  ]
+
 
   acts_as_paranoid
 
@@ -57,6 +51,17 @@ class Transaction < ActiveRecord::Base
   after_save :recalculate_amount
   after_destroy :recalculate_amount
   after_restore :recalculate_amount
+
+  def self.custom_dates
+    [
+      ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
+      ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
+      ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
+      ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
+      ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
+      ["Custom", "custom"]
+    ]
+  end
 
   private
 
