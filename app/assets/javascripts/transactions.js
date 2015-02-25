@@ -86,6 +86,8 @@ function show_hide_period_additional_input() {
     $('#custom-daterange').removeClass('hidden');
   }
   else {
+    $('#q_date_from').val('');
+    $('#q_date_to').val('');
     $('#custom-daterange').addClass('hidden');
   }
 }
