@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217145200) do
+ActiveRecord::Schema.define(version: 20150219095226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,9 +24,9 @@ ActiveRecord::Schema.define(version: 20150217145200) do
     t.integer  "organization_id",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
     t.boolean  "visible",         default: true
     t.integer  "position"
-    t.datetime "deleted_at"
   end
 
   add_index "bank_accounts", ["deleted_at"], name: "index_bank_accounts_on_deleted_at", using: :btree
@@ -56,9 +56,10 @@ ActiveRecord::Schema.define(version: 20150217145200) do
   add_index "members", ["user_id", "organization_id"], name: "index_members_on_user_id_and_organization_id", unique: true, using: :btree
 
   create_table "organizations", force: true do |t|
-    t.string   "name",       null: false
+    t.string   "name",                             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "default_currency", default: "USD"
   end
 
   create_table "profiles", force: true do |t|

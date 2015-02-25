@@ -9,6 +9,7 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  system          :boolean          default(FALSE)
+#  deleted_at      :datetime
 #
 
 class Category < ActiveRecord::Base
