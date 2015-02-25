@@ -4,6 +4,11 @@ h4 Filters:
   = f.input :amount_eq, label: false, placeholder: 'Amount',
     input_html: { class: '.amount' }
   = f.input :comment_cont, label: false, placeholder: 'Comment'
+  = f.input :category_id_eq, as: :grouped_select, label: false, prompt: 'Category',
+    collection: current_organization.categories.grouped_by_type,
+    group_method: :last
+  = f.input :bank_account_id_eq, label: false, prompt: 'Account',
+    collection: current_organization.bank_accounts, label_method: :to_s
   = f.input :period, collection: Transaction::FILTER_PERIOD,
     include_blank: 'For period', label: false
   #custom-daterange.hidden

@@ -4,6 +4,7 @@
 
 .row
   .col-sm-12
+    = params[:q] ||= {}
     = render partial: 'transactions/transactions', locals: { transactions: @transactions }
     .paginator.col-md-offset-5
       = paginate @transactions, remote: true

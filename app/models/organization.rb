@@ -19,5 +19,4 @@ class Organization < ActiveRecord::Base
   has_many :transactions, through: :bank_accounts, inverse_of: :organization
 
   validates :name, presence: true
-
 end

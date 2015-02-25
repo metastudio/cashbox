@@ -1,16 +1,11 @@
 class BankAccountsController < ApplicationController
-  before_action :set_bank_account, only: [:edit, :update, :destroy, :hide, :show]
+  before_action :set_bank_account, only: [:edit, :update, :destroy, :hide]
   before_action :require_organization, only: [:edit, :update, :new, :create,
-    :destroy, :hide, :show]
+    :destroy, :hide]
   before_action :find_bank_account, only: :sort
 
   def new
     @bank_account = current_organization.bank_accounts.build
-  end
-
-  def show
-    @q = @bank_account.transactions.ransack(params[:q])
-    @transactions = @q.result.page(params[:page]).per(50)
   end
 
   def edit

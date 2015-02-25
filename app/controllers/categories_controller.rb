@@ -1,5 +1,5 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:edit, :update, :destroy, :show]
+  before_action :set_category, only: [:edit, :update, :destroy]
   before_action :require_organization
 
   def index
@@ -34,11 +34,6 @@ class CategoriesController < ApplicationController
   def destroy
     @category.destroy
     redirect_to categories_path
-  end
-
-  def show
-    @q = current_organization.transactions.where(category_id: @category.id).ransack(params[:q])
-    @transactions = @q.result.page(params[:page])
   end
 
   private

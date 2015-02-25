@@ -111,8 +111,16 @@ class Transaction < ActiveRecord::Base
     where('abs(amount_cents) = ?', Money.new(amount.to_d.abs * 100).cents)
   end
 
+  def self.category_id_eq(id)
+    where(category_id: id)
+  end
+
+  def self.bank_account_id_eq(id)
+    where(bank_account_id: id)
+  end
+
   def self.ransackable_scopes(auth_object = nil)
-    %i(amount_eq period amount_sort date_from date_to)
+    %i(amount_eq period amount_sort date_from date_to category_id_eq bank_account_id_eq)
   end
 
   def amount_balance

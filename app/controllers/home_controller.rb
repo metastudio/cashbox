@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   before_filter :require_organization
 
   def show
+    # raise params.inspect
     @q = current_organization.transactions.ransack(params[:q])
     @transactions = @q.result
     @rub_inc  = Money.new(@transactions.by_currency("RUB").incomes.sum(:amount_cents), 'rub')
