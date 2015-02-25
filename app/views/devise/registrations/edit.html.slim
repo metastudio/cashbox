@@ -9,7 +9,7 @@ h2
     | Cancel my account
   p
     | Unhappy?
-    =< link_to "Cancel my account", user_registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete
+    =< link_to "Cancel my account", update_user_profile_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete
   = link_to "Back", :back
 
 .col-sm-6
