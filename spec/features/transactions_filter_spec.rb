@@ -254,4 +254,24 @@ describe 'Transactions filter' do
 
     it_behaves_like 'filterable object'
   end
+
+  context 'memorized' do
+    let(:ba2)           { create :bank_account, organization: org }
+    let!(:transaction)  { create :transaction, bank_account: ba }
+    let!(:transaction2) { create :transaction, bank_account: ba2 }
+    let!(:transaction3) { create :transaction, bank_account: ba2 }
+    let!(:transaction4) { create :transaction, bank_account: ba2 }
+    let(:correct_items) { [transaction2] }
+    let(:wrong_items)   { [transaction, transaction4, transaction3] }
+
+    before do
+      visit root_path
+      within "#transaction_#{transaction2.id}" do
+        click_on transaction2.bank_account.name
+        click_on transaction2.category.name
+      end
+    end
+
+    it_behaves_like 'filterable object'
+  end
 end

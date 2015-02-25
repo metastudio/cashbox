@@ -13,32 +13,6 @@ describe 'category page' do
 
   subject{ page }
 
-  describe 'create transaction', js: true do
-    let(:category) { create :category, organization: organization}
-
-    before do
-      visit category_path category
-      within '#new_transaction' do
-        fill_in 'transaction[amount]', with: amount
-        select account_name, from: 'transaction[bank_account_id]'
-        click_on 'Create'
-      end
-    end
-    context 'valid params' do
-      it "shows created transaction in transactions list" do
-        within ".transactions" do
-          expect(page).to have_content(amount)
-        end
-      end
-    end
-
-    context 'invalid params' do
-      let(:account_name) { 'Account' }
-      it { expect(page).to have_content('Please review the problems below') }
-      it { expect(page).to have_inline_error("can't be blank").for_field_name('transaction[bank_account_id]') }
-    end
-  end
-
   describe "pagination" do
     let(:paginated)        { 10 }
     let(:categories_count) { paginated + 10 }
@@ -87,6 +61,22 @@ describe 'category page' do
             expect(subject).to have_selector('td', text: category.name)
           end
         end
+      end
+    end
+  end
+
+  describe 'when opened via transactions table column' do
+    let(:cat)          { create :category, organization: organization }
+    let!(:transaction) { create :transaction, bank_account: account, category: cat}
+
+    before do
+      visit root_path
+      click_on cat.name
+    end
+
+    it "autoselect category filter" do
+      within '#q_category_id_eq' do
+        expect(subject).to have_content(cat.name)
       end
     end
   end
