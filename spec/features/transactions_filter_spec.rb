@@ -210,12 +210,13 @@ describe 'Transactions filter' do
     end
 
     context 'when custom' do
-      let!(:transaction)  { create :transaction, bank_account: ba }
-      let!(:transaction2) { Timecop.travel( Time.now + 5.days) {
+      let!(:transaction)  { Timecop.travel(2013,12,12) {
         create :transaction, bank_account: ba } }
-      let!(:transaction3) { Timecop.travel( Time.now + 10.days) {
+      let!(:transaction2) { Timecop.travel(2012,12,12) {
         create :transaction, bank_account: ba } }
-      let!(:transaction4) { Timecop.travel( Time.now - 2.day) {
+      let!(:transaction3) { Timecop.travel(2012,12,20) {
+        create :transaction, bank_account: ba } }
+      let!(:transaction4) { Timecop.travel(2012,11,20) {
         create :transaction, bank_account: ba } }
       let(:correct_items) { [transaction2,  transaction3] }
       let(:wrong_items)   { [transaction, transaction4] }
@@ -224,12 +225,48 @@ describe 'Transactions filter' do
         visit root_path
         select 'Custom', from: 'q[period]'
         page.has_content?('To:')
-        fill_in 'From:', with: (Time.now + 1.day).strftime('%d/%m/%Y')
-        fill_in 'To:', with: (Time.now + 12.days).strftime('%d/%m/%Y')
+        fill_in 'From:', with: (Time.new(2012,12,10)).strftime('%d/%m/%Y')
+        fill_in 'To:', with: (Time.new(2012,12,31)).strftime('%d/%m/%Y')
         click_on 'Search'
       end
 
       it_behaves_like 'filterable object'
+
+      context 'and then ordinary', js: true  do
+        let(:correct_items) { [transaction4] }
+        let(:wrong_items)   { [transaction, transaction2, transaction3] }
+
+        before do
+          Timecop.travel(2012,12,12)
+          select 'Previous month', from: 'q[period]'
+          click_on 'Search'
+        end
+
+        it_behaves_like 'filterable object'
+      end
+
+      context 'edge values' do
+        let!(:transaction)  { create :transaction, bank_account: ba }
+        let!(:transaction2) { Timecop.travel( Time.now + 5.days) {
+          create :transaction, bank_account: ba } }
+        let!(:transaction3) { Timecop.travel( Time.now + 10.days) {
+          create :transaction, bank_account: ba } }
+        let!(:transaction4) { Timecop.travel( Time.now - 2.day) {
+          create :transaction, bank_account: ba } }
+        let(:correct_items) { [transaction2, transaction3] }
+        let(:wrong_items)   { [transaction, transaction4] }
+
+        before do
+          visit root_path
+          select 'Custom', from: 'q[period]'
+          page.has_content?('To:')
+          fill_in 'From:', with: (Time.now + 5.days).strftime('%d/%m/%Y')
+          fill_in 'To:', with: (Time.now + 10.days).strftime('%d/%m/%Y')
+          click_on 'Search'
+        end
+
+        it_behaves_like 'filterable object'
+      end
     end
   end
 
