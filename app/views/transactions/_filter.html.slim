@@ -6,7 +6,7 @@ h4 Filters:
   = f.input :comment_cont, label: false, placeholder: 'Comment'
   = f.input :category_id_eq, as: :grouped_select, label: false, include_blank: 'Category',
     collection: current_organization.categories.grouped_by_type,
-    group_method: :last
+    group_method: :last, label_method: :to_s
   = f.input :bank_account_id_eq, label: false, include_blank: 'Account',
     collection: current_organization.bank_accounts, label_method: :to_s
   = f.input :period, collection: Transaction.custom_dates,
