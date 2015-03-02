@@ -1,8 +1,10 @@
 $(function () {
   $('.amount').mask('00,000,000.00', {reverse: true} );
+  $('.comission').mask('00,000,000.00', {reverse: true} );
+  $('.rate').mask('00,000.0000', { reverse: true} );
 
-  $('#q_custom_period').mask('00/00/0000 - 00/00/0000',
-    { placeholder: "dd/mm/yyyy - dd/mm/yyyy" });
+  $('#q_date_from').mask('00/00/0000');
+  $('#q_date_to').mask('00/00/0000');
 
   if ($('#transfer_exchange_rate').size()) {
     show_hide_exchange_rate();
