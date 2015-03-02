@@ -1,16 +1,14 @@
 h4 Filters:
 
 = search_form_for @q, url: root_path do |f|
-  = f.input :amount_eq, label: false, placeholder: 'Amount',
-    input_html: { class: '.amount' }
-  = f.input :comment_cont, label: false, placeholder: 'Comment'
+  = f.input :amount_eq, label: false, input_html: { class: 'amount' }
+  = f.input :comment_cont, label: false
   = f.input :period, collection: Transaction::FILTER_PERIOD,
     include_blank: 'For period', label: false
   #custom-daterange.hidden
     .col-sm-6
-      = f.input :date_from, input_html: { class: 'datepicker' }, placeholder: 'dd/mm/yyyy', label: 'From:'
+      = f.input :date_from, input_html: { class: 'datepicker' }
     .col-sm-6
-      = f.input :date_to, input_html: { class: 'datepicker' },
-        placeholder: 'dd/mm/yyyy', label: 'To:'
+      = f.input :date_to, input_html: { class: 'datepicker' }
   .pull-right
     = f.button :submit, class: 'btn-primary'
