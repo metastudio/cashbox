@@ -12,13 +12,12 @@
 #  transaction_type :string(255)
 #  deleted_at       :datetime
 #
+require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
+  include TimeRange
   AMOUNT_MAX = 21_474_836.47
   TRANSACTION_TYPES = %w(Residue)
-  FILTER_PERIOD = [['Current month', 'current_month'], ['Previous month', 'prev_month'],
-   ['Last 3 months', 'last_3_months'],['Quarter', 'quarter'],
-   ['This year', 'this_year'], ['Custom', 'custom']]
 
   acts_as_paranoid
 
@@ -51,6 +50,17 @@ class Transaction < ActiveRecord::Base
   after_save :recalculate_amount
   after_destroy :recalculate_amount
   after_restore :recalculate_amount
+
+  def self.custom_dates
+    [
+      ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
+      ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
+      ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
+      ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
+      ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
+      ["Custom", "custom"]
+    ]
+  end
 
   private
 
@@ -112,7 +122,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    %i(amount_eq period amount_sort date_from date_to)
+    %i(amount_eq period amount_sort date_from date_to )
   end
 
   def amount_balance
