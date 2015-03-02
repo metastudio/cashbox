@@ -28,7 +28,6 @@ en:
         date_from: 'From:'
         date_to: 'To:'
 
-
     placeholders:
       q:
         amount_eq: 'Amount'
