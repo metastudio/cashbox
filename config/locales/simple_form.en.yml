@@ -23,6 +23,12 @@ en:
     #   defaults:
     #     username: 'User name to sign in.'
     #     password: 'No special characters, please.'
+    placeholders:
+      transfer:
+        amount: 'Amount'
+        comission: 'Comission'
+        exchange_rate: 'Rate'
+        comment: 'Comment'
   helpers:
     submit:
       transfer:
