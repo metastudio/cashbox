@@ -29,6 +29,11 @@ en:
         comission: 'Comission'
         exchange_rate: 'Rate'
         comment: 'Comment'
+      transaction:
+        amount: 'Amount'
+        comission: 'Comission'
+        comment: 'Comment'
+
   helpers:
     submit:
       transfer:

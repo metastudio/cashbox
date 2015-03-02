@@ -2,9 +2,9 @@
   = render 'home/total_balance'
 
   h1 Accounts
-  - if current_organization.bank_accounts.present?
+  - if bank_accounts.present?
     table.table.table-hover
-      - current_organization.bank_accounts.visible.each do |account|
+      - bank_accounts.visible.each do |account|
         tr class=(account.balance_cents > 0 ? 'success' : 'danger') id="bank_account_#{account.id}"
           td= link_to account.to_s, bank_account_path(account)
           td.bank-amount

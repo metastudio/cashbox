@@ -8,8 +8,7 @@ h4 Filters:
     include_blank: 'For period', label: false
   #custom-daterange.hidden
     .col-sm-6
-      = f.input :date_from, input_html: { class: 'datepicker' },
-        placeholder: 'dd/mm/yyyy', label: 'From:'
+      = f.input :date_from, input_html: { class: 'datepicker' }, placeholder: 'dd/mm/yyyy', label: 'From:'
     .col-sm-6
       = f.input :date_to, input_html: { class: 'datepicker' },
         placeholder: 'dd/mm/yyyy', label: 'To:'
