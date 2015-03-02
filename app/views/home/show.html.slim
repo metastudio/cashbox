@@ -7,5 +7,8 @@
     = render partial: 'transactions/transactions', locals: { transactions: @transactions }
     .paginator.col-md-offset-5
       = paginate @transactions, remote: true
-.row.col-sm-12
-  = render 'home/flow' if params[:q]
+- if @transactions.present?
+  .row.col-sm-12
+    = render 'home/flow' if params[:q]
+- else
+  h3 No transactions found

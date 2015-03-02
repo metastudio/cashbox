@@ -4,10 +4,10 @@ h4 Filters:
   = f.input :amount_eq, label: false, placeholder: 'Amount',
     input_html: { class: '.amount' }
   = f.input :comment_cont, label: false, placeholder: 'Comment'
-  = f.input :category_id_eq, as: :grouped_select, label: false, prompt: 'Category',
+  = f.input :category_id_eq, as: :grouped_select, label: false, include_blank: 'Category',
     collection: current_organization.categories.grouped_by_type,
     group_method: :last
-  = f.input :bank_account_id_eq, label: false, prompt: 'Account',
+  = f.input :bank_account_id_eq, label: false, include_blank: 'Account',
     collection: current_organization.bank_accounts, label_method: :to_s
   = f.input :period, collection: Transaction.custom_dates,
     include_blank: 'Choose period...', label: false
@@ -19,5 +19,5 @@ h4 Filters:
       = f.input :date_to, input_html: { class: 'datepicker' },
         placeholder: 'dd/mm/yyyy', label: 'To:'
   .pull-right.btn-group
-    = f.button :submit, 'Reset', type: 'reset', class: 'btn-default'
-    = f.button :submit, class: 'btn-primary'
+    = f.button :submit, class: 'btn btn-primary'
+    = f.button :button, 'Reset', class: 'btn btn-default btn-reset'
