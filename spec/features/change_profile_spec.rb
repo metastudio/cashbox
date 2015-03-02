@@ -52,7 +52,7 @@ describe 'Change profile' do
           before do
             fill_in 'Email', with: new_email
             fill_in 'Current password', with: current_password
-            click_on 'Update'
+            click_on 'Update account'
           end
 
           describe 'updated profile' do
@@ -65,7 +65,7 @@ describe 'Change profile' do
 
       context 'no password provided' do
         before do
-          click_on 'Update'
+          click_on 'Update account'
         end
 
         it { expect(page).to have_inline_error("we need your current password to confirm your changes").for_field('Current password') }

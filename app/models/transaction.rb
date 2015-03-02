@@ -99,7 +99,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.date_from(from)
-    from = DateTime.parse(from) rescue nil
+    from = DateTime.parse(from).beginning_of_day rescue nil
     if from && from.year > 0
       where("transactions.created_at >= ?", from)
     else
@@ -108,7 +108,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.date_to(to)
-    to = DateTime.parse(to) rescue nil
+    to = DateTime.parse(to).end_of_day rescue nil
     if to && to.year > 0
       where("transactions.created_at <= ?", to)
     else
