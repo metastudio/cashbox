@@ -3,13 +3,11 @@
   = f.error :base
 
   .col-sm-2
-    = f.input :amount, label: false, placeholder: 'Amount', input_html: { class: 'amount' }
+    = f.input :amount, label: false, input_html: { class: 'amount' }
   .col-sm-2
-    = f.input :comission, label: false, placeholder: 'Comission',
-    input_html: { class: 'comission' }
+    = f.input :comission, label: false, input_html: { class: 'comission' }
   .col-sm-1.hidden
-    = f.input :exchange_rate, label: false, placeholder: 'Rate',
-    input_html: { class: 'rate' }
+    = f.input :exchange_rate, label: false, input_html: { class: 'rate' }
   .col-sm-2
     = f.input :bank_account_id, label: false
       = f.select :bank_account_id, current_organization.bank_accounts.visible.map { |b| [ b.to_s, b.id, { data_currency: b.currency } ] }, { prompt: 'From' }, class: 'form-control'
@@ -17,6 +15,6 @@
     = f.input :reference_id, label: false
       = f.select :reference_id, current_organization.bank_accounts.visible.map { |b| [ b.to_s, b.id, { data_currency: b.currency } ] }, { prompt: 'To' }, class: 'form-control'
   .col-sm-2
-    = f.input :comment, label: false, placeholder: 'Comment'
+    = f.input :comment, label: false
   .col-sm-2
     = render 'transactions/btn_block', f: f, transaction: Transaction.new
