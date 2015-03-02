@@ -2,7 +2,7 @@
   = f.error_notification
 
   .col-sm-2
-    = f.input :amount, label: false, placeholder: 'Amount', input_html: { class: 'amount',
+    = f.input :amount, label: false, input_html: { class: 'amount',
       value: f.object.amount == 0 ? nil : f.object.amount }
   .col-sm-2
     - if local_assigns[:fixed_category_id].present?
@@ -21,6 +21,6 @@
       = f.association :bank_account, as: :grouped_select, include_blank: 'Account', label: false, disabled: true, collection: current_organization.bank_accounts.grouped_by_currency(current_organization.default_currency), group_method: :last, value_method: :id,
         label_method: :to_s
   .col-sm-2
-    = f.input :comment, label: false, placeholder: 'Comment'
+    = f.input :comment, label: false
   .col-sm-2.col-sm-offset-2
     = render 'transactions/btn_block', f: f, transaction: transaction
