@@ -2,7 +2,7 @@
   = f.error_notification
 
   .col-sm-2
-    = f.input :amount, label: false, placeholder: 'Amount', input_html: { class: 'amount',
+    = f.input :amount, label: false, input_html: { class: 'amount',
       value: f.object.amount == 0 ? nil : f.object.amount }
   .col-sm-2
     - if local_assigns[:fixed_category_id].present?
@@ -14,12 +14,10 @@
         label_method: :to_s
   .col-sm-2
     - if f.object.bank_account.nil? || f.object.bank_account.visible?
-      = f.association :bank_account, collection: current_organization.bank_accounts.visible,
-        prompt: 'Account', include_blank: false, label: false, label_method: :to_s
+      = f.association :bank_account, collection: current_organization.bank_accounts.positioned.visible, label: false, label_method: :to_s, include_blank: 'Account'
     - else
-      = f.association :bank_account, disabled: true, collection: current_organization.bank_accounts,
-        prompt: 'Account', include_blank: false, label: false, label_method: :to_s
+      = f.association :bank_account, disabled: true, collection: current_organization.bank_accounts.positioned, label: false, label_method: :to_s, include_blank: 'Account'
   .col-sm-2
-    = f.input :comment, label: false, placeholder: 'Comment'
+    = f.input :comment, label: false
   .col-sm-2.col-sm-offset-2
     = render 'transactions/btn_block', f: f, transaction: transaction

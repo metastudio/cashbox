@@ -23,12 +23,27 @@ en:
     #   defaults:
     #     username: 'User name to sign in.'
     #     password: 'No special characters, please.'
+    labels:
+      q:
+        date_from: 'From:'
+        date_to: 'To:'
+
     placeholders:
+      q:
+        amount_eq: 'Amount'
+        comment_cont: 'Comment'
+        date_from: 'dd/mm/yyyy'
+        date_to: 'dd/mm/yyyy'
       transfer:
         amount: 'Amount'
         comission: 'Comission'
         exchange_rate: 'Rate'
         comment: 'Comment'
+      transaction:
+        amount: 'Amount'
+        comission: 'Comission'
+        comment: 'Comment'
+
   helpers:
     submit:
       transfer:
