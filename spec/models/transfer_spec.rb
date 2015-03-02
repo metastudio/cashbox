@@ -15,46 +15,57 @@ describe Transfer do
     it { should validate_presence_of(:reference_id) }
 
     context "custom validations" do
-      let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id }
 
       subject { transfer }
 
-      describe "transfer_amount" do
-        let(:from) { create :bank_account, balance: 100 }
-        let(:to)   { create :bank_account, balance: 200 }
+      context 'when depends on bank account' do
+        let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id }
 
-        it 'is invalid' do
-          expect(subject).to be_invalid
-          expect(subject.errors_on(:amount)).
-            to include("Not enough money")
-        end
-      end
+        describe "transfer_amount" do
+          let(:from) { create :bank_account, balance: 100 }
+          let(:to)   { create :bank_account, balance: 200 }
 
-      context "transfer_account" do
-        let(:from) { create :bank_account, balance: 100 }
-        let(:to)   { from }
-
-        it 'is invalid' do
-          expect(subject).to be_invalid
-          expect(subject.errors_on(:reference_id)).
-            to include("Can't transfer to same account")
-        end
-      end
-
-      context "diff currency" do
-        let(:from) { create :bank_account, currency: "USD", balance: 9999999 }
-        let(:to)   { create :bank_account, currency: "RUB", balance: 9999999 }
-
-        describe 'exchange_rate' do
-          let(:transfer) { build :transfer, exchange_rate: 10_001,
-            bank_account_id: from.id, reference_id: to.id,
-            from_currency: from.currency, to_currency: to.currency }
-
-          it "is invalid" do
+          it 'is invalid' do
             expect(subject).to be_invalid
-            expect(subject.errors_on(:exchange_rate)).
-              to include("must be less than 10000")
+            expect(subject.errors_on(:amount)).
+              to include("Not enough money")
           end
+        end
+
+        context "transfer_account" do
+          let(:from) { create :bank_account, balance: 100 }
+          let(:to)   { from }
+
+          it 'is invalid' do
+            expect(subject).to be_invalid
+            expect(subject.errors_on(:reference_id)).
+              to include("Can't transfer to same account")
+          end
+        end
+
+        context "diff currency" do
+          let(:from) { create :bank_account, currency: "USD", balance: 9999999 }
+          let(:to)   { create :bank_account, currency: "RUB", balance: 9999999 }
+
+          describe 'exchange_rate' do
+            let(:transfer) { build :transfer, exchange_rate: 10_001,
+              bank_account_id: from.id, reference_id: to.id,
+              from_currency: from.currency, to_currency: to.currency }
+
+            it "is invalid" do
+              expect(subject).to be_invalid
+              expect(subject.errors_on(:exchange_rate)).
+                to include("must be less than 10000")
+            end
+          end
+        end
+      end
+
+      context 'amount with commas' do
+        let(:transfer) { build :transfer, amount: '1,000.00' }
+
+        it 'is valid' do
+          expect(subject.errors_on(:amount)).to be_blank
         end
       end
     end
