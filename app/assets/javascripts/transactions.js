@@ -4,16 +4,6 @@ $(function () {
   $('#q_custom_period').mask('00/00/0000 - 00/00/0000',
     { placeholder: "dd/mm/yyyy - dd/mm/yyyy" });
 
-  $(document).on('click', '.btn-reset', function(e) {
-    e.preventDefault();
-
-    $('#q_amount_eq').val(null);
-    $('#q_comment_cont').val(null);
-    $('#q_category_id_eq').val(null);
-    $('#q_bank_account_id_eq').val(null);
-    $('#q_period').val(null);
-  });
-
   if ($('#transfer_exchange_rate').size()) {
     show_hide_exchange_rate();
   }
