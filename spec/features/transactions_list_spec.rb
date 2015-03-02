@@ -37,8 +37,8 @@ describe 'Transactions list' do
           click_on category
         end
       end
-      it "opens category page" do
-        expect(page).to have_selector('h1', text: category)
+      it "opens filtered root" do
+        expect(page).to have_content(category)
       end
     end
 
@@ -48,8 +48,8 @@ describe 'Transactions list' do
           click_on org1_ba.name
         end
       end
-      it "opens bank account page" do
-        expect(page).to have_selector('h1', text: org1_ba.name)
+      it "opens filtered root" do
+        expect(page).to have_content(org1_ba.name)
       end
     end
   end

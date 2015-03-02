@@ -13,7 +13,6 @@ $(function () {
     show_hide_period_additional_input();
   }
 
-
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
     e.preventDefault();
 
