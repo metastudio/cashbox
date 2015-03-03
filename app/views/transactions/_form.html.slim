@@ -10,7 +10,7 @@
       = f.input :category_id, as: :hidden
       = f.input :fixed_category_id, as: :hidden, input_html: { value: fixed_category_id }
     - else
-      = f.association :category, as: :grouped_select, collection: current_organization.categories.grouped_by_type, group_method: :last, include_blank: 'Category', label: false
+      = f.association :category, as: :grouped_select, collection: current_organization.categories.grouped_by_type, group_method: :last, value_method: :id, prompt: 'Category', label: false
   .col-sm-2
     - if f.object.bank_account.nil? || f.object.bank_account.visible?
       = f.association :bank_account, as: :grouped_select, include_blank: 'Account',
