@@ -78,7 +78,6 @@ class Transfer
 
   def amount=(value)
     if value
-      raise [value.to_d.to_s, value].inspect
       @amount_cents = value.to_d * 100
       @amount = value
     else
@@ -93,6 +92,10 @@ class Transfer
     else
       @comission, @comission_cents = nil, nil
     end
+  end
+
+  def exchange_rate=(value)
+    @exchange_rate = (value ? value.to_d : nil)
   end
 
   def currency_mismatch?

@@ -23,6 +23,7 @@
 
 //= require transactions
 //= require bank_accounts
+//= require jquery.inputmask.customization
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);

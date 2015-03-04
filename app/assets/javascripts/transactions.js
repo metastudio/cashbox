@@ -1,29 +1,5 @@
 $(function () {
-
-  $.extend($.inputmask.defaults, {
-    autoUnmask: true, clearMaskOnLostFocus: true, rightAlign: false,
-    allowPlus: false, allowMinus: false, removeMaskOnSubmit: true
-  });
-
-  $('.amount').inputmask('currency', {
-    prefix: '', clearMaskOnLostFocus: true, rightAlign: false,
-    max: 21474836.47, allowPlus: false, allowMinus: false, removeMaskOnSubmit: true
-  });
-
-  // var toFr = $('#transaction_amount').val();
-  // var formattedAmount = $.inputmask.format(toFr, { alias: 'currency' });
-  // console.log(formattedAmount);
-  // $('#transaction_amount').val(formattedAmount);
-  // var formattedAmount = $.inputmask.format("2331973", { alias: "dd/mm/yyyy"});
-
-  $('.comission').inputmask('currency', {
-    prefix: '', clearMaskOnLostFocus: true, rightAlign: false,
-    max: 10000, allowMinus: false, allowPlus: false, removeMaskOnSubmit: true
-  });
-  $('.rate').inputmask('currency', {
-    prefix: '', digits: 4, clearMaskOnLostFocus: true, rightAlign: false,
-    max: 1000, allowMinus: false, allowPlus: false, removeMaskOnSubmit: true
-  });
+  add_masks();
 
   $('#q_date_from').inputmask('d/m/y');
   $('#q_date_to').inputmask('d/m/y');
@@ -40,8 +16,21 @@ $(function () {
 
     $.ajax({
       url: $(this).data("edit-url"),
-      dataType: "script"
+      dataType: "script",
+      success: function() {
+        add_masks();
+      }
     });
+  });
+
+  $(document).on('submit', '#new_transaction', function(e) {
+    e.preventDefault();
+
+    $.ajax({
+      success: function() {
+        add_masks();
+      }
+    })
   });
 
   $(document).on('click', '[data-stop-propagation=true]', function(e) {
@@ -119,4 +108,10 @@ function datepicker_init(selector) {
     format: 'dd/mm/yyyy',
     autoclose: true
   });
+}
+
+function add_masks() {
+  $('.amount').inputmask('customized_currency');
+  $('.comission').inputmask('comission');
+  $('.rate').inputmask('rate');
 }
