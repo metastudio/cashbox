@@ -117,7 +117,11 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.amount_eq(amount)
-    where('abs(amount_cents) = ?', Money.new(amount.to_d * 100).cents)
+    if (amount = amount.to_d) > 0
+      where('abs(amount_cents) = ?', Money.new(amount * 100).cents)
+    else
+      all
+    end
   end
 
   def self.ransackable_scopes(auth_object = nil)
