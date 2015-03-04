@@ -17,7 +17,9 @@
 //= require bootstrap
 //= require moment
 //= require bootstrap-datepicker
-//= require jquery.mask
+//= require jquery.inputmask
+//= require jquery.inputmask.date.extensions
+//= require jquery.inputmask.numeric.extensions
 
 //= require transactions
 //= require bank_accounts

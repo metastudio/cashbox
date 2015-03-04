@@ -78,6 +78,7 @@ class Transfer
 
   def amount=(value)
     if value
+      raise [value.to_d.to_s, value].inspect
       @amount_cents = value.to_d * 100
       @amount = value
     else

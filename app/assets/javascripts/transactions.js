@@ -1,10 +1,32 @@
 $(function () {
-  $('.amount').mask('00,000,000.00', {reverse: true} );
-  $('.comission').mask('00,000,000.00', {reverse: true} );
-  $('.rate').mask('00,000.0000', { reverse: true} );
 
-  $('#q_date_from').mask('00/00/0000');
-  $('#q_date_to').mask('00/00/0000');
+  $.extend($.inputmask.defaults, {
+    autoUnmask: true, clearMaskOnLostFocus: true, rightAlign: false,
+    allowPlus: false, allowMinus: false, removeMaskOnSubmit: true
+  });
+
+  $('.amount').inputmask('currency', {
+    prefix: '', clearMaskOnLostFocus: true, rightAlign: false,
+    max: 21474836.47, allowPlus: false, allowMinus: false, removeMaskOnSubmit: true
+  });
+
+  // var toFr = $('#transaction_amount').val();
+  // var formattedAmount = $.inputmask.format(toFr, { alias: 'currency' });
+  // console.log(formattedAmount);
+  // $('#transaction_amount').val(formattedAmount);
+  // var formattedAmount = $.inputmask.format("2331973", { alias: "dd/mm/yyyy"});
+
+  $('.comission').inputmask('currency', {
+    prefix: '', clearMaskOnLostFocus: true, rightAlign: false,
+    max: 10000, allowMinus: false, allowPlus: false, removeMaskOnSubmit: true
+  });
+  $('.rate').inputmask('currency', {
+    prefix: '', digits: 4, clearMaskOnLostFocus: true, rightAlign: false,
+    max: 1000, allowMinus: false, allowPlus: false, removeMaskOnSubmit: true
+  });
+
+  $('#q_date_from').inputmask('d/m/y');
+  $('#q_date_to').inputmask('d/m/y');
 
   if ($('#transfer_exchange_rate').size()) {
     show_hide_exchange_rate();
@@ -25,7 +47,6 @@ $(function () {
   $(document).on('click', '[data-stop-propagation=true]', function(e) {
     e.stopPropagation();
   });
-
 
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();
