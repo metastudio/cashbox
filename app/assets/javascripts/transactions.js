@@ -52,11 +52,7 @@ $(function () {
     prep_rate_and_hints(exchange_rate = false, hints = true)
   });
 
-  $(document).on('change', '#transfer_bank_account_id', function(e) {
-    prep_rate_and_hints(exchange_rate = true, hints = true)
-  });
-
-  $(document).on('change', '#transfer_reference_id', function(e) {
+  $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id', function(e) {
     prep_rate_and_hints(exchange_rate = true, hints = true)
   });
 });
