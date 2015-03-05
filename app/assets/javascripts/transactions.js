@@ -62,7 +62,7 @@ function prepRateAndHints(exchange_rate, hints) {
   var toCurr = $('#transfer_reference_id option:selected').parent().attr('label');
 
   if (exchange_rate) {
-    showHideExchangeRate(fromCurr, toCurr)
+    showHideExchangeRate(fromCurr, toCurr);
   }
   if (hints) {
     addRemoveHints(fromCurr, toCurr);

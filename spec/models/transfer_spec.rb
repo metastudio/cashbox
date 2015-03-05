@@ -60,14 +60,6 @@ describe Transfer do
           end
         end
       end
-
-      context 'amount with commas' do
-        let(:transfer) { build :transfer, amount: '1,000.00' }
-
-        it 'is valid' do
-          expect(subject.errors_on(:amount)).to be_blank
-        end
-      end
     end
   end
 
