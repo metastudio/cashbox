@@ -1,5 +1,6 @@
 $(function () {
-  add_masks();
+  addTransactionFormMasks();
+  addTranferFormMasks();
 
   $('#q_date_from').inputmask('d/m/y');
   $('#q_date_to').inputmask('d/m/y');
@@ -17,20 +18,7 @@ $(function () {
     $.ajax({
       url: $(this).data("edit-url"),
       dataType: "script",
-      success: function() {
-        add_masks();
-      }
     });
-  });
-
-  $(document).on('submit', '#new_transaction', function(e) {
-    e.preventDefault();
-
-    $.ajax({
-      success: function() {
-        add_masks();
-      }
-    })
   });
 
   $(document).on('click', '[data-stop-propagation=true]', function(e) {
@@ -110,8 +98,12 @@ function datepicker_init(selector) {
   });
 }
 
-function add_masks() {
-  $('.amount').inputmask('customized_currency');
-  $('.comission').inputmask('comission');
-  $('.rate').inputmask('rate');
+function addTransactionFormMasks() {
+  $("form.transaction input[name='transaction[amount]']").inputmask('customized_currency');
+}
+
+function addTranferFormMasks() {
+  $("form.transfer input[name='transfer[amount]']").inputmask('customized_currency');
+  $("form.transfer input[name='transfer[comission]']").inputmask('customized_currency');
+  $("form.transfer input[name='transfer[exchange_rate]']").inputmask('customized_currency');
 }
