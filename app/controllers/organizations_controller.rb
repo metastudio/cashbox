@@ -7,8 +7,7 @@ class OrganizationsController < ApplicationController
   end
 
   def show
-    @bank_accounts = @organization.bank_accounts.
-      positioned.page(params[:page]).per(10)
+    @bank_accounts = @organization.bank_accounts.positioned
   end
 
   def new
