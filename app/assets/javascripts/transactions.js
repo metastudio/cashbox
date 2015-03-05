@@ -17,7 +17,7 @@ $(function () {
 
     $.ajax({
       url: $(this).data("edit-url"),
-      dataType: "script",
+      dataType: "script"
     });
   });
 
