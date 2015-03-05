@@ -49,7 +49,7 @@ describe 'Transactions filter' do
   end
 
   context 'by category' do
-    let!(:transfer) { create: transfer }
+    let!(:transfer) { create :transfer }
 
     before do
       visit root_path
