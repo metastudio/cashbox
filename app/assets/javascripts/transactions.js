@@ -5,7 +5,7 @@ $(function () {
   $('#q_date_from').inputmask('d/m/y');
   $('#q_date_to').inputmask('d/m/y');
 
-  show_hide_period_additional_input();
+  showHidePeriodAdditionalInput();
 
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
     e.preventDefault();
@@ -29,7 +29,7 @@ $(function () {
   });
 
   $(document).on('change', '#q_period', function(e) {
-    show_hide_period_additional_input();
+    showHidePeriodAdditionalInput();
   });
 
   $(document).on('click', '.close[data-edit-remove]', function(e) {
@@ -45,31 +45,31 @@ $(function () {
   });
 
   $(document).on('change', '#transfer_amount', function(e) {
-    prep_rate_and_hints(exchange_rate = false, hints = true)
+    prepRateAndHints(exchange_rate = false, hints = true);
   });
 
   $(document).on('change', '#transfer_exchange_rate', function(e) {
-    prep_rate_and_hints(exchange_rate = false, hints = true)
+    prepRateAndHints(exchange_rate = false, hints = true);
   });
 
   $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id', function(e) {
-    prep_rate_and_hints(exchange_rate = true, hints = true)
+    prepRateAndHints(exchange_rate = true, hints = true);
   });
 });
 
-function prep_rate_and_hints(exchange_rate, hints) {
+function prepRateAndHints(exchange_rate, hints) {
   var fromCurr = $('#transfer_bank_account_id option:selected').parent().attr('label');
   var toCurr = $('#transfer_reference_id option:selected').parent().attr('label');
 
   if (exchange_rate) {
-    show_hide_exchange_rate(fromCurr, toCurr)
+    showHideExchangeRate(fromCurr, toCurr)
   }
   if (hints) {
-    add_remove_hints(fromCurr, toCurr);
+    addRemoveHints(fromCurr, toCurr);
   }
 }
 
-function show_hide_exchange_rate(fromCurr, toCurr) {
+function showHideExchangeRate(fromCurr, toCurr) {
   if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
     if (!$('#transfer_exchange_rate').is(":visible")) {
       $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
@@ -78,16 +78,16 @@ function show_hide_exchange_rate(fromCurr, toCurr) {
   }
   else {
     if ($('#transfer_exchange_rate').is(":visible")) {
-      $('#transfer_exchange_rate').parents('.col-sm-1').addClass('hidden')
+      $('#transfer_exchange_rate').parents('.col-sm-1').addClass('hidden');
       $('#transfer_comission').parents('.col-sm-1').addClass('col-sm-2').removeClass('col-sm-1');
     }
   }
 }
 
-function show_hide_period_additional_input() {
+function showHidePeriodAdditionalInput() {
   if($('#q_period').val() == 'custom') {
-    datepicker_init($('#q_date_from.datepicker'));
-    datepicker_init($('#q_date_to.datepicker'));
+    datepickerInit($('#q_date_from.datepicker'));
+    datepickerInit($('#q_date_to.datepicker'));
     $('#custom-daterange').removeClass('hidden');
   }
   else {
@@ -97,7 +97,7 @@ function show_hide_period_additional_input() {
   }
 }
 
-function add_remove_hints(fromCurr, toCurr) {
+function addRemoveHints(fromCurr, toCurr) {
   if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
     var rate_hint = parseFloat(gon.current_org_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
     if ($('.transfer_exchange_rate .help-block').html() != rate_hint) {
@@ -117,7 +117,7 @@ function add_remove_hints(fromCurr, toCurr) {
   }
 }
 
-function datepicker_init(selector) {
+function datepickerInit(selector) {
   selector.datepicker({
     format: 'dd/mm/yyyy',
     autoclose: true
