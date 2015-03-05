@@ -5,8 +5,8 @@ describe 'Transactions filter' do
 
   let(:user) { create :user }
   let(:org)  { create :organization, with_user: user }
-  let(:cat)  { create :category, organization: org }
-  let(:ba)   { create :bank_account, organization: org }
+  let!(:cat) { create :category, organization: org }
+  let!(:ba)  { create :bank_account, organization: org }
 
   before do
     sign_in user
@@ -310,5 +310,26 @@ describe 'Transactions filter' do
     end
 
     it_behaves_like 'filterable object'
+  end
+
+  context 'clear btn', js: true do
+    before do
+      fill_in 'q[amount_eq]', with: "9999"
+      fill_in 'q[comment_cont]', with: 'Comment'
+      select cat.name, from: 'q[category_id_eq]'
+      select ba.to_s, from: 'q[bank_account_id_eq]'
+      select 'Current month', from: 'q[period]'
+      click_on 'Clear'
+    end
+
+    it 'should completely clear form' do
+      within '#transaction_search' do
+        expect(page).to have_css('#q_amount_eq', text: '')
+        expect(page).to have_css('#q_comment_cont', text: '')
+        expect(page).to have_css('#q_category_id_eq', text: '')
+        expect(page).to have_css('#q_bank_account_id_eq', text: '')
+        expect(page).to have_css('#q_period', text: '')
+      end
+    end
   end
 end
