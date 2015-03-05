@@ -13,7 +13,7 @@
 #
 
 class Category < ActiveRecord::Base
-  CATEGORY_INCOME = 'Income'
+  CATEGORY_INCOME  = 'Income'
   CATEGORY_EXPENSE = 'Expense'
   CATEGORY_TRANSFER_INCOME  = 'Receipt'
   CATEGORY_TRANSFER_OUTCOME = 'Transfer'
