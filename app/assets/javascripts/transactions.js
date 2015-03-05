@@ -44,16 +44,12 @@ $(function () {
     $('#new_transaction').show();
   });
 
-  $(document).on('change', '#transfer_amount', function(e) {
-    prepRateAndHints(exchange_rate = false, hints = true);
-  });
-
-  $(document).on('change', '#transfer_exchange_rate', function(e) {
-    prepRateAndHints(exchange_rate = false, hints = true);
+  $(document).on('change', '#transfer_amount, #transfer_exchange_rate', function(e) {
+    prepRateAndHints(exchange_rate = false);
   });
 
   $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id', function(e) {
-    prepRateAndHints(exchange_rate = true, hints = true);
+    prepRateAndHints(exchange_rate = true);
   });
 });
 
@@ -64,9 +60,7 @@ function prepRateAndHints(exchange_rate, hints) {
   if (exchange_rate) {
     showHideExchangeRate(fromCurr, toCurr);
   }
-  if (hints) {
-    addRemoveHints(fromCurr, toCurr);
-  }
+  addRemoveHints(fromCurr, toCurr);
 }
 
 function showHideExchangeRate(fromCurr, toCurr) {
@@ -98,21 +92,30 @@ function showHidePeriodAdditionalInput() {
 }
 
 function addRemoveHints(fromCurr, toCurr) {
-  if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
-    var rate_hint = parseFloat(gon.current_org_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
-    if ($('.transfer_exchange_rate .help-block').html() != rate_hint) {
-      $('.transfer_exchange_rate .help-block').remove();
-      $('.transfer_exchange_rate').append('<span class="help-block">' + rate_hint + '</span>');
-    }
+  if (fromCurr === undefined || toCurr === undefined || fromCurr == toCurr ||
+      gon.current_org_rates === undefined ||
+      gon.current_org_rates[fromCurr + '_TO_' + toCurr] === undefined) {
+    return;
+  }
 
-    var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
-    var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
-    if (amount && rate) {
-      var end_sum = (amount * rate).toFixed(2);
-      if ($('.transfer_reference_id .help-block').html() != end_sum) {
-        $('.transfer_reference_id .help-block').remove();
-        $('.transfer_reference_id').append('<span class="help-block">' + end_sum + '</span>');
-      }
+  var rate_hint = parseFloat(gon.current_org_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
+  var $transferRate = $('.transfer_exchange_rate');
+  if ($transferRate.find('.help-block').html() != rate_hint) {
+    $transferRate.find('.help-block').remove();
+    // there is no help block in the beginning
+    $transferRate.append('<span class="help-block">' + rate_hint + '</span>');
+  }
+
+
+  var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
+  var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
+  if (amount && rate) {
+    var end_sum = (amount * rate).toFixed(2);
+    var $transferReference = $('.transfer_reference_id');
+    if ($transferReference.find('.help-block').html() != end_sum) {
+      $transferReference.find('.help-block').remove();
+      // there is no help block in the beginning
+      $transferReference.append('<span class="help-block">' + end_sum + '</span>');
     }
   }
 }
@@ -129,7 +132,8 @@ function addTransactionFormMasks() {
 }
 
 function addTranferFormMasks() {
-  $("form.transfer input[name='transfer[amount]']").inputmask('customized_currency');
-  $("form.transfer input[name='transfer[comission]']").inputmask('customized_currency');
-  $("form.transfer input[name='transfer[exchange_rate]']").inputmask('customized_currency');
+  var $form = $("form.transfer");
+  $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
+  $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
+  $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
 }
