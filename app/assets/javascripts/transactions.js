@@ -45,11 +45,11 @@ $(function () {
   });
 
   $(document).on('change', '#transfer_amount, #transfer_exchange_rate', function(e) {
-    prepRateAndHints(exchange_rate = false, hints = true);
+    prepRateAndHints(exchange_rate = false);
   });
 
   $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id', function(e) {
-    prepRateAndHints(exchange_rate = true, hints = true);
+    prepRateAndHints(exchange_rate = true);
   });
 });
 
@@ -60,9 +60,7 @@ function prepRateAndHints(exchange_rate, hints) {
   if (exchange_rate) {
     showHideExchangeRate(fromCurr, toCurr);
   }
-  if (hints) {
-    addRemoveHints(fromCurr, toCurr);
-  }
+  addRemoveHints(fromCurr, toCurr);
 }
 
 function showHideExchangeRate(fromCurr, toCurr) {
@@ -108,8 +106,9 @@ function addRemoveHints(fromCurr, toCurr) {
     $transferRate.append('<span class="help-block">' + rate_hint + '</span>');
   }
 
+
   var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
-  var rate = parseFloat($transferRate.val().replace(/\,/g,''));
+  var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
   if (amount && rate) {
     var end_sum = (amount * rate).toFixed(2);
     var $transferReference = $('.transfer_reference_id');
