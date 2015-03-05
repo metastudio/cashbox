@@ -49,11 +49,9 @@ describe 'Transactions filter' do
   end
 
   context 'by category' do
-    before do
-      # from seed.rb
-      Category.create!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
-      Category.create!(Category::CATEGORY_BANK_INCOME_PARAMS)
+    let!(:transfer) { create: transfer }
 
+    before do
       visit root_path
     end
 

@@ -35,12 +35,14 @@ class Transfer
       @out_transaction = Transaction.new(
         amount_cents: estimate_amount(out = true),
         bank_account_id: bank_account_id, comment: form_comment(comment),
-        category_id: Category.find_by(Category::CATEGORY_BANK_EXPENSE_PARAMS))
+        category_id: Category.find_or_create_by(
+          Category::CATEGORY_BANK_EXPENSE_PARAMS).id)
 
       @inc_transaction = Transaction.new(
         amount_cents: estimate_amount(inc = false),
         bank_account_id: reference_id, comment: form_comment(comment),
-        category_id: Category.find_by(Category::CATEGORY_BANK_INCOME_PARAMS))
+        category_id: Category.find_or_create_by(
+          Category::CATEGORY_BANK_INCOME_PARAMS).id)
 
       if !@out_transaction.save || !@inc_transaction.save
         errors[:base] << @out_transaction.errors
