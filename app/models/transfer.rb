@@ -8,7 +8,7 @@ class Transfer
     :inc_transaction, :out_transaction, :exchange_rate,
     :from_currency, :to_currency
 
-  before_validation :parse_amount
+  before_validation :parse_masked
 
   validates :amount, presence: true,
     numericality: { less_than_or_equal_to: AMOUNT_MAX }
@@ -122,7 +122,7 @@ class Transfer
     def estimate_amount(out)
       estimated_amount = out ? (amount_cents + comission_cents) : amount_cents
       if currency_mismatch?
-        Money.add_rate(from_currency, to_currency, exchange_rate)
+        Money.add_rate(from_currency, to_currency, exchange_rate.to_d)
         estimated_amount = if out
           Money.new(estimated_amount, from_currency).cents
         else
@@ -132,7 +132,9 @@ class Transfer
       estimated_amount
     end
 
-    def parse_amount
+    def parse_masked
       @amount.try(:delete!, ',')
+      @comission.try(:delete!, ',')
+      @exchange_rate.try(:delete!, ',')
     end
 end

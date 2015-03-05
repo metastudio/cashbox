@@ -2,14 +2,16 @@
   = render 'home/total_balance'
 
   h1 Accounts
-  - bank_accounts = current_organization.bank_accounts.visible
+  - bank_accounts = current_organization.bank_accounts.visible.positioned
+
   - if bank_accounts.present?
-    table.table.table-hover
-      - bank_accounts.positioned.each do |account|
-        tr class=(account.balance_cents > 0 ? 'success' : 'danger') id="bank_account_#{account.id}"
-          td= link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
-          td.bank-amount
-            = money_with_symbol account.balance
+    - Currency.ordered(current_organization.default_currency).each do |curr|
+      table.table.table-hover
+        - bank_accounts.by_currency(curr).each do |account|
+          tr class=(account.balance_cents > 0 ? 'success' : 'danger') id="bank_account_#{account.id}"
+            td = link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
+            td.bank-amount
+              = money_with_symbol account.balance
     = link_to 'Create a new one', new_bank_account_path
   - else
     p

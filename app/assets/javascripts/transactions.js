@@ -65,8 +65,8 @@ $(function () {
 });
 
 function show_hide_exchange_rate() {
-  fromCurr = $('#transfer_bank_account_id option:selected').attr('data_currency');
-  toCurr = $('#transfer_reference_id option:selected').attr('data_currency')
+  fromCurr = $('#transfer_bank_account_id option:selected').parent().attr('label');
+  toCurr = $('#transfer_reference_id option:selected').parent().attr('label');
 
   if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr) {
     $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');

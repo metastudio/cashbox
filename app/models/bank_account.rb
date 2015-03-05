@@ -29,11 +29,9 @@ class BankAccount < ActiveRecord::Base
   monetize :balance_cents, with_model_currency: :currency
   monetize :residue_cents, with_model_currency: :currency
 
-  scope :visible, -> { where(visible: true) }
-  scope :visible,    -> { where(visible: true) }
-  scope :by_currency, ->(currency) { where('bank_accounts.currency' => currency).
-    sum(:balance_cents) }
-  scope :positioned, -> { order(position: :asc) }
+  scope :visible,     -> { where(visible: true) }
+  scope :by_currency, -> (currency) { where('bank_accounts.currency' => currency) }
+  scope :positioned,  -> { order(position: :asc) }
 
   validates :name,     presence: true
   validates :balance,  presence: true, numericality: {
@@ -63,5 +61,19 @@ class BankAccount < ActiveRecord::Base
 
   def to_s
     "#{name.truncate(30)} (#{Money::Currency.new(currency).symbol})"
+  end
+
+  class << self
+    def grouped_by_currency(currency)
+      currencies = Currency.ordered(currency)
+
+      grouped = []
+      currencies.each do |curr|
+        by_currency = by_currency(curr)
+        grouped << [curr, by_currency] if by_currency.present?
+      end
+
+      grouped
+    end
   end
 end
