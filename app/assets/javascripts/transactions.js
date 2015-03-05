@@ -5,19 +5,14 @@ $(function () {
   $('#q_date_from').inputmask('d/m/y');
   $('#q_date_to').inputmask('d/m/y');
 
-  if ($('#transfer_exchange_rate').size()) {
-    show_hide_exchange_rate();
-  }
-  if ($('#q_period').size()) {
-    show_hide_period_additional_input();
-  }
+  showHidePeriodAdditionalInput();
 
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
     e.preventDefault();
 
     $.ajax({
       url: $(this).data("edit-url"),
-      dataType: "script",
+      dataType: "script"
     });
   });
 
@@ -34,7 +29,7 @@ $(function () {
   });
 
   $(document).on('change', '#q_period', function(e) {
-    show_hide_period_additional_input();
+    showHidePeriodAdditionalInput();
   });
 
   $(document).on('click', '.close[data-edit-remove]', function(e) {
@@ -49,39 +44,50 @@ $(function () {
     $('#new_transaction').show();
   });
 
-  $(document).on('change', '#transfer_bank_account_id', function(e) {
-    if ($('#transfer_exchange_rate').size()) {
-      show_hide_exchange_rate();
-    }
+  $(document).on('change', '#transfer_amount', function(e) {
+    prepRateAndHints(exchange_rate = false, hints = true);
   });
 
-  $(document).on('change', '#transfer_reference_id', function(e) {
-    if ($('#transfer_exchange_rate').size()) {
-      show_hide_exchange_rate();
-    }
+  $(document).on('change', '#transfer_exchange_rate', function(e) {
+    prepRateAndHints(exchange_rate = false, hints = true);
+  });
+
+  $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id', function(e) {
+    prepRateAndHints(exchange_rate = true, hints = true);
   });
 });
 
-function show_hide_exchange_rate() {
-  fromCurr = $('#transfer_bank_account_id option:selected').attr('data_currency');
-  toCurr = $('#transfer_reference_id option:selected').attr('data_currency')
+function prepRateAndHints(exchange_rate, hints) {
+  var fromCurr = $('#transfer_bank_account_id option:selected').parent().attr('label');
+  var toCurr = $('#transfer_reference_id option:selected').parent().attr('label');
 
-  if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr) {
-    $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
-    $('#transfer_exchange_rate').parents('.col-sm-1').removeClass('hidden');
+  if (exchange_rate) {
+    showHideExchangeRate(fromCurr, toCurr);
+  }
+  if (hints) {
+    addRemoveHints(fromCurr, toCurr);
+  }
+}
+
+function showHideExchangeRate(fromCurr, toCurr) {
+  if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
+    if (!$('#transfer_exchange_rate').is(":visible")) {
+      $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
+      $('#transfer_exchange_rate').parents('.col-sm-1').removeClass('hidden');
+    }
   }
   else {
     if ($('#transfer_exchange_rate').is(":visible")) {
-      $('#transfer_exchange_rate').parents('.col-sm-1').addClass('hidden')
+      $('#transfer_exchange_rate').parents('.col-sm-1').addClass('hidden');
       $('#transfer_comission').parents('.col-sm-1').addClass('col-sm-2').removeClass('col-sm-1');
     }
   }
 }
 
-function show_hide_period_additional_input() {
+function showHidePeriodAdditionalInput() {
   if($('#q_period').val() == 'custom') {
-    datepicker_init($('#q_date_from.datepicker'));
-    datepicker_init($('#q_date_to.datepicker'));
+    datepickerInit($('#q_date_from.datepicker'));
+    datepickerInit($('#q_date_to.datepicker'));
     $('#custom-daterange').removeClass('hidden');
   }
   else {
@@ -91,7 +97,27 @@ function show_hide_period_additional_input() {
   }
 }
 
-function datepicker_init(selector) {
+function addRemoveHints(fromCurr, toCurr) {
+  if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
+    var rate_hint = parseFloat(gon.current_org_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
+    if ($('.transfer_exchange_rate .help-block').html() != rate_hint) {
+      $('.transfer_exchange_rate .help-block').remove();
+      $('.transfer_exchange_rate').append('<span class="help-block">' + rate_hint + '</span>');
+    }
+
+    var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
+    var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
+    if (amount && rate) {
+      var end_sum = (amount * rate).toFixed(2);
+      if ($('.transfer_reference_id .help-block').html() != end_sum) {
+        $('.transfer_reference_id .help-block').remove();
+        $('.transfer_reference_id').append('<span class="help-block">' + end_sum + '</span>');
+      }
+    }
+  }
+}
+
+function datepickerInit(selector) {
   selector.datepicker({
     format: 'dd/mm/yyyy',
     autoclose: true

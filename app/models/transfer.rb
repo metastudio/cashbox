@@ -8,8 +8,6 @@ class Transfer
     :inc_transaction, :out_transaction, :exchange_rate,
     :from_currency, :to_currency
 
-  before_validation :parse_amount
-
   validates :amount, presence: true,
     numericality: { less_than_or_equal_to: AMOUNT_MAX }
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
@@ -134,9 +132,5 @@ class Transfer
         end
       end
       estimated_amount
-    end
-
-    def parse_amount
-      @amount.try(:delete!, ',')
     end
 end
