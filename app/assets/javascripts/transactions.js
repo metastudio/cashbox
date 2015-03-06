@@ -4,6 +4,7 @@ $(function () {
 
   $('#q_date_from').inputmask('d/m/y');
   $('#q_date_to').inputmask('d/m/y');
+  $('#q_amount_eq').inputmask('customized_currency');
 
   showHidePeriodAdditionalInput();
 
