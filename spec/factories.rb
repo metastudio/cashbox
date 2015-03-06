@@ -56,7 +56,7 @@ FactoryGirl.define do
     currency 'RUB'
 
     trait :with_transactions do
-      after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 5000 }
+      after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 5000000 }
     end
   end
 
@@ -78,7 +78,7 @@ FactoryGirl.define do
   factory :transaction do
     bank_account
     category
-    amount { rand(50000) }
+    amount { rand(5000) }
 
     trait :income do
       association :category, :income

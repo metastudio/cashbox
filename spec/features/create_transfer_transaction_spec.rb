@@ -11,8 +11,8 @@ describe 'create transfer transaction', js: true do
   let(:ba1_name)    { ba1.to_s }
   let(:ba2_name)    { ba2.to_s }
 
-  let(:amount)     { 123.25 }
-  let(:comission)  { 0.25 }
+  let(:amount)     { 123231123.25 }
+  let(:comission)  { 1233.25 }
   let(:comment)    { "Test transaction" }
 
 
@@ -134,9 +134,9 @@ describe 'create transfer transaction', js: true do
 
   context "transfer to different currency", js: true do
     let!(:ba2) { create :bank_account, organization: organization, currency: "USD",
-      balance: 99999 }
+      balance: 9999999 }
     let!(:ba3) { create :bank_account, organization: organization, currency: "USD",
-      balance: 99999 }
+      balance: 9999999 }
 
     before do
       visit root_path
