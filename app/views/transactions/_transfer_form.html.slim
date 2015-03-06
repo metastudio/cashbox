@@ -1,4 +1,4 @@
-= simple_form_for(transfer, url: transfer_transactions_path, remote: true, html: {id: 'new_transfer_form'} ) do |f|
+= simple_form_for(transfer, url: transfer_transactions_path, remote: true, html: {id: 'new_transfer_form', class: 'transfer'} ) do |f|
   = f.error_notification
   = f.error :base
 
@@ -8,12 +8,14 @@
     = f.input :comission, label: false, input_html: { class: 'comission' }
   .col-sm-1.hidden
     = f.input :exchange_rate, label: false, input_html: { class: 'rate' }
+
+  - bank_accounts = current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency)
   .col-sm-2
-    = f.input :bank_account_id, label: false
-      = f.select :bank_account_id, current_organization.bank_accounts.visible.map { |b| [ b.to_s, b.id, { data_currency: b.currency } ] }, { prompt: 'From' }, class: 'form-control'
+    = f.input :bank_account_id, label: false, as: :grouped_select, include_blank: 'From',
+      collection: bank_accounts, group_method: :last
   .col-sm-2
-    = f.input :reference_id, label: false
-      = f.select :reference_id, current_organization.bank_accounts.visible.map { |b| [ b.to_s, b.id, { data_currency: b.currency } ] }, { prompt: 'To' }, class: 'form-control'
+    = f.input :reference_id, label: false, as: :grouped_select, include_blank: 'To',
+      collection: bank_accounts, group_method: :last
   .col-sm-2
     = f.input :comment, label: false
   .col-sm-2
