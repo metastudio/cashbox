@@ -35,7 +35,7 @@ class Transaction < ActiveRecord::Base
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
       AND bank_account_transactions.deleted_at IS NULL").
-      where('bank_accounts.currency' => currency) }
+      where('bank_account_transactions.currency' => currency) }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
@@ -51,15 +51,34 @@ class Transaction < ActiveRecord::Base
   after_destroy :recalculate_amount
   after_restore :recalculate_amount
 
-  def self.custom_dates
-    [
-      ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
-      ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
-      ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
-      ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
-      ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
-      ["Custom", "custom"]
-    ]
+  class << self
+    def flow_ordered(def_currency)
+      currencies = Currency.ordered(def_currency)
+
+      curr_flow = {}
+      currencies.each do |curr|
+        curr_flow[curr] = {}
+
+        transactions = by_currency(curr)
+        curr_flow[curr][:inc] =
+          Money.new(transactions.incomes.sum(:amount_cents), curr)
+        curr_flow[curr][:exp] =
+          Money.new(transactions.expenses.sum(:amount_cents), curr)
+        curr_flow[curr][:tot] = curr_flow[curr][:inc] + curr_flow[curr][:exp]
+      end
+      curr_flow
+    end
+
+    def custom_dates
+      [
+        ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
+        ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
+        ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
+        ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
+        ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
+        ["Custom", "custom"]
+      ]
+    end
   end
 
   private

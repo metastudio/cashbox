@@ -1,24 +1,25 @@
 #flow.h4
-  .row
-    .col-sm-2
+  .col-sm-2
+    .row
       | Income:
-    .col-sm-2 class=(@rub_inc > 0 ? 'bg-success' : 'bg-danger')
-      = money_with_symbol(@rub_inc)
-    .col-sm-2 class=(@usd_inc > 0 ? 'bg-success' : 'bg-danger')
-      = money_with_symbol(@usd_inc)
-
-  .row
-    .col-sm-2
+    .row
       | Expense:
-    .col-sm-2 class=(@rub_exp > 0 ? 'bg-success' : 'bg-danger')
-      = money_with_symbol(@rub_exp)
-    .col-sm-2 class=(@usd_exp > 0 ? 'bg-success' : 'bg-danger')
-      = money_with_symbol(@usd_exp)
-
-  .row
-    .col-sm-2
+    .row
       | Total:
-    .col-sm-2 class=(@rub_flow > 0 ? 'bg-success' : 'bg-danger')
-      = money_with_symbol(@rub_flow)
-    .col-sm-2 class=(@usd_flow > 0 ? 'bg-success' : 'bg-danger')
-      = money_with_symbol(@usd_flow)
+  - def_curr = current_organization.default_currency
+  - @curr_flow.each_pair do |curr, calc|
+    .col-sm-2
+      .row class=(calc[:inc] > 0 ? 'bg-success' : 'bg-danger')
+        = money_with_symbol(calc[:inc])
+      .row class=(calc[:exp] > 0 ? 'bg-success' : 'bg-danger')
+        = money_with_symbol(calc[:exp])
+      .row class=(calc[:tot] > 0 ? 'bg-success' : 'bg-danger')
+        = money_with_symbol(calc[:tot])
+    - if curr != def_curr
+      .col-sm-2
+        .row class=(calc[:inc] > 0 ? 'bg-success' : 'bg-danger')
+          = money_with_symbol(calc[:inc].exchange_to(def_curr))
+        .row class=(calc[:exp] > 0 ? 'bg-success' : 'bg-danger')
+          = money_with_symbol(calc[:exp].exchange_to(def_curr))
+        .row class=(calc[:tot] > 0 ? 'bg-success' : 'bg-danger')
+          = money_with_symbol(calc[:tot].exchange_to(def_curr))

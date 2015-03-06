@@ -7,6 +7,7 @@ describe 'Transactions filter' do
   let(:org)  { create :organization, with_user: user }
   let(:cat)  { create :category, organization: org }
   let(:ba)   { create :bank_account, organization: org }
+  let(:def_curr ) { org.default_currency }
 
   before do
     sign_in user
@@ -24,7 +25,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
-      fill_in 'q[amount_eq]', with: 100123.23
+      fill_in 'q[amount_eq]', with: '100,123.23'
       click_on 'Search'
     end
 

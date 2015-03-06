@@ -214,4 +214,29 @@ describe Transaction do
       end
     end
   end
+
+  describe '#flow_ordered(def_curr)' do
+    let(:org)        { create :organization }
+    let(:def_curr)   { "USD" }
+    let(:slave_curr) { "RUB" }
+    let(:slave_acc)  { create :bank_account, organization: org, currency: slave_curr }
+    let(:def_acc)    { create :bank_account, organization: org, currency: def_curr }
+    let!(:slave_list) { create_list :transaction, 5, bank_account: slave_acc }
+    let!(:def_list)   { create_list :transaction, 5, bank_account: def_acc }
+    let(:slave_trans) { org.transactions.by_currency(slave_curr) }
+    let(:def_trans)   { org.transactions.by_currency(def_curr) }
+
+    let(:slave_inc) { Money.new(slave_trans.incomes.sum(:amount_cents), slave_curr)}
+    let(:slave_exp) { Money.new(slave_trans.expenses.sum(:amount_cents), slave_curr)}
+    let(:def_inc) { Money.new(def_trans.incomes.sum(:amount_cents), def_curr)}
+    let(:def_exp) { Money.new(def_trans.expenses.sum(:amount_cents), def_curr)}
+
+    subject { org.transactions.flow_ordered(org.default_currency) }
+
+    it "contain right values" do
+      expect(subject).to eq(Hash[
+        def_curr, { inc: def_inc, exp: def_exp, tot: def_inc + def_exp },
+        slave_curr, { inc: slave_inc, exp: slave_exp, tot: slave_inc + slave_exp }])
+    end
+  end
 end
