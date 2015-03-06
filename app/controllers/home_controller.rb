@@ -12,5 +12,7 @@ class HomeController < ApplicationController
     @usd_exp  = Money.new(@transactions.by_currency("USD").expenses.sum(:amount_cents), 'usd')
     @usd_flow = @usd_inc + @usd_exp
     @transactions  = @transactions.page(params[:page]).per(50)
+
+    gon.current_org_rates = current_organization.rates
   end
 end

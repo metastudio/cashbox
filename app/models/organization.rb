@@ -20,4 +20,21 @@ class Organization < ActiveRecord::Base
   has_many :transactions, through: :bank_accounts, inverse_of: :organization
 
   validates :name, presence: true
+
+  def rates
+    org_curr = bank_accounts.pluck(:currency).uniq
+    org_rates = []
+    org_curr.each_with_index do |curr, i|
+      org_curr[(i + 1)..-1].each do |to_curr|
+        org_rates << curr + '_TO_' + to_curr
+        org_rates << to_curr + '_TO_' + curr
+      end
+    end
+
+    bank_rates = Money.default_bank.rates.deep_dup.keep_if do |curr_to_curr, value|
+      org_rates.any? do |org_rate|
+        curr_to_curr == org_rate
+      end
+    end
+  end
 end

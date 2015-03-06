@@ -24,7 +24,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
-      fill_in 'q[amount_eq]', with: "100,123.23"
+      fill_in 'q[amount_eq]', with: 100123.23
       click_on 'Search'
     end
 
