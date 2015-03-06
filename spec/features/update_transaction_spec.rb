@@ -55,7 +55,8 @@ describe 'update transaction', js: true do
       visit root_path
       find("#transaction_#{transaction.id} .comment").click
       page.has_css?("#edit_row_transaction_#{transaction.id}")
-      within ".transactions_list" do
+      within "#edit_row_transaction_#{transaction.id}" do
+        page.execute_script("$(\"#edit_row_transaction_#{transaction.id} #transaction_amount\").val('');")
         fill_in 'transaction[amount]', with: new_amount
         click_on 'Update Transaction'
       end

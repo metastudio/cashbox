@@ -29,7 +29,6 @@ describe 'create transfer transaction', js: true do
       select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
       fill_in 'transfer[comission]', with: comission
       fill_in 'transfer[comment]',   with: comment
-      screenshot_and_save_page
       click_on 'Create'
     end
     page.has_content?(/(Please review the problems below)|(#{amount})/) # wait after page rerender
@@ -145,6 +144,29 @@ describe 'create transfer transaction', js: true do
     end
 
     subject{ page }
+
+    context 'hints' do
+      let(:rate) { 5 }
+      before do
+        within '#new_transfer_form' do
+          fill_in 'transfer[amount]', with: amount
+          select ba1.name, from: 'transfer[bank_account_id]'
+          select ba2.name, from: 'transfer[reference_id]'
+          fill_in 'transfer[exchange_rate]', with: rate
+          find("#transfer_comment").click
+        end
+      end
+
+      it 'show rate' do
+        expect(page).to have_css('.help-block',
+          text: Money.default_bank.rates["RUB_TO_USD"].round(4) )
+      end
+
+      it 'show end sum' do
+        expect(page).to have_css('.help-block',
+          text: (amount * rate).round(4) )
+      end
+    end
 
     context "when nothing selected" do
       it "doesn't show exchange rate" do
