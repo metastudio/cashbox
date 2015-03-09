@@ -5,6 +5,5 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-
 Category.create!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
 Category.create!(Category::CATEGORY_BANK_INCOME_PARAMS)
