@@ -5,9 +5,9 @@ h4 Filters:
   = f.input :comment_cont, label: false
   = f.input :category_id_eq, as: :grouped_select, label: false, include_blank: 'Category',
     collection: current_organization.categories.grouped_by_type,
-    group_method: :last, label_method: :to_s
-  = f.input :bank_account_id_eq, label: false, include_blank: 'Account',
-    collection: current_organization.bank_accounts, label_method: :to_s
+    group_method: :last
+  = f.input :bank_account_id_eq, label: false, include_blank: 'Account', as: :grouped_select,
+    collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
   = f.input :period, collection: Transaction.custom_dates,
     include_blank: 'Choose period...', label: false
   #custom-daterange.hidden

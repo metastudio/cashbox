@@ -117,12 +117,15 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.amount_eq(amount)
-    amount.delete!(',')
-    where('abs(amount_cents) = ?', Money.new(amount.to_d.abs * 100).cents)
+    if (amount = amount.to_d) > 0
+      where('abs(amount_cents) = ?', Money.new(amount * 100).cents)
+    else
+      all
+    end
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    %i(amount_eq period amount_sort date_from date_to )
+    %i(amount_eq period amount_sort date_from date_to)
   end
 
   def amount_balance
