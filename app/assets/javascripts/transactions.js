@@ -26,14 +26,12 @@ $(function () {
     e.stopPropagation();
   });
 
-  $(document).on('click', '#clear', function(e) {
+  $(document).on('click', '.clear-form', function(e) {
     e.preventDefault();
 
-    $('#q_amount_eq').val("");
-    $('#q_comment_cont').val("");
-    $('#q_category_id_eq').val("");
-    $('#q_bank_account_id_eq').val("");
-    $('#q_period').val("");
+    console.log($(this).closest('form').find(':input'));
+
+    $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
   });
 
   $(document).on('click', '#new_transfer_btn', function(e) {
