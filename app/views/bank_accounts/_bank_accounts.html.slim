@@ -2,15 +2,15 @@
   h1 Listing bank accounts
 
   - if bank_accounts.present?
-    - Currency.ordered(current_organization.default_currency).each do |curr|
-      table.table.table-stripped.table-hover id="#{curr.downcase}_accounts" data-url=sort_bank_accounts_path
+    - bank_accounts.grouped_by_currency(current_organization.default_currency).each do |curr_with_accounts|
+      table.table.table-stripped.table-hover id="#{curr_with_accounts.first.downcase}_accounts" data-url=sort_bank_accounts_path
         thead
           tr
             th Name
             th[style="width:30%"] Description
             th Balance
         tbody
-          - bank_accounts.by_currency(curr).each do |bank_account|
+          - curr_with_accounts.last.each do |bank_account|
             tr.item data-item-id=bank_account.id
               td.word-break = bank_account.name
               td.word-break = bank_account.description

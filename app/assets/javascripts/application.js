@@ -17,10 +17,13 @@
 //= require bootstrap
 //= require moment
 //= require bootstrap-datepicker
-//= require jquery.mask
+//= require jquery.inputmask
+//= require jquery.inputmask.date.extensions
+//= require jquery.inputmask.numeric.extensions
 
 //= require transactions
-//= require bank_accounts
+//= require organizations
+//= require jquery.inputmask.customization
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);

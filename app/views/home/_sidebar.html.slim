@@ -5,9 +5,9 @@
   - bank_accounts = current_organization.bank_accounts.visible.positioned
 
   - if bank_accounts.present?
-    - Currency.ordered(current_organization.default_currency).each do |curr|
+    - bank_accounts.grouped_by_currency(current_organization.default_currency).each do |by_curr|
       table.table.table-hover
-        - bank_accounts.by_currency(curr).each do |account|
+        - by_curr.last.each do |account|
           tr class=(account.balance_cents > 0 ? 'success' : 'danger') id="bank_account_#{account.id}"
             td = link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
             td.bank-amount

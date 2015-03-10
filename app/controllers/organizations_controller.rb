@@ -8,6 +8,7 @@ class OrganizationsController < ApplicationController
 
   def show
     @bank_accounts = @organization.bank_accounts.positioned
+    gon.curr_org_ordered_rates = @organization.ordered_rates(@organization.default_currency)
   end
 
   def new

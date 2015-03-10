@@ -64,16 +64,12 @@ class BankAccount < ActiveRecord::Base
   end
 
   class << self
-    def grouped_by_currency(currency)
-      currencies = Currency.ordered(currency)
+    def grouped_by_currency(def_currency)
+      currencies = Currency.ordered(def_currency)
 
-      grouped = []
-      currencies.each do |curr|
-        by_currency = by_currency(curr)
-        grouped << [curr, by_currency] if by_currency.present?
+      all.group_by(&:currency).sort_by do |ba|
+        currencies.index(ba.first)
       end
-
-      grouped
     end
   end
 end
