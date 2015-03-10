@@ -1,5 +1,5 @@
   $(function() {
-    var rates = gon.curr_org_ordered_rates;
+    var rates = gon.curr_org_ordered_curr;
     if (rates) {
       var currency, tableId;
       for (var i = 0; i <= rates.length - 1; i++) {

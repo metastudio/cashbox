@@ -48,4 +48,24 @@ describe Organization do
       end
     end
   end
+
+  describe '#ordered_curr' do
+    let!(:org) { create :organization, default_currency: curr }
+    let!(:ba)  { create :bank_account, currency: 'USD', organization: org }
+    let!(:ba2) { create :bank_account, currency: 'RUB', organization: org }
+
+    context 'when def curr = USD' do
+      let(:curr) { 'USD' }
+      it 'is correct' do
+        expect(org.ordered_curr).to eq [curr, 'RUB']
+      end
+    end
+
+    context 'when def curr = RUB' do
+      let(:curr) { 'RUB' }
+      it 'is correct' do
+        expect(org.ordered_curr).to eq [curr, 'USD']
+      end
+    end
+  end
 end
