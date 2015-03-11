@@ -29,8 +29,7 @@ describe BankAccount do
     it { should ensure_inclusion_of(:currency).in_array(%w(USD RUB)) }
 
     context 'custom' do
-      it_behaves_like "has money ceiling", 'balance' do
-        let(:max)    { Transaction::AMOUNT_MAX }
+      it_behaves_like 'has money ceiling', 'balance' do
         let!(:model) { build :bank_account, balance: amount }
       end
 

@@ -2,21 +2,22 @@
   = f.error_notification
   = f.error :base
 
-  .col-sm-2
-    = f.input :amount, label: false, input_html: { class: 'amount' }
-  .col-sm-2
-    = f.input :comission, label: false, input_html: { class: 'comission' }
-  .col-sm-1.hidden
-    = f.input :exchange_rate, label: false, input_html: { class: 'rate' }
+  .col-sm-9
+    .col-md-3.col-sm-6.col-xs-6
+      = f.input :amount, label: false, input_html: { class: 'amount' }
+    .col-md-3.col-sm-6.col-xs-6
+      = f.input :comission, label: false, input_html: { class: 'comission' }
 
-  - bank_accounts = current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency)
-  .col-sm-2
-    = f.input :bank_account_id, label: false, as: :grouped_select, include_blank: 'From',
-      collection: bank_accounts, group_method: :last
-  .col-sm-2
-    = f.input :reference_id, label: false, as: :grouped_select, include_blank: 'To',
-      collection: bank_accounts, group_method: :last
-  .col-sm-2
-    = f.input :comment, label: false
-  .col-sm-2
+    - bank_accounts = current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency)
+    .col-md-3.col-sm-6.col-xs-6
+      = f.input :bank_account_id, label: false, as: :grouped_select, include_blank: 'From',
+        collection: bank_accounts, group_method: :last
+    .col-md-3.col-sm-6.col-xs-6
+      = f.input :reference_id, label: false, as: :grouped_select, include_blank: 'To',
+        collection: bank_accounts, group_method: :last
+    .col-md-3.col-sm-6.col-xs-6
+      = f.input :comment, label: false
+    .col-md-3.col-sm-6.col-xs-6.hidden
+      = f.input :exchange_rate, label: false, input_html: { class: 'rate' }
+  .col-sm-3
     = render 'transactions/btn_block', f: f, transaction: Transaction.new
