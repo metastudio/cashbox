@@ -4,9 +4,9 @@ describe 'Transactions filter' do
   include MoneyHelper
 
   let(:user) { create :user }
-  let(:org)  { create :organization, with_user: user }
-  let!(:cat) { create :category, organization: org }
-  let!(:ba)  { create :bank_account, organization: org }
+  let!(:org)  { create :organization, with_user: user }
+  let(:cat)  { create :category, organization: org }
+  let(:ba)   { create :bank_account, organization: org }
 
   before do
     sign_in user
@@ -24,7 +24,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
-      fill_in 'q[amount_eq]', with: "100,123.23"
+      fill_in 'q[amount_eq]', with: 100123.23
       click_on 'Search'
     end
 
@@ -49,21 +49,36 @@ describe 'Transactions filter' do
   end
 
   context 'by category' do
-    let(:cat2)  { create :category, organization: org }
-    let!(:transaction)  { create :transaction, bank_account: ba, category: cat }
-    let!(:transaction2) { create :transaction, bank_account: ba, category: cat2 }
-    let!(:transaction3) { create :transaction, bank_account: ba, category: cat2 }
-    let!(:transaction4) { create :transaction, bank_account: ba, category: cat2 }
-    let(:correct_items) { [transaction] }
-    let(:wrong_items)   { [transaction2, transaction4, transaction3] }
+    let!(:transfer) { create :transfer }
 
     before do
       visit root_path
-      select transaction.category.name, from: 'q[category_id_eq]'
-      click_on 'Search'
     end
 
-    it_behaves_like 'filterable object'
+    it 'show system categories' do
+      within '#q_category_id_eq' do
+        expect(page).to have_content(Category::CATEGORY_TRANSFER_INCOME)
+        expect(page).to have_content(Category::CATEGORY_TRANSFER_OUTCOME)
+      end
+    end
+
+    context 'apply' do
+      let(:cat2)  { create :category, organization: org }
+      let!(:transaction)  { create :transaction, bank_account: ba, category: cat }
+      let!(:transaction2) { create :transaction, bank_account: ba, category: cat2 }
+      let!(:transaction3) { create :transaction, bank_account: ba, category: cat2 }
+      let!(:transaction4) { create :transaction, bank_account: ba, category: cat2 }
+      let(:correct_items) { [transaction] }
+      let(:wrong_items)   { [transaction2, transaction4, transaction3] }
+
+      before do
+        visit root_path
+        select transaction.category.name, from: 'q[category_id_eq]'
+        click_on 'Search'
+      end
+
+      it_behaves_like 'filterable object'
+    end
   end
 
   context 'by bank_account' do

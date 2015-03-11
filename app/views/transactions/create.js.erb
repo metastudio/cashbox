@@ -6,3 +6,4 @@
 <% else %>
   $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: @transaction, fixed_category_id: params[:transaction][:fixed_category_id]) %>");
 <% end %>
+addTransactionFormMasks();
