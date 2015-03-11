@@ -21,14 +21,22 @@ describe 'Transactions filter' do
     let!(:transaction4) { create :transaction, bank_account: ba, amount: 600 }
     let(:correct_items) { [transaction,  transaction2] }
     let(:wrong_items)   { [transaction3, transaction4] }
+    let(:amount_eq)     { 100123.23 }
 
     before do
       visit root_path
-      fill_in 'q[amount_eq]', with: 100123.23
+      fill_in 'q[amount_eq]', with: amount_eq
       click_on 'Search'
     end
 
     it_behaves_like 'filterable object'
+
+    context 'when too long' do
+      let(:amount_eq) { '1' * 1610  }
+      it 'doesnt break' do
+        expect(subject).to have_content 'There is nothing found'
+      end
+    end
   end
 
   context "by comment" do
@@ -38,14 +46,22 @@ describe 'Transactions filter' do
     let!(:transaction4) { create :transaction, bank_account: ba, comment: 'Other text' }
     let(:correct_items) { [transaction,  transaction3] }
     let(:wrong_items)   { [transaction2, transaction4] }
+    let(:comment_cont)  { 'Comment' }
 
     before do
       visit root_path
-      fill_in 'q[comment_cont]', with: 'Comment'
+      fill_in 'q[comment_cont]', with: comment_cont
       click_on 'Search'
     end
 
     it_behaves_like 'filterable object'
+
+    context 'when too long' do
+      let(:comment_cont) { 'a' * 1610 }
+      it 'doesnt break' do
+        expect(subject).to have_content 'There is nothing found'
+      end
+    end
   end
 
   context 'by category' do
