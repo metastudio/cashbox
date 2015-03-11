@@ -58,9 +58,8 @@ describe Transaction do
         end
       end
 
-      context "amount value" do
-        it_behaves_like "has money ceiling", "amount" do
-          let(:max)    { Transaction::AMOUNT_MAX }
+      context 'amount value' do
+        it_behaves_like 'has money ceiling', 'amount' do
           let!(:model) { build :transaction, amount: amount }
         end
       end
