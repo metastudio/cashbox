@@ -21,6 +21,12 @@ $(function () {
     e.stopPropagation();
   });
 
+  $(document).on('click', '.clear-form', function(e) {
+    e.preventDefault();
+
+    $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
+  });
+
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();
 
