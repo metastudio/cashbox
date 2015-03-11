@@ -1,14 +1,8 @@
 defaults: &defaults
   account_colors:
-    negative:
-      css_class: 'negative'
-      color: '#fa8072'
-    positive:
-      css_class: 'positive'
-      color: '#a0db8e'
-    empty:
-      css_class: 'empty'
-      color: '#fffff'
+    negative: '#fa8072'
+    positive: '#a0db8e'
+    empty: '#ffffff'
 development:
   <<: *defaults
 
