@@ -233,10 +233,10 @@ describe Transaction do
 
     subject { org.transactions.flow_ordered(org.default_currency) }
 
-    it "contain right values" do
-      expect(subject).to eq(Hash[
-        def_curr, { inc: def_inc, exp: def_exp, tot: def_inc + def_exp },
-        slave_curr, { inc: slave_inc, exp: slave_exp, tot: slave_inc + slave_exp }])
+    it "return ordered array of summed income, expense, currency for each currency" do
+      expect(subject).to eq [
+        Transaction::AmountFlow.new(def_inc, def_exp, def_curr),
+        Transaction::AmountFlow.new(slave_inc, slave_exp, slave_curr)]
     end
   end
 end

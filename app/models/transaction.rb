@@ -21,6 +21,12 @@ class Transaction < ActiveRecord::Base
 
   acts_as_paranoid
 
+  class AmountFlow < Struct.new(:income, :expense, :currency)
+    def total
+      income + expense
+    end
+  end
+
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
@@ -55,18 +61,31 @@ class Transaction < ActiveRecord::Base
     def flow_ordered(def_currency)
       currencies = Currency.ordered(def_currency)
 
-      curr_flow = {}
-      currencies.each do |curr|
-        curr_flow[curr] = {}
+      amount_flow = ActiveRecord::Base.connection.execute("
+        SELECT
+          SUM(CASE WHEN categories.type = 'Income' THEN transactions.amount_cents ELSE 0 END) AS income,
+          SUM(CASE WHEN categories.type = 'Expense' THEN transactions.amount_cents ELSE 0 END) AS expense,
+          bank_accounts.currency AS currency
+        FROM transactions
+          INNER JOIN categories ON categories.id = transactions.category_id
+            AND categories.deleted_at IS NULL
+          INNER JOIN bank_accounts ON bank_accounts.id = transactions.bank_account_id
+            AND bank_accounts.deleted_at IS NULL
+        WHERE transactions.deleted_at IS NULL
+        GROUP BY bank_accounts.currency
+      ").to_a
 
-        transactions = by_currency(curr)
-        curr_flow[curr][:inc] =
-          Money.new(transactions.incomes.sum(:amount_cents), curr)
-        curr_flow[curr][:exp] =
-          Money.new(transactions.expenses.sum(:amount_cents), curr)
-        curr_flow[curr][:tot] = curr_flow[curr][:inc] + curr_flow[curr][:exp]
+      amount_flow.sort_by do |flow|
+        currencies.index(flow["currency"])
       end
-      curr_flow
+
+      amount_flow.map do |flow|
+        curr = flow["currency"]
+        AmountFlow.new(
+          Money.new(flow["income"],  curr),
+          Money.new(flow["expense"], curr),
+          curr)
+      end
     end
 
     def custom_dates
