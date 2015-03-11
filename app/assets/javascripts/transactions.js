@@ -21,6 +21,12 @@ $(function () {
     e.stopPropagation();
   });
 
+  $(document).on('click', '.clear-form', function(e) {
+    e.preventDefault();
+
+    $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
+  });
+
   $(document).on('click', '#new_transfer_btn', function(e) {
     e.preventDefault();
 
@@ -92,8 +98,11 @@ function showHidePeriodAdditionalInput() {
 
 function addRemoveHints(fromCurr, toCurr) {
   if (fromCurr === undefined || toCurr === undefined || fromCurr == toCurr ||
-      gon.curr_org_exch_rates === undefined ||
-      gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr] === undefined) {
+    gon.curr_org_exch_rates === undefined) {
+
+    if (gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr] === undefined) {
+      $('.transfer_reference_id').find('.help-block').remove();
+    }
     return;
   }
 

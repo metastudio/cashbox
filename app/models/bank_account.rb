@@ -16,8 +16,6 @@
 #
 
 class BankAccount < ActiveRecord::Base
-  AMOUNT_MAX = 21_474_836.47
-
   acts_as_list
   acts_as_paranoid
 
@@ -36,7 +34,7 @@ class BankAccount < ActiveRecord::Base
   validates :name,     presence: true
   validates :balance,  presence: true, numericality: {
     greater_than_or_equal_to: 0,
-    less_than_or_equal_to: AMOUNT_MAX }
+    less_than_or_equal_to: AppConfig.money_max }
   validates :currency, presence: true,
     inclusion: { in: Dictionaries.currencies,
       message: "%{value} is not a valid currency" }
