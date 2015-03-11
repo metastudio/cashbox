@@ -7,7 +7,7 @@
         = f.input :name, autofocus: true
         = f.input :description
         - unless f.object.persisted?
-          = f.input :residue, input_html: { class: 'amount'}
+          = f.input :residue, input_html: { class: 'amount' }
         = f.input :currency, collection: Currency.ordered, include_blank: false
 
       .form-actions
