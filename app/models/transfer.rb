@@ -8,7 +8,7 @@ class Transfer
     :from_currency, :to_currency
 
   validates :amount, presence: true,
-    numericality: { less_than_or_equal_to: AppConfig.money_max }
+    numericality: { less_than_or_equal_to: Dictionaries.money_max }
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
     length: { maximum: 10 }, allow_blank: true
   validates :comment, length: { maximum: 255 }
