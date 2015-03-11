@@ -4,10 +4,7 @@ html
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
-    title
-      |Cashbox
-      - unless current_organization.nil?
-        =< currency_title(current_organization)
+    title Cashbox
     = Gon::Base.render_data({})
     = stylesheet_link_tag 'application', media: 'all'
     = javascript_include_tag 'application'

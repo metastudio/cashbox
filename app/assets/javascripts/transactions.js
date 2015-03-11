@@ -94,12 +94,12 @@ function showHidePeriodAdditionalInput() {
 
 function addRemoveHints(fromCurr, toCurr) {
   if (fromCurr === undefined || toCurr === undefined || fromCurr == toCurr ||
-      gon.current_org_rates === undefined ||
-      gon.current_org_rates[fromCurr + '_TO_' + toCurr] === undefined) {
+      gon.curr_org_exch_rates === undefined ||
+      gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr] === undefined) {
     return;
   }
 
-  var rate_hint = parseFloat(gon.current_org_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
+  var rate_hint = parseFloat(gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
   var $transferRate = $('.transfer_exchange_rate');
   if ($transferRate.find('.help-block').html() != rate_hint) {
     $transferRate.find('.help-block').remove();
