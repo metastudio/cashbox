@@ -75,7 +75,7 @@ class Transaction < ActiveRecord::Base
         GROUP BY bank_accounts.currency
       ").to_a
 
-      amount_flow.sort_by do |flow|
+      amount_flow.sort_by! do |flow|
         currencies.index(flow["currency"])
       end
 
