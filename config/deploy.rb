@@ -20,6 +20,8 @@ set :rollbar_token, 'baf56cf5e8054cb2823811018eef04a6'
 set :rollbar_env,  Proc.new { fetch :stage }
 set :rollbar_role, Proc.new { :app }
 
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
 namespace :deploy do
   task :restart do
     invoke 'unicorn:restart'
