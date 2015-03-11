@@ -13,6 +13,6 @@ class HomeController < ApplicationController
     @usd_flow = @usd_inc + @usd_exp
     @transactions  = @transactions.page(params[:page]).per(50)
 
-    gon.current_org_rates = current_organization.rates
+    gon.curr_org_exch_rates = current_organization.exchange_rates
   end
 end
