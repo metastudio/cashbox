@@ -44,8 +44,8 @@ describe 'update transaction', js: true do
   end
 
   context "when updating" do
-    let(:transaction) { create :transaction, bank_account: account, amount: 10000 }
-    let(:new_amount)  { 5000 }
+    let(:transaction) { create :transaction, bank_account: account, amount: 10000000 }
+    let(:new_amount)  { 5000000 }
     let!(:difference) { transaction.amount - Money.new(new_amount * 100, transaction.currency) }
     let!(:new_total)  { transaction.bank_account.balance - difference }
     let!(:new_account_balance) { organization.bank_accounts.

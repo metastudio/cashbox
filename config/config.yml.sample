@@ -1,4 +1,5 @@
 defaults: &defaults
+  money_max: 461_168_601_842_739
 
 development:
   <<: *defaults

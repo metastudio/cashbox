@@ -9,17 +9,17 @@
   - def_curr = current_organization.default_currency
   - @curr_flow.each do |flow|
     .col-sm-2
-      .row class=bg(flow.income)
+      .row class=money_bg(flow.income)
         = money_with_symbol(flow.income)
-      .row class=bg(flow.expense)
+      .row class=money_bg(flow.expense)
         = money_with_symbol(flow.expense)
-      .row class=bg(flow.total)
+      .row class=money_bg(flow.total)
         = money_with_symbol(flow.total)
     - if flow.currency != def_curr
       .col-sm-2
-        .row class=bg(flow.income)
+        .row class=money_bg(flow.income)
           = money_with_symbol(flow.income.exchange_to(def_curr))
-        .row class=bg(flow.expense)
+        .row class=money_bg(flow.expense)
           = money_with_symbol(flow.expense.exchange_to(def_curr))
-        .row class=bg(flow.total)
+        .row class=money_bg(flow.total)
           = money_with_symbol(flow.total.exchange_to(def_curr))
