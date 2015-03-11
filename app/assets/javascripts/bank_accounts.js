@@ -1,4 +1,6 @@
-$(document).on("ready page:load", function () {
+$(function () {
+  addBankAccountFormMasks();
+
   if ($("#bank_accounts_table").length > 0) {
     return $("#bank_accounts_table").sortable({
       axis:   "y",
@@ -29,3 +31,8 @@ $(document).on("ready page:load", function () {
     });
   }
 });
+
+function addBankAccountFormMasks() {
+  $("form.new_bank_account input[name='bank_account[residue]']").
+    inputmask('customized_currency');
+}
