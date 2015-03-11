@@ -1,5 +1,9 @@
 defaults: &defaults
   money_max: 461_168_601_842_739
+  account_colors:
+    negative: '#fa8072'
+    positive: '#a0db8e'
+    empty: '#ffffff'
 
 development:
   <<: *defaults

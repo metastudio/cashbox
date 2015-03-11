@@ -8,7 +8,7 @@
     - bank_accounts.grouped_by_currency(current_organization.default_currency).each do |by_curr|
       table.table.table-hover
         - by_curr.last.each do |account|
-          tr class=(account.balance_cents > 0 ? 'success' : 'danger') id="bank_account_#{account.id}"
+          tr class=colorize(account.balance_cents) id="bank_account_#{account.id}"
             td.word-break = link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
             td.word-break.bank-amount = money_with_symbol account.balance
     = link_to 'Create a new one', new_bank_account_path
