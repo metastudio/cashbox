@@ -8,9 +8,10 @@ describe 'create transaction', js: true do
   let!(:category)     { create :category, organization: organization }
 
   let!(:account)      { create :bank_account, :with_transactions,
-    organization: organization}
+    organization: organization }
 
-  let(:amount)        { 123.23 }
+  let(:amount)        { 1232.23 }
+  let(:amount_str)    { '1,232.23' }
   let(:category_name) { category.name }
   let(:account_name)  { account.name }
   let(:comment)       { "Test transaction" }
@@ -20,13 +21,13 @@ describe 'create transaction', js: true do
   def create_transaction
     visit root_path
     within '#new_transaction' do
-      fill_in 'transaction[amount]', with: amount
+      fill_in 'transaction[amount]', with: amount_str
       select category_name, from: 'transaction[category_id]' if category_name.present?
       select account_name, from: 'transaction[bank_account_id]' if account_name.present?
       fill_in 'transaction[comment]', with: comment
       click_on 'Create'
     end
-    page.has_content?(/(Please review the problems below)|(#{amount})/) # wait after page rerender
+    page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
   end
 
   subject{ create_transaction; page }
@@ -57,7 +58,7 @@ describe 'create transaction', js: true do
     it "shows created transaction in transactions list" do
       create_transaction
       within ".transactions" do
-        expect(page).to have_content(amount)
+        expect(page).to have_content(amount_str)
       end
     end
 

@@ -67,14 +67,12 @@ function prepRateAndHints(exchange_rate, hints) {
 function showHideExchangeRate(fromCurr, toCurr) {
   if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
     if (!$('#transfer_exchange_rate').is(":visible")) {
-      $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
-      $('#transfer_exchange_rate').parents('.col-sm-1').removeClass('hidden');
+      $('#transfer_exchange_rate').parents('.col-sm-6').removeClass('hidden');
     }
   }
   else {
     if ($('#transfer_exchange_rate').is(":visible")) {
-      $('#transfer_exchange_rate').parents('.col-sm-1').addClass('hidden');
-      $('#transfer_comission').parents('.col-sm-1').addClass('col-sm-2').removeClass('col-sm-1');
+      $('#transfer_exchange_rate').parents('.col-sm-6').addClass('hidden');
     }
   }
 }
@@ -94,12 +92,12 @@ function showHidePeriodAdditionalInput() {
 
 function addRemoveHints(fromCurr, toCurr) {
   if (fromCurr === undefined || toCurr === undefined || fromCurr == toCurr ||
-      gon.current_org_rates === undefined ||
-      gon.current_org_rates[fromCurr + '_TO_' + toCurr] === undefined) {
+      gon.curr_org_exch_rates === undefined ||
+      gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr] === undefined) {
     return;
   }
 
-  var rate_hint = parseFloat(gon.current_org_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
+  var rate_hint = parseFloat(gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
   var $transferRate = $('.transfer_exchange_rate');
   if ($transferRate.find('.help-block').html() != rate_hint) {
     $transferRate.find('.help-block').remove();
