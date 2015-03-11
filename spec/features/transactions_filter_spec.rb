@@ -8,6 +8,7 @@ describe 'Transactions filter' do
   let(:cat)  { create :category, organization: org }
   let(:ba)   { create :bank_account, organization: org }
 
+
   before do
     sign_in user
   end
@@ -328,7 +329,11 @@ describe 'Transactions filter' do
   end
 
   context 'clear btn', js: true do
+    let!(:cat)  { create :category, organization: org }
+    let!(:ba)   { create :bank_account, organization: org }
+
     before do
+      visit root_path
       fill_in 'q[amount_eq]', with: "9999"
       fill_in 'q[comment_cont]', with: 'Comment'
       select cat.name, from: 'q[category_id_eq]'
