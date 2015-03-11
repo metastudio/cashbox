@@ -98,8 +98,11 @@ function showHidePeriodAdditionalInput() {
 
 function addRemoveHints(fromCurr, toCurr) {
   if (fromCurr === undefined || toCurr === undefined || fromCurr == toCurr ||
-      gon.curr_org_exch_rates === undefined ||
-      gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr] === undefined) {
+    gon.curr_org_exch_rates === undefined) {
+
+    if (gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr] === undefined) {
+      $('.transfer_reference_id').find('.help-block').remove();
+    }
     return;
   }
 
