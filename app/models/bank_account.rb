@@ -37,6 +37,9 @@ class BankAccount < ActiveRecord::Base
   validates :balance,  presence: true, numericality: {
     greater_than_or_equal_to: 0,
     less_than_or_equal_to: AMOUNT_MAX }
+  validates :residue,  presence: true, numericality: {
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: AMOUNT_MAX }
   validates :currency, presence: true,
     inclusion: { in: Dictionaries.currencies,
       message: "%{value} is not a valid currency" }
