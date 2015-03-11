@@ -67,14 +67,12 @@ function prepRateAndHints(exchange_rate, hints) {
 function showHideExchangeRate(fromCurr, toCurr) {
   if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
     if (!$('#transfer_exchange_rate').is(":visible")) {
-      $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
-      $('#transfer_exchange_rate').parents('.col-sm-1').removeClass('hidden');
+      $('#transfer_exchange_rate').parents('.col-sm-6').removeClass('hidden');
     }
   }
   else {
     if ($('#transfer_exchange_rate').is(":visible")) {
-      $('#transfer_exchange_rate').parents('.col-sm-1').addClass('hidden');
-      $('#transfer_comission').parents('.col-sm-1').addClass('col-sm-2').removeClass('col-sm-1');
+      $('#transfer_exchange_rate').parents('.col-sm-6').addClass('hidden');
     }
   }
 }
