@@ -22,7 +22,7 @@
 //= require jquery.inputmask.numeric.extensions
 
 //= require transactions
-//= require bank_accounts
+//= require organizations
 //= require jquery.inputmask.customization
 
 function scrollTo($el) {

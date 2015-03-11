@@ -9,9 +9,8 @@
       table.table.table-hover
         - by_curr.last.each do |account|
           tr class=(account.balance_cents > 0 ? 'success' : 'danger') id="bank_account_#{account.id}"
-            td = link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
-            td.bank-amount
-              = money_with_symbol account.balance
+            td.word-break = link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
+            td.word-break.bank-amount = money_with_symbol account.balance
     = link_to 'Create a new one', new_bank_account_path
   - else
     p

@@ -21,8 +21,15 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
 
-  def rates
-    org_curr = bank_accounts.pluck(:currency).uniq
+
+  def ordered_curr
+    currencies = bank_accounts.pluck(:currency).uniq.sort
+    currencies.delete(default_currency)
+    currencies.unshift(default_currency)
+  end
+
+  def exchange_rates
+    org_curr = ordered_curr
     org_rates = []
     org_curr.each_with_index do |curr, i|
       org_curr[(i + 1)..-1].each do |to_curr|

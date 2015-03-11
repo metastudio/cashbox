@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe 'create transfer transaction', js: true do
   include MoneyHelper
+  include ActionView::Helpers::NumberHelper
 
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
@@ -11,9 +12,11 @@ describe 'create transfer transaction', js: true do
   let(:ba1_name)    { ba1.to_s }
   let(:ba2_name)    { ba2.to_s }
 
-  let(:amount)     { 123.25 }
-  let(:comission)  { 0.25 }
-  let(:comment)    { "Test transaction" }
+  let(:amount)        { 1232.25 }
+  let(:amount_str)    { number_to_currency(amount, separator: '.', format: '%n') }
+  let(:comission)     { amount }
+  let(:comission_str) { amount_str }
+  let(:comment)       { 'Test transaction' }
 
 
   let(:transactions)  { organization.transactions.where(
@@ -24,14 +27,14 @@ describe 'create transfer transaction', js: true do
     click_on 'Transaction'
     click_on 'Transfer'
     within '#new_transfer_form' do
-      fill_in 'transfer[amount]', with: amount
+      fill_in 'transfer[amount]', with: amount_str
       select ba1.name, from: 'transfer[bank_account_id]' if ba1_name.present?
       select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
-      fill_in 'transfer[comission]', with: comission
+      fill_in 'transfer[comission]', with: comission_str
       fill_in 'transfer[comment]',   with: comment
       click_on 'Create'
     end
-    page.has_content?(/(Please review the problems below)|(#{amount})/) # wait after page rerender
+    page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
   end
 
   subject{ create_transfer; page }
@@ -48,8 +51,9 @@ describe 'create transfer transaction', js: true do
     it "shows created transactions in transactions list" do
       create_transfer
       within ".transactions" do
-        expect(page).to have_content(amount)
-        expect(page).to have_content(amount + comission)
+        expect(page).to have_content(amount_str)
+        expect(page).to have_content(
+          number_to_currency(amount + comission, separator: '.', format: '%n'))
       end
     end
 
@@ -133,9 +137,9 @@ describe 'create transfer transaction', js: true do
 
   context "transfer to different currency", js: true do
     let!(:ba2) { create :bank_account, organization: organization, currency: "USD",
-      balance: 99999 }
+      balance: 9999999 }
     let!(:ba3) { create :bank_account, organization: organization, currency: "USD",
-      balance: 99999 }
+      balance: 9999999 }
 
     before do
       visit root_path
@@ -147,7 +151,6 @@ describe 'create transfer transaction', js: true do
 
     context 'hints' do
       let(:rate) { 5 }
-
       context 'show' do
         before do
           within '#new_transfer_form' do
