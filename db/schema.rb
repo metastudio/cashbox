@@ -18,15 +18,15 @@ ActiveRecord::Schema.define(version: 20150311134430) do
   enable_extension "hstore"
 
   create_table "bank_accounts", force: true do |t|
-    t.string   "name",                            null: false
+    t.string   "name",                                      null: false
     t.string   "description"
-    t.integer  "balance_cents",   default: 0,     null: false
-    t.string   "currency",        default: "USD", null: false
-    t.integer  "organization_id",                 null: false
+    t.integer  "balance_cents",   limit: 8, default: 0,     null: false
+    t.string   "currency",                  default: "USD", null: false
+    t.integer  "organization_id",                           null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.boolean  "visible",         default: true
+    t.boolean  "visible",                   default: true
     t.integer  "position"
   end
 
@@ -82,9 +82,9 @@ ActiveRecord::Schema.define(version: 20150311134430) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", unique: true, using: :btree
 
   create_table "transactions", force: true do |t|
-    t.integer  "amount_cents",     default: 0, null: false
+    t.integer  "amount_cents",     limit: 8, default: 0, null: false
     t.integer  "category_id"
-    t.integer  "bank_account_id",              null: false
+    t.integer  "bank_account_id",                        null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "comment"

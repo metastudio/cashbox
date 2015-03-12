@@ -1,7 +1,6 @@
 class Transfer
   include ActiveModel::Validations
   include ActiveModel::Validations::Callbacks
-  AMOUNT_MAX = 21_474_836.47
 
   attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
     :bank_account, :bank_account_id, :reference_id,
@@ -9,7 +8,7 @@ class Transfer
     :from_currency, :to_currency
 
   validates :amount, presence: true,
-    numericality: { less_than_or_equal_to: AMOUNT_MAX }
+    numericality: { less_than_or_equal_to: Dictionaries.money_max }
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
     length: { maximum: 10 }, allow_blank: true
   validates :comment, length: { maximum: 255 }

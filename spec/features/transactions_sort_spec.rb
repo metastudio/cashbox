@@ -3,12 +3,13 @@ require 'spec_helper'
 describe 'Transactions sort' do
   include MoneyHelper
 
-  let(:user) { create :user, :with_organizations }
-  let(:org)  { user.organizations.first }
+  let(:user) { create :user }
+  let(:org)  { create :organization, with_user: user }
   let(:ba)   { create :bank_account, organization: org }
-  let(:ba2)  { create :bank_account, organization: org }
-  let(:ba3)  { create :bank_account, organization: org }
-  let(:ba4)  { create :bank_account, organization: org }
+  let(:cat)  { create :category, organization: org, name: 'cat'  }
+  let(:cat2) { create :category, organization: org, name: 'cat2' }
+  let(:cat3) { create :category, organization: org, name: 'cat3' }
+  let(:cat4) { create :category, organization: org, name: 'cat4' }
 
   before do
     sign_in user
@@ -27,10 +28,6 @@ describe 'Transactions sort' do
   context "by date" do
     it_behaves_like 'sortable object', 'Date', :created_at
   end
-
-  # context "by bank_account name" do
-  #   it_behaves_like 'sortable object', 'Account', :bank_account
-  # end
 
   context "by category" do
     it_behaves_like 'sortable object', 'Category', :category

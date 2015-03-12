@@ -8,6 +8,7 @@ describe 'Transactions filter' do
   let(:cat)  { create :category, organization: org }
   let(:ba)   { create :bank_account, organization: org }
 
+
   before do
     sign_in user
   end
@@ -18,17 +19,32 @@ describe 'Transactions filter' do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction3) { create :transaction, bank_account: ba, amount: 300 }
-    let!(:transaction4) { create :transaction, bank_account: ba, amount: 600 }
+    let!(:transaction4) { create :transaction, bank_account: ba, amount: Dictionaries.money_max }
     let(:correct_items) { [transaction,  transaction2] }
     let(:wrong_items)   { [transaction3, transaction4] }
+    let(:amount_eq)     { 100123.23 }
 
     before do
       visit root_path
-      fill_in 'q[amount_eq]', with: 100123.23
+      fill_in 'q[amount_eq]', with: amount_eq
       click_on 'Search'
     end
 
     it_behaves_like 'filterable object'
+
+    context 'when too long' do
+      let(:amount_eq) { '1' * 1610  }
+      it 'doesnt break' do
+        expect(subject).to have_content 'There is nothing found'
+      end
+    end
+
+    context 'max' do
+      let(:amount_eq) { Dictionaries.money_max }
+      it 'show relevant transaction' do
+        expect(subject).to have_content(money_with_symbol(transaction4.amount))
+      end
+    end
   end
 
   context "by comment" do
@@ -38,14 +54,22 @@ describe 'Transactions filter' do
     let!(:transaction4) { create :transaction, bank_account: ba, comment: 'Other text' }
     let(:correct_items) { [transaction,  transaction3] }
     let(:wrong_items)   { [transaction2, transaction4] }
+    let(:comment_cont)  { 'Comment' }
 
     before do
       visit root_path
-      fill_in 'q[comment_cont]', with: 'Comment'
+      fill_in 'q[comment_cont]', with: comment_cont
       click_on 'Search'
     end
 
     it_behaves_like 'filterable object'
+
+    context 'when too long' do
+      let(:comment_cont) { 'a' * 1610 }
+      it 'doesnt break' do
+        expect(subject).to have_content 'There is nothing found'
+      end
+    end
   end
 
   context 'by category' do
@@ -325,5 +349,30 @@ describe 'Transactions filter' do
     end
 
     it_behaves_like 'filterable object'
+  end
+
+  context 'clear btn', js: true do
+    let!(:cat)  { create :category, organization: org }
+    let!(:ba)   { create :bank_account, organization: org }
+
+    before do
+      visit root_path
+      fill_in 'q[amount_eq]', with: "9999"
+      fill_in 'q[comment_cont]', with: 'Comment'
+      select cat.name, from: 'q[category_id_eq]'
+      select ba.to_s, from: 'q[bank_account_id_eq]'
+      select 'Current month', from: 'q[period]'
+      click_on 'Clear'
+    end
+
+    it 'should completely clear form' do
+      within '#transaction_search' do
+        expect(page).to have_css('#q_amount_eq', text: '')
+        expect(page).to have_css('#q_comment_cont', text: '')
+        expect(page).to have_css('#q_category_id_eq', text: '')
+        expect(page).to have_css('#q_bank_account_id_eq', text: '')
+        expect(page).to have_css('#q_period', text: '')
+      end
+    end
   end
 end

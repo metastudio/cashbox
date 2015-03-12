@@ -16,7 +16,6 @@ require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
   include TimeRange
-  AMOUNT_MAX = 21_474_836.47
   TRANSACTION_TYPES = %w(Residue)
 
   acts_as_paranoid
@@ -40,7 +39,7 @@ class Transaction < ActiveRecord::Base
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
   validates :amount, presence: true, numericality: { greater_than: 0,
-    less_than_or_equal_to: AMOUNT_MAX }
+    less_than_or_equal_to: Dictionaries.money_max }
   validate  :amount_balance, if: :expense?
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true

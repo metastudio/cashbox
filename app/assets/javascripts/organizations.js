@@ -1,4 +1,6 @@
   $(function() {
+    addBankAccountFormMasks();
+
     var rates = gon.curr_org_ordered_curr;
     if (rates) {
       var currency, tableId;
@@ -37,3 +39,8 @@
       };
     };
   });
+
+function addBankAccountFormMasks() {
+  $("form.new_bank_account input[name='bank_account[residue]']").
+    inputmask('customized_currency');
+}

@@ -135,11 +135,9 @@ describe 'create transfer transaction', js: true do
     end
   end
 
-  context "transfer to different currency", js: true do
-    let!(:ba2) { create :bank_account, organization: organization, currency: "USD",
-      balance: 9999999 }
-    let!(:ba3) { create :bank_account, organization: organization, currency: "USD",
-      balance: 9999999 }
+  context "transfer to different currency" do
+    let!(:ba2) { create :bank_account, organization: organization, currency: "USD" }
+    let!(:ba3) { create :bank_account, organization: organization, currency: "USD" }
 
     before do
       visit root_path
@@ -151,24 +149,51 @@ describe 'create transfer transaction', js: true do
 
     context 'hints' do
       let(:rate) { 5 }
-      before do
-        within '#new_transfer_form' do
-          fill_in 'transfer[amount]', with: amount_str
-          select ba1.name, from: 'transfer[bank_account_id]'
-          select ba2.name, from: 'transfer[reference_id]'
-          fill_in 'transfer[exchange_rate]', with: rate
-          find("#transfer_comment").click
+      context 'show' do
+        before do
+          within '#new_transfer_form' do
+            fill_in 'transfer[amount]', with: amount
+            select ba1.name, from: 'transfer[bank_account_id]'
+            select ba2.name, from: 'transfer[reference_id]'
+            fill_in 'transfer[exchange_rate]', with: rate
+            find("#transfer_comment").click
+          end
+        end
+
+        it 'rate' do
+          expect(page).to have_css('.help-block',
+            text: Money.default_bank.rates["RUB_TO_USD"].round(4) )
+        end
+
+        it 'end sum' do
+          expect(page).to have_css('.help-block',
+            text: (amount * rate).round(4) )
         end
       end
 
-      it 'show rate' do
-        expect(page).to have_css('.help-block',
-          text: Money.default_bank.rates["RUB_TO_USD"].round(4) )
-      end
+      context 'not show' do
+        before do
+          within '#new_transfer_form' do
+            fill_in 'transfer[amount]', with: amount
+            select ba1.name, from: 'transfer[bank_account_id]'
+            select ba2.name, from: 'transfer[reference_id]'
+            fill_in 'transfer[exchange_rate]', with: rate
+            find("#transfer_comment").click
+            page.has_css?('help-bock')
+            select ba3.name, from: 'transfer[bank_account_id]'
+          end
+        end
 
-      it 'show end sum' do
-        expect(page).to have_css('.help-block',
-          text: (amount * rate).round(4) )
+        it 'rate' do
+          expect(page).to_not have_css('.help-block',
+            text: Money.default_bank.rates["RUB_TO_USD"].round(4) )
+        end
+
+
+        it 'end sum' do
+          expect(page).to_not have_css('.help-block',
+            text: (amount * rate).round(4) )
+        end
       end
     end
 
