@@ -39,7 +39,7 @@ class Transaction < ActiveRecord::Base
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
   validates :amount, presence: true, numericality: { greater_than: 0,
-    less_than_or_equal_to: AppConfig.money_max }
+    less_than_or_equal_to: Dictionaries.money_max }
   validate  :amount_balance, if: :expense?
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true

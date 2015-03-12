@@ -1,3 +1,9 @@
 currencies:
   - USD
   - RUB
+  - EUR
+money_max: 461_168_601_842_739
+account_colors:
+  negative: '#f2dede'
+  positive: '#dff0d8'
+  empty: 'whitesmoke'
