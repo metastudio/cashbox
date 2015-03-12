@@ -20,7 +20,7 @@ describe 'Transactions filter' do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction3) { create :transaction, bank_account: ba, amount: 300 }
-    let!(:transaction4) { create :transaction, bank_account: ba, amount: 600 }
+    let!(:transaction4) { create :transaction, bank_account: ba, amount: Dictionaries.money_max }
     let(:correct_items) { [transaction,  transaction2] }
     let(:wrong_items)   { [transaction3, transaction4] }
     let(:amount_eq)     { 100123.23 }
@@ -37,6 +37,13 @@ describe 'Transactions filter' do
       let(:amount_eq) { '1' * 1610  }
       it 'doesnt break' do
         expect(subject).to have_content 'There is nothing found'
+      end
+    end
+
+    context 'max' do
+      let(:amount_eq) { Dictionaries.money_max }
+      it 'show relevant transaction' do
+        expect(subject).to have_content(money_with_symbol(transaction4.amount))
       end
     end
   end
