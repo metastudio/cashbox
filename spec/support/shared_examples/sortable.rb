@@ -1,12 +1,12 @@
 shared_examples_for "sortable object" do |sort_by, field|
-  let!(:transaction)  { Timecop.travel(3.day.ago) {
-    create :transaction, bank_account: ba, amount: 100, comment: 'Comment' }}
-  let!(:transaction2) { Timecop.travel(2.day.ago) {
-    create :transaction, bank_account: ba, amount: 200, comment: 'Comment2' }}
-  let!(:transaction3) { Timecop.travel(1.day.ago) {
-    create :transaction, bank_account: ba, amount: 300, comment: 'Comment3' }}
-  let!(:transaction4) {
-    create :transaction, bank_account: ba, amount: 600, comment: 'Comment4' }
+  let!(:transaction)  { Timecop.travel(3.day.ago) { create :transaction,
+    bank_account: ba, amount: 100, comment: 'Comment',  category: cat  }}
+  let!(:transaction2) { Timecop.travel(2.day.ago) { create :transaction,
+    bank_account: ba, amount: 200, comment: 'Comment2', category: cat2 }}
+  let!(:transaction3) { Timecop.travel(1.day.ago) { create :transaction,
+    bank_account: ba, amount: 300, comment: 'Comment3', category: cat3 }}
+  let!(:transaction4) { create :transaction, bank_account: ba, amount: 600,
+    comment: 'Comment4', category: cat4 }
   let(:correct_order) { [transaction, transaction2, transaction3, transaction4] }
 
   def to_view(elem, field)
@@ -34,7 +34,7 @@ shared_examples_for "sortable object" do |sort_by, field|
 
     it "shows correct order" do
       correct_order.each_with_index do |elem, i|
-        expect(page).to have_selector(".transactions tbody tr:nth-child(#{i + 1})",
+        expect(page).to have_selector("tbody tr:nth-child(#{i + 1})",
           text: to_view(elem, field))
       end
     end
@@ -48,7 +48,7 @@ shared_examples_for "sortable object" do |sort_by, field|
 
       it "shows correct order" do
         correct_order.reverse.each_with_index do |elem, i|
-          expect(page).to have_selector(".transactions tbody tr:nth-child(#{i + 1})",
+          expect(page).to have_selector("tbody tr:nth-child(#{i + 1})",
             text: to_view(elem, field))
         end
       end
