@@ -10,10 +10,8 @@ MoneyRails.configure do |config|
   #
   # Example:
   # config.default_bank = EuCentralBank.new
-  # rcb = Money::Bank::RussianCentralBank.new
-  # rcb.update_rates
-  # rcb.ttl = 1.day
-  # config.default_bank = rcb
+  config.default_bank = Money::Bank::RussianCentralBank.new
+  ExchangeRate.init_rates
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)
