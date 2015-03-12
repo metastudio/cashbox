@@ -12,7 +12,7 @@
         tbody
           - curr_with_accounts.last.each do |bank_account|
             tr.item data-item-id=bank_account.id
-              td.word-break = bank_account.name
+              td.word-break = bank_account.to_s
               td.word-break = bank_account.description
               td = money_with_symbol bank_account.balance
               - if current_organization.present?
