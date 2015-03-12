@@ -32,6 +32,13 @@ describe BankAccount do
       it_behaves_like 'has money ceiling', 'balance' do
         let!(:model) { build :bank_account, balance: amount }
       end
+
+      describe 'when residue negative' do
+        let(:bank_account) { build :bank_account, residue: -500 }
+        it 'is invalid' do
+          expect(bank_account).to be_invalid
+        end
+      end
     end
   end
 

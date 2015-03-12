@@ -135,11 +135,9 @@ describe 'create transfer transaction', js: true do
     end
   end
 
-  context "transfer to different currency", js: true do
-    let!(:ba2) { create :bank_account, organization: organization, currency: "USD",
-      balance: 9999999 }
-    let!(:ba3) { create :bank_account, organization: organization, currency: "USD",
-      balance: 9999999 }
+  context "transfer to different currency" do
+    let!(:ba2) { create :bank_account, organization: organization, currency: "USD" }
+    let!(:ba3) { create :bank_account, organization: organization, currency: "USD" }
 
     before do
       visit root_path
