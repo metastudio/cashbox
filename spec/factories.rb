@@ -78,7 +78,7 @@ FactoryGirl.define do
   factory :transaction do
     bank_account
     category
-    amount { rand(5000) }
+    amount { rand(30000.0..50000)/rand(10.0..100) }
 
     trait :income do
       association :category, :income
