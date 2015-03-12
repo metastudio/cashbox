@@ -1,5 +1,5 @@
 shared_examples_for "has money ceiling" do |field|
-  let(:max) { AppConfig.money_max }
+  let(:max) { Dictionaries.money_max }
   context "when less max" do
     let!(:amount) { max - 1 }
     it 'is valid' do
