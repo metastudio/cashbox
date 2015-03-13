@@ -182,7 +182,7 @@ describe 'Transactions list' do
 
     it 'display exchange time' do
       within '#total_balance' do
-        expect(page).to have_content("by Central Bank from #{I18n.l(ExchangeRate.last.updated_from_bank_at)}")
+        expect(page).to have_content("by Central Bank from #{I18n.l(Money.default_bank.rates_updated_at)}")
       end
     end
 
