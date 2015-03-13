@@ -18,6 +18,7 @@
 # end
 
 every :reboot do
+  command "echo 'asdsad'"
   runner "ExchangeRate.update_rates"
 end
 

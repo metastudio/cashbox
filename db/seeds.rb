@@ -13,5 +13,5 @@ rescue Exception => e
   ExchangeRate.create!(params).set_bank_rates
 end
 
-Category.create!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
-Category.create!(Category::CATEGORY_BANK_INCOME_PARAMS)
+Category.craete!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
+Category.craete!(Category::CATEGORY_BANK_INCOME_PARAMS)
