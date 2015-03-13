@@ -2,9 +2,8 @@ require 'spec_helper'
 
 describe 'category page' do
   let(:user)          { create :user }
-  let(:organization)  { create :organization, with_user: user }
-  let!(:account)      { create :bank_account, organization: organization }
-  let(:amount)        { 150.66 }
+  let(:org)           { create :organization, with_user: user }
+  let!(:account)      { create :bank_account, organization: org }
   let(:account_name)  { account.name }
 
   before do
@@ -17,8 +16,7 @@ describe 'category page' do
     let(:paginated)        { 10 }
     let(:categories_count) { paginated + 10 }
 
-    let!(:categories) { create_list :category, categories_count,
-      organization: organization }
+    let!(:categories) { create_list :category, categories_count, organization: org }
 
     before do
       visit categories_path
@@ -27,7 +25,7 @@ describe 'category page' do
     it "lists first page categories" do
       within ".categories" do
         categories.last(paginated).each do |category|
-          expect(subject).to have_selector('td', text: category.name)
+          expect(subject).to have_selector('td', text: /\A#{category.name}\z/)
         end
       end
     end
@@ -35,7 +33,7 @@ describe 'category page' do
     it "doesnt list last page categories" do
       within ".categories" do
         categories.first(categories_count - paginated).each do |category|
-          expect(subject).to_not have_selector('td', text: category.name)
+          expect(subject).to_not have_selector('td', text: /\A#{category.name}\z/)
         end
       end
     end
@@ -50,7 +48,7 @@ describe 'category page' do
       it "doesnt list first page categories" do
         within ".categories" do
           categories.last(paginated).each do |category|
-            expect(subject).to_not have_selector('td', text: category.name)
+            expect(subject).to_not have_selector('td', text: /\A#{category.name}\z/)
           end
         end
       end
@@ -58,7 +56,7 @@ describe 'category page' do
       it "lists last categories" do
         within ".categories" do
           categories.first(categories_count - paginated).each do |category|
-            expect(subject).to have_selector('td', text: category.name)
+            expect(subject).to have_selector('td', text: /\A#{category.name}\z/)
           end
         end
       end
@@ -66,7 +64,7 @@ describe 'category page' do
   end
 
   describe 'when opened via transactions table column' do
-    let(:cat)          { create :category, organization: organization }
+    let(:cat)          { create :category, organization: org }
     let!(:transaction) { create :transaction, bank_account: account, category: cat}
 
     before do
@@ -86,8 +84,8 @@ describe 'category page' do
   end
 
   describe "system" do
-    let(:from_account) { create :bank_account, organization: organization, balance: 999 }
-    let(:to_account)   { create :bank_account, organization: organization }
+    let(:from_account) { create :bank_account, organization: org, balance: 999 }
+    let(:to_account)   { create :bank_account, organization: org }
     let!(:transfer)    { create :transfer, bank_account_id: from_account.id,
       reference_id: to_account.id }
 
