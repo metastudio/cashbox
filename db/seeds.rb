@@ -6,12 +6,12 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 begin
-  ExchangeRate.find_or_create_by!(rates: Money.default_bank.update_rates,
+  ExchangeRate.create!(rates: Money.default_bank.update_rates,
     updated_from_bank_at: Money.default_bank.rates_updated_at)
 rescue Exception => e
   params = YAML.load_file(Rails.root.join('db', 'seeds', 'rates.yml'))
-  ExchangeRate.find_or_create_by!(params).set_bank_rates
+  ExchangeRate.create!(params).set_bank_rates
 end
 
-Category.find_or_create_by!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
-Category.find_or_create_by!(Category::CATEGORY_BANK_INCOME_PARAMS)
+Category.create!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
+Category.create!(Category::CATEGORY_BANK_INCOME_PARAMS)
