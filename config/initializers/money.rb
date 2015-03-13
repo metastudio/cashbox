@@ -11,7 +11,14 @@ MoneyRails.configure do |config|
   # Example:
   # config.default_bank = EuCentralBank.new
   config.default_bank = Money::Bank::RussianCentralBank.new
-  ExchangeRate.update_rates
+  begin
+    puts 'ssss'
+    config.default_bank.update_rates
+  rescue Exception => e
+    puts 'eeee'
+    import_rates = YAML.load_file(Rails.root.join('db', 'seeds', 'rates.yml'))
+    config.default_bank.import_rates(:json, import_rates[:rates].to_json)
+  end
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)
