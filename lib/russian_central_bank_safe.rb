@@ -9,14 +9,14 @@ class RussianCentralBankSafe < Money::Bank::RussianCentralBank
         rescue Exception => e
           begin
             last_db_rates = ExchangeRate.last
-            @rates = last_db_rates.rates
             @rates_updated_at = last_db_rates.updated_from_bank_at
             @rates_updated_on = date
+            @rates = last_db_rates.rates
           rescue Exception => e
             rates = YAML.load_file(Rails.root.join('db', 'seeds', 'rates.yml'))
-            @rates = rates[:rates]
             @rates_updated_at = DateTime.parse(rates[:updated_from_bank_at])
             @rates_updated_on = date
+            @rates = rates[:rates]
           end
         end
       }
