@@ -11,7 +11,6 @@ MoneyRails.configure do |config|
   # Example:
   # config.default_bank = EuCentralBank.new
   config.default_bank = Money::Bank::RussianCentralBank.new
-  ExchangeRate.init_rates
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)

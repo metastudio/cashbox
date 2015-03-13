@@ -17,6 +17,10 @@
 #   runner "AnotherModel.prune_old_records"
 # end
 
+every :reboot do
+  runner "ExchangeRate.update_rates"
+end
+
 every 1.day, at: '0:00 am' do
   runner "ExchangeRate.update_rates"
 end

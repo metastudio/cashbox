@@ -18,22 +18,7 @@ class ExchangeRate < ActiveRecord::Base
         )
       rescue Exception => e
         Rails.logger.info e
-      end
-    end
-
-    def init_rates
-      begin
-        params = { rates: Money.default_bank.update_rates,
-          updated_from_bank_at: Money.default_bank.rates_updated_at
-        }
-        ExchangeRate.count.zero? ? ExchangeRate.create!(params) : ExchangeRate.last.update!(params)
-      rescue Exception => e
-        params = YAML.load_file(Rails.root.join('db', 'seeds', 'rates.yml'))
-        if ExchangeRate.count.zero?
-          ExchangeRate.create!(params).set_bank_rates
-        else
-          ExchangeRate.last.update!(params).set_bank_rates
-        end
+        ExchangeRate.last.set_bank_rates
       end
     end
   end

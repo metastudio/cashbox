@@ -5,40 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-User.destroy_all
-Organization.destroy_all
-BankAccount.destroy_all
-Category.destroy_all
-Transaction.destroy_all
-
-Category.create!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
-Category.create!(Category::CATEGORY_BANK_INCOME_PARAMS)
-
-user = User.create( email: "lukeiam@your.father",
-             full_name: "Vader Lightsaber",
-             password: "password" )
-
-4.times do |i|
-  org = Organization.create( name: "org#{i}" )
-  org.members.create(user_id: user.id, role: 'owner')
+begin
+  ExchangeRate.find_or_create_by!(rates: Money.default_bank.update_rates,
+    updated_from_bank_at: Money.default_bank.rates_updated_at)
+rescue Exception => e
+  params = YAML.load_file(Rails.root.join('db', 'seeds', 'rates.yml'))
+  ExchangeRate.find_or_create_by!(params).set_bank_rates
 end
 
-15.times do |i|
-  Category.create(type: ["Income", "Expense"].sample, name: "cat#{i}", organization_id: Organization.all.sample.id)
-end
-
-100.times do |i|
-  BankAccount.create(  name: "bank_account#{i}",
-                       balance: rand(10.00..50000).round(2),
-                       currency: ["USD", "RUB", "EUR"].sample,
-                       organization_id: Organization.all.sample.id )
-end
-
-250.times do |i|
-  ba = BankAccount.all.sample
-  trans = Transaction.create( amount: rand(10.00..50000).round(2),
-                      bank_account_id: ba.id,
-                      category: ba.organization.categories.sample,
-                      transaction_type: "Residue" )
-  trans.update_attribute(:created_at, rand((Time.now - 4.months)..Time.now))
-end
+Category.find_or_create_by!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
+Category.find_or_create_by!(Category::CATEGORY_BANK_INCOME_PARAMS)
