@@ -29,7 +29,7 @@ describe 'organizations pages' do
         visit organization_path org
       end
 
-      it_behaves_like "colorizable amount"
+      it_behaves_like "colorizable amount", '.bank-accounts'
     end
   end
 
