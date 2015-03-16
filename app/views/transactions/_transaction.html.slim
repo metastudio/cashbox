@@ -2,11 +2,11 @@ tr.transaction id=dom_id(transaction) class=(transaction.income? ? 'success' : '
   td.col-sm-2 = money_with_symbol transaction.amount
 
   td.col-sm-3.word-break
-    = transaction.category, transaction.category.name,
+    = link_to transaction.category.name,
       root_path(q: (params[:q] || {}).merge(category_id_eq: transaction.category.id)),
       data: { stop_propagation: true } if transaction.category
   td.col-sm-3.word-break
-    = transaction.bank_account, transaction.bank_account.to_s,
+    = link_to transaction.bank_account.to_s,
       root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.bank_account.id)),
       data: { stop_propagation: true } if transaction.bank_account
   td.col-sm-3.word-break.comment.hidden-xs = transaction.comment
