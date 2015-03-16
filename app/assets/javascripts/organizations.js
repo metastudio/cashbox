@@ -3,9 +3,8 @@
 
     var rates = gon.curr_org_ordered_curr;
     if (rates) {
-      var currency;
       var tables = new Object();
-      var tableId, currencyTable
+      var tableId, currencyTable, currency;
       for (var i = 0; i <= rates.length - 1; i++) {
         currency = rates[i].toLowerCase();
         tableId = currency + '-accounts'
@@ -30,7 +29,6 @@
             },
             update: function(e, ui) {
               var it = ui.item;
-              console.log();
               return $.ajax({
                 type: "PUT",
                 url: currencyTable.attr('data-url'),
