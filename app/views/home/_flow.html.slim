@@ -2,23 +2,23 @@
   .row
     .col-sm-2
       | Income:
-    .col-sm-2 class=(@rub_inc > 0 ? 'bg-success' : 'bg-danger')
+    .col-sm-2 class=colorize_amount(@rub_inc)
       = money_with_symbol(@rub_inc)
-    .col-sm-2 class=(@usd_inc > 0 ? 'bg-success' : 'bg-danger')
+    .col-sm-2 class=colorize_amount(@usd_inc)
       = money_with_symbol(@usd_inc)
 
   .row
     .col-sm-2
       | Expense:
-    .col-sm-2 class=(@rub_exp > 0 ? 'bg-success' : 'bg-danger')
+    .col-sm-2 class=colorize_amount(@rub_exp)
       = money_with_symbol(@rub_exp)
-    .col-sm-2 class=(@usd_exp > 0 ? 'bg-success' : 'bg-danger')
+    .col-sm-2 class=colorize_amount(@usd_exp)
       = money_with_symbol(@usd_exp)
 
   .row
     .col-sm-2
       | Total:
-    .col-sm-2 class=(@rub_flow > 0 ? 'bg-success' : 'bg-danger')
+    .col-sm-2 class=colorize_amount(@rub_flow)
       = money_with_symbol(@rub_flow)
-    .col-sm-2 class=(@usd_flow > 0 ? 'bg-success' : 'bg-danger')
+    .col-sm-2 class=colorize_amount(@usd_flow)
       = money_with_symbol(@usd_flow)

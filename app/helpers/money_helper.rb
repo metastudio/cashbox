@@ -1,8 +1,14 @@
 module MoneyHelper
   include MoneyRails::ActionViewExtension
 
-  def money_sign(money)
-    money > 0 ? 'success' : 'danger'
+  def colorize_amount(amount)
+    if amount > 0
+      'positive'
+    elsif amount < 0
+      'negative'
+    else
+      'empty'
+    end
   end
 
   def money_with_symbol(money)

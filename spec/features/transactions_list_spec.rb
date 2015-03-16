@@ -154,48 +154,12 @@ describe 'Transactions list' do
         visit root_path
       end
 
-      it "'success' for positive transaction" do
-        expect(subject).to have_css(".transaction.success#transaction_#{org1_transaction.id}")
+      it "'positive' for positive" do
+        expect(subject).to have_css(".transaction.positive#transaction_#{org1_transaction.id}")
       end
 
-      it "'danger' for negative transaction" do
-        expect(subject).to have_css(".transaction.danger#transaction_#{org1_transaction2.id}")
-      end
-    end
-  end
-
-  context "sidebar" do
-    let!(:org1_ba2)        { create :bank_account, organization: org1, currency: 'RUB' }
-    let!(:ba2_transaction) { create :transaction, bank_account: org2_ba,
-      category: category_org1, amount: 500 }
-
-    before do
-      visit root_path
-    end
-
-    it 'display exhanged amount' do
-      within '#total_balance' do
-        expect(page).to have_content(
-          money_with_symbol org1_ba2.balance.exchange_to(org1.default_currency))
-      end
-    end
-
-    it 'display exchange time' do
-      within '#total_balance' do
-        expect(page).to have_content("by Central Bank from #{I18n.l(Money.default_bank.rates_updated_at)}")
-      end
-    end
-
-    it 'display exchange rate' do
-      within '#total_balance' do
-        expect(page).to have_xpath("//a[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{Money.default_bank.get_rate(org1_ba2.currency, org1.default_currency).round(4)}')]")
-      end
-    end
-
-    it 'display total balance in default currency' do
-      within '#total_balance' do
-        expect(page).to have_content("Total in #{org1.default_currency}")
-        expect(page).to have_content money_with_symbol (org1_ba.balance.exchange_to(org1.default_currency) + org1_ba2.balance.exchange_to(org1.default_currency))
+      it "'negative' for negative" do
+        expect(subject).to have_css(".transaction.negative#transaction_#{org1_transaction2.id}")
       end
     end
   end

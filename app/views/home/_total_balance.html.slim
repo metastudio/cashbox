@@ -10,7 +10,7 @@
       - total = current_organization.bank_accounts.total_balance(curr)
       - total_amount = total_amount + total.exchange_to(current_organization.default_currency)
 
-      .col-xs-6
+      .col-xs-6 class=colorize_amount(total)
         = money_with_symbol total
         - if curr != def_curr
           =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
