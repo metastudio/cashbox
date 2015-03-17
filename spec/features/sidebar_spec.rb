@@ -61,8 +61,10 @@ describe 'sidebar' do
           click_on org2.name
         end
 
-        it "change current organization" do
-          expect(current_organization).to eq org2
+        it 'change current_organization' do
+          within "#current_organization" do
+            expect(page).to have_text org2.name
+          end
         end
       end
 
