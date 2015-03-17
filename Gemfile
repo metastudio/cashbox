@@ -41,6 +41,7 @@ gem 'acts_as_list'
 gem 'active_link_to'
 gem 'russian_central_bank'
 gem 'gon'
+gem 'whenever', require: false
 
 group :development, :test do
   gem 'rspec-rails'
