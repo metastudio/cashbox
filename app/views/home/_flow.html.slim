@@ -4,13 +4,12 @@
     tr
       th[style="width:10%"] Income:
       - @curr_flow.each do |flow|
-        = render 'flow_amount', flow_amount: flow.income
+        = render 'flow_amount', flow_amount: flow.income, def_curr: def_curr
     tr
       th Expense:
       - @curr_flow.each do |flow|
-        = render 'flow_amount', flow_amount: flow.expense
-
+        = render 'flow_amount', flow_amount: flow.expense, def_curr: def_curr
     tr
       th Total:
       - @curr_flow.each do |flow|
-        = render 'flow_amount', flow_amount: flow.total
+        = render 'flow_amount', flow_amount: flow.total, def_curr: def_curr
