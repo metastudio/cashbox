@@ -1,25 +1,16 @@
 #flow.h4
-  .col-sm-2
-    .row
-      | Income:
-    .row
-      | Expense:
-    .row
-      | Total:
-  - def_curr = current_organization.default_currency
-  - @curr_flow.each do |flow|
-    .col-sm-2
-      .row class=money_bg(flow.income)
-        = money_with_symbol(flow.income)
-      .row class=money_bg(flow.expense)
-        = money_with_symbol(flow.expense)
-      .row class=money_bg(flow.total)
-        = money_with_symbol(flow.total)
-    - if flow.currency != def_curr
-      .col-sm-2
-        .row class=money_bg(flow.income)
-          = money_with_symbol(flow.income.exchange_to(def_curr))
-        .row class=money_bg(flow.expense)
-          = money_with_symbol(flow.expense.exchange_to(def_curr))
-        .row class=money_bg(flow.total)
-          = money_with_symbol(flow.total.exchange_to(def_curr))
+  table.table.table-stripped id='flow'
+    - def_curr = current_organization.default_currency
+    tr
+      th[style="width:10%"] Income:
+      - @curr_flow.each do |flow|
+        = render 'flow_column', column_amount: flow.income
+    tr
+      th Expense:
+      - @curr_flow.each do |flow|
+        = render 'flow_column', column_amount: flow.expense
+
+    tr
+      th Total:
+      - @curr_flow.each do |flow|
+        = render 'flow_column', column_amount: flow.total
