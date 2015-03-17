@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'sidebar' do
-  let(:user)    { create :user, :with_organization }
-  let(:org)     { user.organizations.first }
+  let(:user)     { create :user }
+  let(:org)      { create :organization, with_user: user }
   let!(:account) { create :bank_account, organization: org, balance: 50000 }
   let!(:account3){ create :bank_account, organization: org, balance: 0 }
 
@@ -16,6 +16,7 @@ describe 'sidebar' do
     before do
       visit root_path
     end
+
     it "for positive" do
       within '.positive' do
         expect(page).to have_content account.to_s
@@ -26,6 +27,65 @@ describe 'sidebar' do
       within '.empty' do
         expect(page).to have_content account3.to_s
       end
+    end
+  end
+
+  context 'menu' do
+    let!(:category) { create :category, organization: org }
+
+    before do
+      visit organization_path(org)
+    end
+
+    it 'is shown' do
+      within '.list-group' do
+        expect(page).to have_content('Organizations')
+        expect(page).to have_css('.active', 'Bank accounts')
+        expect(page).to have_content('Categories')
+        expect(page).to have_content('Members')
+      end
+    end
+
+    describe 'organizations' do
+      before do
+        visit organizations_path
+      end
+      it_behaves_like 'activatable', 'Organizations'
+
+      before do
+        visit new_organization_path
+      end
+      it_behaves_like 'activatable', 'Organizations'
+
+      before do
+        visit edit_organization_path(org)
+      end
+      it_behaves_like 'activatable', 'Organizations'
+    end
+
+    describe 'categories' do
+      let(:cat) { create :category, organization: org }
+      before do
+        visit categories_path
+      end
+      it_behaves_like 'activatable', 'Categories'
+
+      before do
+        visit new_category_path
+      end
+      it_behaves_like 'activatable', 'Categories'
+
+      before do
+        visit edit_category_path(cat)
+      end
+      it_behaves_like 'activatable', 'Categories'
+    end
+
+    describe 'members' do
+      before do
+        visit members_path
+      end
+      it_behaves_like 'activatable', 'Members'
     end
   end
 end
