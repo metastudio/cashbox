@@ -47,38 +47,62 @@ describe 'sidebar' do
     end
 
     describe 'organizations' do
-      before do
-        visit organizations_path
+      describe 'index' do
+        before do
+          visit organizations_path
+        end
+        it_behaves_like 'activatable', 'Organizations'
       end
-      it_behaves_like 'activatable', 'Organizations'
 
-      before do
-        visit new_organization_path
-      end
-      it_behaves_like 'activatable', 'Organizations'
+      describe 'show' do
+        let!(:org2) { create :organization, with_user: user }
+        before do
+          visit organizations_path
+          click_on org2.name
+        end
 
-      before do
-        visit edit_organization_path(org)
+        it "change current organization" do
+          expect(current_organization).to eq org2
+        end
       end
-      it_behaves_like 'activatable', 'Organizations'
+
+      describe 'new' do
+        before do
+          visit new_organization_path
+        end
+        it_behaves_like 'activatable', 'Organizations'
+      end
+
+      describe 'edit' do
+        before do
+          visit edit_organization_path(org)
+        end
+        it_behaves_like 'activatable', 'Organizations'
+      end
     end
 
     describe 'categories' do
-      let(:cat) { create :category, organization: org }
-      before do
-        visit categories_path
+      describe 'index' do
+        before do
+          visit categories_path
+        end
+        it_behaves_like 'activatable', 'Categories'
       end
-      it_behaves_like 'activatable', 'Categories'
 
-      before do
-        visit new_category_path
+      describe 'new' do
+        before do
+          visit new_category_path
+        end
+        it_behaves_like 'activatable', 'Categories'
       end
-      it_behaves_like 'activatable', 'Categories'
 
-      before do
-        visit edit_category_path(cat)
+      describe 'edit' do
+        let(:cat) { create :category, organization: org }
+        before do
+          visit edit_category_path(cat)
+        end
+        it_behaves_like 'activatable', 'Categories'
       end
-      it_behaves_like 'activatable', 'Categories'
     end
 
     describe 'members' do
