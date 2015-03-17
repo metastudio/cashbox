@@ -1,0 +1,6 @@
+- css_class = money_bg(column_amount)
+td class=css_class
+  = money_with_symbol(column_amount)
+- if flow.currency != def_curr
+  td class=css_class
+    = money_with_symbol(column_amount.exchange_to(def_curr))
