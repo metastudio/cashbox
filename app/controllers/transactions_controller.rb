@@ -3,15 +3,20 @@ class TransactionsController < ApplicationController
   before_action :set_transaction,  only: [:edit, :update, :destroy]
 
   def create
-    @transaction = Transaction.new(transaction_params)
-    @transaction.save
+    if current_organization.bank_accounts.find_by_id(params[:bank_account_id])
+      @transaction = Transaction.new(transaction_params)
+      @transaction.save
+    end
   end
 
   def create_transfer
-    @transfer = Transfer.new(transfer_params)
-    if @transfer.save
-      @inc_transaction = @transfer.inc_transaction
-      @out_transaction = @transfer.out_transaction
+    accounts = current_organization.bank_accounts
+    if accounts.find_by_id(params[:bank_account_id]) && accounts.find_by_id(params[:reference_id])
+      @transfer = Transfer.new(transfer_params)
+      if @transfer.save
+        @inc_transaction = @transfer.inc_transaction
+        @out_transaction = @transfer.out_transaction
+      end
     end
   end
 
