@@ -46,7 +46,7 @@ class Transaction < ActiveRecord::Base
 
   validates :amount, presence: true, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
-  validate  :amount_balance, if: :expense?
+  validate  :amount_balance, if: :bank_account
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
@@ -160,8 +160,12 @@ class Transaction < ActiveRecord::Base
   end
 
   def amount_balance
-    if amount > bank_account.balance - Money.new(amount_cents_was, bank_account.currency)
-      errors.add(:amount, 'Not enough money')
+    if expense?
+      errors.add(:amount, 'Not enough money') if amount >
+        bank_account.balance - Money.new(amount_cents_was, bank_account.currency)
+    else
+      errors.add(:amount, 'Balance overflow') if Dictionaries.money_max * 100 <
+        (bank_account.balance + amount).cents
     end
   end
 end

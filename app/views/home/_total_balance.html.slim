@@ -10,13 +10,15 @@
       - total = current_organization.bank_accounts.total_balance(curr)
       - total_amount = total_amount + total.exchange_to(def_curr)
 
-      .col-xs-6
-        = money_with_symbol total
-        - if curr != def_curr
-          =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
-          = link_to '#', class: 'exchange-helper', title: "#{total.currency}/#{def_curr} rate: #{cb.get_rate(total.currency, def_curr).round(4)}", data: { toggle: 'tooltip', placement: 'top'} do
-            span.glyphicon.glyphicon-question-sign
-          | )
+      .col-lg-6.col-md-12.col-sm-12.col-xs-6
+        div class=colorize(total)
+          = money_with_symbol total
+          - if curr != def_curr
+            .no-wrap
+              =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
+              = link_to '#', class: 'exchange-helper', title: "#{total.currency}/#{def_curr} rate: #{cb.get_rate(total.currency, def_curr).round(4)}", data: { toggle: 'tooltip', placement: 'top'} do
+                span.glyphicon.glyphicon-question-sign
+              | )
 
   p.text-muted
     | by Central Bank from

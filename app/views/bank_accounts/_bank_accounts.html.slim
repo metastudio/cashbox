@@ -6,14 +6,14 @@
       table.table.table-stripped.table-hover
         thead
           tr
-            th Name
-            th[style="width:30%"] Description
-            th Balance
+            th.col-sm-4 Name
+            th.col-sm-4 Description
+            th.col-sm-4 Balance
         tbody id="#{curr_with_accounts.first.downcase}-accounts" data-url=sort_bank_accounts_path
           - curr_with_accounts.last.each do |bank_account|
             tr.item data-item-id=bank_account.id data-start-position=bank_account.position
               td.word-break = bank_account.to_s
-              td.word-break = bank_account.description
+              td = bank_account.description
               td = money_with_symbol bank_account.balance
               - if current_organization.present?
                 td = link_to 'Edit', edit_bank_account_path(bank_account)
