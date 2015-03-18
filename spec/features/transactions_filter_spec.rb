@@ -3,11 +3,11 @@ require 'spec_helper'
 describe 'Transactions filter' do
   include MoneyHelper
 
-  let(:user) { create :user }
-  let!(:org) { create :organization, with_user: user }
-  let(:cat)  { create :category, organization: org }
-  let(:ba)   { create :bank_account, organization: org }
-  let(:def_curr ) { org.default_currency }
+  let(:user)     { create :user }
+  let!(:org)     { create :organization, with_user: user }
+  let(:cat_exp)  { create :category, :expense, organization: org }
+  let(:ba)       { create :bank_account, organization: org }
+  let(:def_curr ){ org.default_currency }
 
   before do
     sign_in user
@@ -17,7 +17,8 @@ describe 'Transactions filter' do
 
   context "by amount", js: true do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100123.23 }
-    let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23 }
+    let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23,
+      category: cat_exp }
     let!(:transaction3) { create :transaction, bank_account: ba, amount: 300 }
     let!(:transaction4) { create :transaction, bank_account: ba, amount: 5000 }
     let(:correct_items) { [transaction,  transaction2] }
@@ -91,7 +92,7 @@ describe 'Transactions filter' do
 
     context 'apply' do
       let(:cat2)  { create :category, organization: org }
-      let!(:transaction)  { create :transaction, bank_account: ba, category: cat }
+      let!(:transaction)  { create :transaction, bank_account: ba, category: cat_exp }
       let!(:transaction2) { create :transaction, bank_account: ba, category: cat2 }
       let!(:transaction3) { create :transaction, bank_account: ba, category: cat2 }
       let!(:transaction4) { create :transaction, bank_account: ba, category: cat2 }
@@ -130,7 +131,7 @@ describe 'Transactions filter' do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100,
       comment: "Comment to find" }
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100,
-      comment: "Text" }
+      comment: "Text", category: cat_exp }
     let!(:transaction3) { create :transaction, bank_account: ba, amount: 300,
       comment: "Another text"}
     let!(:transaction4) { create :transaction, bank_account: ba, amount: 600,
