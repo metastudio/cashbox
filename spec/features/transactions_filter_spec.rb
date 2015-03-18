@@ -6,7 +6,7 @@ describe 'Transactions filter' do
   let(:user)     { create :user }
   let!(:org)     { create :organization, with_user: user }
   let(:cat_exp)  { create :category, :expense, organization: org }
-  let(:ba)       { create :bank_account, organization: org }
+  let(:ba)       { create :bank_account, organization: org, balance: 10000000 }
   let(:def_curr ){ org.default_currency }
 
   before do
