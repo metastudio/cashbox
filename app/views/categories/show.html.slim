@@ -1,9 +1,0 @@
-.row
-  .col-sm-12
-    h1= @category.name
-
-    .row
-      = render 'transactions/form', transaction: @category.transactions.build, fixed_category_id: @category.id
-    = render 'transactions/transactions_table', transactions: @transactions
-    .paginator.col-md-offset-5
-      = paginate @transactions, remote: true

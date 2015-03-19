@@ -6,8 +6,9 @@
       .form-inputs
         = f.input :name, autofocus: true
         = f.input :description
-        = f.input :residue unless f.object.persisted?
-        = f.input :currency, collection: BankAccount::CURRENCIES, prompt: 'Select currency'
+        - unless f.object.persisted?
+          = f.input :residue, input_html: { class: 'amount' }
+        = f.input :currency, collection: Currency.ordered, include_blank: false
 
       .form-actions
         = f.button :submit, class: 'btn-primary'

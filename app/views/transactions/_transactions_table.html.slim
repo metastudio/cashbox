@@ -1,11 +1,13 @@
-.row
-  .col-xs-12
-    table.table.table-hover.transactions
-      thead
-        tr
-          td Amount
-          td Category
-          td Account
-          td Comment
-      tbody
-        = render transactions
+- if transactions.present?
+  .row
+    .col-xs-12
+      table.table.table-hover.transactions
+        thead
+          tr
+            td = sort_link(@q, :amount_cents, 'Amount')
+            td = sort_link(@q, :category_name, 'Category')
+            td = 'Account'
+            td.hidden-xs = sort_link(@q, :comment)
+            td = sort_link(@q, :created_at, 'Date')
+        tbody
+          = render transactions

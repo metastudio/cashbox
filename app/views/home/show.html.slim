@@ -1,8 +1,14 @@
-=content_for :sidebar
-  =render 'home/sidebar'
+= content_for :sidebar
+  = render 'home/sidebar'
+  = render 'transactions/filter', url: root_path
 
 .row
   .col-sm-12
     = render partial: 'transactions/transactions', locals: { transactions: @transactions }
-    .paginator.col-md-offset-5
-      = paginate @transactions, remote: true
+    - if @transactions.present?
+      .paginator.col-md-offset-5
+        = paginate @transactions, remote: true
+      .row.col-sm-12
+        = render 'home/flow' if params[:q]
+    - else
+      h3 There is nothing found by your search terms. Please try again with another filters.

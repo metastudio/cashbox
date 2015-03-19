@@ -17,16 +17,11 @@ describe 'Change profile' do
     it { expect(subject).to have_link('Profile') }
 
     context 'profile editing' do
-
       before do
         click_on 'Profile'
-        fill_in 'Email', with: email
         fill_in 'Full name', with: full_name
         fill_in 'Phone number', with: phone_number
-        fill_in 'Password', with: password
-        fill_in 'Password confirmation', with: password_confirmation
-        fill_in 'Current password', with: current_password
-        click_on 'Update'
+        click_on 'Update profile'
       end
 
       context 'with valid params' do
@@ -35,7 +30,6 @@ describe 'Change profile' do
         describe 'updated profile' do
           subject { user.reload }
 
-          it { expect(subject.email).to eq email }
           it { expect(subject.full_name).to eq full_name }
           it { expect(subject.profile.phone_number).to eq phone_number }
         end
@@ -43,7 +37,38 @@ describe 'Change profile' do
 
       context 'without full name' do
         let(:full_name) { nil }
-        it { expect(subject).to have_inline_error("can't be blank").for_field('Full name') }
+        it { expect(page).to have_inline_error("can't be blank").for_field('Full name') }
+      end
+    end
+
+    context 'password changing' do
+      before do
+        click_on 'Profile'
+      end
+
+      context "with password provided" do
+        context "with valid params" do
+          let(:new_email) { generate :email }
+          before do
+            fill_in 'Email', with: new_email
+            fill_in 'Current password', with: current_password
+            click_on 'Update account'
+          end
+
+          describe 'updated profile' do
+            subject { user.reload }
+
+            it { expect(subject.email).to eq new_email }
+          end
+        end
+      end
+
+      context 'no password provided' do
+        before do
+          click_on 'Update account'
+        end
+
+        it { expect(page).to have_inline_error("we need your current password to confirm your changes").for_field('Current password') }
       end
     end
   end

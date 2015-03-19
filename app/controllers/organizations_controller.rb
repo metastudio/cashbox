@@ -1,6 +1,5 @@
 class OrganizationsController < ApplicationController
-  before_action :find_organization, only: [:show, :switch]
-  before_action :find_own_organization, only: [:edit, :update, :destroy]
+  before_action :find_organization, only: [:show, :edit, :update, :destroy, :switch]
   before_action :authorize_organization, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -8,7 +7,8 @@ class OrganizationsController < ApplicationController
   end
 
   def show
-    @bank_accounts = current_organization.bank_accounts
+    @bank_accounts = @organization.bank_accounts.positioned
+    gon.curr_org_ordered_curr = @organization.ordered_curr
   end
 
   def new
@@ -19,9 +19,10 @@ class OrganizationsController < ApplicationController
   end
 
   def create
-    @organization = current_user.own_organizations.build(organization_params)
+    @organization = Organization.new(organization_params)
 
     if @organization.save
+      Member.create(user: current_user, organization: @organization, role: 'owner')
       redirect_to @organization, notice: 'Organization was successfully created.'
     else
       render action: 'new'
@@ -48,12 +49,12 @@ class OrganizationsController < ApplicationController
 
   private
 
-  def find_organization
-    @organization = current_user.organizations.find(params[:id])
+  def pundit_user
+    current_user
   end
 
-  def find_own_organization
-    @organization = current_user.own_organizations.find(params[:id])
+  def find_organization
+    @organization = current_user.organizations.find(params[:id])
   end
 
   def authorize_organization
@@ -61,6 +62,6 @@ class OrganizationsController < ApplicationController
   end
 
   def organization_params
-    params.require(:organization).permit(:name)
+    params.require(:organization).permit(:name, :default_currency)
   end
 end

@@ -10,12 +10,14 @@
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
+#  deleted_at      :datetime
+#  visible         :boolean          default(TRUE)
+#  position        :integer
 #
 
 class BankAccount < ActiveRecord::Base
-  CURRENCY_USD = 'USD'
-  CURRENCY_RUB = 'RUB'
-  CURRENCIES = [CURRENCY_USD, CURRENCY_RUB]
+  acts_as_list
+  acts_as_paranoid
 
   belongs_to :organization, inverse_of: :bank_accounts
   has_many :transactions, dependent: :destroy, inverse_of: :bank_account
@@ -25,9 +27,20 @@ class BankAccount < ActiveRecord::Base
   monetize :balance_cents, with_model_currency: :currency
   monetize :residue_cents, with_model_currency: :currency
 
+  scope :visible,     -> { where(visible: true) }
+  scope :by_currency, -> (currency) { where('bank_accounts.currency' => currency) }
+  scope :positioned,  -> { order(position: :asc) }
+
   validates :name,     presence: true
-  validates :balance,  presence: true
-  validates :currency, presence: true, inclusion: { in: CURRENCIES, message: "%{value} is not a valid currency" }
+  validates :balance,  presence: true, numericality: {
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: Dictionaries.money_max }
+  validates :residue,  presence: true, numericality: {
+    greater_than_or_equal_to: 0,
+    less_than_or_equal_to: Dictionaries.money_max }
+  validates :currency, presence: true,
+    inclusion: { in: Dictionaries.currencies,
+      message: "%{value} is not a valid currency" }
 
   after_create :set_initial_residue
 
@@ -44,10 +57,19 @@ class BankAccount < ActiveRecord::Base
   end
 
   def set_initial_residue
-    transactions.create(amount: residue, transaction_type: 'Residue') if residue > 0
+    transactions.create(amount_cents: residue_cents, transaction_type: 'Residue') if residue > 0
   end
 
   def to_s
-    "#{name} (#{Money::Currency.new(currency).symbol})"
+    "#{name.truncate(30)} (#{Money::Currency.new(currency).symbol})"
+  end
+
+  class << self
+    def grouped_by_currency(def_currency)
+      currencies = Currency.ordered(def_currency)
+      all.group_by(&:currency).sort_by do |ba|
+        currencies.index(ba.first)
+      end
+    end
   end
 end

@@ -5,6 +5,8 @@
 
       .form-inputs
         = f.input :name, autofocus: true
+        = f.input :default_currency, collection: Dictionaries.currencies,
+          prompt: 'Select default currency'
 
       .form-actions
         = f.button :submit, class: 'btn-primary'

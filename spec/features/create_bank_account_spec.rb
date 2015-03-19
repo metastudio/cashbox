@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe 'Create bank account' do
-  let(:user) { create :user }
-  let(:organization) { create :organization, owner: user }
+  let(:member_owner) { create :member, :owner }
+  let(:organization) { member_owner.organization }
   let(:account_name) { generate :bank_account_name }
   let(:residue) { 100.55 }
 
 
   before do
-    sign_in user
+    sign_in member_owner.user
     visit organization_path organization
     click_on 'New bank account'
     fill_in 'Name', with: account_name

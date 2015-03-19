@@ -1,6 +1,8 @@
 <% if @success %>
   $("#<%= dom_id(@transaction, 'edit_row') %>").remove();
   $("#<%= dom_id(@transaction) %>").replaceWith("<%=j render('transactions/transaction', transaction: @transaction) %>");
+  $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
 <% else %>
   $("#<%= dom_id(@transaction, 'edit_row') %>").replaceWith("<%=j render 'transactions/edit_transaction', transaction: @transaction %>");
+  addTransactionFormMasks();
 <% end %>

@@ -1,51 +1,119 @@
 require 'spec_helper'
 
 describe 'category page' do
-  let(:user)         { create :user }
-  let(:organization) { create :organization, with_user: user }
-  let(:category1)     { create :category, organization: organization }
-  let(:category2)     { create :category, organization: organization }
-  let(:account)      { create :bank_account, organization: organization}
-  let(:comment1)      { generate :transaction_comment }
-  let(:comment2)      { generate :transaction_comment }
-  let(:comment3)      { generate :transaction_comment }
-  let!(:transaction1) { create :transaction, bank_account: account, category: category1, comment: comment1 }
-  let!(:transaction2) { create :transaction, bank_account: account, category: category2, comment: comment2 }
-  let(:amount)        { 150.66 }
+  let(:user)          { create :user }
+  let(:org)           { create :organization, with_user: user }
+  let!(:account)      { create :bank_account, organization: org }
   let(:account_name)  { account.name }
 
   before do
     sign_in user
-    visit category_path category1
   end
 
   subject{ page }
 
-  it { expect(subject).to have_content category1.name }
-  it { expect(subject).to have_content comment1 }
-  it { expect(subject).to have_no_content comment2 }
+  describe "pagination" do
+    let(:paginated)        { 10 }
+    let(:categories_count) { paginated + 10 }
 
-  describe 'create transaction', js: true do
+    let!(:categories) { create_list :category, categories_count, organization: org }
+
     before do
-      within '#new_transaction' do
-        fill_in 'transaction[amount]', with: amount
-        select account_name, from: 'transaction[bank_account_id]'
-        fill_in 'transaction[comment]', with: comment3
-        click_on 'Create Transaction'
-      end
+      visit categories_path
     end
-    context 'valid params' do
-      it "shows created transaction in transactions list" do
-        within ".transactions" do
-          expect(page).to have_content(amount)
+
+    it "lists first page categories" do
+      within ".categories" do
+        categories.last(paginated).each do |category|
+          expect(subject).to have_selector('td', text: /\A#{category.name}\z/)
         end
       end
     end
 
-    context 'invalid params' do
-      let(:account_name) { 'Account' }
-      it { expect(page).to have_content('Please review the problems below') }
-      it { expect(page).to have_inline_error("can't be blank").for_field_name('transaction[bank_account_id]') }
+    it "doesnt list last page categories" do
+      within ".categories" do
+        categories.first(categories_count - paginated).each do |category|
+          expect(subject).to_not have_selector('td', text: /\A#{category.name}\z/)
+        end
+      end
+    end
+
+    context "switch to second page" do
+      before do
+        within '.pagination' do
+          click_on '2'
+        end
+      end
+
+      it "doesnt list first page categories" do
+        within ".categories" do
+          categories.last(paginated).each do |category|
+            expect(subject).to_not have_selector('td', text: /\A#{category.name}\z/)
+          end
+        end
+      end
+
+      it "lists last categories" do
+        within ".categories" do
+          categories.first(categories_count - paginated).each do |category|
+            expect(subject).to have_selector('td', text: /\A#{category.name}\z/)
+          end
+        end
+      end
+    end
+  end
+
+  describe 'when opened via transactions table column' do
+    let(:cat)          { create :category, organization: org }
+    let!(:transaction) { create :transaction, bank_account: account, category: cat}
+
+    before do
+      visit root_path
+      click_on cat.name
+    end
+
+    it "autoselect category filter" do
+      within '#q_category_id_eq' do
+        expect(subject).to have_content(cat.name)
+      end
+    end
+
+    it "is root_path now" do
+      expect(current_path).to eq root_path
+    end
+  end
+
+  describe "system" do
+    let(:from_account) { create :bank_account, organization: org, balance: 999 }
+    let(:to_account)   { create :bank_account, organization: org }
+    let!(:transfer)    { create :transfer, bank_account_id: from_account.id,
+      reference_id: to_account.id }
+
+    let(:another_org)  { create :organization, with_user: user }
+    let(:another_from) { create :bank_account, organization: another_org, balance: 999 }
+    let(:another_to)   { create :bank_account, organization: another_org }
+    let!(:another_transfer) { create :transfer, bank_account_id: another_from.id,
+      reference_id: another_to.id }
+
+    let(:category_transfer) { Category.find_by_name(Category::CATEGORY_TRANSFER_INCOME) }
+    let(:category_receipt)  { Category.find_by_name(Category::CATEGORY_TRANSFER_OUTCOME) }
+
+    before do
+      visit root_path
+    end
+
+    describe "Transfer" do
+      it_behaves_like 'system category', "Transfer" do
+        let(:right_transaction) { transfer.out_transaction }
+        let(:wrong_transaction) { another_transfer.out_transaction }
+      end
+    end
+
+    describe "Receipt" do
+      it_behaves_like 'system category', "Receipt" do
+        let(:right_transaction) { transfer.inc_transaction }
+        let(:wrong_transaction) { another_transfer.inc_transaction }
+      end
     end
   end
 end

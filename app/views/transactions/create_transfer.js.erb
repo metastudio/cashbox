@@ -1,0 +1,15 @@
+<% unless @transfer.errors.any? %>
+  $("<%=j render('transactions/transaction', transaction: @out_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
+  $("<%=j render('transactions/transaction', transaction: @inc_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
+  $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: Transfer.new) %>");
+  scrollTo($("#<%= dom_id(@out_transaction) %>"));
+  $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
+<% else %>
+  $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: @transfer) %>");
+  <% if @transfer.currency_mismatch? %>
+    $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
+    $('#transfer_exchange_rate').parents('.col-sm-1').removeClass('hidden');
+  <% end %>
+<% end %>
+$("#new_transfer_form").show();
+addTranferFormMasks();

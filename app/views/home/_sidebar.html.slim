@@ -1,20 +1,19 @@
-h1 Total balance
+#sidebar
+  = render 'home/total_balance'
 
-.row
-  .col-xs-6= humanized_money_with_symbol current_organization.bank_accounts.total_balance(BankAccount::CURRENCY_RUB)
-  .col-xs-6= humanized_money_with_symbol current_organization.bank_accounts.total_balance(BankAccount::CURRENCY_USD)
-
-
-h1 Accounts
-- if current_organization.bank_accounts.present?
-  table.table.table-hover
-    - current_organization.bank_accounts.each do |account|
-      tr class=(account.balance_cents > 0 ? 'success' : 'danger')
-        td= account.name
-        td= humanized_money_with_symbol account.balance
-  = link_to 'Create a new one', new_bank_account_path
-- else
-  p
-    | You don't have any account.
-    br
-    = link_to 'Create a new one', new_bank_account_path
+  h1 Accounts
+  - if bank_accounts = current_organization.bank_accounts.visible.positioned
+    .accounts
+      - bank_accounts.grouped_by_currency(current_organization.default_currency).each do |by_curr|
+        table.table.table-hover
+          - by_curr.last.each do |account|
+            tr class=colorize(account.balance_cents) id="bank_account_#{account.id}"
+              td.name.word-break = link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
+              td.amount = money_with_symbol account.balance
+      = link_to 'Create a new one', new_bank_account_path
+  - else
+    p
+      | You don't have any account.
+      br
+      = link_to 'Create a new one', new_bank_account_path
+  hr

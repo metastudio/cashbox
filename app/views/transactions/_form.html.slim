@@ -1,20 +1,24 @@
-= simple_form_for(transaction, remote: true) do |f|
+= simple_form_for(transaction, remote: true, html: { class: 'transaction' }) do |f|
   = f.error_notification
 
-  .col-sm-2
-    = f.input :amount, label: false, placeholder: 'Amount'
-  .col-sm-2
-    - if local_assigns[:fixed_category_id].present?
-      = f.input :category, as: :select, collection: [f.object.category.name], disabled: true, include_blank: false, label: false
-      = f.input :category_id, as: :hidden
-      = f.input :fixed_category_id, as: :hidden, input_html: { value: fixed_category_id }
-    - else
-      = f.association :category, as: :grouped_select, collection: current_organization.categories.grouped_by_type, group_method: :last,       value_method: :id, label_method: :name, prompt: "Category", label: false
-  .col-sm-2
-    = f.association :bank_account, collection: current_organization.bank_accounts, prompt: 'Account', include_blank: false, label: false, label_method: :to_s
-  .col-sm-2
-    = f.input :comment, label: false, placeholder: 'Comment'
-  .col-sm-4
-    = f.button :submit, class: 'btn-primary'
-    - if transaction.persisted?
-      = link_to 'Remove', transaction_path(transaction), remote: true, method: :delete, data: { confirm: 'Are you sure?', disable_with: 'Removing...'}, class: 'btn btn-danger'
+  .col-sm-9
+    .col-md-3.col-sm-6.col-xs-6
+      = f.input :amount, label: false, input_html: { class: 'amount',
+        value: f.object.amount == 0 ? nil : f.object.amount }
+    .col-md-3.col-sm-6.col-xs-6
+      - if local_assigns[:fixed_category_id].present?
+        = f.input :category, as: :select, collection: [f.object.category.name], disabled: true, include_blank: false, label: false
+        = f.input :category_id, as: :hidden
+        = f.input :fixed_category_id, as: :hidden, input_html: { value: fixed_category_id }
+      - else
+        = f.association :category, as: :grouped_select, collection: current_organization.categories.grouped_by_type, group_method: :last, value_method: :id, prompt: 'Category', label: false
+    .col-md-3.col-sm-6.col-xs-6
+      - if f.object.bank_account.nil? || f.object.bank_account.visible?
+        = f.association :bank_account, as: :grouped_select, include_blank: 'Account',
+          label: false, collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
+      - else
+        = f.association :bank_account, as: :grouped_select, include_blank: 'Account', label: false, disabled: true, collection: current_organization.bank_accounts.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
+    .col-md-3.col-sm-6.col-xs-6
+      = f.input :comment, label: false
+  .col-sm-3
+    = render 'transactions/btn_block', f: f, transaction: transaction

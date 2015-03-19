@@ -18,6 +18,9 @@ gem 'uglifier', '>= 1.3.0'
 # Asset libraries
 gem 'jquery-rails'
 gem 'bootstrap-sass'
+gem 'momentjs-rails'
+gem 'jquery-ui-rails'
+gem 'bootstrap-datepicker-rails'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
@@ -32,6 +35,14 @@ gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
+gem "paranoia", "~> 2.0"
+gem 'ransack'
+gem 'rollbar', '~> 1.4.2'
+gem 'acts_as_list'
+gem 'active_link_to'
+gem 'russian_central_bank'
+gem 'gon'
+gem 'whenever', require: false
 
 group :development, :test do
   gem 'rspec-rails'
@@ -50,6 +61,7 @@ group :development do
   gem 'capistrano-bundler', '~> 1.1.3', require: false
   gem 'capistrano-rvm',   '~> 0.1.1', require: false
   gem 'capistrano3-unicorn', '~> 0.2.1', require: false
+  gem 'slackistrano', '~> 0.1.0', require: false
 end
 
 group :test do
@@ -60,6 +72,8 @@ group :test do
   gem 'capybara-email'
   gem 'capybara-webkit'
   gem 'headless'
+  gem 'capybara-screenshot'
+  gem 'timecop'
 end
 
 group :staging do

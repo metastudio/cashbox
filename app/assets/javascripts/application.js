@@ -12,10 +12,23 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui/sortable
+//= require jquery-ui/effect-highlight
 //= require bootstrap
+//= require moment
+//= require bootstrap-datepicker
+//= require jquery.inputmask
+//= require jquery.inputmask.date.extensions
+//= require jquery.inputmask.numeric.extensions
 
 //= require transactions
+//= require organizations
+//= require jquery.inputmask.customization
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);
 }
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})

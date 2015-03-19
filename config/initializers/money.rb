@@ -1,7 +1,7 @@
 # encoding : utf-8
+require './lib/russian_central_bank_safe.rb'
 
 MoneyRails.configure do |config|
-
   # To set the default currency
   #
   # config.default_currency = :usd
@@ -10,6 +10,8 @@ MoneyRails.configure do |config|
   #
   # Example:
   # config.default_bank = EuCentralBank.new
+  config.default_bank = RussianCentralBankSafe.new
+  config.default_bank.update_rates
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)
@@ -47,13 +49,13 @@ MoneyRails.configure do |config|
   #
   # Example:
   # config.register_currency = {
-  #   :priority            => 1,
-  #   :iso_code            => "EU4",
-  #   :name                => "Euro with subunit of 4 digits",
-  #   :symbol              => "€",
-  #   :symbol_first        => true,
-  #   :subunit             => "Subcent",
-  #   :subunit_to_unit     => 10000,
+  #   :priority            => 2,
+  #   :iso_code            => "RUB",
+  #   :name                => "Russian Ruble",
+  #   :symbol              => "р.",
+  #   :symbol_first        => false,
+  #   :subunit             => "Kopek",
+  #   :subunit_to_unit     => 100,
   #   :thousands_separator => ".",
   #   :decimal_mark        => ","
   # }
@@ -64,4 +66,5 @@ MoneyRails.configure do |config|
   #
   # config.no_cents_if_whole = nil
   # config.symbol = nil
+  config.sign_before_symbol = true
 end

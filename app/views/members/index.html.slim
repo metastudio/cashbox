@@ -1,8 +1,14 @@
-table.table.table-hover
+h1 Listing members
+
+table.table.table-hover.categories
   thead
     tr
-      td User
-      td Role
+      th User
+      th Role
   tbody
-  = render @members
+    = render @members
+
 #role_modal_container
+
+= content_for :sidebar
+  = render 'home/settings'

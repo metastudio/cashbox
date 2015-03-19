@@ -1,9 +1,9 @@
 class CategoriesController < ApplicationController
-  before_action :set_category, only: [:edit, :update, :destroy, :show]
+  before_action :set_category, only: [:edit, :update, :destroy]
   before_action :require_organization
 
   def index
-    @categories = current_organization.categories
+    @categories = current_organization.categories.page(params[:page]).per(10)
   end
 
   def new
@@ -36,14 +36,10 @@ class CategoriesController < ApplicationController
     redirect_to categories_path
   end
 
-  def show
-    @transactions = @category.transactions.page(params[:page])
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_category
-      @category = current_organization.categories.find(params[:id])
+      @category = Category.for_organization(current_organization).find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
