@@ -4,35 +4,12 @@ header
       .navbar-header
         = link_to 'CashBox', root_path, class: 'navbar-brand'
         - if signed_in?
-          - def_curr = current_organization.default_currency
-          - cb = Money.default_bank
-          - total_amount = Money.new(0, def_curr)
-
-          - Dictionaries.currencies.each_with_index do |curr, i|
-            - total = current_organization.bank_accounts.total_balance(curr)
-            - total_amount = total_amount + total.exchange_to(current_organization.default_currency)
 
           button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          .pull-left
-            #dropdown-total.dropdown
-              ul#total_balance.dropdown-menu
-                - Dictionaries.currencies.each_with_index do |curr, i|
-                  - total = current_organization.bank_accounts.total_balance(curr)
-
-                  li.no-wrap class=colorize(total)
-                    => money_with_symbol total
-                    - if curr != def_curr
-                      span.no-wrap
-                        =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
-                        = link_to '#', class: 'exchange-helper', title: "#{total.currency}/#{def_curr} rate: #{cb.get_rate(total.currency, def_curr).round(4)}", data: { toggle: 'tooltip', placement: 'top'} do
-                          span.glyphicon.glyphicon-question-sign
-                        | )
-              a.navbar-brand.dropdown-toggle data-target="#dropdown-total" data-toggle="dropdown"
-                = "Total: #{money_with_symbol total_amount}"
-                b.caret
+          = render 'shared/layout/total_balance'
           ul.nav.navbar-nav.navbar-left
             = render 'shared/layout/switch_organization'
 
