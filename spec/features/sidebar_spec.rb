@@ -7,6 +7,8 @@ describe 'sidebar' do
   let(:member) { create :member, user: user }
   let!(:org)   { member.organization }
   let!(:ba)    { create :bank_account, organization: org }
+  let!(:account) { create :bank_account, organization: org, balance: 50000 }
+  let!(:account3){ create :bank_account, organization: org, balance: 0 }
 
   before do
     sign_in user
@@ -29,12 +31,6 @@ describe 'sidebar' do
       end
     end
 
-    it 'display exchange time' do
-      within '#total_balance' do
-        expect(page).to have_content("by Central Bank from #{I18n.l(Money.default_bank.rates_updated_at)}")
-      end
-    end
-
     it 'display exchange rate' do
       within '#total_balance' do
         expect(page).to have_xpath("//a[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{Money.default_bank.get_rate(ba.currency, org.default_currency).round(4)}')]")
@@ -45,6 +41,17 @@ describe 'sidebar' do
       within '#total_balance' do
         expect(page).to have_content("Total in #{org.default_currency}")
         expect(page).to have_content money_with_symbol (ba.balance.exchange_to(org.default_currency) + ba.balance.exchange_to(org.default_currency))
+    end
+
+    it "for positive" do
+      within '#sidebar .accounts .positive' do
+        expect(page).to have_content account.to_s
+      end
+    end
+
+    it "for empty" do
+      within '#sidebar .accounts .empty' do
+        expect(page).to have_content account3.to_s
       end
     end
 

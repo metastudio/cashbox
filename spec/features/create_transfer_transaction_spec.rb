@@ -72,13 +72,13 @@ describe 'create transfer transaction', js: true do
 
       it "from account" do
         expect(subject).
-          to have_css("#bank_account_#{ba1.id} td.bank-amount",
+          to have_css("#bank_account_#{ba1.id} td.amount",
             text: money_with_symbol(ba1_new_amount))
       end
 
       it "to account" do
         expect(subject).
-          to have_css("#bank_account_#{ba2.id} td.bank-amount",
+          to have_css("#bank_account_#{ba2.id} td.amount",
             text: money_with_symbol(ba2_new_amount))
       end
 
