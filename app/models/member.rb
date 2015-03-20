@@ -30,11 +30,11 @@ class Member < ActiveRecord::Base
     owner? || admin?
   end
 
-  def self.available_roles_for(role)
-    unless role == 'owner'
-      Member.role.options(except: 'owner')
-    else
+  def available_roles
+    if role == 'owner'
       Member.role.options
+    else
+      Member.role.options(except: 'owner')
     end
   end
 end

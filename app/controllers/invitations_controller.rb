@@ -1,14 +1,14 @@
 class InvitationsController < ApplicationController
-  skip_filter :authenticate_user!, only: [:accept, :create_user]
-  before_filter :find_invitation, only: [:accept, :create_user]
+  skip_filter :authenticate_user!, only: :accept
+  before_filter :find_invitation, only: :accept
 
   def new
     @invitation = Invitation.new
+    authorize @invitation, :create?
   end
 
   def create
     @invitation = current_member.invitations.build(invitation_params)
-
     authorize @invitation
 
     if @invitation.save
@@ -16,18 +16,17 @@ class InvitationsController < ApplicationController
     else
       render :new
     end
-
   end
 
   def accept
-    msg = { notice: "You joined to #{@invitation.member.organization.name}." }
-    if current_user.try(:email) == @invitation.email
-      @invitation.accept!(current_user)
-      redirect_to root_path, msg
-    elsif found_by_email = User.find_by(email: @invitation.email)
-      @invitation.accept!(found_by_email)
-      sign_in found_by_email
-      redirect_to root_path, msg
+    if @user = User.find_by(email: @invitation.email)
+      if current_user == @user
+        @invitation.accept!(@user)
+        redirect_to root_path, notice: "You joined #{@invitation.member.organization.name}."
+      else
+        session['user_return_to'] = accept_invitation_path(token: @invitation.token)
+        redirect_to new_user_session_path
+      end
     else
       @user = User.new
     end

@@ -4,6 +4,7 @@ class CreateInvitations < ActiveRecord::Migration
       t.string :token, null: false
       t.string :email, null: false
       t.string :role, null: false
+      t.boolean :accepted, default: false
       t.integer :member_id, null: false
 
       t.timestamps

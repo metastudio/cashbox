@@ -57,10 +57,10 @@ ActiveRecord::Schema.define(version: 20150311134430) do
     t.string   "token",                         null: false
     t.string   "email",                         null: false
     t.string   "role",                          null: false
+    t.boolean  "accepted",      default: false
     t.integer  "invited_by_id",                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "accepted",      default: false
   end
 
   add_index "invitations", ["invited_by_id"], name: "index_invitations_on_invited_by_id", using: :btree

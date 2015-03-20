@@ -11,7 +11,7 @@
             Modal Select Role
 
         .modal-body
-          = f.select :role, Member.available_roles_for(current_member.role), {}, { class: "form-control" }
+          = f.select :role, current_member.available_roles, {}, { class: "form-control" }
 
         .modal-footer
           button.btn.btn-default type="button" data-dismiss="modal" Close

@@ -34,7 +34,7 @@ Cashbox::Application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  config.action_mailer.default_url_options = { host: 'cashbox.dev' }
+  config.action_mailer.default_url_options = { host: "cashbox.dev" }
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
-  config.action_mailer.default_options     = { :from => 'no-reply@cashbox.dev' }
+  config.action_mailer.default_options = { :from => 'no-reply@cashbox.dev' }
 end
