@@ -8,7 +8,6 @@ describe 'sidebar' do
   let!(:org)   { member.organization }
   let!(:ba)    { create :bank_account, organization: org }
   let!(:account) { create :bank_account, organization: org, balance: 50000 }
-  let!(:account3){ create :bank_account, organization: org, balance: 0 }
 
   before do
     sign_in user
@@ -52,7 +51,7 @@ describe 'sidebar' do
 
     it "for empty" do
       within '#sidebar .accounts .empty' do
-        expect(page).to have_content account3.to_s
+        expect(page).to have_content ba.to_s
       end
     end
 
