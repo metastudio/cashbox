@@ -41,6 +41,7 @@ describe 'sidebar' do
       within '#total_balance' do
         expect(page).to have_content("Total in #{org.default_currency}")
         expect(page).to have_content money_with_symbol (ba.balance.exchange_to(org.default_currency) + ba.balance.exchange_to(org.default_currency))
+      end
     end
 
     it "for positive" do
