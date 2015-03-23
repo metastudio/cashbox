@@ -154,12 +154,12 @@ describe 'Transactions list' do
         visit root_path
       end
 
-      it "'success' for positive transaction" do
-        expect(subject).to have_css(".transaction.success#transaction_#{org1_transaction.id}")
+      it "'positive' for positive" do
+        expect(subject).to have_css(".transaction.positive#transaction_#{org1_transaction.id}")
       end
 
-      it "'danger' for negative transaction" do
-        expect(subject).to have_css(".transaction.danger#transaction_#{org1_transaction2.id}")
+      it "'negative' for negative" do
+        expect(subject).to have_css(".transaction.negative#transaction_#{org1_transaction2.id}")
       end
     end
   end
