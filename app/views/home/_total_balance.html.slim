@@ -8,7 +8,7 @@
   .row.totals
     - Dictionaries.currencies.each_with_index do |curr, i|
       - total = current_organization.bank_accounts.total_balance(curr)
-      - total_amount = total_amount + total.exchange_to(current_organization.default_currency)
+      - total_amount = total_amount + total.exchange_to(def_curr)
 
       .col-lg-6.col-md-12.col-sm-12.col-xs-6
         div class=colorize(total)
