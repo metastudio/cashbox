@@ -4,11 +4,13 @@ class TransactionsController < ApplicationController
 
   def create
     @transaction = Transaction.new(transaction_params)
+    check_relation_to_curr_org(@transaction)
     @transaction.save
   end
 
   def create_transfer
     @transfer = Transfer.new(transfer_params)
+    check_relation_to_curr_org(@transfer)
     if @transfer.save
       @inc_transaction = @transfer.inc_transaction
       @out_transaction = @transfer.out_transaction
@@ -27,6 +29,16 @@ class TransactionsController < ApplicationController
   end
 
   private
+
+  def check_relation_to_curr_org(trans)
+    tparams = params[trans.class.to_s.downcase.to_sym]
+    curr_bank_accounts = current_organization.bank_accounts
+    trans.bank_account_id = curr_bank_accounts.find_by_id(tparams[:bank_account_id]).try(:id)
+    trans.category_id =
+      current_organization.categories.find_by_id(tparams[:category_id]).try(:id) if tparams[:category_id]
+    trans.reference_id =
+      curr_bank_accounts.find_by_id(tparams[:reference_id]).try(:id) if tparams[:reference_id]
+  end
 
   def set_transaction
     @transaction = current_organization.transactions.find(params[:id])
