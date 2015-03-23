@@ -38,7 +38,7 @@ describe 'sidebar' do
 
     it 'display total balance in default currency' do
       within '#total_balance' do
-        expect(page).to have_content("Total: #{org.bank_accounts.total_balance(org.currency)}")
+        expect(page).to have_content("Total: #{org.bank_accounts.total_balance(org.default_currency)}")
         expect(page).to have_content money_with_symbol (ba.balance.exchange_to(org.default_currency) + ba.balance.exchange_to(org.default_currency))
       end
     end
