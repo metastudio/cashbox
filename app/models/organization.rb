@@ -21,7 +21,6 @@ class Organization < ActiveRecord::Base
 
   validates :name, presence: true
 
-
   def ordered_curr
     currencies = bank_accounts.pluck(:currency).uniq.sort
     currencies.delete(default_currency)

@@ -56,23 +56,17 @@ class Transaction < ActiveRecord::Base
   after_destroy :recalculate_amount
   after_restore :recalculate_amount
 
+
   class << self
     def flow_ordered(def_currency)
       currencies = Currency.ordered(def_currency)
 
-      amount_flow = ActiveRecord::Base.connection.execute("
-        SELECT
+      amount_flow = all.reorder('').joins(:category).
+        select("
           SUM(CASE WHEN categories.type = 'Income' THEN transactions.amount_cents ELSE 0 END) AS income,
           SUM(CASE WHEN categories.type = 'Expense' THEN transactions.amount_cents ELSE 0 END) AS expense,
           bank_accounts.currency AS currency
-        FROM transactions
-          INNER JOIN categories ON categories.id = transactions.category_id
-            AND categories.deleted_at IS NULL
-          INNER JOIN bank_accounts ON bank_accounts.id = transactions.bank_account_id
-            AND bank_accounts.deleted_at IS NULL
-        WHERE transactions.deleted_at IS NULL
-        GROUP BY bank_accounts.currency
-      ").to_a
+       ").group("bank_accounts.currency")
 
       amount_flow.sort_by! do |flow|
         currencies.index(flow["currency"])
