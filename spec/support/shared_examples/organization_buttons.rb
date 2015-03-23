@@ -1,4 +1,4 @@
-shared_examples_for "organization buttons permissions" do
+shared_examples_for "organization buttons" do
   context 'admin user' do
     let!(:member) { create :member, :admin, user: user }
 
