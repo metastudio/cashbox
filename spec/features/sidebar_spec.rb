@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 describe 'sidebar' do
-  let(:user)     { create :user }
-  let(:org)      { create :organization, with_user: user }
-  let!(:account) { create :bank_account, organization: org, balance: 50000 }
-  let!(:account3){ create :bank_account, organization: org, balance: 0 }
+  let(:user)    { create :user }
+  let(:org)     { create :organization }
+  let!(:member) { create :member, organization: org, user: user, role: 'owner' }
 
   before do
     sign_in user
@@ -13,6 +12,8 @@ describe 'sidebar' do
   subject { page }
 
   context "right classes for accounts" do
+    let!(:account) { create :bank_account, organization: org, balance: 50000 }
+    let!(:account_empty){ create :bank_account, organization: org, balance: 0 }
     before do
       visit root_path
     end
@@ -25,14 +26,12 @@ describe 'sidebar' do
 
     it "for empty" do
       within '#sidebar .accounts .empty' do
-        expect(page).to have_content account3.to_s
+        expect(page).to have_content account_empty.to_s
       end
     end
   end
 
   context 'menu' do
-    let!(:category) { create :category, organization: org }
-
     before do
       visit organization_path(org)
     end
