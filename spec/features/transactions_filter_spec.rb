@@ -7,6 +7,7 @@ describe 'Transactions filter' do
   let!(:org)  { create :organization, with_user: user }
   let(:cat)  { create :category, organization: org }
   let(:ba)   { create :bank_account, organization: org }
+  let(:def_curr ) { org.default_currency }
 
 
   before do
@@ -15,7 +16,7 @@ describe 'Transactions filter' do
 
   subject { page }
 
-  context "by amount" do
+  context "by amount", js: true do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction3) { create :transaction, bank_account: ba, amount: 300 }
