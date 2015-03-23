@@ -1,2 +1,5 @@
 $("#<%= dom_id(@transaction) %>").remove();
 $("#<%= dom_id(@transaction, 'edit_row') %>").remove();
+
+$("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
+$("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");

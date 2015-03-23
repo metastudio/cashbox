@@ -180,9 +180,9 @@ describe 'Transactions list' do
       end
     end
 
-    it 'display exchange time' do
+    it 'display exchange date' do
       within '#total_balance' do
-        expect(page).to have_content("by Central Bank from #{I18n.l(Money.default_bank.rates_updated_at)}")
+        expect(page).to have_xpath("//a[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{I18n.l(Money.default_bank.rates_updated_at)}')]")
       end
     end
 
@@ -194,7 +194,6 @@ describe 'Transactions list' do
 
     it 'display total balance in default currency' do
       within '#total_balance' do
-        expect(page).to have_content("Total in #{org1.default_currency}")
         expect(page).to have_content money_with_symbol (org1_ba.balance.exchange_to(org1.default_currency) + org1_ba2.balance.exchange_to(org1.default_currency))
       end
     end
