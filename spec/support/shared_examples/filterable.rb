@@ -59,6 +59,4 @@ shared_examples_for "filterable object" do
       expect(page).to_not have_css(to_css_id(wrong_item))
     end
   end
-
-  # it_behaves_like "has flow"
 end
