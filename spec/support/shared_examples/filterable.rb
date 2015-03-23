@@ -4,18 +4,15 @@ shared_examples_for "filterable object" do
   end
 
   def expect_currencies(rub, usd)
-    curr_exch = def_curr == usd.currency ? rub : usd
-    css_exch  = curr_exch > 0 ? '.bg-success' : '.bg-danger'
-    curr_exch = money_with_symbol Money.new(curr_exch.exchange_to(def_curr))
+    css_usd = '.' + colorize_amount(usd)
+    css_rub = '.' + colorize_amount(rub)
 
-    css_rub = rub > 0 ? '.bg-success' : '.bg-danger'
-    rub = money_with_symbol rub
-    css_usd = usd > 0 ? '.bg-success' : '.bg-danger'
-    usd = money_with_symbol usd
+    curr_exch = Money.new(rub.exchange_to('usd'))
+    css_exch = '.' + colorize_amount(curr_exch)
 
-    expect(page).to have_css(css_rub, rub)
-    expect(page).to have_css(css_exch, curr_exch)
-    expect(page).to have_css(css_usd, usd)
+    expect(page).to have_css(css_exch, text: money_with_symbol(curr_exch))
+    expect(page).to have_css(css_rub, text: money_with_symbol(rub))
+    expect(page).to have_css(css_usd, text: money_with_symbol(usd))
   end
 
   it "shows correct items" do
