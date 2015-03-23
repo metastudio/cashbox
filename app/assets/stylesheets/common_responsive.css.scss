@@ -1,0 +1,32 @@
+/* Default styles */
+
+#dropdown-total {
+  float: left;
+}
+
+/* breakpoint lg columns */
+@media (max-width: 1200px) {
+
+}
+
+/* breakpoint md columns */
+@media (max-width: 992px) {
+  #collapse-total {
+    float: none;
+  }
+}
+
+/* breakpoint sm columns */
+@media (max-width: 768px) {
+
+}
+
+/* phone-landscape and down */
+@media (max-width: 480px) {
+
+}
+
+/* phone-portrait and down */
+@media (max-width: 350px) {
+
+}
