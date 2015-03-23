@@ -41,11 +41,15 @@ class Transfer
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_INCOME_PARAMS).id)
 
-      if !@out_transaction.save || !@inc_transaction.save
-        errors[:base] << @out_transaction.errors
-        errors[:base] << @inc_transaction.errors
+      if @out_transaction.invalid?
+        parse_errors(@out_transaction)
+        return false
+      elsif @inc_transaction.invalid?
+        parse_errors(@inc_transaction)
         return false
       else
+        @out_transaction.save
+        @inc_transaction.save
         return true
       end
     else
@@ -131,5 +135,12 @@ class Transfer
         end
       end
       estimated_amount
+    end
+
+    def parse_errors(transaction)
+      transaction.errors.messages.each do |err_msg|
+        field, msg = 0, 1
+        errors.add(err_msg[field], err_msg[msg].join(', '))
+      end
     end
 end

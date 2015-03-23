@@ -27,10 +27,11 @@ describe Transaction do
     it { should validate_presence_of(:bank_account) }
 
     context "custom" do
+      subject { transaction }
+
       context 'when expense' do
         let(:account) { create :bank_account }
 
-        subject { transaction }
 
         context 'when not enough money' do
           let(:transaction) { build :transaction, :expense, bank_account: account }
@@ -61,6 +62,18 @@ describe Transaction do
       context 'amount value' do
         it_behaves_like 'has money ceiling', 'amount' do
           let!(:model) { build :transaction, amount: amount }
+        end
+      end
+
+      context 'when balance overflow' do
+        let(:account)      { create :bank_account, :full }
+        let!(:transaction) { build :transaction, :income, bank_account: account,
+          amount: 100 }
+
+        it 'is invalid' do
+          expect(subject).to be_invalid
+          expect(subject.errors_on(:amount)).
+            to include("Balance overflow")
         end
       end
     end
