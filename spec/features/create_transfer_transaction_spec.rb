@@ -83,8 +83,10 @@ describe 'create transfer transaction', js: true do
       end
 
       it "total balance" do
-        expect(subject).
-          to have_css("#sidebar", text: money_with_symbol(new_total))
+        create_transfer
+        page.find('a.dropdown-toggle[data-target="#dropdown-total"]').click
+        expect(page).
+          to have_css("#total_balance", text: money_with_symbol(new_total))
       end
     end
 
