@@ -56,7 +56,6 @@ class Transaction < ActiveRecord::Base
   after_destroy :recalculate_amount
   after_restore :recalculate_amount
 
-
   class << self
     def flow_ordered(def_currency)
       currencies = Currency.ordered(def_currency)

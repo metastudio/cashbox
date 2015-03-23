@@ -3,9 +3,9 @@ shared_examples_for "has flow" do
     let(:transactions) { correct_items | wrong_items }
 
     def calc_amount(type)
-      sum = 0
+      sum = Money.empty
       transactions.each do |transaction|
-        sum += transaction if transaction.send(type)
+        sum += transaction.amount if transaction.send(type)
       end
     end
 
