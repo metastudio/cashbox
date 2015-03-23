@@ -93,18 +93,28 @@ FactoryGirl.define do
     end
   end
 
-  sequence(:bank_account_id)
   factory :transfer do
     bank_account_id { create(:bank_account, balance: 99999).id }
     reference_id    { create(:bank_account).id }
     amount          500
     comission       50
     comment         "comment"
+
+    trait :with_different_currencies do
+      bank_account_id { create(:bank_account, balance: 99999, currency: "USD").id }
+      reference_id    { create(:bank_account, currency: "RUB").id }
+      exchange_rate   0.5
+    end
   end
 
-  trait :with_different_currencies do
-    bank_account_id { create(:bank_account, balance: 99999, currency: "USD").id }
-    reference_id    { create(:bank_account, currency: "RUB").id }
-    exchange_rate   0.5
+  factory :invitation do
+    email   { create(:user).email }
+    role    { Member.role.default_value }
+    member  { create :member }
+    accepted { false }
+
+    trait :accepted do
+      accepted { true }
+    end
   end
 end
