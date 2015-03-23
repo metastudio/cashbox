@@ -36,6 +36,9 @@ class TransactionsController < ApplicationController
     trans.bank_account_id = curr_bank_accounts.find_by_id(tparams[:bank_account_id]).try(:id)
     trans.category_id =
       current_organization.categories.find_by_id(tparams[:category_id]).try(:id) if tparams[:category_id]
+    puts '/////////'
+    puts current_organization.inspect
+    puts '/////////'
     trans.reference_id =
       curr_bank_accounts.find_by_id(tparams[:reference_id]).try(:id) if tparams[:reference_id]
   end
