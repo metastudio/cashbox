@@ -27,10 +27,11 @@ describe Transaction do
     it { should validate_presence_of(:bank_account) }
 
     context "custom" do
+      subject { transaction }
+
       context 'when expense' do
         let(:account) { create :bank_account }
 
-        subject { transaction }
 
         context 'when not enough money' do
           let(:transaction) { build :transaction, :expense, bank_account: account }
@@ -61,6 +62,18 @@ describe Transaction do
       context 'amount value' do
         it_behaves_like 'has money ceiling', 'amount' do
           let!(:model) { build :transaction, amount: amount }
+        end
+      end
+
+      context 'when balance overflow' do
+        let(:account)      { create :bank_account, :full }
+        let!(:transaction) { build :transaction, :income, bank_account: account,
+          amount: 100 }
+
+        it 'is invalid' do
+          expect(subject).to be_invalid
+          expect(subject.errors_on(:amount)).
+            to include("Balance overflow")
         end
       end
     end
@@ -211,6 +224,31 @@ describe Transaction do
           expect{transaction.restore}.to change{bank_account.balance}.by(amount)
         end
       end
+    end
+  end
+
+  describe '#flow_ordered(def_curr)' do
+    let(:org)        { create :organization }
+    let(:def_curr)   { "USD" }
+    let(:slave_curr) { "RUB" }
+    let(:slave_acc)  { create :bank_account, organization: org, currency: slave_curr }
+    let(:def_acc)    { create :bank_account, organization: org, currency: def_curr }
+    let!(:slave_list) { create_list :transaction, 5, bank_account: slave_acc }
+    let!(:def_list)   { create_list :transaction, 5, bank_account: def_acc }
+    let(:slave_trans) { org.transactions.by_currency(slave_curr) }
+    let(:def_trans)   { org.transactions.by_currency(def_curr) }
+
+    let(:slave_inc) { Money.new(slave_trans.incomes.sum(:amount_cents), slave_curr)}
+    let(:slave_exp) { Money.new(slave_trans.expenses.sum(:amount_cents), slave_curr)}
+    let(:def_inc) { Money.new(def_trans.incomes.sum(:amount_cents), def_curr)}
+    let(:def_exp) { Money.new(def_trans.expenses.sum(:amount_cents), def_curr)}
+
+    subject { org.transactions.flow_ordered(org.default_currency) }
+
+    it "return ordered array of summed income, expense, currency for each currency" do
+      expect(subject).to eq [
+        Transaction::AmountFlow.new(def_inc, def_exp, def_curr),
+        Transaction::AmountFlow.new(slave_inc, slave_exp, slave_curr)]
     end
   end
 end

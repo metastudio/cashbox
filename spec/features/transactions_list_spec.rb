@@ -163,4 +163,39 @@ describe 'Transactions list' do
       end
     end
   end
+
+  context "sidebar" do
+    let!(:org1_ba2)        { create :bank_account, organization: org1, currency: 'RUB' }
+    let!(:ba2_transaction) { create :transaction, bank_account: org2_ba,
+      category: category_org1, amount: 500 }
+
+    before do
+      visit root_path
+    end
+
+    it 'display exhanged amount' do
+      within '#total_balance' do
+        expect(page).to have_content(
+          money_with_symbol org1_ba2.balance.exchange_to(org1.default_currency))
+      end
+    end
+
+    it 'display exchange date' do
+      within '#total_balance' do
+        expect(page).to have_xpath("//a[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{I18n.l(Money.default_bank.rates_updated_at)}')]")
+      end
+    end
+
+    it 'display exchange rate' do
+      within '#total_balance' do
+        expect(page).to have_xpath("//a[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{Money.default_bank.get_rate(org1_ba2.currency, org1.default_currency).round(4)}')]")
+      end
+    end
+
+    it 'display total balance in default currency' do
+      within '#total_balance' do
+        expect(page).to have_content money_with_symbol (org1_ba.balance.exchange_to(org1.default_currency) + org1_ba2.balance.exchange_to(org1.default_currency))
+      end
+    end
+  end
 end

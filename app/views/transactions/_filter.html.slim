@@ -1,12 +1,15 @@
 h4 Filters:
 
-= search_form_for @q, url: root_path do |f|
+= search_form_for @q, url: root_path, html: { class: 'filter' } do |f|
   = f.input :amount_eq, label: false, input_html: { class: 'amount', maxlength: 22 }
   = f.input :comment_cont, label: false, input_html: { maxlength: 255 }
-  = f.input :category_id_eq, as: :grouped_select, label: false, include_blank: 'Category', collection: Category.for_organization(current_organization).grouped_by_type, group_method: :last
-  = f.input :bank_account_id_eq, label: false, include_blank: 'Account', as: :grouped_select, collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
-  = f.input :period, collection: Transaction.custom_dates,
-    include_blank: 'Choose period...', label: false
+  = f.input :category_id_eq, as: :grouped_select, label: false, include_blank: 'Category',
+    collection: Category.for_organization(current_organization).grouped_by_type,
+    group_method: :last
+  = f.input :bank_account_id_eq, label: false, include_blank: 'Account', as: :grouped_select,
+    collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
+  = f.input :period, collection: Transaction.custom_dates, label: false,
+    include_blank: 'Choose period...'
   #custom-daterange.hidden
     .col-sm-6
       = f.input :date_from, input_html: { class: 'datepicker' }

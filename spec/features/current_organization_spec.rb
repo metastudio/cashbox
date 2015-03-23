@@ -32,6 +32,20 @@ describe "current orgranization" do
   context "for user who select organization" do
     let(:user) { create :user, :with_organizations }
 
-    it "selects previously selected organization"
+    before :each do
+      within '#switch_organization' do
+        click_link user.organizations.last.name
+      end
+    end
+
+    it "see organization that was selected before sign out" do
+      pending 'has not implemneted yet'
+      sign_out
+      sign_in user
+
+      within("#current_organization") do
+        expect(subject).to have_content(user.organizations.last.name)
+      end
+    end
   end
 end

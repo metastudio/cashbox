@@ -1,24 +1,14 @@
-#flow.h4
-  .row
-    .col-sm-2
-      | Income:
-    .col-sm-2 class=colorize_amount(@rub_inc)
-      = money_with_symbol(@rub_inc)
-    .col-sm-2 class=colorize_amount(@usd_inc)
-      = money_with_symbol(@usd_inc)
-
-  .row
-    .col-sm-2
-      | Expense:
-    .col-sm-2 class=colorize_amount(@rub_exp)
-      = money_with_symbol(@rub_exp)
-    .col-sm-2 class=colorize_amount(@usd_exp)
-      = money_with_symbol(@usd_exp)
-
-  .row
-    .col-sm-2
-      | Total:
-    .col-sm-2 class=colorize_amount(@rub_flow)
-      = money_with_symbol(@rub_flow)
-    .col-sm-2 class=colorize_amount(@usd_flow)
-      = money_with_symbol(@usd_flow)
+table.table.table-stripped id='flow'
+  - def_curr = current_organization.default_currency
+  tr
+    th[style="width:10%"] Income:
+    - @curr_flow.each do |flow|
+      = render 'flow_amount', flow_amount: flow.income, def_curr: def_curr
+  tr
+    th Expense:
+    - @curr_flow.each do |flow|
+      = render 'flow_amount', flow_amount: flow.expense, def_curr: def_curr
+  tr
+    th Total:
+    - @curr_flow.each do |flow|
+      = render 'flow_amount', flow_amount: flow.total, def_curr: def_curr
