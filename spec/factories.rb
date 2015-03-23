@@ -112,9 +112,5 @@ FactoryGirl.define do
     role    { Member.role.default_value }
     member  { create :member }
     accepted { false }
-
-    trait :accepted do
-      accepted { true }
-    end
   end
 end
