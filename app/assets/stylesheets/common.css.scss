@@ -1,0 +1,25 @@
+.word-break {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.no-wrap {
+  white-space: nowrap
+}
+
+.navbar-center {
+  margin: 0 auto;
+}
+
+#dropdown-total {
+  li {
+    border-top: 1px solid #ccc;
+    padding: 7px 15px 5px 10px;
+    &.text-muted {
+      padding-top: 10px;
+    }
+  }
+  .tooltip-inner {
+    max-width: 300px !important;
+  }
+}

@@ -86,14 +86,15 @@ describe 'create transaction', js: true do
 
       it "recalculates bank account amount" do
         expect(subject).
-          to have_css("#bank_account_#{account.id} td.bank-amount",
+          to have_css("#bank_account_#{account.id} td.amount",
             text: money_with_symbol(new_account_balance))
       end
 
       it "recalculates total balance" do
-        expect(subject).
-          to have_css("#sidebar",
-            text: money_with_symbol(new_total))
+        create_transaction
+        page.find('a.dropdown-toggle[data-target="#dropdown-total"]').click
+        expect(page).
+          to have_css("#total_balance", text: money_with_symbol(new_total))
       end
     end
   end

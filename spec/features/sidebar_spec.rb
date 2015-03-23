@@ -18,13 +18,13 @@ describe 'sidebar' do
     end
 
     it "for positive" do
-      within '.positive' do
+      within '#sidebar .accounts .positive' do
         expect(page).to have_content account.to_s
       end
     end
 
     it "for empty" do
-      within '.empty' do
+      within '#sidebar .accounts .empty' do
         expect(page).to have_content account3.to_s
       end
     end

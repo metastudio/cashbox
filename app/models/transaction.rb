@@ -20,6 +20,12 @@ class Transaction < ActiveRecord::Base
 
   acts_as_paranoid
 
+  class AmountFlow < Struct.new(:income, :expense, :currency)
+    def total
+      income + expense
+    end
+  end
+
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
@@ -34,13 +40,13 @@ class Transaction < ActiveRecord::Base
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
       AND bank_account_transactions.deleted_at IS NULL").
-      where('bank_accounts.currency' => currency) }
+      where('bank_account_transactions.currency' => currency) }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
 
   validates :amount, presence: true, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
-  validate  :amount_balance, if: :expense?
+  validate  :amount_balance, if: :bank_account
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
@@ -50,15 +56,47 @@ class Transaction < ActiveRecord::Base
   after_destroy :recalculate_amount
   after_restore :recalculate_amount
 
-  def self.custom_dates
-    [
-      ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
-      ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
-      ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
-      ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
-      ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
-      ["Custom", "custom"]
-    ]
+  class << self
+    def flow_ordered(def_currency)
+      currencies = Currency.ordered(def_currency)
+
+      amount_flow = ActiveRecord::Base.connection.execute("
+        SELECT
+          SUM(CASE WHEN categories.type = 'Income' THEN transactions.amount_cents ELSE 0 END) AS income,
+          SUM(CASE WHEN categories.type = 'Expense' THEN transactions.amount_cents ELSE 0 END) AS expense,
+          bank_accounts.currency AS currency
+        FROM transactions
+          INNER JOIN categories ON categories.id = transactions.category_id
+            AND categories.deleted_at IS NULL
+          INNER JOIN bank_accounts ON bank_accounts.id = transactions.bank_account_id
+            AND bank_accounts.deleted_at IS NULL
+        WHERE transactions.deleted_at IS NULL
+        GROUP BY bank_accounts.currency
+      ").to_a
+
+      amount_flow.sort_by! do |flow|
+        currencies.index(flow["currency"])
+      end
+
+      amount_flow.map do |flow|
+        curr = flow["currency"]
+        AmountFlow.new(
+          Money.new(flow["income"],  curr),
+          Money.new(flow["expense"], curr),
+          curr)
+      end
+    end
+
+    def custom_dates
+      [
+        ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
+        ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
+        ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
+        ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
+        ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
+        ["Custom", "custom"]
+      ]
+    end
   end
 
   private
@@ -128,8 +166,12 @@ class Transaction < ActiveRecord::Base
   end
 
   def amount_balance
-    if amount > bank_account.balance - Money.new(amount_cents_was, bank_account.currency)
-      errors.add(:amount, 'Not enough money')
+    if expense?
+      errors.add(:amount, 'Not enough money') if amount >
+        bank_account.balance - Money.new(amount_cents_was, bank_account.currency)
+    else
+      errors.add(:amount, 'Balance overflow') if Dictionaries.money_max * 100 <
+        (bank_account.balance + amount).cents
     end
   end
 end
