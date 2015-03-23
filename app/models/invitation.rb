@@ -41,11 +41,11 @@ class Invitation < ActiveRecord::Base
     update_attribute(:accepted, true)
   end
 
-  private
-
   def send_invitation
     InvitationMailer.new_invitation(self).deliver
   end
+
+  private
 
   def email_uniq
     unless organization.invitations.active.where(email: email).empty?

@@ -13,7 +13,7 @@
         th With role
         th Accepted
         th Date
-        th[style="width:5%"]
+        th
     tbody
       - @invitations.each do |invitation|
         tr
@@ -22,7 +22,11 @@
           td = invitation.role.capitalize
           td = invitation.accepted? ? 'Yes' : 'No'
           td = I18n.l invitation.created_at
-          td = link_to 'Resend', resend_invitation_path(invitation), class: 'btn btn-primary'
+          td.text-right
+            .btn-group
+              = link_to 'Resend', resend_invitation_path(invitation), class: 'btn btn-primary'
+              = link_to 'Destroy', invitation_path(invitation),
+                method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
 - else
   .alert.alert-warning No invitations
 

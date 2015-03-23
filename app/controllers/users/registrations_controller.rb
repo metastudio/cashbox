@@ -8,7 +8,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     @user.email = @invitation.email
     if @user.save
       sign_in @user
-      redirect_to accept_invitation_path(token: @invitation.token)
+      redirect_to accept_invitation_path(@invitation, token: @invitation.token)
     else
       render template: "invitations/accept"
     end
