@@ -1,9 +1,14 @@
-.list-group
-  = active_link_to 'Bank accounts', organization_path(current_organization),
-    class: 'list-group-item', active: [['organizations'],['show']]
-  = active_link_to 'Categories', categories_path, class: 'list-group-item',
-   active: [['categories'],['index']]
-  = active_link_to 'Members', members_path, class: 'list-group-item',
-   active: [['members'],['index']]
-  = active_link_to 'Invitations', invitations_path, class: 'list-group-item',
-   active: [['invitations']] if current_member.owner_or_admin?
+- if current_organization
+  .list-group
+    = active_link_to 'Organizations', organizations_path,
+      class: 'list-group-item',
+      active: params[:controller] == 'organizations' && params[:action] == 'show' ? false : [['organizations']]
+    = active_link_to 'Bank accounts', organization_path(current_organization),
+      class: 'list-group-item',
+      active: params[:controller] == 'organizations' && params[:action] == 'show' ? true : [['bank_accounts']]
+    = active_link_to 'Categories', categories_path, class: 'list-group-item',
+      active: [['categories']]
+    = active_link_to 'Members', members_path, class: 'list-group-item',
+      active: [['members'],['index']]
+    = active_link_to 'Invitations', invitations_path, class: 'list-group-item',
+      active: [['invitations']] if current_member.owner_or_admin?

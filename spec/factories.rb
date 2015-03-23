@@ -58,6 +58,10 @@ FactoryGirl.define do
     trait :with_transactions do
       after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 50000 }
     end
+
+    trait :full do
+      after(:create) { |b| create :transaction, bank_account: b, amount: Dictionaries.money_max }
+    end
   end
 
   sequence(:category_name) { |n| "Category #{n}" }
