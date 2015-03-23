@@ -24,9 +24,10 @@ Cashbox::Application.routes.draw do
     post :transfer, action: :create_transfer, on: :collection
   end
   resources :members, only: [:index, :edit, :update]
-  resource :invitation, only: [:new, :create] do
+  resources :invitations, only: [:new, :create, :index] do
     member do
       get :accept
+      get :resend
     end
   end
 end

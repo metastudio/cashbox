@@ -7,6 +7,11 @@ class InvitationsController < ApplicationController
     authorize @invitation, :create?
   end
 
+  def index
+    authorize :invitation, :index?
+    @invitations = current_organization.invitations
+  end
+
   def create
     @invitation = current_member.invitations.build(invitation_params)
     authorize @invitation
@@ -16,6 +21,10 @@ class InvitationsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def resend
+
   end
 
   def accept
@@ -35,6 +44,7 @@ class InvitationsController < ApplicationController
   private
 
   def find_invitation
+    raise [params].inspect
     @invitation = Invitation.active.find_by(token: params[:token])
     redirect_to root_path, alert: 'Bad invitation token' unless @invitation
   end

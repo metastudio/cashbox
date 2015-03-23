@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: invitations
+#
+#  id            :integer          not null, primary key
+#  token         :string(255)      not null
+#  email         :string(255)      not null
+#  role          :string(255)      not null
+#  invited_by_id :integer          not null
+#  accepted      :boolean          default(FALSE)
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+
 class Invitation < ActiveRecord::Base
   extend Enumerize
 

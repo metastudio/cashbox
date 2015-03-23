@@ -1,0 +1,30 @@
+.page-header
+  .pull-right
+    = link_to 'New Invitation', new_invitation_path, class: 'btn btn-success'
+  h1 Listing invitations
+
+
+- if @invitations.present?
+  table.table.table-stripped.table-hover
+    thead
+      tr
+        th Inviter
+        th Invited
+        th With role
+        th Accepted
+        th Date
+        th[style="width:5%"]
+    tbody
+      - @invitations.each do |invitation|
+        tr
+          td.word-break = User.find(invitation.invited_by_id).full_name
+          td.word-break = invitation.email
+          td = invitation.role.capitalize
+          td = invitation.accepted? ? 'Yes' : 'No'
+          td = I18n.l invitation.created_at
+          td = link_to 'Resend', resend_invitation_path(invitation), class: 'btn btn-primary'
+- else
+  .alert.alert-warning No invitations
+
+= content_for :sidebar
+  = render 'home/settings'
