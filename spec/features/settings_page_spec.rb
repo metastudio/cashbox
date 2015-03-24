@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'Settings' do
-  let(:user) { create :user, :with_organizations }
+  let(:user) { create :user, :with_organization }
 
   before do
     sign_in user
@@ -16,6 +16,7 @@ describe 'Settings' do
   context 'on page' do
     before { click_link 'Settings' }
 
+    it { expect(page).to have_link('Organizations')}
     it { expect(page).to have_link('Bank accounts')}
     it { expect(page).to have_link('Categories')}
     it { expect(page).to have_link('Members')}
