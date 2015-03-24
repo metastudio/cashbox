@@ -8,10 +8,11 @@
 #  bank_account_id  :integer          not null
 #  created_at       :datetime
 #  updated_at       :datetime
-#  comment          :string(255)
-#  transaction_type :string(255)
+#  comment          :string
+#  transaction_type :string
 #  deleted_at       :datetime
 #
+
 require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
@@ -67,7 +68,7 @@ class Transaction < ActiveRecord::Base
           bank_accounts.currency AS currency
        ").group("bank_accounts.currency")
 
-      amount_flow.sort_by! do |flow|
+      amount_flow.to_a.sort_by! do |flow|
         currencies.index(flow["currency"])
       end
 

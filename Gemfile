@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.0.2'
+gem 'rails', '4.2.1'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -29,12 +29,11 @@ gem 'slim-rails'
 gem 'recursive-open-struct'
 gem 'devise'
 gem 'simple_form'
-# Removes annoying deprecation warning https://github.com/RubyMoney/money-rails/issues/151
-gem 'money-rails', github: 'RubyMoney/money-rails', branch: 'upgrade_to_money_6_1'
+gem 'money-rails'
 gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
-gem "paranoia", "~> 2.0"
+gem 'paranoia', '~> 2.0'
 gem 'ransack'
 gem 'rollbar', '~> 1.4.2'
 gem 'acts_as_list'
@@ -45,6 +44,7 @@ gem 'whenever', require: false
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'rspec-collection_matchers'
 end
 
 group :development do

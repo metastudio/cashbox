@@ -7,18 +7,18 @@
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
-#  role            :string(255)      not null
+#  role            :string           not null
 #
 
 require 'spec_helper'
 
 describe Member do
-  context "association" do
+  context 'association' do
     it { should belong_to(:user) }
     it { should belong_to(:organization) }
   end
 
-  context "validation" do
+  context 'validation' do
     subject { create :member }
     it { should validate_presence_of(:user) }
     it { should validate_presence_of(:organization) }

@@ -25,7 +25,7 @@ describe 'Change profile' do
       end
 
       context 'with valid params' do
-        it { expect(subject).to have_content 'You updated your account successfully.' }
+        it { expect(subject).to have_content 'Your account has been updated successfully.' }
 
         describe 'updated profile' do
           subject { user.reload }
@@ -37,7 +37,7 @@ describe 'Change profile' do
 
       context 'without full name' do
         let(:full_name) { nil }
-        it { expect(page).to have_inline_error("can't be blank").for_field('Full name') }
+        it { expect(page).to have_inline_error('can\'t be blank').for_field('Full name') }
       end
     end
 
@@ -46,8 +46,8 @@ describe 'Change profile' do
         click_on 'Profile'
       end
 
-      context "with password provided" do
-        context "with valid params" do
+      context 'with password provided' do
+        context 'with valid params' do
           let(:new_email) { generate :email }
           before do
             fill_in 'Email', with: new_email
@@ -68,7 +68,7 @@ describe 'Change profile' do
           click_on 'Update account'
         end
 
-        it { expect(page).to have_inline_error("we need your current password to confirm your changes").for_field('Current password') }
+        it { expect(page).to have_inline_error('we need your current password to confirm your changes').for_field('Current password') }
       end
     end
   end
