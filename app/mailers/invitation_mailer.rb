@@ -4,6 +4,6 @@ class InvitationMailer < ActionMailer::Base
     @member = invitation.member
     @organization = @member.organization
 
-    mail(to: @invitation.email, subject: 'Invitation', from: '<no-reply@cashbox.dev>')
+    mail(to: @invitation.email, subject: 'Invitation')
   end
 end
