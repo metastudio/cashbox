@@ -27,12 +27,15 @@ $(function () {
     $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
   });
 
-  $(document).on('click', '#new_transfer_btn', function(e) {
-    e.preventDefault();
-
-    $('#new_transaction').hide();
-    $('.transaction-type selected').html('Transfer')
-    $('#new_transfer_form').show();
+  $(document).on('click', '.transaction .dropdown-menu li a', function(e) {
+    if (this.id == 'new_transfer_btn') {
+      $('#new_transaction').hide();
+      $('#new_transfer_form').show();
+    }
+    else {
+      $('#new_transfer_form').hide();
+      $('#new_transaction').show();
+    }
   });
 
   $(document).on('change', '#q_period', function(e) {
@@ -41,14 +44,6 @@ $(function () {
 
   $(document).on('click', '.close[data-edit-remove]', function(e) {
     $($(this).attr('data-edit-remove')).remove();
-  });
-
-  $(document).on('click', '#new_transaction_btn', function(e) {
-    e.preventDefault();
-
-    $('#new_transfer_form').hide();
-    $('.transaction-type selected').html('Transaction');
-    $('#new_transaction').show();
   });
 
   $(document).on('change', '#transfer_amount, #transfer_exchange_rate', function(e) {
