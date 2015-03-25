@@ -40,6 +40,33 @@ describe 'organizations pages' do
       end
 
       it_behaves_like "organization buttons"
+
+      context 'when destroying' do
+        let(:member) { create :member, user: user, role: 'owner' }
+
+        context 'current organization' do
+          before do
+            click_on 'Destroy'
+          end
+
+          it 'doesnt break' do
+            expect(page).to have_flash_message('Organization was successfully removed.')
+            expect(page).to have_content('No organizations')
+          end
+        end
+
+        context 'not current organization' do
+          let!(:not_current_org) { create :organization, with_user: user }
+          before do
+            visit organizations_path
+            click_on 'Destroy'
+          end
+
+          it 'doesnt break' do
+            expect(page).to have_flash_message('Organization was successfully removed.')
+          end
+        end
+      end
     end
   end
 end
