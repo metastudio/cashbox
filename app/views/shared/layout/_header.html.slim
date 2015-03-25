@@ -4,10 +4,12 @@ header
       .navbar-header
         = link_to 'CashBox', root_path, class: 'navbar-brand'
         - if signed_in?
+
           button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"
             span.icon-bar
             span.icon-bar
             span.icon-bar
+          = render 'shared/layout/total_balance'
           ul.nav.navbar-nav.navbar-left
             = render 'shared/layout/switch_organization'
 
