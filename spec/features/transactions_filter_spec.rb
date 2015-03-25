@@ -379,4 +379,23 @@ describe 'Transactions filter' do
       end
     end
   end
+
+  context 'flow' do
+    context 'when uncategorized transactions shown' do
+      let!(:ba) { create :bank_account, organization: org, residue: 100 }
+
+      before do
+        visit root_path
+        within '.accounts' do
+          click_link ba.to_s
+        end
+      end
+
+      it 'display nil flow' do
+        within '#flow' do
+          expect(page).to have_content('0')
+        end
+      end
+    end
+  end
 end

@@ -67,16 +67,21 @@ class Transaction < ActiveRecord::Base
           bank_accounts.currency AS currency
        ").group("bank_accounts.currency")
 
-      amount_flow.sort_by! do |flow|
-        currencies.index(flow["currency"])
-      end
+      if amount_flow.empty?
+        amount_flow << AmountFlow.new(
+          Money.empty(def_currency), Money.empty(def_currency), def_currency)
+      else
+        amount_flow.sort_by! do |flow|
+          currencies.index(flow["currency"])
+        end
 
-      amount_flow.map do |flow|
-        curr = flow["currency"]
-        AmountFlow.new(
-          Money.new(flow["income"],  curr),
-          Money.new(flow["expense"], curr),
-          curr)
+        amount_flow.map! do |flow|
+          curr = flow["currency"]
+          AmountFlow.new(
+            Money.new(flow["income"],  curr),
+            Money.new(flow["expense"], curr),
+            curr)
+        end
       end
     end
 
