@@ -7,14 +7,7 @@
     = selected
     b.caret
   ul.dropdown-menu
-    - if selected == 'Transaction'
-      li
-        = link_to 'Transfer', '#', remote: true, id: 'new_transfer_btn'
-      li class='active'
-        = link_to 'Transaction', '#', remote: true, id: 'new_transaction_btn'
-    - else
-      li class='active'
-        = link_to 'Transfer', '#', remote: true, id: 'new_transfer_btn'
-      li
-        = link_to 'Transaction', '#', remote: true, id: 'new_transaction_btn'
-
+    li class=(selected == 'Transfer' ? 'active' : '')
+      = link_to 'Transfer', '#', remote: true, id: 'new_transfer_btn'
+    li class=(selected == 'Transaction' ? 'active' : '')
+      = link_to 'Transaction', '#', remote: true, id: 'new_transaction_btn'
