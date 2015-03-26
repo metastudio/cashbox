@@ -34,7 +34,7 @@ describe 'Transactions sort' do
   end
 
   context 'by customer' do
-    it_behaves_like 'sortable object', 'Cusomer', :customer
+    it_behaves_like 'sortable object', 'Customer', :customer
   end
 
   context "filter sort" do

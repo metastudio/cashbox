@@ -1,14 +1,14 @@
 shared_examples_for "sortable object" do |sort_by, field|
   let!(:transaction)  { Timecop.travel(3.day.ago) { create :transaction,
-    :with_cusomer, bank_account: ba, amount: 100, comment: 'Comment',
+    :with_customer, bank_account: ba, amount: 100, comment: 'Comment',
     category: cat  }}
   let!(:transaction2) { Timecop.travel(2.day.ago) { create :transaction,
-    :with_cusomer, bank_account: ba, amount: 200, comment: 'Comment2',
+    :with_customer, bank_account: ba, amount: 200, comment: 'Comment2',
     category: cat2 }}
   let!(:transaction3) { Timecop.travel(1.day.ago) { create :transaction,
-    :with_cusomer, bank_account: ba, amount: 300, comment: 'Comment3',
+    :with_customer, bank_account: ba, amount: 300, comment: 'Comment3',
     category: cat3 }}
-  let!(:transaction4) { create :transaction, :with_cusomer, bank_account: ba,
+  let!(:transaction4) { create :transaction, :with_customer, bank_account: ba,
     amount: 600, comment: 'Comment4', category: cat4 }
   let(:correct_order) { [transaction, transaction2, transaction3, transaction4] }
 
