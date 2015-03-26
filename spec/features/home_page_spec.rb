@@ -11,10 +11,10 @@ describe 'Home page' do
 
   context 'when no transactions' do
     context 'show alert' do
-      it { expect(page).to have_css('alert.alert-warning', text: 'This is default page, you will see all transactions from your organization') }
+      it { expect(page).to have_css('.alert.alert-warning', text: 'This is default page, you will see all transactions from your organization') }
 
       it 'contains link to bank account creation' do
-        within 'alert.alert-warning' do
+        within '.alert.alert-warning' do
           expect(page).to have_link('add bank accounts')
         end
       end
