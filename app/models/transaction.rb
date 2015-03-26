@@ -32,6 +32,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :bank_account, inverse_of: :transactions
   has_one :customer, foreign_key: :id, primary_key: :customer_id
   has_one :organization, through: :bank_account, inverse_of: :transactions
+  has_one :customer, foreign_key: :id, primary_key: :customer_id
 
   monetize :amount_cents, with_model_currency: :currency
 
