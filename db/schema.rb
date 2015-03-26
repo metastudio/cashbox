@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311134430) do
+ActiveRecord::Schema.define(version: 20150326084125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,16 @@ ActiveRecord::Schema.define(version: 20150311134430) do
 
   add_index "categories", ["deleted_at"], name: "index_categories_on_deleted_at", using: :btree
   add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
+
+  create_table "customers", force: true do |t|
+    t.string   "name"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "customers", ["name"], name: "index_customers_on_name", unique: true, using: :btree
+  add_index "customers", ["organization_id"], name: "index_customers_on_organization_id", using: :btree
 
   create_table "exchange_rates", force: true do |t|
     t.hstore   "rates",                null: false
