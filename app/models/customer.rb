@@ -13,7 +13,7 @@ class Customer < ActiveRecord::Base
   belongs_to :organization, inverse_of: :customers
   has_many :transactions, dependent: :destroy, inverse_of: :customer
 
-  validate :organization, presence: true
-  validate :name, presence: true
-  validates :name, uniqueness: { scope: :organization_id }
+  validates :name, presence: true
+  validates :organization, presence: true
+  validates :organization_id, uniqueness: { scope: :name }
 end
