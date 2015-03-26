@@ -47,13 +47,13 @@ ActiveRecord::Schema.define(version: 20150326084339) do
   add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
 
   create_table "customers", force: true do |t|
-    t.string   "name"
-    t.integer  "organization_id"
+    t.string   "name",            null: false
+    t.integer  "organization_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "customers", ["name"], name: "index_customers_on_name", unique: true, using: :btree
+  add_index "customers", ["name", "organization_id"], name: "index_customers_on_name_and_organization_id", unique: true, using: :btree
   add_index "customers", ["organization_id"], name: "index_customers_on_organization_id", using: :btree
 
   create_table "exchange_rates", force: true do |t|
