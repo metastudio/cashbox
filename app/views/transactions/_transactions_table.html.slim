@@ -7,6 +7,7 @@
             td = sort_link(@q, :amount_cents, 'Amount')
             td = sort_link(@q, :category_name, 'Category')
             td = 'Account'
+            td = sort_link(@q, :customer_id)
             td.hidden-xs = sort_link(@q, :comment)
             td = sort_link(@q, :created_at, 'Date')
         tbody

@@ -5,6 +5,7 @@ $(function () {
   $('#q_date_from').inputmask('d/m/y');
   $('#q_date_to').inputmask('d/m/y');
   $('#q_amount_eq').inputmask('customized_currency');
+  $('#q_customer_id_eq').select2();
 
 
   showHidePeriodAdditionalInput();
@@ -133,8 +134,8 @@ function datepickerInit(selector) {
 
 function addTransactionFormMasks() {
   var $form = $("form.transaction")
-  $("form.transaction select[name='transaction[customer_id]']").select2();
-  $("form.transaction input[name='transaction[amount]']").inputmask('customized_currency');
+  $form.find("select[name='transaction[customer_id]']").select2();
+  $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
 }
 
 function addTranferFormMasks() {
