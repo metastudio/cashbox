@@ -30,6 +30,7 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
+  belongs_to :customer, inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency
