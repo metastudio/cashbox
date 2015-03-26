@@ -11,6 +11,7 @@
 #  comment          :string(255)
 #  transaction_type :string(255)
 #  deleted_at       :datetime
+#  customer_id      :integer
 #
 
 require 'spec_helper'

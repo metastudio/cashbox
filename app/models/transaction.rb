@@ -11,7 +11,9 @@
 #  comment          :string(255)
 #  transaction_type :string(255)
 #  deleted_at       :datetime
+#  customer_id      :integer
 #
+
 require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
