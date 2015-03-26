@@ -46,7 +46,7 @@ describe 'organizations pages' do
 
         context 'current organization' do
           before do
-            click_on 'Destroy'
+            click_on 'Delete'
           end
 
           it 'doesnt break' do
@@ -59,7 +59,7 @@ describe 'organizations pages' do
           let!(:not_current_org) { create :organization, with_user: user }
           before do
             visit organizations_path
-            click_on 'Destroy'
+            click_on 'Delete'
           end
 
           it 'doesnt break' do

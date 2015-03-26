@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+  layout 'settings'
   before_action :set_category, only: [:edit, :update, :destroy]
   before_action :require_organization
 

@@ -1,23 +1,18 @@
-.row
-  .col-sm-4
-    h1
-      = link_to 'Organizations', organizations_path
-      = "/#{params[:id]}"
-    p#notice = notice
+.page-header
+  h1
+    = link_to 'Organizations', organizations_path
+    = "/#{params[:id]}"
 
-    p
-      strong Name:
-      br
-        = @organization.name
-    .form-group
-      = link_to 'Back', organizations_path, class: 'btn btn-default'
-      - if policy(@organization).edit?
-        = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default'
-      - if policy(@organization).destroy?
-        = link_to 'Destroy', organization_path(@organization), method: 'delete', data: {confirm: 'Are you sure?'}, class: 'btn btn-danger'
+  p
+    strong Name:
+    =< @organization.name
 
-  .col-sm-8
-    .pull-right
-      = link_to 'New bank account', new_bank_account_path(@bank_account), class: 'btn btn-success'
-    = render partial: 'bank_accounts/bank_accounts', locals: { bank_accounts: @bank_accounts }
+  .btn-group
+    = link_to 'Back', organizations_path, class: 'btn btn-default btn-sm'
+    - if policy(@organization).edit?
+      = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default btn-sm'
+    - if policy(@organization).destroy?
+      = link_to 'Delete', organization_path(@organization), method: 'delete', data: {confirm: 'Are you sure?'}, class: 'btn btn-danger btn-sm'
 
+= content_for :sidebar
+  = render 'home/settings'

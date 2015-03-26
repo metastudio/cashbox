@@ -1,6 +1,7 @@
-.pull-right
-  = link_to 'New categories', new_category_path, class: 'btn btn-success'
-h1 Listing categories
+.page-header
+  .pull-right
+    = link_to 'New category', new_category_path, class: 'btn btn-success'
+  h1 Listing categories
 
 - if @categories.present?
   table.table.table-stripped.table-hover.categories
@@ -8,13 +9,17 @@ h1 Listing categories
       tr
         th Name
         th Type
+        th
     tbody
       - @categories.each do |category|
         tr
           td = category.name
           td = category.type
-          td = link_to 'Edit', edit_category_path(category)
-          td = link_to 'Destroy', category, data: {confirm: 'Are you sure?'}, method: :delete
+          td
+            .btn-group.pull-right
+              = link_to 'Edit', edit_category_path(category), class: 'btn btn-default btn-sm'
+              = link_to 'Delete', category, data: {confirm: 'Are you sure?'},
+                method: :delete, class: 'btn btn-danger btn-sm'
 - else
   .alert.alert-warning No categories
 

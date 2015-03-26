@@ -1,4 +1,5 @@
 class BankAccountsController < ApplicationController
+  layout 'settings'
   before_action :set_bank_account, only: [:edit, :update, :destroy, :hide]
   before_action :require_organization, only: [:edit, :update, :new, :create,
     :destroy, :hide]
@@ -8,6 +9,10 @@ class BankAccountsController < ApplicationController
     @bank_account = current_organization.bank_accounts.build
   end
 
+  def index
+    @bank_accounts = current_organization.bank_accounts.positioned
+  end
+
   def edit
   end
 
@@ -15,7 +20,7 @@ class BankAccountsController < ApplicationController
     @bank_account = current_organization.bank_accounts.build(bank_account_params)
 
     if @bank_account.save
-      redirect_to organization_path(current_organization), notice: 'Bank account was successfully created.'
+      redirect_to bank_accounts_path, notice: 'Bank account was successfully created.'
     else
       render action: 'new'
     end
@@ -23,7 +28,7 @@ class BankAccountsController < ApplicationController
 
   def update
     if @bank_account.update(bank_account_params)
-      redirect_to organization_path(current_organization), notice: 'Bank account was successfully updated.'
+      redirect_to bank_accounts_path, notice: 'Bank account was successfully updated.'
     else
       render action: 'edit'
     end
@@ -31,12 +36,12 @@ class BankAccountsController < ApplicationController
 
   def hide
     @bank_account.toggle!(:visible)
-    redirect_to organization_path(current_organization)
+    redirect_to bank_accounts_path
   end
 
   def destroy
     @bank_account.destroy
-    redirect_to organization_path(current_organization)
+    redirect_to bank_accounts_path
   end
 
   def sort

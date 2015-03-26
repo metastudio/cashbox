@@ -1,4 +1,5 @@
 class OrganizationsController < ApplicationController
+  layout 'settings'
   before_action :find_organization, only: [:show, :edit, :update, :destroy, :switch]
   before_action :authorize_organization, only: [:show, :edit, :update, :destroy]
 
