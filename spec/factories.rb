@@ -79,9 +79,15 @@ FactoryGirl.define do
     end
   end
 
+  sequence(:customer_name) { |n| "Customer #{n}" }
+  factory :customer do
+    organization
+    name { generate :customer_name }
+  end
+
   factory :transaction do
     bank_account
-    category
+    category_id { create(:category, organization: bank_account.organization).id }
     amount { rand(30000.0..50000)/rand(10.0..100) }
 
     trait :income do
@@ -91,20 +97,23 @@ FactoryGirl.define do
     trait :expense do
       association :category, :expense
     end
+
+    trait :with_customer do
+      customer_id { create(:customer, organization: bank_account.organization).id }
+    end
   end
 
-  sequence(:bank_account_id)
   factory :transfer do
     bank_account_id { create(:bank_account, balance: 99999).id }
     reference_id    { create(:bank_account).id }
     amount          500
     comission       50
     comment         "comment"
-  end
 
-  trait :with_different_currencies do
-    bank_account_id { create(:bank_account, balance: 99999, currency: "USD").id }
-    reference_id    { create(:bank_account, currency: "RUB").id }
-    exchange_rate   0.5
+    trait :with_different_currencies do
+      bank_account_id { create(:bank_account, balance: 99999, currency: "USD").id }
+      reference_id    { create(:bank_account, currency: "RUB").id }
+      exchange_rate   0.5
+    end
   end
 end
