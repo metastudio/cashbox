@@ -10,6 +10,9 @@
 #
 
 class Customer < ActiveRecord::Base
+
+  acts_as_paranoid
+
   belongs_to :organization, inverse_of: :customers
   has_many :transactions, inverse_of: :customer
 
