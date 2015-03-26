@@ -13,7 +13,6 @@
 #  deleted_at       :datetime
 #  customer_id      :integer
 #
-
 require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
