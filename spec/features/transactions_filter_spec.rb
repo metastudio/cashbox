@@ -15,7 +15,7 @@ describe 'Transactions filter' do
 
   subject { page }
 
-  context "by amount", js: true do
+  context 'by amount', js: true do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23,
       category: cat_exp }
@@ -329,24 +329,6 @@ describe 'Transactions filter' do
       visit root_path
       fill_in 'q[amount_eq]', with: 100
       select 'Previous month', from: 'q[period]'
-      click_on 'Search'
-    end
-
-    it_behaves_like 'filterable object'
-  end
-
-  context 'by customer' do
-    let(:customer) { create :customer, organization: org}
-    let!(:transaction)  { create :transaction, :with_customer }
-    let!(:transaction2) { create :transaction, :with_customer }
-    let!(:transaction3) { create :transaction, bank_account: ba }
-    let!(:transaction4) { create :transaction, bank_account: ba }
-    let(:correct_items) { [transaction, transaction2] }
-    let(:wrong_items)   { [transaction4, transaction3] }
-
-    before do
-      visit root_path
-      select transaction.bank_account.to_s, from: 'q[bank_account_id_eq]'
       click_on 'Search'
     end
 
