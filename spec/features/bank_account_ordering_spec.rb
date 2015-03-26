@@ -18,7 +18,7 @@ describe 'Bank accounts after drag&drop' do
       account5.update_attribute(:position, 5)
 
       sign_in user
-      visit organization_path org
+      visit bank_accounts_path
     end
 
     subject { page }

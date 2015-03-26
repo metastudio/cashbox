@@ -11,6 +11,7 @@ class BankAccountsController < ApplicationController
 
   def index
     @bank_accounts = current_organization.bank_accounts.positioned
+    gon.curr_org_ordered_curr = current_organization.ordered_curr
   end
 
   def edit

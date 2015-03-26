@@ -21,16 +21,6 @@ describe 'organizations pages' do
 
       it_behaves_like "organization buttons"
     end
-
-    context 'bank accounts list' do
-      let!(:ba)  { create :bank_account, organization: org, balance: amount }
-
-      before do
-        visit organization_path org
-      end
-
-      it_behaves_like "colorizable amount", '.bank-accounts'
-    end
   end
 
   context 'index' do
