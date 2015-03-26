@@ -254,6 +254,8 @@ GEM
       nori (~> 2.4)
       uuid (~> 2.3.7)
       wasabi (= 3.3.0)
+    select2-rails (3.5.9.3)
+      thor (~> 0.14)
     shoulda-matchers (2.5.0)
       activesupport (>= 3.0.0)
     simple_form (3.0.1)
@@ -363,6 +365,7 @@ DEPENDENCIES
   rspec-rails
   russian_central_bank
   sass-rails (~> 4.0.0)
+  select2-rails
   shoulda-matchers
   simple_form
   slackistrano (~> 0.1.0)

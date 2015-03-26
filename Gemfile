@@ -21,6 +21,7 @@ gem 'bootstrap-sass'
 gem 'momentjs-rails'
 gem 'jquery-ui-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'select2-rails'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'

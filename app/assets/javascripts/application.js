@@ -24,6 +24,7 @@
 //= require transactions
 //= require organizations
 //= require jquery.inputmask.customization
+//= require select2
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);

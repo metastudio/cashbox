@@ -6,6 +6,7 @@ $(function () {
   $('#q_date_to').inputmask('d/m/y');
   $('#q_amount_eq').inputmask('customized_currency');
 
+
   showHidePeriodAdditionalInput();
 
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
@@ -27,8 +28,8 @@ $(function () {
     $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
   });
 
-  $(document).on('click', '.transaction .dropdown-menu li a', function(e) {
-    if (this.id == 'new_transfer_btn') {
+  $(document).on('click', ".transaction .dropdown-menu li a, .transfer .dropdown-menu li a", function(e) {
+    if ($(this).html() == 'Transfer') {
       $('#new_transaction').hide();
       $('#new_transfer_form').show();
     }
@@ -131,6 +132,8 @@ function datepickerInit(selector) {
 }
 
 function addTransactionFormMasks() {
+  var $form = $("form.transaction")
+  $("form.transaction select[name='transaction[customer_id]']").select2();
   $("form.transaction input[name='transaction[amount]']").inputmask('customized_currency');
 }
 

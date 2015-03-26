@@ -12,4 +12,10 @@
 class Customer < ActiveRecord::Base
   belongs_to :organization, inverse_of: :customers
   has_many :transactions, inverse_of: :customer
+
+  validate :name, presence: true
+
+  def to_s
+    name.truncate(30)
+  end
 end
