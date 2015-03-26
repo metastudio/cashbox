@@ -1,7 +1,6 @@
   $(function() {
     addBankAccountFormMasks();
     var rates = gon.curr_org_ordered_curr;
-    console.log(rates);
     if (rates) {
       var tables = new Object();
       var tableId, currencyTable, currency;
