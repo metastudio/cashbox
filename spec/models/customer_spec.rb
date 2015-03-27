@@ -21,6 +21,6 @@ describe Customer do
     subject { create :customer }
     it { expect(subject).to validate_presence_of(:organization) }
     it { expect(subject).to validate_presence_of(:name) }
-    it { expect(subject).to validate_uniqueness_of(:organization_id).scoped_to(:name)}
+    it { expect(subject).to validate_uniqueness_of(:name).scoped_to(:organization_id)}
   end
 end
