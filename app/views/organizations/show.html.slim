@@ -3,16 +3,16 @@
     = link_to 'Organizations', organizations_path
     = "/#{params[:id]}"
 
-  p
-    strong Name:
-    =< @organization.name
+p
+  strong Name:
+  =< @organization.name
 
-  .btn-group
-    = link_to 'Back', organizations_path, class: 'btn btn-default btn-sm'
-    - if policy(@organization).edit?
-      = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default btn-sm'
-    - if policy(@organization).destroy?
-      = link_to 'Delete', organization_path(@organization), method: 'delete', data: {confirm: 'Are you sure?'}, class: 'btn btn-danger btn-sm'
+.btn-group
+  = link_to 'Back', organizations_path, class: 'btn btn-default btn-sm'
+  - if policy(@organization).edit?
+    = link_to 'Edit', edit_organization_path(@organization), class: 'btn btn-default btn-sm'
+  - if policy(@organization).destroy?
+    = link_to 'Delete', organization_path(@organization), method: 'delete', data: {confirm: 'Are you sure?'}, class: 'btn btn-danger btn-sm'
 
 = content_for :sidebar
   = render 'home/settings'
