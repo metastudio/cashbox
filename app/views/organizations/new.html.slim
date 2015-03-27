@@ -1,6 +1,9 @@
-h2 New organization
+.page-header
+  h2 New organization
 
 = render 'form'
+
+= link_to 'Back', organizations_path
 
 = content_for :sidebar
   = render 'home/settings'

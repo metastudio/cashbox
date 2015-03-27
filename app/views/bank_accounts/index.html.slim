@@ -1,0 +1,36 @@
+.page-header
+  .pull-right
+    = link_to 'New bank account', new_bank_account_path, class: 'btn btn-success'
+  h1 Listing bank accounts
+
+- if @bank_accounts.present?
+  .bank-accounts
+    - @bank_accounts.grouped_by_currency(current_organization.default_currency).each do |curr_with_accounts|
+      table.table.table-stripped.table-hover
+        thead
+          tr
+            th.col-sm-3 Name
+            th.col-sm-3 Description
+            th.col-sm-3 Balance
+            th
+        tbody id="#{curr_with_accounts.first.downcase}-accounts" data-url=sort_bank_accounts_path
+          - curr_with_accounts.last.each do |bank_account|
+            tr.item data-item-id=bank_account.id class=colorize_amount(bank_account.balance) data-start-position=bank_account.position
+              td.word-break = bank_account.to_s
+              td = bank_account.description
+              td = money_with_symbol bank_account.balance
+              td
+                - if current_organization.present?
+                  .btn-group.pull-right
+                    = link_to 'Edit', edit_bank_account_path(bank_account),
+                      class: 'btn btn-default btn-sm'
+                    = link_to (bank_account.visible ? 'Hide' : 'Show'),
+                      hide_bank_account_path(bank_account), method: :put,
+                      class: 'btn btn-warning btn-sm'
+                    = link_to 'Delete', bank_account, data: {confirm: 'Are you sure?'},
+                      method: :delete, class: 'btn btn-danger btn-sm'
+- else
+  .alert.alert-warning No bank accounts
+
+= content_for :sidebar
+  = render 'home/settings'

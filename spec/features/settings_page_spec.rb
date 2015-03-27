@@ -21,8 +21,8 @@ describe 'Settings' do
     it { expect(page).to have_link('Categories')}
     it { expect(page).to have_link('Members')}
 
-    it 'Bank accounts is active by def' do
-      expect(page).to have_css('.active', text: 'Bank accounts')
+    it 'Organization details is active by def' do
+      expect(page).to have_css('.active', text: 'Organization details')
     end
 
     context 'when switch to other setting' do
