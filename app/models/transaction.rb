@@ -13,7 +13,6 @@
 #  deleted_at       :datetime
 #  customer_id      :integer
 #
-
 require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
@@ -30,8 +29,8 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
+  belongs_to :customer, inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
-  has_one :customer, foreign_key: :id, primary_key: :customer_id
 
   monetize :amount_cents, with_model_currency: :currency
 

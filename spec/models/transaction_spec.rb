@@ -20,7 +20,7 @@ describe Transaction do
   context "association" do
     it { should belong_to(:category) }
     it { should belong_to(:bank_account)  }
-    it { should have_one(:customer) }
+    it { expect(subject).to belong_to(:customer) }
     it { should have_one(:organization).through(:bank_account) }
   end
 

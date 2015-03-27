@@ -15,7 +15,7 @@ describe 'Transactions filter' do
 
   subject { page }
 
-  context 'by amount', js: true do
+  context "by amount", js: true do
     let!(:transaction)  { create :transaction, bank_account: ba, amount: 100123.23 }
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100123.23,
       category: cat_exp }
