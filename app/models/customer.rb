@@ -15,5 +15,5 @@ class Customer < ActiveRecord::Base
 
   validates :name, presence: true
   validates :organization, presence: true
-  validates :organization_id, uniqueness: { scope: :name }
+  validates :name, uniqueness: { scope: :organization_id }
 end
