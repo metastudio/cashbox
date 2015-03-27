@@ -1,0 +1,29 @@
+.page-header
+  .pull-right
+    = link_to 'New Customer', new_customer_path, class: 'btn btn-success'
+  h1 Listing customers
+
+- if @customers.present?
+  table.table.table-stripped.table-hover
+    thead
+      tr
+        th Name
+        th
+    tbody
+      - @customers.each do |customer|
+        tr
+          td = customer.name
+          td
+            .btn-group.pull-right
+              - if policy(customer).edit?
+                = link_to 'Edit', edit_customer_path(customer),
+                  class: 'btn btn-default btn-small'
+              - if policy(customer).destroy?
+                = link_to 'Destroy', customer, method: :delete,
+                  data: { confirm: 'Are you sure?' },
+                  class: 'btn btn-danger btn-small'
+- else
+  .alert.alert-warning No customers
+
+= content_for :sidebar
+  = render 'home/settings'

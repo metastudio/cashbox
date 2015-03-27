@@ -1,4 +1,5 @@
 class CustomersController < ApplicationController
+  layout 'settings'
   before_action :set_customer, only: [:edit, :update, :destroy]
   before_action :require_organization
 
@@ -19,6 +20,7 @@ class CustomersController < ApplicationController
     if @customer.save
       redirect_to customers_path, notice: 'Customer was successfully created.'
     else
+      # raise @customer.errors.inspect
       render action: 'new'
     end
   end
