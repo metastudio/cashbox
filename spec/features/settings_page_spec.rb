@@ -16,6 +16,7 @@ describe 'Settings' do
   context 'on page' do
     before { click_link 'Settings' }
 
+    it { expect(page).to have_css('li.active', text: 'Settings')}
     it { expect(page).to have_link('Organizations')}
     it { expect(page).to have_link('Bank accounts')}
     it { expect(page).to have_link('Categories')}
