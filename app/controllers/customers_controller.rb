@@ -20,7 +20,6 @@ class CustomersController < ApplicationController
     if @customer.save
       redirect_to customers_path, notice: 'Customer was successfully created.'
     else
-      # raise @customer.errors.inspect
       render action: 'new'
     end
   end
