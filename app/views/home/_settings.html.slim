@@ -3,6 +3,8 @@
     = active_link_to 'Organizations', organizations_path,
       class: 'list-group-item',
       active: params[:controller] == 'organizations' && params[:action] == 'show' ? false : [['organizations']]
+    = active_link_to 'Customers', customers_path, class: 'list-group-item',
+      active: [['customers']]
     = active_link_to 'Bank accounts', organization_path(current_organization),
       class: 'list-group-item',
       active: params[:controller] == 'organizations' && params[:action] == 'show' ? true : [['bank_accounts']]
