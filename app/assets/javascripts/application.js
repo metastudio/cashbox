@@ -22,7 +22,7 @@
 //= require jquery.inputmask.numeric.extensions
 
 //= require transactions
-//= require organizations
+//= require bank_accounts
 //= require jquery.inputmask.customization
 //= require select2
 
