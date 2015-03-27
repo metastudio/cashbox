@@ -7,7 +7,6 @@ $(function () {
   $('#q_amount_eq').inputmask('customized_currency');
   $('#q_customer_id_eq').select2();
 
-
   showHidePeriodAdditionalInput();
 
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
