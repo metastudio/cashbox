@@ -112,7 +112,6 @@ describe 'Settings' do
         end
         it_behaves_like 'activatable', 'Categories'
       end
-    end
 
     describe 'members' do
       before do
