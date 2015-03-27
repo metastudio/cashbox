@@ -11,9 +11,11 @@
 
 class Customer < ActiveRecord::Base
   belongs_to :organization, inverse_of: :customers
-  has_many :transactions, inverse_of: :customer
+  has_many :transactions, dependent: :destroy, inverse_of: :customer
 
-  validate :name, presence: true
+  validates :name, presence: true
+  validates :organization, presence: true
+  validates :organization_id, uniqueness: { scope: :name }
 
   def to_s
     name.truncate(30)
