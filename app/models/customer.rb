@@ -20,7 +20,7 @@ class Customer < ActiveRecord::Base
   validates :organization, presence: true
   validates :name, uniqueness: { scope: [:organization_id , :deleted_at] }
 
-  # gem 'paranoia' doesnt run validations on restore
+  # gem 'paranoia' doesn't run validations on restore
   before_restore :name_uniqueness
 
   def to_s
