@@ -12,8 +12,15 @@
 require 'spec_helper'
 
 describe Customer do
-  context "association" do
-    it { should belong_to(:organization) }
-    it { should have_many(:transactions) }
+  context 'association' do
+    it { expect(subject).to belong_to(:organization) }
+    it { expect(subject).to have_many(:transactions).dependent(:destroy) }
+  end
+
+  context 'validations' do
+    subject { create :customer }
+    it { expect(subject).to validate_presence_of(:organization) }
+    it { expect(subject).to validate_presence_of(:name) }
+    it { expect(subject).to validate_uniqueness_of(:organization_id).scoped_to(:name)}
   end
 end
