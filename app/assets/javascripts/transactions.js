@@ -133,8 +133,35 @@ function datepickerInit(selector) {
 
 function addTransactionFormMasks() {
   var $form = $("form.transaction")
-  $form.find("select[name='transaction[customer_id]']").select2();
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
+
+  var lastResultNames = [];
+  var $customerField = $form.find("input[name='transaction[customer_id]']");
+  var url = $customerField.data('url');
+  $customerField.select2({
+    placeholder: "Customer",
+    ajax: {
+      url: url,
+      dataType: "json",
+      results: function(data, page) {
+        lastResultNames = $.map( data, function(customer, i) { return customer.name });
+        return {
+          results: $.map( data, function(customer, i) {
+            return {
+              id: customer.id, text: customer.name
+            }
+          })
+        }
+      }
+    },
+    createSearchChoice: function (input) {
+      var new_item = lastResultNames.indexOf(input) < 0
+      if (new_item) {
+        return { id: input, text: input + " (new)" }
+      }
+    }
+  });
+  $("form.transaction input[name='transaction[amount]']").inputmask('customized_currency');
 }
 
 function addTranferFormMasks() {

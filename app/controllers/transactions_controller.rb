@@ -3,6 +3,7 @@ class TransactionsController < ApplicationController
   before_action :set_transaction,  only: [:edit, :update, :destroy]
 
   def create
+    raise params.inspect
     @transaction = Transaction.new(transaction_params)
     check_relation_to_curr_org(:transaction)
     @transaction.save

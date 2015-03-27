@@ -12,6 +12,11 @@ class CustomersController < ApplicationController
 
   def index
     @customers = current_organization.customers
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @customers , only: [:id, :name] }
+    end
   end
 
   def create
@@ -21,6 +26,14 @@ class CustomersController < ApplicationController
       redirect_to customers_path, notice: 'Customer was successfully created.'
     else
       render action: 'new'
+    end
+  end
+
+  def autocomplete
+    @customers = current_organization.customers.pluck(:id, :name)
+
+    respond_to do |format|
+      format.json { render json: @customers , :only => [:id, :name] }
     end
   end
 
