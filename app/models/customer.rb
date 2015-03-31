@@ -16,4 +16,8 @@ class Customer < ActiveRecord::Base
   validates :name, presence: true
   validates :organization, presence: true
   validates :name, uniqueness: { scope: :organization_id }
+
+  def to_s
+    name.truncate(30)
+  end
 end
