@@ -298,6 +298,8 @@ GEM
       wasabi (~> 3.4)
     shellany (0.0.1)
     shoulda-matchers (2.8.0)
+    select2-rails (3.5.9.3)
+      thor (~> 0.14)
       activesupport (>= 3.0.0)
     simple_form (3.1.0)
       actionpack (~> 4.0)
@@ -405,6 +407,7 @@ DEPENDENCIES
   rspec-rails
   russian_central_bank
   sass-rails (~> 4.0.0)
+  select2-rails
   shoulda-matchers
   simple_form
   slackistrano (~> 0.1.0)

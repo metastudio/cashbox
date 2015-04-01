@@ -13,6 +13,9 @@
       - else
         = f.association :category, as: :grouped_select, collection: current_organization.categories.grouped_by_type, group_method: :last, value_method: :id, prompt: 'Category', label: false
     .col-md-3.col-sm-6.col-xs-6
+      = f.input :customer_id, as: :select, include_blank: 'Customer',
+        label: false, collection: current_organization.customers
+    .col-md-3.col-sm-6.col-xs-6
       - if f.object.bank_account.nil? || f.object.bank_account.visible?
         = f.association :bank_account, as: :grouped_select, include_blank: 'Account',
           label: false, collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
@@ -21,4 +24,4 @@
     .col-md-3.col-sm-6.col-xs-6
       = f.input :comment, label: false
   .col-sm-3
-    = render 'transactions/btn_block', f: f, transaction: transaction
+    = render 'transactions/btn_block', f: f, transaction: transaction, selected: 'Transaction'

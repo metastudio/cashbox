@@ -262,4 +262,39 @@ describe 'create transfer transaction', js: true do
       expect(page).to_not have_content(account.to_s)
     end
   end
+
+  context 'switching form' do
+    before do
+      visit root_path
+    end
+
+    context 'has active class for selected' do
+      before do
+        within '#new_transaction' do
+          click_on 'Transaction'
+        end
+      end
+
+      it 'transaction' do
+        within '#new_transaction .dropdown-menu' do
+          expect(page).to have_css('li.active', text: 'Transaction')
+        end
+      end
+
+      context 'when switched' do
+        before do
+          click_on 'Transfer'
+          within '#new_transfer_form' do
+            click_on 'Transfer'
+          end
+        end
+
+        it 'transfer' do
+          within '#new_transfer_form .dropdown-menu' do
+            expect(page).to have_css('li.active', text: 'Transfer')
+          end
+        end
+      end
+    end
+  end
 end

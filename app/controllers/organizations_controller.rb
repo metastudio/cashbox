@@ -1,4 +1,5 @@
 class OrganizationsController < ApplicationController
+  layout 'settings'
   before_action :find_organization, only: [:show, :edit, :update, :destroy, :switch]
   before_action :authorize_organization, only: [:show, :edit, :update, :destroy]
 
@@ -7,8 +8,8 @@ class OrganizationsController < ApplicationController
   end
 
   def show
+    session[:current_organization_id] = @organization.id
     @bank_accounts = @organization.bank_accounts.positioned
-    gon.curr_org_ordered_curr = @organization.ordered_curr
   end
 
   def new

@@ -11,6 +11,7 @@
 #  comment          :string
 #  transaction_type :string
 #  deleted_at       :datetime
+#  customer_id      :integer
 #
 
 require "./lib/time_range.rb"
@@ -29,6 +30,7 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
+  belongs_to :customer, inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency
@@ -68,16 +70,21 @@ class Transaction < ActiveRecord::Base
           bank_accounts.currency AS currency
        ").group("bank_accounts.currency")
 
-      amount_flow.to_a.sort_by! do |flow|
-        currencies.index(flow["currency"])
-      end
+      if amount_flow.empty?
+        amount_flow << AmountFlow.new(
+          Money.empty(def_currency), Money.empty(def_currency), def_currency)
+      else
+        amount_flow.to_a.sort_by! do |flow|
+          currencies.index(flow["currency"])
+        end
 
-      amount_flow.map do |flow|
-        curr = flow["currency"]
-        AmountFlow.new(
-          Money.new(flow["income"],  curr),
-          Money.new(flow["expense"], curr),
-          curr)
+        amount_flow.map! do |flow|
+          curr = flow["currency"]
+          AmountFlow.new(
+            Money.new(flow["income"],  curr),
+            Money.new(flow["expense"], curr),
+            curr)
+        end
       end
     end
 

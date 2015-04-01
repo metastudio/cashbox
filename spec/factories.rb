@@ -79,6 +79,12 @@ FactoryGirl.define do
     end
   end
 
+  sequence(:customer_name) { |n| "Customer #{n}" }
+  factory :customer do
+    organization
+    name { generate :customer_name }
+  end
+
   factory :transaction do
     bank_account
     category

@@ -9,7 +9,7 @@ describe 'Create bank account' do
 
   before do
     sign_in member_owner.user
-    visit organization_path organization
+    visit bank_accounts_path
     click_on 'New bank account'
     fill_in 'Name', with: account_name
     fill_in 'Description', with: 'Some description'
