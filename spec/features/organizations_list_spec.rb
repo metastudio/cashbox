@@ -9,6 +9,8 @@ describe 'Organizations list' do
     visit organizations_path
   end
 
+  subject { page }
+
   it "has create organization btn" do
     expect(page).to have_link('New Organization')
   end
