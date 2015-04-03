@@ -77,6 +77,12 @@ FactoryGirl.define do
     trait :expense do
       type 'Expense'
     end
+
+    trait :transfer do
+      type 'Expense'
+      name 'Transfer'
+      system true
+    end
   end
 
   sequence(:customer_name) { |n| "Customer #{n}" }
