@@ -11,7 +11,7 @@
       - else
         = f.association :category, as: :grouped_select,
           collection: current_organization.categories.grouped_by_type,
-          group_method: :last, prompt: 'Category', label: false
+          group_method: :last, prompt: 'Category', label: false, value_method: :id
     .col-md-3.col-sm-6.col-xs-6
       = f.input :customer_id, as: :select, include_blank: 'Customer',
         label: false, collection: current_organization.customers
