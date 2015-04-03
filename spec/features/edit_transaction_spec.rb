@@ -22,7 +22,7 @@ describe 'edit transaction', js: true do
     let!(:account)      { create :bank_account, organization: organization, visible: false }
 
     it "show disabled bank_account" do
-      expect(page).to have_css('.disabled.transaction_bank_account', text: account.to_s)
+      expect(page).to have_css("input#transaction_bank_account[value='#{account.to_s}']")
     end
   end
 

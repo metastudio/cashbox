@@ -12,7 +12,7 @@ describe 'create transaction', js: true do
 
   let(:amount)        { 1232.23 }
   let(:amount_str)    { '1,232.23' }
-  let(:category_name) { category.name }
+  let(:category_name){ category.name }
   let(:account_name)  { account.name }
   let(:comment)       { "Test transaction" }
 
