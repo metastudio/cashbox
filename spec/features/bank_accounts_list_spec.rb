@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe 'Bank accounts list' do
-  include MoneyHelper
-
   let(:user) { create :user }
   let(:org)  { create :organization, with_user: user }
   let!(:ba)  { create :bank_account, organization: org, residue: amount }

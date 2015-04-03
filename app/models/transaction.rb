@@ -74,7 +74,8 @@ class Transaction < ActiveRecord::Base
         amount_flow << AmountFlow.new(
           Money.empty(def_currency), Money.empty(def_currency), def_currency)
       else
-        amount_flow.to_a.sort_by! do |flow|
+        amount_flow = amount_flow.to_a
+        amount_flow.sort_by! do |flow|
           currencies.index(flow["currency"])
         end
 
