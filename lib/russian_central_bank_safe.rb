@@ -25,13 +25,13 @@ class RussianCentralBankSafe < Money::Bank::RussianCentralBank
             @rates_updated_at = last_db_rates.updated_from_bank_at
             @rates_updated_on = date
             @rates = Hash[last_db_rates.rates.rates.map { |k,v| [k, v.to_f] }]
-            logger.warning('Couldn\'t update rates from Bank, updating from DB')
+            logger.warn('Couldn\'t update rates from Bank, updating from DB')
           rescue Exception => e
             rates = YAML.load_file(Rails.root.join('db', 'seeds', 'rates.yml'))
             @rates_updated_at = DateTime.parse(rates[:updated_from_bank_at])
             @rates_updated_on = date
             @rates = rates[:rates]
-            logger.warning('Couldn\'t update rates from Bank or DB, updating from yml file')
+            logger.warn('Couldn\'t update rates from Bank or DB, updating from yml file')
           end
         end
       }
