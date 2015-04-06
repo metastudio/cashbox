@@ -70,8 +70,6 @@ describe 'Change profile' do
           click_on 'Update account'
         end
 
-        it { expect(page).to have_css('li.active', text: 'Profile')}
-
         it { expect(page).to have_inline_error("we need your current password to confirm your changes").for_field('Current password') }
       end
     end
