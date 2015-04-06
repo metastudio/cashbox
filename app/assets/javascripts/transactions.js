@@ -135,7 +135,6 @@ function addTransactionFormMasks() {
   var $form = $("form.transaction")
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
   addCustomerSelect2($form);
-  $("form.transaction input[name='transaction[amount]']").inputmask('customized_currency');
 }
 
 function addTranferFormMasks() {
