@@ -46,6 +46,8 @@ describe 'Change profile' do
         click_on 'Profile'
       end
 
+      it { expect(page).to have_css('li.active', text: 'Profile')}
+
       context "with password provided" do
         context "with valid params" do
           let(:new_email) { generate :email }

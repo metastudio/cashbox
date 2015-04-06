@@ -20,12 +20,17 @@ describe 'Settings' do
       click_link 'Settings'
     end
 
+    it 'navbar highlightened' do
+      expect(page).to have_css('li.active', text: 'Settings')
+    end
+
     it 'by default Organization details are shown' do
       within '.list-group' do
         expect(page).to have_css('.active', text: 'Organization details')
-        expect(page).to have_content('Bank accounts')
-        expect(page).to have_content('Categories')
-        expect(page).to have_content('Members')
+        expect(page).to have_link('Organization details')
+        expect(page).to have_link('Bank accounts')
+        expect(page).to have_link('Categories')
+        expect(page).to have_link('Members')
       end
     end
 
@@ -112,6 +117,7 @@ describe 'Settings' do
         end
         it_behaves_like 'activatable', 'Categories'
       end
+    end
 
     describe 'members' do
       before do
