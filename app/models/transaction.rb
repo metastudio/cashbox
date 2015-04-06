@@ -27,6 +27,8 @@ class Transaction < ActiveRecord::Base
     end
   end
 
+  attr_accessor :customer_name
+
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions
   belongs_to :customer, inverse_of: :transactions
@@ -53,6 +55,9 @@ class Transaction < ActiveRecord::Base
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
 
+  before_validation :find_customer, if: Proc.new {
+    customer_name.present? && customer_id.blank?
+  }
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
@@ -100,6 +105,11 @@ class Transaction < ActiveRecord::Base
   end
 
   private
+
+  def find_customer
+    self.customer = Customer.find_or_initialize_by(
+      name: customer_name, organization_id: bank_account.organization_id)
+  end
 
   def check_negative
     self.amount = Money.new(amount_cents.abs, currency) if (income? || residue?) && amount_cents < 0

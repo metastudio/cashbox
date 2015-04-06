@@ -9,6 +9,8 @@ describe TransactionsController, type: :controller do
   let(:ba2)  { create :bank_account, organization: org2 }
   let(:cat)  { create :category, organization: org }
   let(:cat2) { create :category, organization: org2 }
+  let(:customer)  { create :customer, organization: org }
+  let(:customer2) { create :customer, organization: org2 }
 
   before do
     sign_in user
@@ -16,9 +18,21 @@ describe TransactionsController, type: :controller do
 
   describe 'POST #create' do
     context 'when params for current org' do
-      subject { post :create, format: :js,
-        transaction: { amount: 100, category_id: cat.id, bank_account_id: ba.id } }
+      subject { post :create, format: :js, transaction: {
+        amount: 100, category_id: cat.id, bank_account_id: ba.id,
+        customer_id: customer.id }
+      }
       it "creates a transaction" do
+        expect{ subject }.to change{ Transaction.count }
+      end
+    end
+
+    context 'when customer from not current organization' do
+      subject { post :create, format: :js, transaction: {
+        amount: 100, category_id: cat.id, bank_account_id: ba.id,
+        customer_id: customer2.id }
+      }
+      it 'does not create Transaction' do
         expect{ subject }.to change{ Transaction.count }
       end
     end

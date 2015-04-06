@@ -134,9 +134,21 @@ function datepickerInit(selector) {
 function addTransactionFormMasks() {
   var $form = $("form.transaction")
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
+  addCustomerSelect2($form);
+  $("form.transaction input[name='transaction[amount]']").inputmask('customized_currency');
+}
 
+function addTranferFormMasks() {
+  var $form = $("form.transfer");
+  $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
+  $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
+  $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
+}
+
+function addCustomerSelect2($form) {
   var lastResultNames = [];
   var $customerField = $form.find("input[name='transaction[customer_id]']");
+  var $customerName  = $form.find("input[name='transaction[customer_name]']");
   var url = $customerField.data('url');
   $customerField.select2({
     placeholder: "Customer",
@@ -157,16 +169,9 @@ function addTransactionFormMasks() {
     createSearchChoice: function (input) {
       var new_item = lastResultNames.indexOf(input) < 0
       if (new_item) {
+        $customerName.val(input);
         return { id: input, text: input + " (new)" }
       }
     }
   });
-  $("form.transaction input[name='transaction[amount]']").inputmask('customized_currency');
-}
-
-function addTranferFormMasks() {
-  var $form = $("form.transfer");
-  $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
-  $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
-  $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
 }

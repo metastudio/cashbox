@@ -13,8 +13,9 @@
       - else
         = f.association :category, as: :grouped_select, collection: current_organization.categories.grouped_by_type, group_method: :last, value_method: :id, prompt: 'Category', label: false
     .col-md-3.col-sm-6.col-xs-6
-      = f.input_field :customer_id, input_html: { type: 'hidden' },
-        data: { url: customers_path }
+      = f.input :customer_id, label: false,
+        input_html: { data: { url: customers_path } }
+      = f.input :customer_name, label: false, as: :hidden
     .col-md-3.col-sm-6.col-xs-6
       - if f.object.bank_account.nil? || f.object.bank_account.visible?
         = f.association :bank_account, as: :grouped_select, include_blank: 'Account',
