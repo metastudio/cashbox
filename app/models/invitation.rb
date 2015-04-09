@@ -30,7 +30,7 @@ class Invitation < ActiveRecord::Base
   private
 
   def send_invitation
-    InvitationMailer.new_invitation(self).deliver
+    InvitationMailer.new_invitation(self).deliver_now
   end
 
   def email_uniq
