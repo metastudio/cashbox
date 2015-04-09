@@ -17,6 +17,10 @@ header
         #collapse-btn.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
             - if current_organization
-              li= link_to 'Settings', organization_path(current_organization)
-            li= link_to 'Profile', user_profile_path
-            li= link_to 'Sign out', destroy_user_session_path, method: :delete
+              = active_link_to 'Settings', organization_path(current_organization),
+                wrap_tag: :li, active: [['organizations', 'bank_accounts',
+                'categories', 'members', 'customers']]
+            = active_link_to 'Profile', user_profile_path, wrap_tag: :li,
+              active: [['user/registrations']]
+            li
+              = link_to 'Sign out', destroy_user_session_path, method: :delete

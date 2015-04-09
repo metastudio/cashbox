@@ -12,16 +12,16 @@ describe 'Organizations list' do
   subject { page }
 
   it "has create organization btn" do
-    expect(subject).to have_link('New Organization')
+    expect(page).to have_link('New Organization')
   end
 
   it "shows table with appropriate content" do
     organizations.each do |organization|
       within "tbody" do
-        expect(subject).to have_selector('td', text: organization.name)
-        expect(subject).to have_selector('td',
+        expect(page).to have_selector('td', text: organization.name)
+        expect(page).to have_selector('td',
           text: organization.owners.map(&:email).join(', '))
-        expect(subject).to have_link('Show')
+        expect(page).to have_link('Show')
       end
     end
   end

@@ -22,8 +22,9 @@
 //= require jquery.inputmask.numeric.extensions
 
 //= require transactions
-//= require organizations
+//= require bank_accounts
 //= require jquery.inputmask.customization
+//= require select2
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);

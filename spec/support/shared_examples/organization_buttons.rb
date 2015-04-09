@@ -7,7 +7,7 @@ shared_examples_for "organization buttons" do
     end
 
     it "is able to delete organization" do
-      expect(subject).to have_content('Destroy')
+      expect(subject).to have_content('Delete')
     end
   end
 
@@ -19,7 +19,7 @@ shared_examples_for "organization buttons" do
     end
 
     it "is able to delete organization" do
-      expect(subject).to have_content('Destroy')
+      expect(subject).to have_content('Delete')
     end
   end
 
@@ -31,7 +31,7 @@ shared_examples_for "organization buttons" do
     end
 
     it "is NOT able to delete organization" do
-      expect(subject).to_not have_content('Destroy')
+      expect(subject).to_not have_content('Delete')
     end
   end
 end

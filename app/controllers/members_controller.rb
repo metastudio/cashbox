@@ -1,4 +1,5 @@
 class MembersController < ApplicationController
+  layout 'settings'
   before_filter :find_member, only: [:edit, :update]
 
   def index

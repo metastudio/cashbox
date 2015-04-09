@@ -2,7 +2,7 @@ currencies:
   - USD
   - RUB
   - EUR
-money_max: 461_168_601_842_739
+money_max: 9_223_372_036_854_774
 account_colors:
   negative: '#f2dede'
   positive: '#dff0d8'

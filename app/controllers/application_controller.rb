@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   def current_organization
     return nil unless signed_in?
-    @current_organization ||= current_user.organizations.find(session[:current_organization_id]) if session[:current_organization_id]
+    @current_organization ||= current_user.organizations.find_by_id(session[:current_organization_id]) if session[:current_organization_id]
     @current_organization ||= current_user.organizations.first
   end
 

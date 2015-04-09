@@ -19,4 +19,4 @@
     .col-md-3.col-sm-6.col-xs-6.hidden
       = f.input :exchange_rate, label: false, input_html: { class: 'rate' }
   .col-sm-3
-    = render 'transactions/btn_block', f: f, transaction: Transaction.new
+    = render 'transactions/btn_block', f: f, transaction: Transaction.new, selected: 'Transfer'
