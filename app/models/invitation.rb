@@ -17,7 +17,7 @@ class Invitation < ActiveRecord::Base
 
   has_secure_token :token
 
-  belongs_to :member, inverse_of: :invitations, foreign_key: :invited_by_id
+  belongs_to :member, inverse_of: :created_invitations, foreign_key: :invited_by_id
   belongs_to :organization, inverse_of: :invitations
   belongs_to :user, primary_key: :email, foreign_key: :email, inverse_of: :invitations
 
@@ -42,7 +42,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def send_invitation
-    InvitationMailer.new_invitation(self).deliver
+    InvitationMailer.new_invitation(self).deliver_now
   end
 
   private
