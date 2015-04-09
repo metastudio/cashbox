@@ -7,7 +7,6 @@ describe 'edit transaction', js: true do
       residue: 9999999 }
   let(:category)     { create :category, organization: organization }
   let!(:transaction) { create :transaction, bank_account: account, category: category }
-  let!(:transaction) { create :transaction, bank_account: account }
 
   before do
     sign_in user
