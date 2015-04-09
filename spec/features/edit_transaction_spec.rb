@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe 'edit transaction', js: true do
-
   let(:user)         { create :user }
   let(:organization) { create :organization, with_user: user }
   let(:account)      { create :bank_account, organization: organization,
       residue: 9999999 }
   let(:category)     { create :category, organization: organization }
   let!(:transaction) { create :transaction, bank_account: account, category: category }
+  let!(:transaction) { create :transaction, bank_account: account }
 
   before do
     sign_in user
@@ -19,10 +19,11 @@ describe 'edit transaction', js: true do
   subject{ page }
 
   context 'when bank_account is hidden' do
-    let!(:account)      { create :bank_account, organization: organization, visible: false }
-
+    let!(:account) { create :bank_account, organization: organization, visible: false }
     it "show disabled bank_account" do
-      expect(page).to have_css("input#transaction_bank_account[value='#{account.to_s}']")
+      within "#edit_row_transaction_#{transaction.id} .transaction_bank_account.disabled" do
+        expect(page).to have_css("input#transaction_bank_account[value='#{account.to_s}']")
+      end
     end
   end
 
@@ -42,7 +43,9 @@ describe 'edit transaction', js: true do
     let!(:category) { create :category, :transfer, organization: organization }
 
     it 'show as disabled input' do
-      expect(page).to have_selector("input#transaction_category[value='Transfer']")
+      within "#edit_row_transaction_#{transaction.id} .transaction_category.disabled" do
+        expect(page).to have_selector("input#transaction_category[value='Transfer']")
+      end
     end
   end
 end

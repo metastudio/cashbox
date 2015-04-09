@@ -44,7 +44,7 @@ describe 'create transaction', js: true do
 
       it "displays account name with currency" do
         within '#transaction_bank_account_id' do
-          expect(page).to have_content account.to_s
+          expect(page).to have_css('optgroup', text: account.to_s)
         end
       end
     end
@@ -115,7 +115,7 @@ describe 'create transaction', js: true do
     end
 
     it "shows error for category field" do
-      expect(subject).to have_inline_error("can't be blank").for_field_name('transaction[category_id]')
+      expect(subject).to have_inline_error("can't be blank").for_field('transaction_category_id')
     end
   end
 
@@ -127,7 +127,7 @@ describe 'create transaction', js: true do
     end
 
     it "shows error for account field" do
-      expect(subject).to have_inline_error("can't be blank").for_field_name('transaction[bank_account_id]')
+      expect(subject).to have_inline_error("can't be blank").for_field('transaction_bank_account_id')
     end
   end
 

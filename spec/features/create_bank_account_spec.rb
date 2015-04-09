@@ -25,7 +25,7 @@ describe 'Create bank account' do
 
     it { expect(subject.bank_account.name).to eq account_name }
     it { expect(subject.transaction_type).to eq 'Residue' }
-    it { expect(subject.amount).to eq 100.55 }
+    it { expect(subject.amount).to eq Money.new(10055, 'USD') }
   end
 
   context 'balance' do

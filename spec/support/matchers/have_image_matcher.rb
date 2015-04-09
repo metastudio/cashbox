@@ -1,17 +1,17 @@
 RSpec::Matchers.define :have_image do |image_url|
-  match_for_should do |page|
+  match do |page|
     page.has_selector?(%Q{img[src="#{image_url}"]})
   end
 
-  match_for_should_not do |page|
+  match_when_negated do |page|
     page.has_no_selector?(%Q{img[src="#{image_url}"]})
   end
 
-  failure_message_for_should do |page|
+  failure_message do |page|
     %Q{expected to have image with url \"#{image_url}\""}
   end
 
-  failure_message_for_should_not do |page|
+  failure_message_when_negated do |page|
     %Q{expected to not have image with url \"#{image_url}\""}
   end
 
