@@ -16,7 +16,8 @@ class Member < ActiveRecord::Base
   belongs_to :user
   belongs_to :organization
 
-  has_many :invitations, foreign_key: :invited_by_id
+  has_many :created_invitations, class_name: 'Invitation',
+    foreign_key: :invited_by_id, dependent: :destroy
 
   validates :user, presence: true
   validates :organization, presence: true

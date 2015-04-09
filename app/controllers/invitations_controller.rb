@@ -8,7 +8,7 @@ class InvitationsController < ApplicationController
   end
 
   def create
-    @invitation = current_member.invitations.build(invitation_params)
+    @invitation = current_member.created_invitations.build(invitation_params)
     authorize @invitation
 
     if @invitation.save
