@@ -1,5 +1,5 @@
 .word-break {
-  white-space: pre-wrap;
+  // white-space: pre-wrap;
   word-break: break-all;
 }
 
@@ -22,4 +22,8 @@
   .tooltip-inner {
     max-width: 300px !important;
   }
+}
+
+.radio, .checkbox {
+  padding-left: 20px;
 }

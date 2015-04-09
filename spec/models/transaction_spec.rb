@@ -8,9 +8,10 @@
 #  bank_account_id  :integer          not null
 #  created_at       :datetime
 #  updated_at       :datetime
-#  comment          :string(255)
-#  transaction_type :string(255)
+#  comment          :string
+#  transaction_type :string
 #  deleted_at       :datetime
+#  customer_id      :integer
 #
 
 require 'spec_helper'
@@ -19,6 +20,7 @@ describe Transaction do
   context "association" do
     it { should belong_to(:category) }
     it { should belong_to(:bank_account)  }
+    it { expect(subject).to belong_to(:customer) }
     it { should have_one(:organization).through(:bank_account) }
   end
 
@@ -123,8 +125,8 @@ describe Transaction do
       end
 
       context "for changing amount of transaction" do
-        let(:start_amount) { 1234.56 }
-        let(:finish_amount) { 5345.34 }
+        let(:start_amount)  { 1234.56 }
+        let(:finish_amount) { 5345.30 }
         let!(:transaction) { create :transaction, :income, bank_account: account, amount: start_amount }
 
         subject{ transaction.update_attributes(amount: finish_amount) }
@@ -159,7 +161,7 @@ describe Transaction do
           end
 
           it "doesn't break saving" do
-            expect(subject).to be_true
+            expect(subject).to be_truthy
           end
         end
 
@@ -187,7 +189,7 @@ describe Transaction do
           end
 
           it "doesn't break saving" do
-            expect(subject).to be_true
+            expect(subject).to be_truthy
           end
         end
 

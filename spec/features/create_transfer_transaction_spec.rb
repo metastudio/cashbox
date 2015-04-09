@@ -121,7 +121,7 @@ describe 'create transfer transaction', js: true do
     end
 
     it "shows error for FROM field" do
-      expect(subject).to have_inline_error("can't be blank").for_field_name('transfer[bank_account_id]')
+      expect(subject).to have_inline_error("can't be blank").for_field('transfer_bank_account_id')
     end
   end
 
@@ -133,7 +133,7 @@ describe 'create transfer transaction', js: true do
     end
 
     it "shows error for TO field" do
-      expect(subject).to have_inline_error("can't be blank").for_field_name('transfer[reference_id]')
+      expect(subject).to have_inline_error("can't be blank").for_field('transfer_reference_id')
     end
   end
 
@@ -260,6 +260,41 @@ describe 'create transfer transaction', js: true do
 
     it "doesn't display account in select" do
       expect(page).to_not have_content(account.to_s)
+    end
+  end
+
+  context 'switching form' do
+    before do
+      visit root_path
+    end
+
+    context 'has active class for selected' do
+      before do
+        within '#new_transaction' do
+          click_on 'Transaction'
+        end
+      end
+
+      it 'transaction' do
+        within '#new_transaction .dropdown-menu' do
+          expect(page).to have_css('li.active', text: 'Transaction')
+        end
+      end
+
+      context 'when switched' do
+        before do
+          click_on 'Transfer'
+          within '#new_transfer_form' do
+            click_on 'Transfer'
+          end
+        end
+
+        it 'transfer' do
+          within '#new_transfer_form .dropdown-menu' do
+            expect(page).to have_css('li.active', text: 'Transfer')
+          end
+        end
+      end
     end
   end
 end

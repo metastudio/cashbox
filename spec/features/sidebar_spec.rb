@@ -49,8 +49,8 @@ describe 'sidebar' do
 
     it 'is shown' do
       within '.list-group' do
-        expect(page).to have_content('Organizations')
-        expect(page).to have_css('.active', 'Bank accounts')
+        expect(page).to have_css('.active', text: 'Organization details')
+        expect(page).to have_content('Bank accounts')
         expect(page).to have_content('Categories')
         expect(page).to have_content('Members')
       end
@@ -61,7 +61,7 @@ describe 'sidebar' do
         before do
           visit organizations_path
         end
-        it_behaves_like 'activatable', 'Organizations'
+        it_behaves_like 'activatable', 'Organization details'
       end
 
       describe 'show' do
@@ -82,14 +82,14 @@ describe 'sidebar' do
         before do
           visit new_organization_path
         end
-        it_behaves_like 'activatable', 'Organizations'
+        it_behaves_like 'activatable', 'Organization details'
       end
 
       describe 'edit' do
         before do
           visit edit_organization_path(org)
         end
-        it_behaves_like 'activatable', 'Organizations'
+        it_behaves_like 'activatable', 'Organization details'
       end
     end
 

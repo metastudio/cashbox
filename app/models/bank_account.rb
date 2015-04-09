@@ -3,10 +3,10 @@
 # Table name: bank_accounts
 #
 #  id              :integer          not null, primary key
-#  name            :string(255)      not null
-#  description     :string(255)
+#  name            :string           not null
+#  description     :string
 #  balance_cents   :integer          default(0), not null
-#  currency        :string(255)      default("USD"), not null
+#  currency        :string           default("USD"), not null
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
@@ -46,6 +46,15 @@ class BankAccount < ActiveRecord::Base
 
   def residue_cents
     @residue_cents ||= 0
+  end
+
+  def residue=(value)
+    if value
+      @residue_cents =
+        value.class == String ? value.delete(',').delete('.') : value
+    else
+      @residue_cents = 0
+    end
   end
 
   def self.total_balance(currency)

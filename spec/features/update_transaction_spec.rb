@@ -25,7 +25,7 @@ describe 'update transaction', js: true do
       end
 
       it "shows update form on row click" do
-        expect(subject).to have_selector("input[type=submit][value='Update Transaction']")
+        expect(subject).to have_selector("input[type=submit][value='Update']")
       end
     end
 
@@ -38,7 +38,7 @@ describe 'update transaction', js: true do
       end
 
       it "shows update form on row click" do
-        expect(subject).to have_selector("input[type=submit][value='Update Transaction']")
+        expect(subject).to have_selector("input[type=submit][value='Update']")
       end
     end
   end
@@ -58,7 +58,7 @@ describe 'update transaction', js: true do
       within "#edit_row_transaction_#{transaction.id}" do
         page.execute_script("$(\"#edit_row_transaction_#{transaction.id} #transaction_amount\").val('');")
         fill_in 'transaction[amount]', with: new_amount
-        click_on 'Update Transaction'
+        click_on 'Update'
       end
     end
 

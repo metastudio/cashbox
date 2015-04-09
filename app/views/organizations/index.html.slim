@@ -3,26 +3,27 @@
     = link_to 'New Organization', new_organization_path, class: 'btn btn-success'
   h1 Listing organizations
 
-
 - if @organizations.present?
   table.table.table-stripped.table-hover
     thead
       tr
         th Name
         th Owners
-        th[style="width:5%"]
-        th[style="width:5%"]
-        th[style="width:5%"]
+        th
     tbody
       - @organizations.each do |organization|
         tr
           td = organization.name
           td = organization.owners.map(&:email).join(', ')
-          td = link_to 'Show', organization, class: 'btn btn-default'
-          - if policy(organization).edit?
-            td = link_to 'Edit', edit_organization_path(organization), class: 'btn btn-default'
-          - if policy(organization).destroy?
-            td = link_to 'Destroy', organization, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+          td
+            .btn-group.pull-right
+              = link_to 'Show', organization, class: 'btn btn-default btn-sm'
+              - if policy(organization).edit?
+                = link_to 'Edit', edit_organization_path(organization),
+                  class: 'btn btn-default btn-sm'
+              - if policy(organization).destroy?
+                = link_to 'Delete', organization, method: :delete,
+                  data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
 - else
   .alert.alert-warning No organizations
 

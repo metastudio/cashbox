@@ -21,16 +21,6 @@ describe 'organizations pages' do
 
       it_behaves_like "organization buttons"
     end
-
-    context 'bank accounts list' do
-      let!(:ba)  { create :bank_account, organization: org, balance: amount }
-
-      before do
-        visit organization_path org
-      end
-
-      it_behaves_like "colorizable amount", '.bank-accounts'
-    end
   end
 
   context 'index' do
@@ -40,6 +30,33 @@ describe 'organizations pages' do
       end
 
       it_behaves_like "organization buttons"
+
+      context 'when destroying' do
+        let(:member) { create :member, user: user, role: 'owner' }
+
+        context 'current organization' do
+          before do
+            click_on 'Delete'
+          end
+
+          it 'doesnt break' do
+            expect(page).to have_flash_message('Organization was successfully removed.')
+            expect(page).to have_content('No organizations')
+          end
+        end
+
+        context 'not current organization' do
+          let!(:not_current_org) { create :organization, with_user: user }
+          before do
+            visit organizations_path
+            click_on 'Delete'
+          end
+
+          it 'doesnt break' do
+            expect(page).to have_flash_message('Organization was successfully removed.')
+          end
+        end
+      end
     end
   end
 end

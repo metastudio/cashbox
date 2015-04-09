@@ -7,7 +7,7 @@
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
-#  role            :string(255)      not null
+#  role            :string           not null
 #
 
 class Member < ActiveRecord::Base
