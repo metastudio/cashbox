@@ -3,23 +3,23 @@ RSpec::Matchers.define :have_flash_message do |message|
     '.flash-messages'
   end
 
-  match_for_should do |page|
+  match do |page|
     page.within(flash_message_selector) do
       page.has_content?(message)
     end
   end
 
-  match_for_should_not do |page|
+  match_when_negated do |page|
     page.within(flash_message_selector) do
       page.has_no_content?(message)
     end
   end
 
-  failure_message_for_should do |page|
+  failure_message do |page|
     %Q{expected to have flash message "#{message}" in "#{page.find(flash_message_selector).try(:text)}"}
   end
 
-  failure_message_for_should_not do |page|
+  failure_message_when_negated do |page|
     %Q{expected to not have flash message "#{message}" in "#{page.find(flash_message_selector).try(:text)}"}
   end
 

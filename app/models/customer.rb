@@ -16,8 +16,8 @@ class Customer < ActiveRecord::Base
   belongs_to :organization, inverse_of: :customers
   has_many :transactions, dependent: :destroy, inverse_of: :customer
 
-  validates :name, presence: true
   validates :organization, presence: true
+  validates :name, presence: true
   validates :name, uniqueness: { scope: [:organization_id , :deleted_at] }
 
   # gem 'paranoia' doesn't run validations on restore

@@ -7,11 +7,11 @@ describe Transfer do
   context "validation" do
     it { should validate_presence_of(:amount) }
     it { should validate_presence_of(:bank_account_id) }
-    it { should ensure_length_of(:comment).is_at_most(255) }
+    it { should validate_length_of(:comment).is_at_most(255) }
     it { should validate_presence_of(:reference_id) }
     it { should validate_numericality_of(:comission).
       is_greater_than_or_equal_to(0) }
-    it { should ensure_length_of(:comission).is_at_most(10) }
+    it { should validate_length_of(:comission).is_at_most(10) }
     it { should validate_presence_of(:reference_id) }
 
     context "custom validations" do
@@ -98,22 +98,22 @@ describe Transfer do
           end
 
           describe 'same currency' do
-            it_behaves_like 'income transaction' do
-              let(:amount) { transfer.amount_cents }
-            end
+            let(:amount) { transfer.amount_cents }
+
+            it_behaves_like 'income transaction'
             it_behaves_like 'outcome transaction'
           end
 
           describe 'with different currencies' do
             let(:transfer) { build :transfer, :with_different_currencies,
-              exchange_rate: 0.5}
+              exchange_rate: 2, amount: 111 }
 
             it_behaves_like 'income transaction' do
-              let(:amount) {
-                Money.new(transfer.amount_cents, transfer.from_currency).
-                  exchange_to(transfer.to_currency).cents }
+              let(:amount) { transfer.exchange_rate * transfer.amount_cents }
             end
-            it_behaves_like 'outcome transaction'
+            it_behaves_like 'outcome transaction' do
+              let(:amount) { transfer.amount_cents }
+            end
           end
         end
       end

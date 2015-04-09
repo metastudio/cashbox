@@ -24,6 +24,12 @@ describe 'Settings' do
       expect(page).to have_css('li.active', text: 'Settings')
     end
 
+    it { expect(page).to have_css('li.active', text: 'Settings') }
+    it { expect(page).to have_link('Organizations') }
+    it { expect(page).to have_link('Bank accounts') }
+    it { expect(page).to have_link('Categories') }
+    it { expect(page).to have_link('Members') }
+
     it 'by default Organization details are shown' do
       within '.list-group' do
         expect(page).to have_css('.active', text: 'Organization details')

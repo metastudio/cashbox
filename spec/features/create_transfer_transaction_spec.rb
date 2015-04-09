@@ -121,7 +121,7 @@ describe 'create transfer transaction', js: true do
     end
 
     it "shows error for FROM field" do
-      expect(subject).to have_inline_error("can't be blank").for_field_name('transfer[bank_account_id]')
+      expect(subject).to have_inline_error("can't be blank").for_field('transfer_bank_account_id')
     end
   end
 
@@ -133,7 +133,7 @@ describe 'create transfer transaction', js: true do
     end
 
     it "shows error for TO field" do
-      expect(subject).to have_inline_error("can't be blank").for_field_name('transfer[reference_id]')
+      expect(subject).to have_inline_error("can't be blank").for_field('transfer_reference_id')
     end
   end
 
