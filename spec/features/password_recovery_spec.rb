@@ -15,7 +15,7 @@ describe 'password recovery' do
 
   context "with right email" do
     it "shows notice" do
-      expect(subject).to have_content('You will receive an email with instructions about how to reset your password in a few minutes.')
+      expect(subject).to have_content('You will receive an email with instructions on how to reset your password in a few minutes')
     end
 
     it "sends email with reset password insturctions" do
@@ -41,7 +41,7 @@ describe 'password recovery' do
         end
 
         it "shows successfull notice" do
-          expect(subject).to have_content("Your password was changed successfully")
+          expect(subject).to have_content("Your password has been changed successfully")
         end
       end
     end
