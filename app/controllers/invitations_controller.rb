@@ -1,4 +1,5 @@
 class InvitationsController < ApplicationController
+  layout 'settings'
   skip_filter :authenticate_user!, only: :accept
   before_action :find_active_invitation, only: :accept
   before_action :find_invitation, only: [:destroy, :resend]
