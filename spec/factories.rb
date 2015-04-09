@@ -22,7 +22,7 @@ FactoryGirl.define do
   factory :organization do |o|
     name { generate :organization_name }
 
-    ignore do
+    transient do
       with_user nil
     end
 
@@ -105,15 +105,20 @@ FactoryGirl.define do
 
   factory :transfer do
     bank_account_id { create(:bank_account, balance: 99999).id }
-    reference_id    { create(:bank_account).id }
+    from_currency   { BankAccount.find(bank_account_id).currency }
+    reference_id    { create(:bank_account,
+      organization: BankAccount.find(bank_account_id).organization).id }
+    to_currency     { BankAccount.find(reference_id).currency}
     amount          500
     comission       50
     comment         "comment"
 
     trait :with_different_currencies do
       bank_account_id { create(:bank_account, balance: 99999, currency: "USD").id }
-      reference_id    { create(:bank_account, currency: "RUB").id }
+      from_currency   { BankAccount.find(bank_account_id).currency }
+      reference_id    { create(:bank_account,
+        organization: BankAccount.find(bank_account_id).organization, currency: "RUB").id }
+      to_currency     { BankAccount.find(reference_id).currency}
       exchange_rate   0.5
     end
-  end
 end
