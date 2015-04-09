@@ -99,7 +99,7 @@ FactoryGirl.define do
     end
 
     trait :with_customer do
-      customer_id { create(:customer, organization: bank_account.organization).id }
+      customer { |t| create(:customer, organization: t.organization) }
     end
   end
 
