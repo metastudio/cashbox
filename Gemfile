@@ -34,6 +34,7 @@ gem 'money-rails'
 gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
+gem 'has_secure_token', '~>0.0.2'
 gem 'paranoia', '~> 2.0'
 # update to 1.6.5 when fix will be released
 gem 'ransack', '1.6.4'
