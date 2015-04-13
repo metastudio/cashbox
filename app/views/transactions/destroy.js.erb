@@ -2,7 +2,10 @@ $("#<%= dom_id(@transaction) %>").remove();
 $("#<%= dom_id(@transaction, 'edit_row') %>").remove();
 
 if ($('.transactions tbody tr').size() == 0) {
-  $('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: [] } %>");
+  if (document.URL != "<%= root_url %>") {
+    // add params[:q]
+  };
+  $('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: [], search: true } %>");
 }
 
 $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");

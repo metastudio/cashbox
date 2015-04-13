@@ -2,7 +2,10 @@
   if ($('.transactions').size() == 0) {
       // need to reload because there is no ransack initialized & no transactions table
       location.reload();
-    }
+      if (document.URL == "<%= root_url %>") {
+
+      }
+  }
   else {
     $("<%=j render('transactions/transaction', transaction: @transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
     $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new) %>");
