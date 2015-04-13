@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326084339) do
+ActiveRecord::Schema.define(version: 20150409143014) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
 
-  create_table "bank_accounts", force: true do |t|
+  create_table "bank_accounts", force: :cascade do |t|
     t.string   "name",                                      null: false
     t.string   "description"
     t.integer  "balance_cents",   limit: 8, default: 0,     null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20150326084339) do
   add_index "bank_accounts", ["deleted_at"], name: "index_bank_accounts_on_deleted_at", using: :btree
   add_index "bank_accounts", ["organization_id"], name: "index_bank_accounts_on_organization_id", using: :btree
 
-  create_table "categories", force: true do |t|
+  create_table "categories", force: :cascade do |t|
     t.string   "type",                            null: false
     t.string   "name",                            null: false
     t.integer  "organization_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20150326084339) do
   add_index "categories", ["deleted_at"], name: "index_categories_on_deleted_at", using: :btree
   add_index "categories", ["organization_id"], name: "index_categories_on_organization_id", using: :btree
 
-  create_table "customers", force: true do |t|
+  create_table "customers", force: :cascade do |t|
     t.string   "name",            null: false
     t.integer  "organization_id", null: false
     t.datetime "created_at"
@@ -56,31 +56,32 @@ ActiveRecord::Schema.define(version: 20150326084339) do
   add_index "customers", ["name", "organization_id"], name: "index_customers_on_name_and_organization_id", unique: true, using: :btree
   add_index "customers", ["organization_id"], name: "index_customers_on_organization_id", using: :btree
 
-  create_table "exchange_rates", force: true do |t|
+  create_table "exchange_rates", force: :cascade do |t|
     t.hstore   "rates",                null: false
     t.datetime "updated_from_bank_at", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "members", force: true do |t|
-    t.integer  "user_id",         null: false
-    t.integer  "organization_id", null: false
+  create_table "members", force: :cascade do |t|
+    t.integer  "user_id",                   null: false
+    t.integer  "organization_id",           null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",            null: false
+    t.string   "role",                      null: false
+    t.datetime "root_page_last_visited_at"
   end
 
   add_index "members", ["user_id", "organization_id"], name: "index_members_on_user_id_and_organization_id", unique: true, using: :btree
 
-  create_table "organizations", force: true do |t|
+  create_table "organizations", force: :cascade do |t|
     t.string   "name",                             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "default_currency", default: "USD"
   end
 
-  create_table "profiles", force: true do |t|
+  create_table "profiles", force: :cascade do |t|
     t.integer  "user_id",      null: false
     t.string   "position"
     t.string   "avatar"
@@ -91,7 +92,7 @@ ActiveRecord::Schema.define(version: 20150326084339) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", unique: true, using: :btree
 
-  create_table "transactions", force: true do |t|
+  create_table "transactions", force: :cascade do |t|
     t.integer  "amount_cents",     limit: 8, default: 0, null: false
     t.integer  "category_id"
     t.integer  "bank_account_id",                        null: false
@@ -108,7 +109,7 @@ ActiveRecord::Schema.define(version: 20150326084339) do
   add_index "transactions", ["customer_id"], name: "index_transactions_on_customer_id", using: :btree
   add_index "transactions", ["deleted_at"], name: "index_transactions_on_deleted_at", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
