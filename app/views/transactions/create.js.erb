@@ -4,6 +4,11 @@
   }
   else {
     $("<%=j render('transactions/transaction', transaction: @transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
+    if (document.URL == "<%= root_url %>" && $('.transactions tbody tr td[colspan]').size() == 0) {
+      <% if @transaction.created_at > current_member.root_page_last_visited_at %>
+        $("#transaction_<%= @transaction.id %>").after("<tr><td colspan='5'></td></tr>");
+      <% end %>
+    };
     $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new(category_id: params[:transaction][:fixed_category_id]), fixed_category_id: params[:transaction][:fixed_category_id]) %>");
     scrollTo($("#<%= dom_id(@transaction) %>"));
     $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
