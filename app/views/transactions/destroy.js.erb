@@ -1,4 +1,4 @@
-$('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: [] } %>");
+$('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: @transactions } %>");
 
 $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
 $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
