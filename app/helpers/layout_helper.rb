@@ -4,7 +4,7 @@ module LayoutHelper
   end
 
   def colorize_transaction(transaction)
-    if params[:controller] != 'transactions'
+    if params[:controller] != 'transactions' && current_member.last_visited_at
       transaction.created_at > current_member.last_visited_at ? 'new_transaction' : ''
     end
   end

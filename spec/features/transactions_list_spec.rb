@@ -54,6 +54,20 @@ describe 'Transactions list' do
     end
   end
 
+  context "when new transaction" do
+    let!(:new_transaction) { create :transaction, bank_account: org1_ba, amount: 88 }
+
+    before do
+      visit root_path
+    end
+
+    it "is marked as unread" do
+      within ".transactions" do
+        expect(page).to have_css(".new_transaction")
+      end
+    end
+  end
+
   context 'when switch organization' do
     before do
       within "#switch_organization" do

@@ -61,6 +61,13 @@ describe 'create transaction', js: true do
       end
     end
 
+    it "not marked as unread" do
+      create_transaction
+      within "#transaction_#{Transaction.last.id}" do
+        expect(page).to_not have_css(".new_transaction")
+      end
+    end
+
     context "when income category selected" do
       it "creates transaction with positive amount" do
         expect{ subject }.to change{ transactions.where(amount_cents: amount * 100).count }.by(1)
