@@ -6,8 +6,8 @@ describe 'create transaction', js: true do
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
   let!(:category)     { create :category, organization: organization }
-
-  let!(:account)      { create :bank_account, organization: organization }
+  let!(:account)      { create :bank_account, residue: 99999999,
+    organization: organization }
 
   let(:amount)        { 1232.23 }
   let(:amount_str)    { '1,232.23' }
