@@ -20,6 +20,8 @@ describe Organization do
     it { should have_many(:categories).dependent(:destroy) }
     it { should have_many(:transactions).through(:bank_accounts) }
     it { expect(subject).to have_many(:customers).dependent(:destroy) }
+    it { is_expected.to have_many(:invitations).through(:members).
+      source(:created_invitations).dependent(:destroy) }
   end
 
   context 'validation' do

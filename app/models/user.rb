@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
     through: :members, source: :organization, dependent: :restrict_with_error, inverse_of: :owners
   has_many :members, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :members
+  has_many :invitations, foreign_key: :email, primary_key: :email, inverse_of: :user
 
   accepts_nested_attributes_for :profile, update_only: true
 

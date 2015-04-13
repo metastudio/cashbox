@@ -17,6 +17,9 @@ class Member < ActiveRecord::Base
   belongs_to :user
   belongs_to :organization
 
+  has_many :created_invitations, class_name: 'Invitation',
+    foreign_key: :invited_by_id, dependent: :destroy
+
   validates :user, presence: true
   validates :organization, presence: true
   validates :organization_id, uniqueness: { scope: :user_id }
@@ -29,11 +32,11 @@ class Member < ActiveRecord::Base
     owner? || admin?
   end
 
-  def self.available_roles_for(role)
-    unless role == 'owner'
-      Member.role.options(except: 'owner')
-    else
+  def available_roles
+    if role == 'owner'
       Member.role.options
+    else
+      Member.role.options(except: 'owner')
     end
   end
 end

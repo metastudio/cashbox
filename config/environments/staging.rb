@@ -79,4 +79,5 @@ Cashbox::Application.configure do
   config.log_formatter = ::Logger::Formatter.new
 
   config.action_mailer.default_url_options = { host: 'staging.cashbox.metastudiohq.com' }
+  config.action_mailer.default_options = { from: 'no-reply@staging.cashbox.metastudiohq.com' }
 end

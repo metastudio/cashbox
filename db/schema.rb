@@ -18,15 +18,15 @@ ActiveRecord::Schema.define(version: 20150409143014) do
   enable_extension "hstore"
 
   create_table "bank_accounts", force: :cascade do |t|
-    t.string   "name",                                      null: false
-    t.string   "description"
-    t.integer  "balance_cents",   limit: 8, default: 0,     null: false
-    t.string   "currency",                  default: "USD", null: false
-    t.integer  "organization_id",                           null: false
+    t.string   "name",            limit: 255,                 null: false
+    t.string   "description",     limit: 255
+    t.integer  "balance_cents",   limit: 8,   default: 0,     null: false
+    t.string   "currency",        limit: 255, default: "USD", null: false
+    t.integer  "organization_id",                             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
-    t.boolean  "visible",                   default: true
+    t.boolean  "visible",                     default: true
     t.integer  "position"
   end
 
@@ -34,12 +34,12 @@ ActiveRecord::Schema.define(version: 20150409143014) do
   add_index "bank_accounts", ["organization_id"], name: "index_bank_accounts_on_organization_id", using: :btree
 
   create_table "categories", force: :cascade do |t|
-    t.string   "type",                            null: false
-    t.string   "name",                            null: false
+    t.string   "type",            limit: 255,                 null: false
+    t.string   "name",            limit: 255,                 null: false
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "system",          default: false
+    t.boolean  "system",                      default: false
     t.datetime "deleted_at"
   end
 
@@ -63,29 +63,42 @@ ActiveRecord::Schema.define(version: 20150409143014) do
     t.datetime "updated_at"
   end
 
-  create_table "members", force: :cascade do |t|
-    t.integer  "user_id",                   null: false
-    t.integer  "organization_id",           null: false
+  create_table "invitations", force: :cascade do |t|
+    t.string   "token",         limit: 255,                 null: false
+    t.string   "email",         limit: 255,                 null: false
+    t.string   "role",          limit: 255,                 null: false
+    t.boolean  "accepted",                  default: false
+    t.integer  "invited_by_id",                             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "role",                      null: false
-    t.datetime "root_page_last_visited_at"
+  end
+
+  add_index "invitations", ["invited_by_id"], name: "index_invitations_on_invited_by_id", using: :btree
+  add_index "invitations", ["token"], name: "index_invitations_on_token", unique: true, using: :btree
+
+  create_table "members", force: :cascade do |t|
+    t.integer  "user_id",                     null: false
+    t.integer  "organization_id",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "role",            limit: 255, null: false
+    t.datetime "last_visited_at"
   end
 
   add_index "members", ["user_id", "organization_id"], name: "index_members_on_user_id_and_organization_id", unique: true, using: :btree
 
   create_table "organizations", force: :cascade do |t|
-    t.string   "name",                             null: false
+    t.string   "name",             limit: 255,                 null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "default_currency", default: "USD"
+    t.string   "default_currency", limit: 255, default: "USD"
   end
 
   create_table "profiles", force: :cascade do |t|
-    t.integer  "user_id",      null: false
-    t.string   "position"
-    t.string   "avatar"
-    t.string   "phone_number"
+    t.integer  "user_id",                  null: false
+    t.string   "position",     limit: 255
+    t.string   "avatar",       limit: 255
+    t.string   "phone_number", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -93,13 +106,13 @@ ActiveRecord::Schema.define(version: 20150409143014) do
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", unique: true, using: :btree
 
   create_table "transactions", force: :cascade do |t|
-    t.integer  "amount_cents",     limit: 8, default: 0, null: false
+    t.integer  "amount_cents",     limit: 8,   default: 0, null: false
     t.integer  "category_id"
-    t.integer  "bank_account_id",                        null: false
+    t.integer  "bank_account_id",                          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "comment"
-    t.string   "transaction_type"
+    t.string   "comment",          limit: 255
+    t.string   "transaction_type", limit: 255
     t.datetime "deleted_at"
     t.integer  "customer_id"
   end
@@ -110,22 +123,22 @@ ActiveRecord::Schema.define(version: 20150409143014) do
   add_index "transactions", ["deleted_at"], name: "index_transactions_on_deleted_at", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",                      default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
-    t.integer  "failed_attempts",        default: 0,  null: false
-    t.string   "unlock_token"
+    t.string   "current_sign_in_ip",     limit: 255
+    t.string   "last_sign_in_ip",        limit: 255
+    t.integer  "failed_attempts",                    default: 0,  null: false
+    t.string   "unlock_token",           limit: 255
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "full_name",                           null: false
+    t.string   "full_name",              limit: 255,              null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
