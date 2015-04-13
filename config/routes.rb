@@ -1,9 +1,10 @@
 Cashbox::Application.routes.draw do
   devise_for :users, controllers: { registrations: 'user/registrations' }
   as :user do
-    get 'user/profile' => 'user/registrations#edit', as: :user_profile
-    put 'user/update_profile' => 'user/registrations#update_profile', as: :update_user_profile
-    put 'user/update_account' => 'user/registrations#update', as: :update_user_account
+    get 'user/profile' => 'users/registrations#edit', as: :user_profile
+    put 'user/update_profile' => 'users/registrations#update_profile', as: :update_user_profile
+    put 'user/update_account' => 'users/registrations#update', as: :update_user_account
+    post 'invitation/create_user' => 'users/registrations#create_user_from_invitation', :as => 'create_user_from_invitation'
   end
 
   # You can have the root of your site routed with "root"
@@ -23,4 +24,9 @@ Cashbox::Application.routes.draw do
     post :transfer, action: :create_transfer, on: :collection
   end
   resources :members, only: [:index, :edit, :update]
+  resource :invitation, only: [:new, :create] do
+    member do
+      get :accept
+    end
+  end
 end

@@ -16,6 +16,8 @@ describe Member do
   context 'association' do
     it { should belong_to(:user) }
     it { should belong_to(:organization) }
+    it { is_expected.to have_many(:created_invitations).
+      class_name('Invitation').with_foreign_key(:invited_by_id)}
   end
 
   context 'validation' do

@@ -21,6 +21,6 @@ header
                 wrap_tag: :li, active: [['organizations', 'bank_accounts',
                 'categories', 'members', 'customers']]
             = active_link_to 'Profile', user_profile_path, wrap_tag: :li,
-              active: [['user/registrations']]
+              active: [['users/registrations']]
             li
               = link_to 'Sign out', destroy_user_session_path, method: :delete
