@@ -1,18 +1,20 @@
 <% if @transaction.persisted? %>
   if ($('.transactions').size() == 0) {
-      // need to reload because there is no ransack initialized & no transactions table
-      location.reload();
-      if (document.URL == "<%= root_url %>") {
-
-      }
+    $('.transactions_list').
+      html("<%=j render partial: 'transactions/transactions_table',
+        locals: { transactions:
+          Kaminari.paginate_array([@transaction]).page(params[:page]).per(50),
+          search: true } %>").
+      hide().fadeIn(1000);
   }
   else {
-    $("<%=j render('transactions/transaction', transaction: @transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
-    $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new) %>");
+    $("<%=j render('transactions/transaction', transaction: @transaction) %>").
+      hide().prependTo(".transactions").fadeIn(1000);
     scrollTo($("#<%= dom_id(@transaction) %>"));
-    $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
-    $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
   }
+  $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new) %>");
+  $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
+  $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
 <% else %>
   $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: @transaction) %>");
 <% end %>
