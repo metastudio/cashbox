@@ -8,14 +8,19 @@ class InvitationPolicy < ApplicationPolicy
   end
 
   def create?
-    (member.admin? && record.role != 'owner') || member.owner?
+    owner_or_admin_with_access
   end
 
   def destroy?
-    (member.admin? && record.role != 'owner') || member.owner?
+    owner_or_admin_with_access
   end
 
   def resend?
-    (member.admin? && record.role != 'owner') || member.owner?
+    owner_or_admin_with_access
   end
+
+  private
+    def owner_or_admin_with_access
+      (member.admin? && record.role != 'owner') || member.owner?
+    end
 end

@@ -5,12 +5,12 @@ class InvitationsController < ApplicationController
   before_action :find_invitation, only: [:destroy, :resend]
 
   def new
-    authorize :invitation, :new?
+    authorize :invitation
     @invitation = Invitation.new
   end
 
   def index
-    authorize :invitation, :index?
+    authorize :invitation
     @invitations = current_organization.invitations
   end
 

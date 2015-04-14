@@ -9,5 +9,6 @@
       active: [['categories']]
     = active_link_to 'Members', members_path, class: 'list-group-item',
       active: [['members'],['index']]
-    = active_link_to 'Invitations', invitations_path, class: 'list-group-item',
-      active: [['invitations']] if current_member.owner_or_admin?
+    - if policy(:invitations).index?
+      = active_link_to 'Invitations', invitations_path, class: 'list-group-item',
+        active: [['invitations']] if current_member.owner_or_admin?
