@@ -15,6 +15,7 @@ Cashbox::Application.routes.draw do
       put :switch
     end
   end
+  resources :customers, except: :show
   resources :bank_accounts, except: :show do
     put :hide, on: :member
     put :sort, on: :collection
