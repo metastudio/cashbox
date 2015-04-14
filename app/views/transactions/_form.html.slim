@@ -3,8 +3,8 @@
 
   .col-sm-9
     .col-md-3.col-sm-6.col-xs-6
-      = f.input :amount, label: false, input_html: { class: 'amount',
-        value: f.object.amount == 0 ? nil : f.object.amount }
+      = f.input :amount, label: false,
+        input_html: { value: f.object.amount == 0 ? nil : f.object.amount }
     .col-md-3.col-sm-6.col-xs-6
       - if f.object.category.try(:system?)
         = f.input :category, label: false, disabled: true

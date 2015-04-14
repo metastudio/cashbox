@@ -93,7 +93,7 @@ FactoryGirl.define do
 
   factory :transaction do
     bank_account
-    category
+    category { |t| create(:category, organization: t.bank_account.organization) }
     amount { rand(30000.0..50000)/rand(10.0..100) }
 
     trait :income do
@@ -103,25 +103,29 @@ FactoryGirl.define do
     trait :expense do
       association :category, :expense
     end
+
+    trait :with_customer do
+      customer { |t| create(:customer, organization: t.organization) }
+    end
   end
 
   factory :transfer do
-    bank_account_id { create(:bank_account, balance: 99999).id }
-    from_currency   { BankAccount.find(bank_account_id).currency }
-    reference_id    { create(:bank_account,
-      organization: BankAccount.find(bank_account_id).organization).id }
-    to_currency     { BankAccount.find(reference_id).currency}
+    bank_account_id { create(:bank_account, balance: 99999, currency: 'USD').id }
+    reference_id    { |t| create(:bank_account,
+      organization: BankAccount.find(t.bank_account_id).organization).id }
+    from_currency   { 'USD' }
+    to_currency     { 'USD' }
     amount          500
     comission       50
     comment         "comment"
-  end
 
-  trait :with_different_currencies do
-    bank_account_id { create(:bank_account, balance: 99999, currency: "USD").id }
-    from_currency   { BankAccount.find(bank_account_id).currency }
-    reference_id    { create(:bank_account,
-      organization: BankAccount.find(bank_account_id).organization, currency: "RUB").id }
-    to_currency     { BankAccount.find(reference_id).currency}
-    exchange_rate   0.5
+    trait :with_different_currencies do
+      bank_account_id { create(:bank_account, balance: 99999, currency: 'USD').id }
+      reference_id    { |t| create(:bank_account, currency: 'RUB',
+        organization: BankAccount.find(t.bank_account_id).organization).id }
+      from_currency   { 'USD' }
+      to_currency     { 'RUB'}
+      exchange_rate   0.5
+    end
   end
 end

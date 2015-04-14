@@ -33,6 +33,10 @@ describe 'Transactions sort' do
     it_behaves_like 'sortable object', 'Category', :category
   end
 
+  context 'by customer' do
+    it_behaves_like 'sortable object', 'Customer', :customer
+  end
+
   context "filter sort" do
     let!(:transaction)  { create :transaction, bank_account: ba,
       amount: 100, comment: 'Comment' }
