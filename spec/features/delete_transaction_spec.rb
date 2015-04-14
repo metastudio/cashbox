@@ -3,7 +3,6 @@ require 'spec_helper'
 describe 'delete transaction', js: true do
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
-  let!(:category)     { create :category, organization: organization }
   let!(:account)      { create :bank_account, organization: organization}
 
   before do
@@ -15,7 +14,7 @@ describe 'delete transaction', js: true do
   context "within pagination" do
     include_context 'transactions pagination'
     let!(:transactions) { create_list :transaction, transactions_count,
-      bank_account: account, category: category }
+      bank_account: account }
     let(:first_transaction) { transactions.last }
     let(:last_transaction)  { transactions.first }
 
@@ -48,19 +47,36 @@ describe 'delete transaction', js: true do
   end
 
   context "deleting" do
-    let!(:transactions) { create_list :transaction, 5, bank_account: account,
-      category: category }
-    let(:transaction)   { transactions.last }
-
-    before do
+    def delete_transaction
       visit root_path
       find("#transaction_#{transaction.id} .comment").click
       page.has_css?('simple_form edit_transaction')
       click_on "Remove"
     end
 
-    it "removes transaction from list" do
-      expect(subject).to_not have_css("#transaction_#{transaction.id}")
+    context 'when transactions count > 1' do
+      let!(:transactions) { create_list :transaction, 2, bank_account: account }
+      let(:transaction)   { transactions.last }
+
+      before do
+        delete_transaction
+      end
+
+      it "removes transaction from list" do
+        expect(subject).to_not have_css("#transaction_#{transaction.id}")
+      end
+    end
+
+    context 'when the only transaction' do
+      let!(:transaction) { create :transaction, bank_account: account }
+
+      before do
+        delete_transaction
+      end
+
+      it 'show message no transactions' do
+        expect(page).to have_content('This is default page, you will see all transactions')
+      end
     end
   end
 end
