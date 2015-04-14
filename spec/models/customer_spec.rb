@@ -32,7 +32,7 @@ describe Customer do
       deleted_at: Time.now }
 
     it 'raise error when record exists with same organization and name' do
-      expect{ deleted_customer.restore! }.to raise_error(ActiveModel::StrictValidationFailed)
+      expect{ deleted_customer.restore! }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 end
