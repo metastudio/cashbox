@@ -25,6 +25,6 @@ Cashbox::Application.routes.draw do
   end
   resources :members, only: [:index, :edit, :update]
   resources :invitations, only: [:index, :new, :create, :destroy]
-  get 'invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
-  get 'invitation/:token/resend' => 'invitations#resend', as: :resend_invitation
+  get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
+  get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation
 end

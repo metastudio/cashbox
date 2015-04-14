@@ -64,7 +64,7 @@ class InvitationsController < ApplicationController
     end
 
     def find_invitation
-      @invitation = Invitation.find(params[:id])
+      @invitation = Invitation.find_by!(token: params[:token])
     end
 
     def invitation_params
