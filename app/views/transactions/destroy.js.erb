@@ -1,11 +1,13 @@
-// if size == 2 because when last transaction there are 2 <tr> for transaction
-// and its edit form
-if ($('.transactions tbody tr').size() == 2) {
-  location.reload();
-}
-else {
-  $("#<%= dom_id(@transaction) %>").remove();
-  $("#<%= dom_id(@transaction, 'edit_row') %>").remove();
+$("#<%= dom_id(@transaction) %>").remove();
+$("#<%= dom_id(@transaction, 'edit_row') %>").remove();
+
+if ($('.transactions tbody tr').size() == 0) {
+  if (document.URL != "<%= root_url %>") {
+    $('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: [], search: true } %>");
+  }
+  else {
+    $('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: [], search: false } %>");
+  }
 }
 
 $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");

@@ -4,12 +4,14 @@ class TransactionsController < ApplicationController
   after_action :update_last_viewed_at, only: [:create, :create_transfer]
 
   def create
+    @q = Transaction.ransack()
     @transaction = Transaction.new(transaction_params)
     check_relation_to_curr_org(:transaction)
     @transaction.save
   end
 
   def create_transfer
+    @q = Transaction.ransack()
     @transfer = Transfer.new(transfer_params)
     check_relation_to_curr_org(:transfer)
     if @transfer.save
