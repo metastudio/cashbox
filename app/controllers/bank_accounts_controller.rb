@@ -66,8 +66,4 @@ class BankAccountsController < ApplicationController
     def bank_account_params
       params.require(:bank_account).permit(:name, :description, :currency, :residue)
     end
-
-    def pundit_user
-      current_user
-    end
 end

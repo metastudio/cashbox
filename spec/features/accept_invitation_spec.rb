@@ -72,7 +72,7 @@ describe 'Accept invitation' do
     before do
       sign_in existing_user
       token = SecureRandom.urlsafe_base64(nil, false)
-      visit accept_invitation_path(invitation, token: token)
+      visit accept_invitation_path(token: token)
     end
 
     it 'show error msg' do

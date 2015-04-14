@@ -1,7 +1,6 @@
 class OrganizationPolicy < ApplicationPolicy
-
-  def initialize(user, record)
-    @member = user.members.find_by(organization: record) if record
+  def initialize(member, record)
+    @member = member.user.members.find_by(organization: record) if record
     @record = record
   end
 
