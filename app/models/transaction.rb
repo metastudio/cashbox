@@ -53,6 +53,7 @@ class Transaction < ActiveRecord::Base
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
+  validates :created_at, presence: true, on: :update
 
   before_save :check_negative
   after_save :recalculate_amount
