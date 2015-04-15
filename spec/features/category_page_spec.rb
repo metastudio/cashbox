@@ -25,7 +25,7 @@ describe 'category page' do
     it "lists first page categories" do
       within ".categories" do
         categories.last(paginated).each do |category|
-          expect(subject).to have_selector('td', text: /\A#{category.name}\z/)
+          expect(subject).to have_css('td', text: /\A#{category.name}\z/)
         end
       end
     end
@@ -33,7 +33,7 @@ describe 'category page' do
     it "doesnt list last page categories" do
       within ".categories" do
         categories.first(categories_count - paginated).each do |category|
-          expect(subject).to_not have_selector('td', text: /\A#{category.name}\z/)
+          expect(subject).to_not have_css('td', text: /\A#{category.name}\z/)
         end
       end
     end
@@ -48,7 +48,7 @@ describe 'category page' do
       it "doesnt list first page categories" do
         within ".categories" do
           categories.last(paginated).each do |category|
-            expect(subject).to_not have_selector('td', text: /\A#{category.name}\z/)
+            expect(subject).to_not have_css('td', text: /\A#{category.name}\z/)
           end
         end
       end
@@ -56,7 +56,7 @@ describe 'category page' do
       it "lists last categories" do
         within ".categories" do
           categories.first(categories_count - paginated).each do |category|
-            expect(subject).to have_selector('td', text: /\A#{category.name}\z/)
+            expect(subject).to have_css('td', text: /\A#{category.name}\z/)
           end
         end
       end

@@ -95,7 +95,7 @@ describe 'Transactions list' do
       end
     end
 
-    context "switch to second page", js: true do
+    context "switch to second page" do
       before do
         within '.pagination' do
           click_on '2'
