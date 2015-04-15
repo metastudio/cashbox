@@ -56,9 +56,8 @@ class Transaction < ActiveRecord::Base
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
 
-  before_validation :find_customer, if: Proc.new {
-    customer_name.present? && customer_id.blank?
-  }
+  before_validation :find_customer, if: Proc.new{ customer_name.present? &&
+    bank_account.present? }
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
@@ -110,7 +109,7 @@ class Transaction < ActiveRecord::Base
 
   def find_customer
     self.customer = Customer.find_or_initialize_by(
-      name: customer_name, organization_id: bank_account.organization_id)
+      name: customer_name, organization_id: organization.id)
   end
 
   def check_negative

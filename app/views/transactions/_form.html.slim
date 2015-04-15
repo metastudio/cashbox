@@ -1,6 +1,5 @@
 = simple_form_for(transaction, remote: true, html: { class: 'transaction' }) do |f|
   = f.error_notification
-
   .col-sm-9
     .col-md-3.col-sm-6.col-xs-6
       = f.input :amount, label: false,
@@ -13,9 +12,9 @@
       - else
         = f.association :category, as: :grouped_select, collection: current_organization.categories.grouped_by_type, group_method: :last, value_method: :id, prompt: 'Category', label: false
     .col-md-3.col-sm-6.col-xs-6
-      = f.input :customer_id, label: false,
-        input_html: { data: { url: customers_path } }
-      = f.input :customer_name, label: false, as: :hidden
+      = f.input :customer_name, label: false,
+        input_html: { data: { url: autocomplete_customers_path,
+          placeholder: f.object.customer_name || 'Customer'} }
     .col-md-3.col-sm-6.col-xs-6
       - if f.object.bank_account.nil? || f.object.bank_account.visible?
         = f.association :bank_account, as: :grouped_select, include_blank: 'Account',

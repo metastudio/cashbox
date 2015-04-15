@@ -135,6 +135,7 @@ function addTransactionFormMasks() {
   var $form = $("form.transaction")
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
   addCustomerSelect2($form);
+
 }
 
 function addTranferFormMasks() {
@@ -146,31 +147,40 @@ function addTranferFormMasks() {
 
 function addCustomerSelect2($form) {
   var lastResultNames = [];
-  var $customerField = $form.find("input[name='transaction[customer_id]']");
-  var $customerName  = $form.find("input[name='transaction[customer_name]']");
+  var $customerField = $form.find("input[name='transaction[customer_name]']");
   var url = $customerField.data('url');
+
   $customerField.select2({
-    placeholder: "Customer",
     ajax: {
       url: url,
       dataType: "json",
+      data: function (name_includes) {
+        var queryParameters = {
+          query: { term: name_includes }
+        }
+        return queryParameters;
+      },
       results: function(data, page) {
         lastResultNames = $.map( data, function(customer, i) { return customer.name });
         return {
           results: $.map( data, function(customer, i) {
             return {
-              id: customer.id, text: customer.name
+              id: customer.name, text: customer.name
             }
           })
         }
       }
     },
     createSearchChoice: function (input) {
-      var new_item = lastResultNames.indexOf(input) < 0
+      var new_item = lastResultNames.indexOf(input) < 0;
       if (new_item) {
-        $customerName.val(input);
         return { id: input, text: input + " (new)" }
       }
     }
   });
+
+  var name = $customerField.data('placeholder');
+  if (name) {
+    $customerField.select2("data", { id: name, text: name });
+  }
 }
