@@ -12,55 +12,14 @@ describe 'category page' do
 
   subject{ page }
 
-  describe "pagination" do
+  it_behaves_like "paginateable" do
     let(:paginated)        { 10 }
     let(:categories_count) { paginated + 10 }
-
-    let!(:categories) { create_list :category, categories_count, organization: org }
-
-    before do
-      visit categories_path
-    end
-
-    it "lists first page categories" do
-      within ".categories" do
-        categories.last(paginated).each do |category|
-          expect(subject).to have_css('td', text: /\A#{category.name}\z/)
-        end
-      end
-    end
-
-    it "doesnt list last page categories" do
-      within ".categories" do
-        categories.first(categories_count - paginated).each do |category|
-          expect(subject).to_not have_css('td', text: /\A#{category.name}\z/)
-        end
-      end
-    end
-
-    context "switch to second page" do
-      before do
-        within '.pagination' do
-          click_on '2'
-        end
-      end
-
-      it "doesnt list first page categories" do
-        within ".categories" do
-          categories.last(paginated).each do |category|
-            expect(subject).to_not have_css('td', text: /\A#{category.name}\z/)
-          end
-        end
-      end
-
-      it "lists last categories" do
-        within ".categories" do
-          categories.first(categories_count - paginated).each do |category|
-            expect(subject).to have_css('td', text: /\A#{category.name}\z/)
-          end
-        end
-      end
-    end
+    let!(:list)    { FactoryGirl.create_list(:category, categories_count,
+      organization: org).reverse }
+    let(:list_class)     { ".categories" }
+    let(:list_page)      { categories_path }
+    let(:item_id_prefix) { "#category_"}
   end
 
   describe 'when opened via transactions table column' do

@@ -28,6 +28,15 @@ describe 'Transactions list' do
     expect(subject).to_not have_content(money_with_symbol(org2_transaction.amount))
   end
 
+  it_behaves_like "paginateable" do
+    include_context "transactions pagination"
+    let!(:list) { FactoryGirl.create_list(:transaction, transactions_count,
+      bank_account: org1_ba).reverse }
+    let(:list_class)     { ".transactions" }
+    let(:list_page)      { root_path }
+    let(:item_id_prefix) { "#transaction_"}
+  end
+
   describe "links" do
     describe "category" do
       let(:category) { org1_transaction.category.name }
@@ -67,56 +76,6 @@ describe 'Transactions list' do
 
     it "doesn't display another organization transactions" do
       expect(subject).to_not have_content(money_with_symbol(org1_transaction.amount))
-    end
-  end
-
-  context "pagination" do
-    include_context 'transactions pagination'
-    let!(:transactions) { FactoryGirl.create_list(:transaction,
-      transactions_count, bank_account: org1_ba).reverse }
-
-    before do
-      visit root_path
-    end
-
-    it "lists first page transactions" do
-      within ".transactions" do
-        transactions.first(paginated).each do |transaction|
-          expect(subject).to have_css('td', text: money_with_symbol(transaction.amount))
-        end
-      end
-    end
-
-    it "doesnt list second page transactions" do
-      within ".transactions" do
-        transactions.last(5).each do |transaction|
-          expect(subject).to_not have_css('td', text: money_with_symbol(transaction.amount))
-        end
-      end
-    end
-
-    context "switch to second page" do
-      before do
-        within '.pagination' do
-          click_on '2'
-        end
-      end
-
-      it "doesnt list first page transactions" do
-        within ".transactions" do
-          transactions.first(paginated).each do |transaction|
-            expect(subject).to_not have_css('td', text: money_with_symbol(transaction.amount))
-          end
-        end
-      end
-
-      it "lists 5 last transactions" do
-        within ".transactions" do
-          transactions.last(5).each do |transaction|
-            expect(subject).to have_css('td', text: money_with_symbol(transaction.amount))
-          end
-        end
-      end
     end
   end
 

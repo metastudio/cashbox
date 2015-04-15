@@ -12,7 +12,7 @@
         th
     tbody
       - @categories.each do |category|
-        tr
+        tr id=dom_id(category)
           td = category.name
           td = category.type
           td
