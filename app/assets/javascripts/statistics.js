@@ -4,7 +4,7 @@ $(function () {
     dataType: 'json'
   })
   .done(function(response) {
-    drawChart(response, 'income-by-customers');
+    drawChart(response, 'income-by-customers', 'Income by customers');
   })
 
   $.ajax({
@@ -12,11 +12,11 @@ $(function () {
     dataType: 'json'
   })
   .done(function(response) {
-    drawChart(response, 'expense-by-customers');
+    drawChart(response, 'expense-by-customers', 'Expense by customers');
   })
 });
 
-function drawChart(response, css_id) {
+function drawChart(response, css_id, title) {
   if (response == null ) {
     $('.piecharts').addClass('alert alert-warning').html('No data');
     return false;
@@ -31,7 +31,7 @@ function drawChart(response, css_id) {
   formatter.format(pieData, 1);
 
   var options = {
-    title: 'Income by customers',
+    title: title,
     tooltip: { isHtml: true },
     sliceVisibilityThreshold: .0000001
   };
