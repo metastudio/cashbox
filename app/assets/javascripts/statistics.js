@@ -17,6 +17,10 @@ $(function () {
 });
 
 function drawChart(response, css_id) {
+  if (response == null ) {
+    $('.piecharts').addClass('alert alert-warning').html('No data');
+    return false;
+  };
   var data = response.data;
   var ids  = response.ids;
   var pieData = google.visualization.arrayToDataTable(data);
