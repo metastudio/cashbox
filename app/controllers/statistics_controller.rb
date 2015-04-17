@@ -6,7 +6,7 @@ class StatisticsController < ApplicationController
   end
 
   def income_by_customers
-    incomes = current_organization.by_customers(current_organization.categories.incomes)
+    incomes = current_organization.by_customers(:incomes)
 
     respond_to do |format|
       format.json { render json: incomes }
@@ -14,8 +14,7 @@ class StatisticsController < ApplicationController
   end
 
   def expense_by_customers
-    expenses = current_organization.by_customers(current_organization.categories.
-      expenses, expense = true)
+    expenses = current_organization.by_customers(:expenses)
 
     respond_to do |format|
       format.json { render json: expenses }
