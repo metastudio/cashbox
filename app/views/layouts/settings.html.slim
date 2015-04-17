@@ -3,6 +3,7 @@ html
   = render 'shared/layout/head'
   body
     = render 'shared/layout/header'
+
     .container-fluid
       = render 'shared/layout/flash_messages'
       .row
@@ -10,3 +11,6 @@ html
           = yield :sidebar
         .col-sm-9
           = yield
+    footer
+      = yield :google_charts_api
+

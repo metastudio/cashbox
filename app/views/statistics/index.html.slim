@@ -1,5 +1,16 @@
 .page-header
   h2 Statistics
 
+.piecharts
+  #income-by-customers data-url=income_by_customers_statistics_path
+  #expense-by-customers data-url=expense_by_customers_statistics_path
+
 = content_for :sidebar
   = render 'home/settings'
+
+= content_for :google_charts_api
+  = javascript_include_tag 'https://www.google.com/jsapi'
+  = javascript_include_tag 'statistics'
+  javascript:
+    google.load('visualization', '1', {packages: ['corechart']});
+
