@@ -31,7 +31,7 @@ describe 'TimeRange' do
       end
 
       context 'last 3 month' do
-        let(:period) { 'last-3' }
+        let(:period) { 'last-3-months' }
         it { expect(subject).to eq "Sep 12th - Dec 12th" }
       end
     end
@@ -47,7 +47,7 @@ describe 'TimeRange' do
       end
 
       context 'last 3 month' do
-        let(:period) { 'last_3' }
+        let(:period) { 'last-3-months' }
         it { expect(subject).to eq "Oct 12th, 2012 - Jan 12th" }
       end
     end
