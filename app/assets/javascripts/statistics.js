@@ -25,7 +25,6 @@ $(function () {
 
 function drawChart(response, css_id, title, period) {
   if (response == null ) {
-    console.log(css_id)
     $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
     return false;
   };
@@ -73,7 +72,6 @@ function getStatistics(period){
       data: { 'period': period }
     })
     .done(function(response) {
-      console.log('income', pieInc);
       drawChart(response, pieInc, 'Income by customers', period);
     })
   };
@@ -86,7 +84,6 @@ function getStatistics(period){
       data: { 'period': period }
     })
     .done(function(response) {
-      console.log('expense', pieExp);
       drawChart(response, pieExp, 'Expense by customers', period);
     })
   };
