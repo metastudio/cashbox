@@ -91,11 +91,11 @@ class Transaction < ActiveRecord::Base
 
     def custom_dates
       [
-        ["Current month: #{TimeRange.format(Time.now, 'current_month')}", "current_month"],
-        ["Previous month: #{TimeRange.format(Time.now, 'previous_month')}", "previous_month"],
-        ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
-        ["Quarter: #{TimeRange.format(Time.now, 'current_quarter')}", "current_quarter"],
-        ["This year: #{TimeRange.format(Time.now, 'this_year')}", "this_year"],
+        ["Current month: #{TimeRange.format(Time.now, 'current-month')}", "current-month"],
+        ["Previous month: #{TimeRange.format(Time.now, 'previous-month')}", "previous-month"],
+        ["Last 3 months: #{TimeRange.format(Time.now, 'last-3-months')}", "last-3-months"],
+        ["Quarter: #{TimeRange.format(Time.now, 'current-quarter')}", "current-quarter"],
+        ["This year: #{TimeRange.format(Time.now, 'this-year')}", "this-year"],
         ["Custom", "custom"]
       ]
     end

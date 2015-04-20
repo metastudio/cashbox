@@ -71,8 +71,7 @@ class Organization < ActiveRecord::Base
     data, ids = [], []
     calc_to_def_currency(customers, selection)
     calc_total_for_customer(customers, selection, data, ids)
-
-    { data: data, ids: ids, currency_format: currency_format }
+    data.size != 1 ? { data: data, ids: ids, currency_format: currency_format } : nil
   end
 
   private
@@ -114,9 +113,9 @@ class Organization < ActiveRecord::Base
       from_to = TimeRange.period(Time.now, period)
 
       period_condition = case period
-      when 'current_month', 'current_quarter', 'this_year'
+      when 'current-month', 'current-quarter', 'this-year'
         ["transactions.created_at >= ?", from_to[0]]
-      when 'previous_month'
+      when 'previous-month'
         ["transactions.created_at between ? AND ?", from_to[0], from_to[1]]
       else
         nil
