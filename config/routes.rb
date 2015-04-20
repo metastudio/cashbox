@@ -13,8 +13,8 @@ Cashbox::Application.routes.draw do
   resources :organizations do
     collection do
       resources :statistics, only: :index do
-        get :income_by_customers, on: :collection, as: :income_by_customers
-        get :expense_by_customers, on: :collection, as: :expense_by_customers
+        post :income_by_customers, on: :collection, as: :income_by_customers
+        post :expense_by_customers, on: :collection, as: :expense_by_customers
       end
     end
     member do

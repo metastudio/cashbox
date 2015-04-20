@@ -46,7 +46,7 @@ class Organization < ActiveRecord::Base
     end
   end
 
-  def by_customers(categories_type)
+  def by_customers(categories_type, period)
     sum = if categories_type == :expenses
       'sum(abs(transactions.amount_cents))'
     else
@@ -56,8 +56,8 @@ class Organization < ActiveRecord::Base
     selection = transactions.unscope(:order).
       select("#{sum} as total, customers.name as customer_name, customers.id as customer_id, bank_accounts.currency as curr").
       joins(:customer).
-      where('transactions.category_id in (?) AND transactions.created_at >= (?)',
-        categories.send(categories_type).pluck(:id), DateTime.now.beginning_of_month).
+      where('transactions.category_id in (?)', categories.send(categories_type).pluck(:id)).
+      where(period_condition(period)).
       group('customers.id, bank_accounts.id').map do |transaction|
         {
           total:         transaction.total.to_f,
@@ -72,7 +72,7 @@ class Organization < ActiveRecord::Base
     calc_to_def_currency(customers, selection)
     calc_total_for_customer(customers, selection, data, ids)
 
-    data.size > 1 ? { data: data, ids: ids, currency_format: currency_format } : nil
+    { data: data, ids: ids, currency_format: currency_format }
   end
 
   private
@@ -107,6 +107,19 @@ class Organization < ActiveRecord::Base
         { prefix: currency.symbol }
       else
         { suffix: currency.symbol }
+      end
+    end
+
+    def period_condition(period)
+      from_to = TimeRange.period(Time.now, period)
+
+      period_condition = case period
+      when 'current_month', 'current_quarter', 'this_year'
+        ["transactions.created_at >= ?", from_to[0]]
+      when 'previous_month'
+        ["transactions.created_at between ? AND ?", from_to[0], from_to[1]]
+      else
+        nil
       end
     end
 end

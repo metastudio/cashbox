@@ -1,22 +1,31 @@
 module TimeRange
-  def self.format(time, period)
-    case period
-    when 'current'
+  def self.period(time, period_name)
+    case period_name
+    when 'current-month'
       time_to = time
       time_from = time.beginning_of_month
-    when 'prev_month'
+    when 'previous-month'
       time_to = (time - 1.month).end_of_month
       time_from = time_to.beginning_of_month
-    when 'quarter'
+    when 'current-quarter'
       time_to = time
       time_from = time_to.beginning_of_quarter
-    when 'year'
+    when 'this-year'
       time_to = time
       time_from = time_to.beginning_of_year
     when 'last_3'
       time_to = time
       time_from = (time_to - 3.months)
+    else
+      return nil
     end
+    [time_from, time_to]
+  end
+
+  def self.format(time, period_name)
+    from_to   = self.period(time, period_name)
+    time_from = from_to[0]
+    time_to   = from_to[1]
 
     if time.year - time_from.year == 0
       month_day(time_from) + ' - ' + month_day(time_to)

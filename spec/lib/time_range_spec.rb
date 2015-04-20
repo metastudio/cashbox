@@ -10,8 +10,8 @@ describe 'TimeRange' do
         Timecop.travel(2012,12,12)
       end
 
-      context 'current' do
-        let(:period) { 'current' }
+      context 'current_month' do
+        let(:period) { 'current_month' }
         it { expect(subject).to eq "Dec 1st - Dec 12th" }
       end
 

@@ -1,0 +1,27 @@
+.row
+  .col-md-12
+    .panel.with-nav-tabs
+      .panel-heading
+        ul.nav.nav-tabs
+          li.active
+            a data-toggle="tab" href="#current-month"  Current month
+          li
+            a data-toggle="tab" href="#previous-month"  Previous month
+          li
+            a data-toggle="tab" href="#current-quarter"  Current quarter
+          li
+            a data-toggle="tab" href="#this-year"  This year
+          li
+            a data-toggle="tab" href="#all-time"  All time
+      .panel-body
+        .tab-content
+          #current_month.tab-pane.fade.in.active
+            = render 'pie_charts', period: 'current-month'
+          #previous_month.tab-pane.fade
+            = render 'pie_charts', period: 'previous-month'
+          #current_quarter.tab-pane.fade
+            = render 'pie_charts', period: 'current-quarter'
+          #this_year.tab-pane.fade
+            = render 'pie_charts', period: 'this-year'
+          #all_time.tab-pane.fade
+            = render 'pie_charts', period: 'all-time'
