@@ -46,7 +46,7 @@ class Organization < ActiveRecord::Base
     end
   end
 
-  def by_customers(categories_type, period)
+  def by_customers(categories_type, period = nil)
     sum = if categories_type == :expenses
       'sum(abs(transactions.amount_cents))'
     else
