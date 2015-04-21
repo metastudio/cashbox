@@ -11,7 +11,6 @@ Cashbox::Application.routes.draw do
   root 'home#show'
 
   resources :organizations do
-    resources :statistics, only: :index
     member do
       put :switch
     end
