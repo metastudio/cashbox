@@ -16,7 +16,7 @@ describe 'TimeRange' do
       end
 
       context 'previous month' do
-        let(:period) { 'previous-month' }
+        let(:period) { 'previous_month' }
         it { expect(subject).to eq "Nov 1st - Nov 30th" }
       end
 
@@ -42,7 +42,7 @@ describe 'TimeRange' do
       end
 
       context 'previous month' do
-        let(:period) { 'previous-month' }
+        let(:period) { 'prev_month' }
         it { expect(subject).to eq "Dec 1st, 2012 - Dec 31st" }
       end
 
