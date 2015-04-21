@@ -11,12 +11,6 @@ Cashbox::Application.routes.draw do
   root 'home#show'
 
   resources :organizations do
-    collection do
-      resources :statistics, only: :index do
-        post :income_by_customers, on: :collection, as: :income_by_customers
-        post :expense_by_customers, on: :collection, as: :expense_by_customers
-      end
-    end
     member do
       put :switch
     end

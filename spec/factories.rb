@@ -97,11 +97,11 @@ FactoryGirl.define do
     amount { rand(30000.0..50000)/rand(10.0..100) }
 
     trait :income do
-      category { |t| create(:category, :income, organization: t.organization) }
+      association :category, :income
     end
 
     trait :expense do
-      category { |t| create(:category, :expense, organization: t.organization) }
+      association :category, :expense
     end
 
     trait :with_customer do

@@ -18,7 +18,6 @@ describe 'Settings' do
 
     it { expect(page).to have_css('li.active', text: 'Settings')}
     it { expect(page).to have_link('Organizations')}
-    it { expect(page).to have_link('Statistics')}
     it { expect(page).to have_link('Bank accounts')}
     it { expect(page).to have_link('Categories')}
     it { expect(page).to have_link('Members')}

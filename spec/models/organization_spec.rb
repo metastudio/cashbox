@@ -71,18 +71,4 @@ describe Organization do
       end
     end
   end
-
-  describe "#by_customers(categories_type, period)" do
-    let(:org)    { create :organization, default_currency: 'USD' }
-    let(:account){ create :bank_account, organization: org, currency: 'USD',
-      residue: 9999999 }
-
-    context 'when incomes' do
-      it_behaves_like "chart countable", :income, :expense
-    end
-
-    context 'when expenses' do
-      it_behaves_like "chart countable", :expense, :income
-    end
-  end
 end
