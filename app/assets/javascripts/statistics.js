@@ -1,6 +1,7 @@
 $(function () {
   $.ajax({
     url: $('#income-by-customers').data("url"),
+    dataType: 'json'
   })
   .done(function(response) {
     drawChart(response, 'income-by-customers', 'Income by customers');
@@ -8,6 +9,7 @@ $(function () {
 
   $.ajax({
     url: $('#expense-by-customers').data("url"),
+    dataType: 'json'
   })
   .done(function(response) {
     drawChart(response, 'expense-by-customers', 'Expense by customers');
