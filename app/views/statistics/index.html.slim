@@ -1,7 +1,9 @@
 .page-header
   h2 Statistics
 
-= render 'periods_bar'
+.piecharts
+  #income-by-customers data-url=income_by_customers_statistics_path
+  #expense-by-customers data-url=expense_by_customers_statistics_path
 
 = content_for :sidebar
   = render 'home/settings'

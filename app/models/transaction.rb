@@ -91,11 +91,11 @@ class Transaction < ActiveRecord::Base
 
     def custom_dates
       [
-        ["Current month: #{TimeRange.format(Time.now, 'current_month')}", "current_month"],
-        ["Previous month: #{TimeRange.format(Time.now, 'previous_month')}", "previous_month"],
+        ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
+        ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
         ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
-        ["Quarter: #{TimeRange.format(Time.now, 'current_quarter')}", "current_quarter"],
-        ["This year: #{TimeRange.format(Time.now, 'this_year')}", "this_year"],
+        ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
+        ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
         ["Custom", "custom"]
       ]
     end
@@ -124,7 +124,7 @@ class Transaction < ActiveRecord::Base
       where("transactions.created_at >= ?", Time.now.beginning_of_month)
     when "last_3_months"
       where("transactions.created_at >= ?", (Time.now - 3.months).beginning_of_day)
-    when "previous_month"
+    when "prev_month"
       prev_month_begins = Time.now.beginning_of_month - 1.months
       where("transactions.created_at between ? AND ?", prev_month_begins,
         prev_month_begins.end_of_month)
