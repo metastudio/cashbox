@@ -1,6 +1,6 @@
 #sidebar
   h1
-    = link_to 'Organization Statistics', statistics_path
+    = link_to 'Organization Statistics', organization_statistics_path(current_organization)
   h1 Accounts
   - if bank_accounts = current_organization.bank_accounts.visible.positioned
     .accounts
