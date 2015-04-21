@@ -41,6 +41,7 @@ function drawChart(response, css_id, title) {
     var selectedItem = chart.getSelection()[0];
     if (selectedItem) {
       var customer = pieData.getValue(selectedItem.row, 0);
+      var income   = pieData.getValue(selectedItem.row, 1);
       if (customer != 'Other') {
         for (var i = data.length - 1; i >= 0; i--) {
           if (customer == data[i][0]) {

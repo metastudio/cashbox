@@ -46,18 +46,13 @@ class Organization < ActiveRecord::Base
     end
   end
 
-  def by_customers(categories_type)
-    sum = if categories_type == :expenses
-      'sum(abs(transactions.amount_cents))'
-    else
-      'sum(transactions.amount_cents)'
-    end
-
+  def by_customers(categories, expense = false)
+    sum = ( expense ? 'sum(abs(transactions.amount_cents))' : 'sum(transactions.amount_cents)' )
     selection = transactions.unscope(:order).
       select("#{sum} as total, customers.name as customer_name, customers.id as customer_id, bank_accounts.currency as curr").
       joins(:customer).
       where('transactions.category_id in (?) AND transactions.created_at >= (?)',
-        categories.send(categories_type).pluck(:id), DateTime.now.beginning_of_month).
+        categories.pluck(:id), DateTime.now.beginning_of_month).
       group('customers.id, bank_accounts.id').map do |transaction|
         {
           total:         transaction.total.to_f,

@@ -72,7 +72,7 @@ describe Organization do
     end
   end
 
-  describe "#by_customers(categories_type)" do
+  describe "#by_customers(categories, expense = false)" do
     let(:org)    { create :organization, default_currency: 'USD' }
 
     context 'def currency' do
@@ -85,7 +85,7 @@ describe Organization do
             bank_account: account }
 
           it 'is counted' do
-            expect(org.by_customers(:incomes)[:data][1]).
+            expect(org.by_customers(org.categories.incomes)[:data][1]).
               to eq [transaction.customer.name, transaction.amount.to_f]
           end
         end
@@ -96,7 +96,7 @@ describe Organization do
           }
 
           it 'is not counted' do
-            expect(org.by_customers(:incomes)).
+            expect(org.by_customers(org.categories.incomes)).
               to be_nil
           end
         end
@@ -108,7 +108,7 @@ describe Organization do
             bank_account: account }
 
           it 'is not counted' do
-            expect(org.by_customers(:incomes)).
+            expect(org.by_customers(org.categories.incomes)).
               to be_nil
           end
         end
@@ -119,7 +119,7 @@ describe Organization do
           }
 
           it 'is not counted' do
-            expect(org.by_customers(:incomes)).
+            expect(org.by_customers(org.categories.incomes)).
               to be_nil
           end
         end
@@ -139,7 +139,7 @@ describe Organization do
           bank_account: account2 }
 
       it 'is estimated correctly' do
-        expect(org.by_customers(:incomes)[:data][1]).
+        expect(org.by_customers(org.categories.incomes)[:data][1]).
           to eq [transaction.customer.name,
             (transaction.amount + transaction2.amount.exchange_to('USD')).to_f]
       end
@@ -159,7 +159,8 @@ describe Organization do
             bank_account: account }
 
           it 'is not counted' do
-            expect(org.by_customers(:expenses)).to be_nil
+            expect(org.by_customers(org.categories.expenses, true)).
+              to be_nil
           end
         end
 
@@ -169,7 +170,8 @@ describe Organization do
           }
 
           it 'is not counted' do
-            expect(org.by_customers(:expenses)).to be_nil
+            expect(org.by_customers(org.categories.expenses, true)).
+              to be_nil
           end
         end
       end
@@ -180,7 +182,7 @@ describe Organization do
             bank_account: account }
 
           it 'is not counted' do
-            expect(org.by_customers(:expenses)[:data][1]).
+            expect(org.by_customers(org.categories.expenses, true)[:data][1]).
               to eq [transaction.customer.name, transaction.amount.to_f.abs]
           end
         end
@@ -191,7 +193,8 @@ describe Organization do
           }
 
           it 'is not counted' do
-            expect(org.by_customers(:expenses)).to be_nil
+            expect(org.by_customers(org.categories.expenses, true)).
+              to be_nil
           end
         end
       end
@@ -210,7 +213,7 @@ describe Organization do
           bank_account: account2 }
 
       it 'is estimated correctly' do
-        expect(org.by_customers(:expenses)[:data][1]).
+        expect(org.by_customers(org.categories.expenses, true)[:data][1]).
           to eq [transaction.customer.name,
             (transaction.amount + transaction2.amount.exchange_to('USD')).to_f.abs]
       end
