@@ -10,28 +10,28 @@ describe 'TimeRange' do
         Timecop.travel(2012,12,12)
       end
 
-      context 'current-month' do
-        let(:period) { 'current-month' }
+      context 'current_month' do
+        let(:period) { 'current_month' }
         it { expect(subject).to eq "Dec 1st - Dec 12th" }
       end
 
       context 'previous month' do
-        let(:period) { 'previous_month' }
+        let(:period) { 'prev_month' }
         it { expect(subject).to eq "Nov 1st - Nov 30th" }
       end
 
       context 'quarter' do
-        let(:period) { 'current-quarter' }
+        let(:period) { 'quarter' }
         it { expect(subject).to eq "Oct 1st - Dec 12th" }
       end
 
       context 'year' do
-        let(:period) { 'this-year' }
+        let(:period) { 'year' }
         it { expect(subject).to eq "Jan 1st - Dec 12th" }
       end
 
       context 'last 3 month' do
-        let(:period) { 'last-3' }
+        let(:period) { 'last_3' }
         it { expect(subject).to eq "Sep 12th - Dec 12th" }
       end
     end

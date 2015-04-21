@@ -1,7 +1,7 @@
 $(function () {
   getStatistics('current-month');
 
-  $( "a[href$='current-month']" ).click(function() {
+  $( "a[href$='current_month']" ).click(function() {
     getStatistics('current-month');
   });
 
@@ -32,10 +32,12 @@ function drawChart(response, css_id, title, period) {
   var ids  = response.ids;
   var pieData = google.visualization.arrayToDataTable(data);
 
+
   var chart = new google.visualization.PieChart(css_id);
 
   var formatter = new google.visualization.NumberFormat(response.currency_format);
   formatter.format(pieData, 1);
+
   var options = {
     title: title,
     tooltip: { isHtml: true },

@@ -120,17 +120,17 @@ class Transaction < ActiveRecord::Base
 
   def self.period(period)
     case period
-    when "current-month"
+    when "current_month"
       where("transactions.created_at >= ?", Time.now.beginning_of_month)
-    when "last-3-months"
+    when "last_3_months"
       where("transactions.created_at >= ?", (Time.now - 3.months).beginning_of_day)
-    when "previous-month"
+    when "previous_month"
       prev_month_begins = Time.now.beginning_of_month - 1.months
       where("transactions.created_at between ? AND ?", prev_month_begins,
         prev_month_begins.end_of_month)
-    when "this-year"
+    when "this_year"
       where("transactions.created_at >= ?", Time.now.beginning_of_year)
-    when "current-quarter"
+    when "quarter"
       where("transactions.created_at >= ?", Time.now.beginning_of_quarter)
     else
       all

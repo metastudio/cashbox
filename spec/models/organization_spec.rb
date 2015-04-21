@@ -72,17 +72,148 @@ describe Organization do
     end
   end
 
-  describe "#by_customers(categories_type, period)" do
+  describe "#by_customers(categories_type)" do
     let(:org)    { create :organization, default_currency: 'USD' }
-    let(:account){ create :bank_account, organization: org, currency: 'USD',
-      residue: 9999999 }
 
-    context 'when incomes' do
-      it_behaves_like "chart countable", :income, :expense
+    context 'def currency' do
+      let(:account){ create :bank_account, organization: org, currency: 'USD',
+        residue: 9999999 }
+
+      context 'income' do
+        context 'current month' do
+          let!(:transaction) { create :transaction, :with_customer, :income,
+            bank_account: account }
+
+          it 'is counted' do
+            expect(org.by_customers(:incomes)[:data][1]).
+              to eq [transaction.customer.name, transaction.amount.to_f]
+          end
+        end
+
+        context 'prev month' do
+          let!(:transaction) { Timecop.travel(1.month.ago) {
+            create :transaction, :with_customer, :income, bank_account: account }
+          }
+
+          it 'is not counted' do
+            expect(org.by_customers(:incomes)).
+              to be_nil
+          end
+        end
+      end
+
+      context 'expense' do
+        context 'current month' do
+          let!(:transaction) { create :transaction, :with_customer, :expense,
+            bank_account: account }
+
+          it 'is not counted' do
+            expect(org.by_customers(:incomes)).
+              to be_nil
+          end
+        end
+
+        context 'prev month' do
+          let!(:transaction) { Timecop.travel(1.month.ago) {
+            create :transaction, :with_customer, :expense, bank_account: account }
+          }
+
+          it 'is not counted' do
+            expect(org.by_customers(:incomes)).
+              to be_nil
+          end
+        end
+      end
     end
 
-    context 'when expenses' do
-      it_behaves_like "chart countable", :expense, :income
+    context 'aggr currency' do
+      let(:account) { create :bank_account, organization: org, currency: 'USD',
+        residue: 9999999 }
+      let(:account2){ create :bank_account, organization: org, currency: 'RUB',
+        residue: 9999999 }
+
+      let(:customer) { create :customer, organization: org }
+      let!(:transaction) { create :transaction, :income, customer: customer,
+          bank_account: account }
+      let!(:transaction2){ create :transaction, :income, customer: customer,
+          bank_account: account2 }
+
+      it 'is estimated correctly' do
+        expect(org.by_customers(:incomes)[:data][1]).
+          to eq [transaction.customer.name,
+            (transaction.amount + transaction2.amount.exchange_to('USD')).to_f]
+      end
+    end
+  end
+
+  describe "#by_customers(categories, expense = true)" do
+    let(:org)    { create :organization, default_currency: 'USD' }
+
+    context 'def currency' do
+      let(:account){ create :bank_account, organization: org, currency: 'USD',
+        residue: 9999999 }
+
+      context 'income' do
+        context 'current month' do
+          let!(:transaction) { create :transaction, :with_customer, :income,
+            bank_account: account }
+
+          it 'is not counted' do
+            expect(org.by_customers(:expenses)).to be_nil
+          end
+        end
+
+        context 'prev month' do
+          let!(:transaction) { Timecop.travel(1.month.ago) {
+            create :transaction, :with_customer, :income, bank_account: account }
+          }
+
+          it 'is not counted' do
+            expect(org.by_customers(:expenses)).to be_nil
+          end
+        end
+      end
+
+      context 'expense' do
+        context 'current month' do
+          let!(:transaction) { create :transaction, :with_customer, :expense,
+            bank_account: account }
+
+          it 'is not counted' do
+            expect(org.by_customers(:expenses)[:data][1]).
+              to eq [transaction.customer.name, transaction.amount.to_f.abs]
+          end
+        end
+
+        context 'prev month' do
+          let!(:transaction) { Timecop.travel(1.month.ago) {
+            create :transaction, :with_customer, :expense, bank_account: account }
+          }
+
+          it 'is not counted' do
+            expect(org.by_customers(:expenses)).to be_nil
+          end
+        end
+      end
+    end
+
+    context 'aggr currency' do
+      let(:account) { create :bank_account, organization: org, currency: 'USD',
+        residue: 9999999 }
+      let(:account2){ create :bank_account, organization: org, currency: 'RUB',
+        residue: 9999999 }
+
+      let(:customer) { create :customer, organization: org }
+      let!(:transaction) { create :transaction, :expense, customer: customer,
+          bank_account: account }
+      let!(:transaction2){ create :transaction, :expense, customer: customer,
+          bank_account: account2 }
+
+      it 'is estimated correctly' do
+        expect(org.by_customers(:expenses)[:data][1]).
+          to eq [transaction.customer.name,
+            (transaction.amount + transaction2.amount.exchange_to('USD')).to_f.abs]
+      end
     end
   end
 end
