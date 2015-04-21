@@ -1,34 +1,33 @@
 $(function () {
   getStatistics('current-month');
 
-  $( "a[href$='current_month']" ).click(function() {
-    getStatistics('current-month');
-  });
+  // $( "a[href$='current_month']" ).click(function() {
+  //   getStatistics('current-month');
+  // });
 
-  $( "a[href$='previous-month']" ).click(function() {
-    getStatistics('previous-month');
-  });
+  // $( "a[href$='previous-month']" ).click(function() {
+  //   getStatistics('previous-month');
+  // });
 
-  $( "a[href$='current-quarter']" ).click(function() {
-    getStatistics('current-quarter');
-  });
+  // $( "a[href$='current-quarter']" ).click(function() {
+  //   getStatistics('current-quarter');
+  // });
 
-  $( "a[href$='this-year']" ).click(function() {
-    getStatistics('this-year');
-  });
+  // $( "a[href$='this_year']" ).click(function() {
+  //   getStatistics('this-year');
+  // });
 
-  $( "a[href$='all-time']" ).click(function() {
-    getStatistics('all-time');
-  });
+  // $( "a[href$='all_time']" ).click(function() {
+  //   getStatistics('all-time');
+  // });
 
 });
 
-function drawChart(response, css_id, title, period) {
-  if (response == null ) {
-    console.log(css_id)
-    $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
-    return false;
-  };
+function drawChart(response, css_id, title) {
+  // if (response == null ) {
+  //   $('.piecharts').addClass('alert alert-warning').html('No data');
+  //   return false;
+  // };
   var data = response.data;
   var ids  = response.ids;
   var pieData = google.visualization.arrayToDataTable(data);
@@ -46,7 +45,7 @@ function drawChart(response, css_id, title, period) {
   };
   chart.draw(pieData, options);
 
-  function selectHandler(peroid) {
+  function selectHandler() {
     var selectedItem = chart.getSelection()[0];
     if (selectedItem) {
       var customer = pieData.getValue(selectedItem.row, 0);
@@ -54,7 +53,7 @@ function drawChart(response, css_id, title, period) {
         for (var i = data.length - 1; i >= 0; i--) {
           if (customer == data[i][0]) {
             window.location.href = "/?q%5Bcustomer_id_eq%5D=" + ids[i] +
-              "&q%5Bperiod%5D=" + period;
+              "&q%5Bperiod%5D=current_month";
             break;
           }
         };
@@ -65,29 +64,25 @@ function drawChart(response, css_id, title, period) {
 }
 
 function getStatistics(period){
-  var pieInc = document.getElementById(period + '-income-by-customers');
-  if (pieInc) {
-    $.ajax({
-      url: pieInc.getAttribute('data-url'),
-      type: 'post',
-      data: { 'period': period }
-    })
-    .done(function(response) {
-      console.log('income', pieInc);
-      drawChart(response, pieInc, 'Income by customers', period);
-    })
-  };
+  pieId = period + '-income-by-customers';
+  pieId = document.getElementById(pieId);
+  $.ajax({
+    url: pieId.getAttribute('data-url'),
+    type: 'post',
+    data: { 'period': period }
+  })
+  .done(function(response) {
+    drawChart(response, pieId, 'Income by customers');
+  })
 
-  var pieExp = document.getElementById(period + '-expense-by-customers');
-  if (pieExp) {
-    $.ajax({
-      url: pieExp.getAttribute('data-url'),
-      type: 'post',
-      data: { 'period': period }
-    })
-    .done(function(response) {
-      console.log('expense', pieExp);
-      drawChart(response, pieExp, 'Expense by customers', period);
-    })
-  };
+  pieId = period + '-expense-by-customers';
+  pieId = document.getElementById(pieId);
+  $.ajax({
+    url: pieId.getAttribute('data-url'),
+    type: 'post',
+    data: { 'period': period }
+  })
+  .done(function(response) {
+    drawChart(response, pieId, 'Expense by customers');
+  })
 }

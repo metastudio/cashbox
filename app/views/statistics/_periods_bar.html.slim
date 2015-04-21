@@ -15,13 +15,13 @@
             a data-toggle="tab" href="#all-time"  All time
       .panel-body
         .tab-content
-          #current-month.tab-pane.fade.in.active
+          #current_month.tab-pane.fade.in.active
             = render 'pie_charts', period: 'current-month'
-          #previous-month.tab-pane.fade
+          #previous_month.tab-pane.fade
             = render 'pie_charts', period: 'previous-month'
-          #current-quarter.tab-pane.fade
+          #current_quarter.tab-pane.fade
             = render 'pie_charts', period: 'current-quarter'
-          #this-year.tab-pane.fade
+          #this_year.tab-pane.fade
             = render 'pie_charts', period: 'this-year'
-          #all-time.tab-pane.fade
+          #all_time.tab-pane.fade
             = render 'pie_charts', period: 'all-time'

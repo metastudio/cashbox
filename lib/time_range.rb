@@ -13,7 +13,7 @@ module TimeRange
     when 'this-year'
       time_to = time
       time_from = time_to.beginning_of_year
-    when 'last-3-months'
+    when 'last_3'
       time_to = time
       time_from = (time_to - 3.months)
     else
