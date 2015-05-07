@@ -1,0 +1,9 @@
+.page-header
+  h2 New customer
+
+= render 'form'
+
+= link_to 'Back', customers_path
+
+= content_for :sidebar
+  = render 'home/settings'

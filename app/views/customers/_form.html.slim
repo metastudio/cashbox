@@ -1,0 +1,10 @@
+.row
+  .col-sm-6
+    = simple_form_for(@customer) do |f|
+      = f.error_notification
+
+      .form-inputs
+        = f.input :name, autofocus: true
+
+      .form-actions
+        = f.button :submit, class: 'btn-primary'

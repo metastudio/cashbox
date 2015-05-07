@@ -15,6 +15,10 @@ Cashbox::Application.routes.draw do
       put :switch
     end
   end
+  resources :customers, except: :show do
+    get 'autocomplete', on: :collection
+  end
+
   resources :bank_accounts, except: :show do
     put :hide, on: :member
     put :sort, on: :collection

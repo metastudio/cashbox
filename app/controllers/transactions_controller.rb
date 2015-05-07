@@ -32,15 +32,17 @@ class TransactionsController < ApplicationController
 
   def check_relation_to_curr_org(trans)
     tparams = params[trans]
-    trans = trans == :transaction ? @transaction : @transfer
+    trans = @transaction || @transfer
     curr_bank_accounts = current_organization.bank_accounts
     trans.bank_account_id = curr_bank_accounts.find_by_id(tparams[:bank_account_id]).try(:id)
     trans.category_id =
       current_organization.categories.find_by_id(tparams[:category_id]).try(:id) if tparams[:category_id]
     trans.reference_id =
       curr_bank_accounts.find_by_id(tparams[:reference_id]).try(:id) if tparams[:reference_id]
-    trans.customer_id =
-      current_organization.customers.find_by_id(tparams[:customer_id]).try(:id) if trans == @transaction
+    if @transaction && tparams[:customer_id]
+      trans.customer_id =
+        current_organization.customers.find_by_id(tparams[:customer_id]).try(:id)
+    end
   end
 
   def set_transaction
@@ -49,7 +51,7 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
-     :comment, :comission, :reference_id, :customer_id)
+     :comment, :comission, :reference_id, :customer_name)
   end
 
   def transfer_params
