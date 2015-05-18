@@ -135,6 +135,8 @@ function addTransactionFormMasks() {
   var $form = $("form.transaction")
   $form.find("select[name='transaction[customer_id]']").select2();
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
+  $form.find('#transaction_created_at').inputmask('d/m/y');
+  datepickerInit($form.find('#transaction_created_at.datepicker'));
 }
 
 function addTranferFormMasks() {

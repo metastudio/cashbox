@@ -49,6 +49,7 @@ en:
         amount: 'Amount'
         comission: 'Comission'
         comment: 'Comment'
+        created_at: 'Date'
 
   helpers:
     submit:
