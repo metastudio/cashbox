@@ -16,7 +16,7 @@
     = paginate transactions, remote: true
   .row.col-sm-12
     = render 'home/flow' if params[:q]
-- elsif params[:q].blank?
+- elsif params[:q].blank? && search == false
   .alert.alert-warning
     | This is default page, you will see all transactions from your organization
     =<> current_organization.name

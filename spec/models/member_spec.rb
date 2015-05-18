@@ -2,12 +2,13 @@
 #
 # Table name: members
 #
-#  id              :integer          not null, primary key
-#  user_id         :integer          not null
-#  organization_id :integer          not null
-#  created_at      :datetime
-#  updated_at      :datetime
-#  role            :string           not null
+#  id                        :integer          not null, primary key
+#  user_id                   :integer          not null
+#  organization_id           :integer          not null
+#  created_at                :datetime
+#  updated_at                :datetime
+#  role                      :string           not null
+#  root_page_last_visited_at :datetime
 #
 
 require 'spec_helper'

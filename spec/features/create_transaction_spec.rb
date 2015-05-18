@@ -54,10 +54,57 @@ describe 'create transaction', js: true do
       expect{ subject }.to change{ transactions.count }.by(1)
     end
 
+    context 'when no filters applied' do
+      let!(:transaction) { create :transaction, bank_account: account }
+
+      before do
+        visit root_path
+      end
+
+      it "shows created transaction in transactions list" do
+        create_transaction
+        within ".transactions" do
+          expect(page).to have_content(amount_str)
+        end
+      end
+    end
+
+    context 'when matching filter applied' do
+      let!(:transaction) { create :transaction, bank_account: account }
+
+      before do
+        visit root_path
+        select account.to_s, from: 'q[bank_account_id_eq]'
+        click_on 'Search'
+      end
+
+      it "shows created transaction in transactions list" do
+        create_transaction
+        within ".transactions" do
+          expect(page).to have_content(amount_str)
+        end
+      end
+    end
+
+    context 'when not matching filter applied' do
+      before do
+        visit root_path
+        fill_in 'q[amount_eq]', with: '91.13'
+        click_on 'Search'
+      end
+    end
+
     it "shows created transaction in transactions list" do
       create_transaction
       within ".transactions" do
         expect(page).to have_content(amount_str)
+      end
+    end
+
+    it "not marked as unread" do
+      create_transaction
+      within "#transaction_#{Transaction.last.id}" do
+        expect(page).to_not have_css(".new_transaction")
       end
     end
 

@@ -1,7 +1,6 @@
 = simple_form_for(transaction, remote: true, html: { class: 'transaction' }) do |f|
-  = f.error_notification
-
   .col-sm-9
+    = f.error_notification
     .col-md-3.col-sm-6.col-xs-6
       = f.input :amount, label: false,
         input_html: { value: f.object.amount == 0 ? nil : f.object.amount }
