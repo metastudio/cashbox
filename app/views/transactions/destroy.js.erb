@@ -1,4 +1,14 @@
-$('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: @transactions } %>");
+$("#<%= dom_id(@transaction) %>").remove();
+$("#<%= dom_id(@transaction, 'edit_row') %>").remove();
+
+if ($('.transactions tbody tr').size() == 0) {
+  if (document.URL != "<%= root_url %>") {
+    $('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: [], search: true } %>");
+  }
+  else {
+    $('.transactions_list').html("<%=j render partial: 'transactions/transactions_table', locals: { transactions: [], search: false } %>");
+  }
+}
 
 $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
 $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");

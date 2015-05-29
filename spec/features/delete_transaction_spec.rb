@@ -47,36 +47,24 @@ describe 'delete transaction', js: true do
   end
 
   context "deleting" do
-    def delete_transaction
-      visit root_path
-      find("#transaction_#{transaction.id} .comment").click
-      page.has_css?('simple_form edit_transaction')
-      click_on "Remove"
+    let!(:transaction)   { create :transaction, bank_account: account }
+
+    context 'when no filters' do
+      before do
+        visit root_path
+      end
+
+      it_behaves_like "js table row deletable", "This is default page, you will"
     end
 
-    context 'when transactions count > 1' do
-      let!(:transactions) { create_list :transaction, 2, bank_account: account }
-      let(:transaction)   { transactions.last }
-
+    context 'when matching filter applied' do
       before do
-        delete_transaction
+        visit root_path
+        select account.to_s, from: 'q[bank_account_id_eq]'
+        click_on 'Search'
       end
 
-      it "removes transaction from list" do
-        expect(subject).to_not have_css("#transaction_#{transaction.id}")
-      end
-    end
-
-    context 'when the only transaction' do
-      let!(:transaction) { create :transaction, bank_account: account }
-
-      before do
-        delete_transaction
-      end
-
-      it 'show message no transactions' do
-        expect(page).to have_content('This is default page, you will see all transactions')
-      end
+      it_behaves_like "js table row deletable", "There is nothing found"
     end
   end
 end
