@@ -9,7 +9,7 @@
   $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: @transfer) %>");
   <% if @transfer.currency_mismatch? %>
     $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
-    $('#transfer_exchange_rate').parents('.col-sm-1').removeClass('hidden');
+    $('#transfer_exchange_rate').parents('.col-sm-6').removeClass('hidden');
   <% end %>
 <% end %>
 $("#new_transfer_form").show();
