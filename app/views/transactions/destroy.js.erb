@@ -1,9 +1,5 @@
 $("#<%= dom_id(@transaction) %>").remove();
 $("#<%= dom_id(@transaction, 'edit_row') %>").remove();
 
-<% if Transaction.count == 0 %>
-  $('.transactions_list').html("<%=j render partial: 'transactions/no_transactions' %>");
-<% end %>
-
 $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
 $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
