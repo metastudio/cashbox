@@ -38,7 +38,7 @@ class Organization < ActiveRecord::Base
         org_rates << to_curr + '_TO_' + curr
       end
     end
-
+    Money.default_bank.update_rates
     bank_rates = Money.default_bank.rates.deep_dup.keep_if do |curr_to_curr, value|
       org_rates.any? do |org_rate|
         curr_to_curr == org_rate
