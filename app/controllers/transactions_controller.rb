@@ -14,7 +14,6 @@ class TransactionsController < ApplicationController
     if @transfer.save
       @inc_transaction = @transfer.inc_transaction
       @out_transaction = @transfer.out_transaction
-      Money.default_bank.update_rates
     end
   end
 
