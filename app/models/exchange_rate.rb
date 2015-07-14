@@ -15,9 +15,8 @@ class ExchangeRate < ActiveRecord::Base
 
   class << self
     def update_rates
-      Money.default_bank.update_rates
       ExchangeRate.create!(
-        rates: Money.default_bank.rates,
+        rates: Money.default_bank.update_rates,
         updated_from_bank_at: Money.default_bank.rates_updated_at
       )
     end
