@@ -1,0 +1,20 @@
+#new_transfer_form {
+  display: none;
+}
+
+.exchange-helper {
+  font-size: 80%;
+}
+#total_balance {
+  .totals {
+    margin-bottom: 15px;
+  }
+}
+
+.positive.new-transaction {
+  background-color: darken(<%= Dictionaries.account_colors['positive'] %>, 20) !important;
+}
+
+.negative.new-transaction {
+  background-color: darken(<%= Dictionaries.account_colors['negative'] %>, 20) !important;
+}
