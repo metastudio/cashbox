@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326084339) do
+ActiveRecord::Schema.define(version: 20150715051113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,8 +51,10 @@ ActiveRecord::Schema.define(version: 20150326084339) do
     t.integer  "organization_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
+  add_index "customers", ["deleted_at"], name: "index_customers_on_deleted_at", using: :btree
   add_index "customers", ["name", "organization_id"], name: "index_customers_on_name_and_organization_id", unique: true, using: :btree
   add_index "customers", ["organization_id"], name: "index_customers_on_organization_id", using: :btree
 
@@ -82,6 +84,7 @@ ActiveRecord::Schema.define(version: 20150326084339) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "role",            limit: 255, null: false
+    t.datetime "last_visited_at"
   end
 
   add_index "members", ["user_id", "organization_id"], name: "index_members_on_user_id_and_organization_id", unique: true, using: :btree

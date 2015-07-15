@@ -30,4 +30,5 @@ Cashbox::Application.routes.draw do
       get :accept
     end
   end
+  resources :customers, except: :show
 end
