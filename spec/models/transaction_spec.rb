@@ -27,6 +27,7 @@ describe Transaction do
   context "validation" do
     it { should validate_presence_of(:category)     }
     it { should validate_presence_of(:bank_account) }
+    it { expect(subject).to validate_presence_of(:created_at).on(:update) }
 
     context "custom" do
       subject { transaction }

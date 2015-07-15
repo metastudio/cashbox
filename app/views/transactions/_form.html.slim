@@ -23,5 +23,9 @@
         = f.input :bank_account, label: false, disabled: true
     .col-md-3.col-sm-6.col-xs-6
       = f.input :comment, label: false
+    - if params[:controller] == 'transactions'
+      .col-md-3.col-sm-6.col-xs-6
+        = f.input :created_at, as: :string, label: false, input_html: { class: 'datepicker',
+          value: f.object.created_at.try(:strftime,'%d/%m/%Y') }
   .col-sm-3
     = render 'transactions/btn_block', f: f, transaction: transaction, selected: 'Transaction'

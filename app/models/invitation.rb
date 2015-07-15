@@ -23,10 +23,9 @@ class Invitation < ActiveRecord::Base
 
   after_create :send_invitation
 
-  validates :invited_by_id, presence: true
-  validates :role, presence: true
+  validates :invited_by_id, :role, :email, presence: true
   validate :role_inclusion
-  validates :email, presence: true, format: { with: Devise.email_regexp }
+  validates :email, format: { with: Devise.email_regexp }
   validate :email_uniq
 
   enumerize :role, in: [:user, :admin, :owner], default: :user, predicates: true
@@ -43,6 +42,10 @@ class Invitation < ActiveRecord::Base
 
   def send_invitation
     InvitationMailer.new_invitation(self).deliver_now
+  end
+
+  def owner
+    User.find(self.invited_by_id).full_name
   end
 
   private

@@ -25,7 +25,8 @@ $(function () {
   $(document).on('click', '.clear-form', function(e) {
     e.preventDefault();
 
-    $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
+    $(this).closest('form')[0].reset();
+    $('#q_customer_id_eq').select2();
   });
 
   $(document).on('click', ".transaction .dropdown-menu li a, .transfer .dropdown-menu li a", function(e) {
@@ -135,6 +136,8 @@ function addTransactionFormMasks() {
   var $form = $("form.transaction")
   $form.find("select[name='transaction[customer_id]']").select2();
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
+  $form.find('#transaction_created_at').inputmask('d/m/y');
+  datepickerInit($form.find('#transaction_created_at.datepicker'));
 }
 
 function addTranferFormMasks() {

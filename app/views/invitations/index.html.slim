@@ -5,7 +5,7 @@
 
 
 - if @invitations.present?
-  table.table.table-stripped.table-hover
+  table.table.table-stripped.table-hover.invitations
     thead
       tr
         th Inviter
@@ -15,21 +15,13 @@
         th Date
         th
     tbody
-      - @invitations.each do |invitation|
-        tr
-          td.word-break = User.find(invitation.invited_by_id).full_name
-          td.word-break = invitation.email
-          td = invitation.role.capitalize
-          td = invitation.accepted? ? 'Yes' : 'No'
-          td = I18n.l invitation.created_at
-          td.text-right
-            .btn-group
-              = link_to 'Resend', resend_invitation_path(token: invitation.token),
-                class: 'btn btn-primary'
-              = link_to 'Destroy', invitation_path(invitation),
-                method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'
+      = render partial: 'invitation', collection: @invitations
 - else
   .alert.alert-warning No invitations
+
+
+#paginator.col-md-offset-5
+ = paginate @invitations, remote: true
 
 = content_for :sidebar
   = render 'home/settings'
