@@ -6,10 +6,6 @@ describe 'Transactions sort' do
   let(:user) { create :user }
   let(:org)  { create :organization, with_user: user }
   let(:ba)   { create :bank_account, organization: org }
-  let(:cat)  { create :category, organization: org, name: 'cat'  }
-  let(:cat2) { create :category, organization: org, name: 'cat2' }
-  let(:cat3) { create :category, organization: org, name: 'cat3' }
-  let(:cat4) { create :category, organization: org, name: 'cat4' }
 
   before do
     sign_in user
@@ -30,10 +26,20 @@ describe 'Transactions sort' do
   end
 
   context "by category" do
+    let(:cat)  { create :category, organization: org, name: 'cat'  }
+    let(:cat2) { create :category, organization: org, name: 'cat2' }
+    let(:cat3) { create :category, organization: org, name: 'cat3' }
+    let(:cat4) { create :category, organization: org, name: 'cat4' }
+
     it_behaves_like 'sortable object', 'Category', :category
   end
 
   context 'by customer' do
+    let(:cust)  { create :customer, organization: org, name: 'cust'  }
+    let(:cust2) { create :customer, organization: org, name: 'cust2' }
+    let(:cust3) { create :customer, organization: org, name: 'cust3' }
+    let(:cust4) { create :customer, organization: org, name: 'cust4' }
+
     it_behaves_like 'sortable object', 'Customer', :customer
   end
 
