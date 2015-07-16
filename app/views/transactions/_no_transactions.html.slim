@@ -1,0 +1,6 @@
+.alert.alert-warning
+  | This is default page, you will see all transactions from your organization
+  =<> current_organization.name
+  | here. But there is no any data yet. Please
+  =<> link_to 'add bank accounts', new_bank_account_path, class: 'alert-link'
+  | and some transactions then.

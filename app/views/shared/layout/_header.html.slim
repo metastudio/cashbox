@@ -2,7 +2,7 @@ header
   nav.navbar.navbar-inverse
     .container-fluid
       .navbar-header
-        = link_to 'CashBox', root_path, class: 'navbar-brand'
+        = active_link_to 'CashBox', root_path, class: 'navbar-brand', active: :exclusive
         - if signed_in?
 
           button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"

@@ -11,6 +11,10 @@
   margin: 0 auto;
 }
 
+.navbar-inverse .navbar-brand.active {
+  color: #fff;
+}
+
 #dropdown-total {
   li {
     border-top: 1px solid #ccc;

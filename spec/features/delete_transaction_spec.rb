@@ -66,17 +66,5 @@ describe 'delete transaction', js: true do
         expect(subject).to_not have_css("#transaction_#{transaction.id}")
       end
     end
-
-    context 'when the only transaction' do
-      let!(:transaction) { create :transaction, bank_account: account }
-
-      before do
-        delete_transaction
-      end
-
-      it 'show message no transactions' do
-        expect(page).to have_content('This is default page, you will see all transactions')
-      end
-    end
   end
 end

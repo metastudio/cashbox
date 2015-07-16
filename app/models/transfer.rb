@@ -127,12 +127,14 @@ class Transfer
     def estimate_amount(out)
       estimated_amount = out ? (amount_cents + comission_cents) : amount_cents
       if currency_mismatch?
-        Money.add_rate(from_currency, to_currency, exchange_rate.to_d)
+        rate = Money.default_bank.get_rate(from_currency, to_currency)
+        Money.default_bank.add_rate(from_currency, to_currency, exchange_rate.to_d)
         estimated_amount = if out
           Money.new(estimated_amount, from_currency).cents
         else
           Money.new(estimated_amount, from_currency).exchange_to(to_currency).cents
         end
+        Money.default_bank.add_rate(from_currency, to_currency, rate)
       end
       estimated_amount
     end
