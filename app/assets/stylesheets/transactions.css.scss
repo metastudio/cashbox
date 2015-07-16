@@ -12,9 +12,9 @@
 }
 
 .positive.new-transaction {
-  background-color: darken(<%= Dictionaries.account_colors['positive'] %>, 20) !important;
+  background-color: darken($positive-color, 20) !important;
 }
 
 .negative.new-transaction {
-  background-color: darken(<%= Dictionaries.account_colors['negative'] %>, 20) !important;
+  background-color: darken($negative-color, 20) !important;
 }

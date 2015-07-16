@@ -1,0 +1,22 @@
+#sidebar {
+  .accounts {
+    .amount{
+      width: 50%;
+    }
+    .name{
+      width: 50%;
+    }
+  }
+}
+
+.negative {
+  background-color: $negative-color !important;
+}
+
+.positive {
+  background-color: $positive-color !important;
+}
+
+.empty {
+  background-color: $empty-color !important;
+}
