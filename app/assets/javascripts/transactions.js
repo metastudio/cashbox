@@ -25,8 +25,9 @@ $(function () {
   $(document).on('click', '.clear-form', function(e) {
     e.preventDefault();
 
-    $(this).closest('form')[0].reset();
-    $('#q_customer_id_eq').select2();
+    // clear all fields in the form, instead of the standard reset
+    $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
+    $('#q_customer_id_eq').select2('data', { id: 0, text: 'Customer' });
   });
 
   $(document).on('click', ".transaction .dropdown-menu li a, .transfer .dropdown-menu li a", function(e) {

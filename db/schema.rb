@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150715051113) do
+ActiveRecord::Schema.define(version: 20150716081149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20150715051113) do
   end
 
   add_index "customers", ["deleted_at"], name: "index_customers_on_deleted_at", using: :btree
-  add_index "customers", ["name", "organization_id"], name: "index_customers_on_name_and_organization_id", unique: true, using: :btree
+  add_index "customers", ["name", "organization_id", "deleted_at"], name: "index_customers_on_name_and_organization_id_and_deleted_at", unique: true, using: :btree
   add_index "customers", ["organization_id"], name: "index_customers_on_organization_id", using: :btree
 
   create_table "exchange_rates", force: :cascade do |t|
@@ -123,6 +123,15 @@ ActiveRecord::Schema.define(version: 20150715051113) do
   add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
   add_index "transactions", ["customer_id"], name: "index_transactions_on_customer_id", using: :btree
   add_index "transactions", ["deleted_at"], name: "index_transactions_on_deleted_at", using: :btree
+
+  create_table "user_organizations", force: :cascade do |t|
+    t.integer  "user_id",         null: false
+    t.integer  "organization_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_organizations", ["user_id", "organization_id"], name: "index_user_organizations_on_user_id_and_organization_id", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255, default: "", null: false
