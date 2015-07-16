@@ -30,5 +30,7 @@ Cashbox::Application.routes.draw do
       get :accept
     end
   end
-  resources :customers, except: :show
+  resources :customers, except: :show do
+    get 'autocomplete', on: :collection
+  end
 end
