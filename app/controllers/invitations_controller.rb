@@ -11,7 +11,7 @@ class InvitationsController < ApplicationController
 
   def index
     authorize :invitation
-    @invitations = current_organization.invitations.page(params[:page]).per(1)
+    @invitations = current_organization.invitations.page(params[:page]).per(10)
   end
 
   def create
@@ -66,7 +66,7 @@ class InvitationsController < ApplicationController
   end
 
   def find_invitation
-    @invitation = Invitation.find_by!(token: params[:token])
+    @invitation = current_organization.invitations.find_by!(token: params[:token])
   end
 
   def invitation_params
