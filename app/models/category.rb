@@ -33,6 +33,8 @@ class Category < ActiveRecord::Base
 
   self.inheritance_column = nil
 
+  scope :ordered, -> { order('created_at DESC') }
+
   belongs_to :organization, inverse_of: :categories
   has_many :transactions, inverse_of: :category, dependent: :destroy
 

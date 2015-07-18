@@ -4,7 +4,7 @@ class CustomersController < ApplicationController
   before_action :require_organization
 
   def index
-    @customers = current_organization.customers.page(params[:page]).per(10)
+    @customers = current_organization.customers.ordered.page(params[:page]).per(10)
   end
 
   def new
