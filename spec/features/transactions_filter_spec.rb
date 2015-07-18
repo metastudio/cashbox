@@ -393,9 +393,9 @@ describe 'Transactions filter' do
 
       it 'display nil flow' do
         within '#flow' do
-          expect(page).to have_content("Income:#{amount}")
-          expect(page).to have_content("Expense:#{amount}")
-          expect(page).to have_content("Total:#{amount}")
+          expect(page).to have_content("Income: #{amount}")
+          expect(page).to have_content("Expense: #{amount}")
+          expect(page).to have_content("Total: #{amount}")
         end
       end
     end
