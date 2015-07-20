@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   before_action :require_organization
 
   def index
-    @categories = current_organization.categories.page(params[:page]).per(10)
+    @categories = current_organization.categories.ordered.page(params[:page]).per(10)
   end
 
   def new

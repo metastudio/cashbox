@@ -1,0 +1,8 @@
+tr id=dom_id(category)
+  td = category.name
+  td = category.type
+  td
+    .btn-group.pull-right
+      = link_to 'Edit', edit_category_path(category), class: 'btn btn-default btn-sm'
+      = link_to 'Delete', category, data: {confirm: 'Are you sure?'},
+        method: :delete, class: 'btn btn-danger btn-sm'
