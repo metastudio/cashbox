@@ -3,12 +3,10 @@ require 'spec_helper'
 describe MemberPolicy do
   include_context 'organization with roles'
 
-
   let(:owner_context) { MemberContext.new(owner_member) }
   let(:admin_context) { MemberContext.new(admin_member) }
   let(:admin_wrong_context) { MemberContext.new(admin_member, {member: {role: 'owner'}}) }
   let(:user_context) { MemberContext.new(user_member) }
-
 
   subject { MemberPolicy }
 

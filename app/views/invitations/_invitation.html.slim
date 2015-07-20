@@ -1,0 +1,12 @@
+tr
+  td.word-break = invitation.owner
+  td.word-break = invitation.email
+  td = invitation.role.capitalize
+  td = invitation.accepted? ? 'Yes' : 'No'
+  td = I18n.l invitation.created_at
+  td.text-right
+    .btn-group
+      = link_to 'Resend', resend_invitation_path(token: invitation.token),
+        class: 'btn btn-primary'
+      = link_to 'Destroy', invitation_path(invitation),
+        method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger'

@@ -1,0 +1,2 @@
+$('.invitations').html('<%= j render(@invitations) %>');
+$('#paginator').html('<%= j (paginate(@invitations, remote: true).to_s) %>');
