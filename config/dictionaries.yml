@@ -3,7 +3,3 @@ currencies:
   - RUB
   - EUR
 money_max: 9_223_372_036_854_774
-account_colors:
-  negative: '#f2dede'
-  positive: '#dff0d8'
-  empty: 'whitesmoke'
