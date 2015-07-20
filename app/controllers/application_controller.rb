@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def update_last_viewed_at
+    current_member.update(last_visited_at: Time.now)
+  end
+
   def user_not_authorized
     flash[:error] = "You are not authorized to perform this action."
     redirect_to(request.referrer || root_path)

@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   before_filter :require_organization
+  before_action :update_last_viewed_at
 
   def show
     @q = current_organization.transactions.ransack(params[:q])

@@ -128,4 +128,11 @@ FactoryGirl.define do
       exchange_rate   0.5
     end
   end
+
+  factory :invitation do
+    email   { create(:user).email }
+    role    { Member.role.default_value }
+    member  { create :member }
+    accepted { false }
+  end
 end

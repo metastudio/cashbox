@@ -25,10 +25,8 @@ Cashbox::Application.routes.draw do
     post :transfer, action: :create_transfer, on: :collection
   end
   resources :members, only: [:index, :edit, :update]
-  resource :invitation, only: [:new, :create] do
-    member do
-      get :accept
-    end
-  end
   resources :customers, except: :show
+  resources :invitations, only: [:index, :new, :create, :destroy]
+  get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
+  get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation
 end

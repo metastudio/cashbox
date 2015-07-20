@@ -8,6 +8,7 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  role            :string           not null
+#  last_visited_at :datetime
 #
 
 require 'spec_helper'

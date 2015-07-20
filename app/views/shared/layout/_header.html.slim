@@ -19,7 +19,7 @@ header
             - if current_organization
               = active_link_to 'Settings', organization_path(current_organization),
                 wrap_tag: :li, active: [['organizations', 'bank_accounts',
-                'categories', 'members', 'customers', 'statistics']]
+                'categories', 'members', 'customers', 'statistics', 'invitations']]
             = active_link_to 'Profile', user_profile_path, wrap_tag: :li,
               active: [['users/registrations']]
             li

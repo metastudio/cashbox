@@ -50,4 +50,9 @@ class ApplicationPolicy
       scope
     end
   end
+
+  protected
+    def owner_or_admin_with_access?
+      (member.admin? && record.role != 'owner') || member.owner?
+    end
 end

@@ -17,7 +17,7 @@
           td = organization.owners.map(&:email).join(', ')
           td
             .btn-group.pull-right
-              = link_to 'Show', organization, class: 'btn btn-default btn-sm btn'
+              = link_to 'Show', organization, class: 'btn btn-default btn-sm'
               - if policy(organization).edit?
                 = link_to 'Edit', edit_organization_path(organization),
                   class: 'btn btn-default btn-sm'
