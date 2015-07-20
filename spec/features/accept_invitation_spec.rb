@@ -51,10 +51,10 @@ describe 'Accept invitation' do
     it { expect(page).to have_content "Sign in" }
 
     context 'when signed in' do
-      let(:token) { Invitation.last.token }
+      let(:invitation) { existing_user.invitations.last }
       before do
         sign_in existing_user
-        visit accept_invitation_url(token: token)
+        visit accept_invitation_url(invitation, token: invitation.token)
       end
 
       it { expect(page).to have_content "You joined #{admin_member.organization.name}" }
@@ -68,6 +68,7 @@ describe 'Accept invitation' do
 
   context 'with invalid token' do
     let(:existing_user) { create :user, :with_organization }
+    let(:invitation) { create :invitation, email: existing_user.email, member: admin_member}
     before do
       sign_in existing_user
       token = SecureRandom.urlsafe_base64(nil, false)

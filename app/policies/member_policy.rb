@@ -5,7 +5,7 @@ class MemberPolicy < ApplicationPolicy
       return false unless member.owner?
     end
 
-    member.owner? || (member.admin? && record.role != 'owner')
+    owner_or_admin_with_access?
   end
 
 end

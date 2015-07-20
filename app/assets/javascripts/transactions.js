@@ -182,7 +182,7 @@ function addCustomerSelect2($form) {
     }
   });
 
-  var name = $customerField.data('placeholder');
+  var name = $customerField.data('value');
   if (name) {
     $customerField.select2("data", { id: name, text: name });
   }

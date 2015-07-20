@@ -46,7 +46,9 @@ describe 'organizations pages' do
         end
 
         context 'not current organization' do
-          let!(:not_current_org) { create :organization, with_user: user }
+          let!(:member)  { create :member, user: user, role: 'user' }
+          let!(:member2) { create :member, user: user, role: 'owner' }
+
           before do
             visit organizations_path
             click_on 'Delete'

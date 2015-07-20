@@ -1,10 +1,17 @@
 class InvitationsController < ApplicationController
+  layout 'settings'
   skip_filter :authenticate_user!, only: :accept
-  before_filter :find_invitation, only: :accept
+  before_action :find_active_invitation, only: :accept
+  before_action :find_invitation, only: [:resend]
 
   def new
+    authorize :invitation
     @invitation = Invitation.new
-    authorize @invitation, :create?
+  end
+
+  def index
+    authorize :invitation
+    @invitations = current_organization.invitations.page(params[:page]).per(10)
   end
 
   def create
@@ -15,6 +22,25 @@ class InvitationsController < ApplicationController
       redirect_to new_invitation_path, notice: 'An invitation was created successfully'
     else
       render :new
+    end
+  end
+
+  def resend
+    authorize @invitation
+    if @invitation.send_invitation
+      redirect_to invitations_path, notice: 'An invitation has been resent'
+    else
+      redirect_to invitations_path, error: 'Couldn\'t resend an invitation'
+    end
+  end
+
+  def destroy
+    @invitation = Invitation.find(params[:id])
+    authorize @invitation
+    if @invitation.destroy
+      redirect_to invitations_path, notice: 'An inventation was destroyed successfully'
+    else
+      redirect_to invitations_path, error: 'Couldn\'t destroy an invitation'
     end
   end
 
@@ -34,9 +60,13 @@ class InvitationsController < ApplicationController
 
   private
 
-  def find_invitation
+  def find_active_invitation
     @invitation = Invitation.active.find_by(token: params[:token])
     redirect_to root_path, alert: 'Bad invitation token' unless @invitation
+  end
+
+  def find_invitation
+    @invitation = current_organization.invitations.find_by!(token: params[:token])
   end
 
   def invitation_params
@@ -46,5 +76,4 @@ class InvitationsController < ApplicationController
   def user_params
     params.require(:user).permit(:full_name, :password)
   end
-
 end

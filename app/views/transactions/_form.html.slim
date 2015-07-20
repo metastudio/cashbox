@@ -15,7 +15,7 @@
     .col-md-3.col-sm-6.col-xs-6
       = f.input :customer_name, label: false,
         input_html: { data: { url: autocomplete_customers_path,
-          placeholder: f.object.customer_name || 'Customer'} }
+          placeholder: 'Customer', value: f.object.customer_name } }
     .col-md-3.col-sm-6.col-xs-6
       - if f.object.bank_account.nil? || f.object.bank_account.visible?
         = f.association :bank_account, as: :grouped_select, label: false,

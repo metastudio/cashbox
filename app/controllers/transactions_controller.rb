@@ -40,7 +40,7 @@ class TransactionsController < ApplicationController
     trans.reference_id =
       curr_bank_accounts.find_by_id(tparams[:reference_id]).try(:id) if tparams[:reference_id]
     trans.customer_id =
-      current_organization.customers.find_by_name(tparams[:customer_name]).try(:name) if trans == @transaction
+      current_organization.customers.find_by_name(tparams[:customer_name]).try(:id) if trans == @transaction
   end
 
   def set_transaction
