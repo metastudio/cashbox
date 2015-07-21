@@ -1,0 +1,27 @@
+.row
+  .col-md-12
+    .panel.with-nav-tabs
+      .panel-heading
+        ul.nav.nav-tabs
+          li.active
+            = link_to 'Current month', '#current-month', data: { toggle: 'tab', url: "#current-month" }
+          li
+            = link_to 'Previous month', '#previous-month', data: { toggle: 'tab', url: "#previous-month" }
+          li
+            = link_to 'Current quarter', '#current-quarter', data: { toggle: 'tab', url: "#current-quarter" }
+          li
+            = link_to 'This year', '#this-year', data: { toggle: 'tab', url: "#this-year" }
+          li
+            = link_to 'All time', '#all-time', data: { toggle: 'tab', url: "#all-time" }
+      .panel-body
+        .tab-content
+          .tab-pane#current-month.active
+            = render 'pie_charts', period: 'current_month'
+          .tab-pane#previous-month
+            = render 'pie_charts', period: 'prev_month'
+          .tab-pane#current-quarter
+            = render 'pie_charts', period: 'quarter'
+          .tab-pane#this-year
+            = render 'pie_charts', period: 'this_year'
+          .tab-pane#all-time
+            = render 'pie_charts', period: 'all_time'
