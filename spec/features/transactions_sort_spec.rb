@@ -10,6 +10,10 @@ describe 'Transactions sort' do
   let(:cat2) { create :category, organization: org, name: 'cat2' }
   let(:cat3) { create :category, organization: org, name: 'cat3' }
   let(:cat4) { create :category, organization: org, name: 'cat4' }
+  let(:cust)  { create :customer, organization: org, name: 'cust'  }
+  let(:cust2) { create :customer, organization: org, name: 'cust2' }
+  let(:cust3) { create :customer, organization: org, name: 'cust3' }
+  let(:cust4) { create :customer, organization: org, name: 'cust4' }
 
   before do
     sign_in user
