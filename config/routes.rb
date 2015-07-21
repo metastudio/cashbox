@@ -28,7 +28,9 @@ Cashbox::Application.routes.draw do
     post :transfer, action: :create_transfer, on: :collection
   end
   resources :members, only: [:index, :edit, :update]
-  resources :customers, except: :show
+  resources :customers, except: :show do
+    get 'autocomplete', on: :collection
+  end
   resources :invitations, only: [:index, :new, :create, :destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
   get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation

@@ -37,6 +37,14 @@ class CustomersController < ApplicationController
     redirect_to customers_path
   end
 
+  def autocomplete
+    @customers = current_organization.customers.where("name like ?", "%#{query_params[:term]}%")
+
+    respond_to do |format|
+      format.json { render json: @customers , only: [:id, :name] }
+    end
+  end
+
   private
 
   def set_customer
@@ -45,5 +53,9 @@ class CustomersController < ApplicationController
 
   def customer_params
     params.require(:customer).permit(:name)
+  end
+
+  def query_params
+    params.require(:query).permit(:term)
   end
 end

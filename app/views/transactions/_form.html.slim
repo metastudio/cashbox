@@ -13,8 +13,9 @@
           collection: current_organization.categories.grouped_by_type,
           group_method: :last, prompt: 'Category', label: false, value_method: :id
     .col-md-3.col-sm-6.col-xs-6
-      = f.input :customer_id, as: :select, include_blank: 'Customer',
-        label: false, collection: current_organization.customers
+      = f.input :customer_name, label: false,
+        input_html: { data: { url: autocomplete_customers_path,
+          placeholder: 'Customer', value: f.object.customer_name } }
     .col-md-3.col-sm-6.col-xs-6
       - if f.object.bank_account.nil? || f.object.bank_account.visible?
         = f.association :bank_account, as: :grouped_select, label: false,
