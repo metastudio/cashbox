@@ -7,4 +7,4 @@ set :deploy_to, '/var/www/rails/staging.cashbox.metastudiohq.com'
 set :rvm_type, :system
 set :rvm_ruby_version, 'ruby-2.1.1@cashbox'
 
-server 'metastudio.ru', user: 'admin', roles: %w{web app db worker}
+server 'metastudio.ru', user: 'developer', roles: %w{web app db worker}
