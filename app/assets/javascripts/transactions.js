@@ -135,10 +135,10 @@ function datepickerInit(selector) {
 
 function addTransactionFormMasks() {
   var $form = $("form.transaction")
-  $form.find("select[name='transaction[customer_id]']").select2();
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
   $form.find('#transaction_created_at').inputmask('d/m/y');
   datepickerInit($form.find('#transaction_created_at.datepicker'));
+  addCustomerSelect2($form);
 }
 
 function addTranferFormMasks() {
@@ -146,4 +146,44 @@ function addTranferFormMasks() {
   $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
   $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
   $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
+}
+
+function addCustomerSelect2($form) {
+  var lastResultNames = [];
+  var $customerField = $form.find("input[name='transaction[customer_name]']");
+  var url = $customerField.data('url');
+
+  $customerField.select2({
+    ajax: {
+      url: url,
+      dataType: "json",
+      data: function (name_includes) {
+        var queryParameters = {
+          query: { term: name_includes }
+        }
+        return queryParameters;
+      },
+      results: function(data, page) {
+        lastResultNames = $.map( data, function(customer, i) { return customer.name });
+        return {
+          results: $.map( data, function(customer, i) {
+            return {
+              id: customer.name, text: customer.name
+            }
+          })
+        }
+      }
+    },
+    createSearchChoice: function (input) {
+      var new_item = lastResultNames.indexOf(input) < 0;
+      if (new_item) {
+        return { id: input, text: input + " (new)" }
+      }
+    }
+  });
+
+  var name = $customerField.data('value');
+  if (name) {
+    $customerField.select2("data", { id: name, text: name });
+  }
 }
