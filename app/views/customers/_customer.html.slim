@@ -1,5 +1,5 @@
 tr id=dom_id(customer)
-  td = customer.name
+  td = customer.to_s
   td
     .btn-group.pull-right
       = link_to 'Edit', edit_customer_path(customer),
