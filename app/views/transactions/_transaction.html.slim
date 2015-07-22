@@ -2,7 +2,7 @@ tr.transaction id=dom_id(transaction) class=colorize_transaction(transaction) da
   td.col-sm-2 = money_with_symbol transaction.amount
 
   td.col-sm-2.word-break
-    = link_to transaction.category.name,
+    = link_to transaction.category.to_s,
       root_path(q: (params[:q] || {}).merge(category_id_eq: transaction.category.id)),
       data: { stop_propagation: true } if transaction.category
   td.col-sm-3.word-break
