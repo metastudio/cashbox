@@ -23,6 +23,7 @@
 
 //= require transactions
 //= require bank_accounts
+//= require statistics
 //= require jquery.inputmask.customization
 //= require select2
 

@@ -1,26 +1,11 @@
 $(function () {
-  getStatistics('current_month');
-
-  $( "a[href$='current-month']" ).click(function() {
-    getStatistics('current_month');
+  path = window.location.href.split('/');
+  if (path[path.length - 1] == 'statistics') {
+    getStatistics('current-month');
+  };
+  $(document).on('click', '#periods_bar li a', function(e) {
+    getStatistics($(this).data('period'));
   });
-
-  $( "a[href$='previous-month']" ).click(function() {
-    getStatistics('prev_month');
-  });
-
-  $( "a[href$='current-quarter']" ).click(function() {
-    getStatistics('quarter');
-  });
-
-  $( "a[href$='this-year']" ).click(function() {
-    getStatistics('this_year');
-  });
-
-  $( "a[href$='all-time']" ).click(function() {
-    getStatistics('all_time');
-  });
-
 });
 
 function drawChart(response, css_id, title, period) {

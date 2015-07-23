@@ -61,36 +61,36 @@ class Organization < ActiveRecord::Base
           currency:      transaction.curr
         }
       end
-    customers = {}
-    data, ids = [], []
-    calc_to_def_currency(customers, selection)
-    calc_total_for_customer(customers, selection, data, ids)
-    data.size > 1 ? { data: data, ids: ids, currency_format: currency_format } : nil
+    customers = calc_to_def_currency(selection)
+    data = calc_total_for_customer(customers, selection)
+    data.keys.size > 1 ? { data: data.values, ids: data.keys, currency_format: currency_format } : nil
   end
 
   private
 
-  def calc_to_def_currency(customers, selection)
-    selection.each do |income|
-      customers[income[:customer_id]] = income[:customer_name]
-      if income[:currency] != default_currency
-        income[:total] = Money.new(income[:total], income[:currency]).exchange_to(default_currency).cents
-        income[:currency] = default_currency
+  def calc_to_def_currency(selection)
+    customers = {}
+    selection.each do |trans|
+      customers[trans[:customer_id]] = trans[:customer_name]
+      if trans[:currency] != default_currency
+        trans[:total] = Money.new(trans[:total], trans[:currency]).exchange_to(default_currency).cents
+        trans[:currency] = default_currency
       end
     end
+    customers
   end
 
-  def calc_total_for_customer(customers, selection, data, ids)
+  def calc_total_for_customer(customers, selection)
+    hash = {}
+    hash[nil] = ['Customer', 'Income in default currency']
     customers.each_pair do |id, name|
       total_for_customer = 0
-      selection.each do |income|
-        total_for_customer += income[:total] if income[:customer_id] == id
+      selection.each do |trans|
+        total_for_customer += trans[:total] if trans[:customer_id] == id
       end
-      ids  << id
-      data << [ name, (total_for_customer.to_f/100).round(2) ]
+      hash[id] = [name, (total_for_customer.to_f/100).round(2)]
     end
-    data.unshift(['Customer', 'Income in default currency'])
-    ids.unshift(nil)
+    hash
   end
 
   def currency_format

@@ -83,7 +83,7 @@ describe Organization do
         context 'current month' do
           let!(:transaction) { create :transaction, :with_customer, :income,
             bank_account: account }
-          subject { org.by_customers(:incomes, 'current_month')[:data][1] }
+          subject { org.by_customers(:incomes, 'current-month')[:data][1] }
 
           it 'is counted' do
             expect(subject).to eq [transaction.customer.name, transaction.amount.to_f]
@@ -94,7 +94,7 @@ describe Organization do
           let!(:transaction) { Timecop.travel(1.month.ago) {
             create :transaction, :with_customer, :income, bank_account: account }
           }
-          subject { org.by_customers(:incomes, 'current_month') }
+          subject { org.by_customers(:incomes, 'current-month') }
 
           it 'is not counted' do
             expect(subject).to be_nil
@@ -106,7 +106,7 @@ describe Organization do
         context 'current month' do
           let!(:transaction) { create :transaction, :with_customer, :expense,
             bank_account: account }
-          subject { org.by_customers(:incomes, 'current_month') }
+          subject { org.by_customers(:incomes, 'current-month') }
 
           it 'is not counted' do
             expect(subject).to be_nil
@@ -117,7 +117,7 @@ describe Organization do
           let!(:transaction) { Timecop.travel(1.month.ago) {
             create :transaction, :with_customer, :expense, bank_account: account }
           }
-          subject { org.by_customers(:incomes, 'current_month') }
+          subject { org.by_customers(:incomes, 'current-month') }
 
           it 'is not counted' do
             expect(subject).to be_nil
@@ -137,7 +137,7 @@ describe Organization do
           bank_account: account }
       let!(:transaction2){ create :transaction, :income, customer: customer,
           bank_account: account2 }
-      subject { org.by_customers(:incomes, 'current_month')[:data][1] }
+      subject { org.by_customers(:incomes, 'current-month')[:data][1] }
 
       it 'is estimated correctly' do
         expect(subject).to eq [transaction.customer.name,
@@ -157,7 +157,7 @@ describe Organization do
         context 'current month' do
           let!(:transaction) { create :transaction, :with_customer, :income,
             bank_account: account }
-          subject { org.by_customers(:expenses, 'current_month') }
+          subject { org.by_customers(:expenses, 'current-month') }
 
           it 'is not counted' do
             expect(subject).to be_nil
@@ -168,7 +168,7 @@ describe Organization do
           let!(:transaction) { Timecop.travel(1.month.ago) {
             create :transaction, :with_customer, :income, bank_account: account }
           }
-          subject { org.by_customers(:expenses, 'current_month') }
+          subject { org.by_customers(:expenses, 'current-month') }
 
           it 'is not counted' do
             expect(subject).to be_nil
@@ -180,7 +180,7 @@ describe Organization do
         context 'current month' do
           let!(:transaction) { create :transaction, :with_customer, :expense,
             bank_account: account }
-          subject { org.by_customers(:expenses, 'current_month')[:data][1] }
+          subject { org.by_customers(:expenses, 'current-month')[:data][1] }
 
           it 'is not counted' do
             expect(subject).to eq [transaction.customer.name, transaction.amount.to_f.abs]
@@ -191,7 +191,7 @@ describe Organization do
           let!(:transaction) { Timecop.travel(1.month.ago) {
             create :transaction, :with_customer, :expense, bank_account: account }
           }
-          subject { org.by_customers(:expenses, 'current_month') }
+          subject { org.by_customers(:expenses, 'current-month') }
 
           it 'is not counted' do
             expect(subject).to be_nil

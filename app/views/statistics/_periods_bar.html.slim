@@ -2,26 +2,30 @@
   .col-md-12
     .panel.with-nav-tabs
       .panel-heading
-        ul.nav.nav-tabs
+        ul.nav.nav-tabs#periods_bar
           li.active
-            = link_to 'Current month', '#current-month', data: { toggle: 'tab', url: "#current-month" }
+            = link_to 'Current month', '#current-month', data: { toggle: 'tab', period: 'current-month' }
           li
-            = link_to 'Previous month', '#previous-month', data: { toggle: 'tab', url: "#previous-month" }
+            = link_to 'Previous month', '#previous-month', data: { toggle: 'tab', period: 'prev-month' }
           li
-            = link_to 'Current quarter', '#current-quarter', data: { toggle: 'tab', url: "#current-quarter" }
+            = link_to 'Last 3 month', '#last-3-month', data: { toggle: 'tab', period: 'last-3-month' }
           li
-            = link_to 'This year', '#this-year', data: { toggle: 'tab', url: "#this-year" }
+            = link_to 'Current quarter', '#current-quarter', data: { toggle: 'tab', period: 'quarter' }
           li
-            = link_to 'All time', '#all-time', data: { toggle: 'tab', url: "#all-time" }
+            = link_to 'This year', '#this-year', data: { toggle: 'tab', period: 'this-year' }
+          li
+            = link_to 'All time', '#all-time', data: { toggle: 'tab', period: 'all-time' }
       .panel-body
         .tab-content
           .tab-pane#current-month.active
-            = render 'pie_charts', period: 'current_month'
+            = render 'pie_charts', period: 'current-month'
           .tab-pane#previous-month
-            = render 'pie_charts', period: 'prev_month'
+            = render 'pie_charts', period: 'prev-month'
+          .tab-pane#last-3-month
+            = render 'pie_charts', period: 'last-3-month'
           .tab-pane#current-quarter
             = render 'pie_charts', period: 'quarter'
           .tab-pane#this-year
-            = render 'pie_charts', period: 'this_year'
+            = render 'pie_charts', period: 'this-year'
           .tab-pane#all-time
-            = render 'pie_charts', period: 'all_time'
+            = render 'pie_charts', period: 'all-time'
