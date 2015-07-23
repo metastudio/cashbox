@@ -137,8 +137,8 @@ function datepickerInit(selector) {
 function addTransactionFormMasks() {
   var $form = $("form.transaction")
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
-  $form.find('#transaction_created_at').inputmask('d/m/y');
-  datepickerInit($form.find('#transaction_created_at.datepicker'));
+  $form.find('#transaction_date').inputmask('d/m/y');
+  datepickerInit($form.find('#transaction_date.datepicker'));
   addCustomerSelect2($form);
 }
 
@@ -147,6 +147,8 @@ function addTranferFormMasks() {
   $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
   $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
   $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
+  $form.find('#transfer_date').inputmask('d/m/y');
+  datepickerInit($form.find('#transfer_date.datepicker'));
 }
 
 function addCustomerSelect2($form) {

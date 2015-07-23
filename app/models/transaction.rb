@@ -12,6 +12,7 @@
 #  transaction_type :string
 #  deleted_at       :datetime
 #  customer_id      :integer
+#  date             :datetime
 #
 
 require "./lib/time_range.rb"
@@ -40,7 +41,7 @@ class Transaction < ActiveRecord::Base
   delegate :currency, to: :bank_account, allow_nil: true
   delegate :income?, :expense?, to: :category, allow_nil: true
 
-  default_scope { order(created_at: :desc) }
+  default_scope { order(date: :desc) }
   # scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
@@ -55,11 +56,12 @@ class Transaction < ActiveRecord::Base
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
-  validates :created_at, presence: true, on: :update
+  validates :date, presence: true, on: :update
 
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
 
   before_save :check_negative
+  after_create :check_date
   after_save :recalculate_amount
   after_destroy :recalculate_amount
   after_restore :recalculate_amount
@@ -118,6 +120,10 @@ class Transaction < ActiveRecord::Base
     nil
   end
 
+  def check_date
+    update(date: created_at) unless date
+  end
+
   def recalculate_amount
     bank_account.recalculate_amount!
     nil
@@ -130,17 +136,17 @@ class Transaction < ActiveRecord::Base
   def self.period(period)
     case period
     when "current_month"
-      where("transactions.created_at >= ?", Time.now.beginning_of_month)
+      where("transactions.date >= ?", Time.now.beginning_of_month)
     when "last_3_months"
-      where("transactions.created_at >= ?", (Time.now - 3.months).beginning_of_day)
+      where("transactions.date >= ?", (Time.now - 3.months).beginning_of_day)
     when "prev_month"
       prev_month_begins = Time.now.beginning_of_month - 1.months
-      where("transactions.created_at between ? AND ?", prev_month_begins,
+      where("transactions.date between ? AND ?", prev_month_begins,
         prev_month_begins.end_of_month)
     when "this_year"
-      where("transactions.created_at >= ?", Time.now.beginning_of_year)
+      where("transactions.date >= ?", Time.now.beginning_of_year)
     when "quarter"
-      where("transactions.created_at >= ?", Time.now.beginning_of_quarter)
+      where("transactions.date >= ?", Time.now.beginning_of_quarter)
     else
       all
     end
@@ -149,7 +155,7 @@ class Transaction < ActiveRecord::Base
   def self.date_from(from)
     from = DateTime.parse(from).beginning_of_day rescue nil
     if from && from.year > 0
-      where("transactions.created_at >= ?", from)
+      where("transactions.date >= ?", from)
     else
       all
     end
@@ -158,7 +164,7 @@ class Transaction < ActiveRecord::Base
   def self.date_to(to)
     to = DateTime.parse(to).end_of_day rescue nil
     if to && to.year > 0
-      where("transactions.created_at <= ?", to)
+      where("transactions.date <= ?", to)
     else
       all
     end
