@@ -66,6 +66,6 @@ class Category < ActiveRecord::Base
   end
 
   def to_s
-    name.truncate(30);
+    name.truncate(30)
   end
 end
