@@ -11,7 +11,8 @@ MoneyRails.configure do |config|
   # Example:
   # config.default_bank = EuCentralBank.new
   config.default_bank = RussianCentralBankSafe.new
-  config.default_bank.update_rates
+  config.default_bank.ttl = 1.day # autoupdate every day
+  config.default_bank.update_rates(Date.yesterday)
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)
