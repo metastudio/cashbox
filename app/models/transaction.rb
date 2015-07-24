@@ -41,7 +41,7 @@ class Transaction < ActiveRecord::Base
   delegate :currency, to: :bank_account, allow_nil: true
   delegate :income?, :expense?, to: :category, allow_nil: true
 
-  default_scope { order(date: :desc) }
+  scope :ordered, -> { order('created_at DESC') }
   # scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
@@ -57,11 +57,11 @@ class Transaction < ActiveRecord::Base
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
   validates :date, presence: true, on: :update
+  validate  :check_date, on: :create
 
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
 
   before_save :check_negative
-  after_create :check_date
   after_save :recalculate_amount
   after_destroy :recalculate_amount
   after_restore :recalculate_amount
@@ -121,7 +121,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def check_date
-    update(date: created_at) unless date
+    update(date: Time.now) if date.nil?
   end
 
   def recalculate_amount

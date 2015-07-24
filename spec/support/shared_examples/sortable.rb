@@ -18,7 +18,7 @@ shared_examples_for "sortable object" do |sort_by, field|
       money_with_symbol(elem.send(field))
     when :bank_account || :category || :customer
       elem.send(field).name
-    when :created_at
+    when :date
       I18n.l elem.send(field)
     else
       elem.send(field)
