@@ -17,6 +17,7 @@ class RussianCentralBankSafe < Money::Bank::RussianCentralBank
           update_parsed_rates exchange_rates(date)
           @rates_updated_at = Time.now
           @rates_updated_on = date
+          update_expired_at
           logger.info('Updated rates from Bank')
           @rates
         rescue Exception => e
