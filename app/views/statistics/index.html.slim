@@ -1,5 +1,12 @@
 .page-header
-  h2 Statistics
+  h1 Statistics
+
+= render 'periods_bar'
 
 = content_for :sidebar
   = render 'home/settings'
+
+= content_for :footer
+  = javascript_include_tag 'https://www.google.com/jsapi'
+  javascript:
+    google.load('visualization', '1', {packages: ['corechart']});
