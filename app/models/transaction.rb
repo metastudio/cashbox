@@ -41,7 +41,7 @@ class Transaction < ActiveRecord::Base
   delegate :currency, to: :bank_account, allow_nil: true
   delegate :income?, :expense?, to: :category, allow_nil: true
 
-  scope :ordered, -> { order('created_at DESC') }
+  default_scope { order(date: :desc) }
   # scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
@@ -56,11 +56,11 @@ class Transaction < ActiveRecord::Base
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
-  validates :date, presence: true, on: :update
-  validate  :check_date, on: :create
+  validates :date, presence: true
+  #validate  :check_date, on: :create
 
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
-
+  before_validation :set_date, if: Proc.new{ date.blank? }
   before_save :check_negative
   after_save :recalculate_amount
   after_destroy :recalculate_amount
@@ -98,11 +98,11 @@ class Transaction < ActiveRecord::Base
 
     def custom_dates
       [
-        ["Current month: #{TimeRange.format(Time.now, 'current')}", "current_month"],
-        ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev_month"],
-        ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last_3_months"],
+        ["Current month: #{TimeRange.format(Time.now, 'current')}", "current-month"],
+        ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev-month"],
+        ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last-3-months"],
         ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
-        ["This year: #{TimeRange.format(Time.now, 'year')}", "this_year"],
+        ["This year: #{TimeRange.format(Time.now, 'year')}", "this-year"],
         ["Custom", "custom"]
       ]
     end
@@ -120,8 +120,8 @@ class Transaction < ActiveRecord::Base
     nil
   end
 
-  def check_date
-    update(date: Time.now) if date.nil?
+  def set_date
+    self.date = Time.now
   end
 
   def recalculate_amount
@@ -135,18 +135,18 @@ class Transaction < ActiveRecord::Base
 
   def self.period(period)
     case period
-    when "current_month"
-      where("transactions.date >= ?", Time.now.beginning_of_month)
-    when "last_3_months"
-      where("transactions.date >= ?", (Time.now - 3.months).beginning_of_day)
-    when "prev_month"
+    when 'current-month'
+      where('transactions.date >= ?', Time.now.beginning_of_month)
+    when 'last-3-months'
+      where('transactions.date >= ?', (Time.now - 3.months).beginning_of_day)
+    when 'prev-month'
       prev_month_begins = Time.now.beginning_of_month - 1.months
-      where("transactions.date between ? AND ?", prev_month_begins,
+      where('transactions.date between ? AND ?', prev_month_begins,
         prev_month_begins.end_of_month)
-    when "this_year"
-      where("transactions.date >= ?", Time.now.beginning_of_year)
-    when "quarter"
-      where("transactions.date >= ?", Time.now.beginning_of_quarter)
+    when 'this-year'
+      where('transactions.date >= ?', Time.now.beginning_of_year)
+    when 'quarter'
+      where('transactions.date >= ?', Time.now.beginning_of_quarter)
     else
       all
     end

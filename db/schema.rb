@@ -117,7 +117,7 @@ ActiveRecord::Schema.define(version: 20150723081851) do
     t.string   "transaction_type", limit: 255
     t.datetime "deleted_at"
     t.integer  "customer_id"
-    t.datetime "date"
+    t.datetime "date",                                     null: false
   end
 
   add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree

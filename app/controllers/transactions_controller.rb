@@ -1,6 +1,7 @@
 class TransactionsController < ApplicationController
   before_action :require_organization
   before_action :set_transaction,  only: [:edit, :update, :destroy]
+  after_action :update_last_viewed_at, only: [:create, :create_transfer]
 
   def create
     @transaction = Transaction.new(transaction_params)

@@ -154,9 +154,9 @@ describe 'Transactions filter' do
       let!(:transaction)  { create :transaction, bank_account: ba }
       let!(:transaction2) { create :transaction, bank_account: ba }
       let!(:transaction3) { Timecop.travel(2.month.ago) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(2.month.ago) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let(:correct_items) { [transaction,  transaction2] }
       let(:wrong_items)   { [transaction3, transaction4] }
 
@@ -171,9 +171,9 @@ describe 'Transactions filter' do
 
     context "when previous month" do
       let!(:transaction)  { Timecop.travel(1.month.ago) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction2) { Timecop.travel(1.month.ago) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction3) { create :transaction, bank_account: ba }
       let!(:transaction4) { create :transaction, bank_account: ba }
       let(:correct_items) { [transaction,  transaction2] }
@@ -191,11 +191,11 @@ describe 'Transactions filter' do
     context "when last 3 months" do
       let!(:transaction)  { create :transaction, bank_account: ba }
       let!(:transaction2) { Timecop.travel(2.month.ago) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction3) { Timecop.travel(3.month.ago) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(4.month.ago) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let(:correct_items) { [transaction,  transaction2, transaction3] }
       let(:wrong_items)   { [transaction4] }
 
@@ -211,13 +211,13 @@ describe 'Transactions filter' do
     context "when last quarter" do
       let!(:quarter_start){ Time.now.beginning_of_quarter }
       let!(:transaction)  { Timecop.travel(quarter_start) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction2) { Timecop.travel(quarter_start + 1.month) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction3) { Timecop.travel(quarter_start - 1.month) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(quarter_start - 2.month) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let(:correct_items) { [transaction,  transaction2] }
       let(:wrong_items)   { [transaction3, transaction4] }
 
@@ -233,13 +233,13 @@ describe 'Transactions filter' do
     context "when last year" do
       let!(:year_start)   { Time.now.beginning_of_year }
       let!(:transaction)  { Timecop.travel(year_start) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction2) { Timecop.travel(rand(year_start..Time.now.end_of_year)) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction3) { Timecop.travel(rand(year_start..Time.now.end_of_year)) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(year_start - 2.year) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let(:correct_items) { [transaction,  transaction2, transaction3] }
       let(:wrong_items)   { [transaction4] }
 
@@ -254,13 +254,13 @@ describe 'Transactions filter' do
 
     context 'when custom' do
       let!(:transaction)  { Timecop.travel(2013,12,12) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction2) { Timecop.travel(2012,12,12) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction3) { Timecop.travel(2012,12,20) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(2012,11,20) {
-        create :transaction, bank_account: ba, date: Time.now } }
+        create :transaction, bank_account: ba } }
       let(:correct_items) { [transaction2,  transaction3] }
       let(:wrong_items)   { [transaction, transaction4] }
 
@@ -295,11 +295,11 @@ describe 'Transactions filter' do
       context 'edge values' do
         let!(:transaction)  { create :transaction, bank_account: ba }
         let!(:transaction2) { Timecop.travel( Time.now + 5.days) {
-          create :transaction, bank_account: ba, date: Time.now } }
+          create :transaction, bank_account: ba } }
         let!(:transaction3) { Timecop.travel( Time.now + 10.days) {
-          create :transaction, bank_account: ba, date: Time.now } }
+          create :transaction, bank_account: ba } }
         let!(:transaction4) { Timecop.travel( Time.now - 2.day) {
-          create :transaction, bank_account: ba, date: Time.now } }
+          create :transaction, bank_account: ba } }
         let(:correct_items) { [transaction2, transaction3] }
         let(:wrong_items)   { [transaction, transaction4] }
 
@@ -319,13 +319,13 @@ describe 'Transactions filter' do
 
   context "by amount, comment, and date" do
     let!(:transaction)  { Timecop.travel(1.month.ago) {
-      create :transaction, bank_account: ba, amount: 100, comment: "Comment", date: Time.now }}
+      create :transaction, bank_account: ba, amount: 100, comment: "Comment" }}
     let!(:transaction2) { create :transaction, bank_account: ba, amount: 100,
       comment: "Text" }
     let!(:transaction3) { Timecop.travel(2.month.ago) {
-      create :transaction, bank_account: ba, amount: 100, comment: "Comment", date: Time.now } }
+      create :transaction, bank_account: ba, amount: 100, comment: "Comment" } }
     let!(:transaction4) { Timecop.travel(6.month.ago) {
-      create :transaction, bank_account: ba, amount: 500, comment: "Comment", date: Time.now } }
+      create :transaction, bank_account: ba, amount: 500, comment: "Comment" } }
     let(:correct_items) { [transaction] }
     let(:wrong_items)   { [transaction3, transaction2, transaction4] }
 
