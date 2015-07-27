@@ -54,6 +54,7 @@ class Transaction < ActiveRecord::Base
   validate  :amount_balance, if: :bank_account
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
+  validates :customer_name, length: { maximum: 255 }
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
   validates :created_at, presence: true, on: :update
 
@@ -104,6 +105,12 @@ class Transaction < ActiveRecord::Base
         ["Custom", "custom"]
       ]
     end
+  end
+
+  def find_customer_name_by_id(customer_id)
+    Customer.find(customer_id).to_s
+  rescue
+    ''
   end
 
   private
