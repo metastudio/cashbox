@@ -16,6 +16,7 @@ describe 'Accept invitation' do
       current_email.click_link 'Accept'
       fill_in 'Full name', with: full_name
       fill_in 'Password', with: password
+      fill_in 'Password confirmation', with: password
       click_on 'Submit'
     end
 
