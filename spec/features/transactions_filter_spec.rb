@@ -286,7 +286,7 @@ describe 'Transactions filter' do
         end
 
         after do
-          Timecop.travel(Time.now)
+          Timecop.return
         end
 
         it_behaves_like 'filterable object'
