@@ -1,5 +1,5 @@
-= simple_form_for @user, url: create_user_from_invitation_path(token: @invitation.token) do |f|
-  .col-sm-3
+.col-sm-3.col-sm-offset-6
+  = simple_form_for @user, url: create_user_from_invitation_path(token: @invitation.token) do |f|
     = f.input :email, input_html: { value: @invitation.email }, disabled: true
     = f.input :full_name
     = f.input :password
