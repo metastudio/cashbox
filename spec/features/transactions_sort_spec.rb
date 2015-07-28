@@ -30,7 +30,7 @@ describe 'Transactions sort' do
   end
 
   context "by date" do
-    it_behaves_like 'sortable object', 'Date', :created_at
+    it_behaves_like 'sortable object', 'Date', :date
   end
 
   context "by category" do

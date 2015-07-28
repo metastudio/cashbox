@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150716081149) do
+ActiveRecord::Schema.define(version: 20150723081851) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,11 +117,13 @@ ActiveRecord::Schema.define(version: 20150716081149) do
     t.string   "transaction_type", limit: 255
     t.datetime "deleted_at"
     t.integer  "customer_id"
+    t.datetime "date",                                     null: false
   end
 
   add_index "transactions", ["bank_account_id"], name: "index_transactions_on_bank_account_id", using: :btree
   add_index "transactions", ["category_id"], name: "index_transactions_on_category_id", using: :btree
   add_index "transactions", ["customer_id"], name: "index_transactions_on_customer_id", using: :btree
+  add_index "transactions", ["date"], name: "index_transactions_on_date", using: :btree
   add_index "transactions", ["deleted_at"], name: "index_transactions_on_deleted_at", using: :btree
 
   create_table "user_organizations", force: :cascade do |t|

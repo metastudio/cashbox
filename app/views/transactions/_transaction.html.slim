@@ -14,4 +14,4 @@ tr.transaction id=dom_id(transaction) class=colorize_transaction(transaction) da
       root_path(q: (params[:q] || {}).merge(customer_id_eq: transaction.customer_id)),
       data: { stop_propagation: true } if transaction.customer_id
   td.col-sm-2.word-break.comment.hidden-xs = transaction.comment
-  td.col-sm-1= I18n.l transaction.created_at
+  td.col-sm-1= I18n.l transaction.date

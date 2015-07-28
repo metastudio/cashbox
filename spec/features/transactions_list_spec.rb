@@ -141,7 +141,7 @@ describe 'Transactions list' do
         expect(subject).to have_content(org1_transaction.category.name)
         expect(subject).to have_content(org1_transaction.bank_account.name)
         expect(subject).to have_content(org1_transaction.comment)
-        expect(subject).to have_content(org1_transaction.created_at.strftime("%Y-%m-%d"))
+        expect(subject).to have_content(org1_transaction.date.strftime("%Y-%m-%d"))
       end
     end
 
