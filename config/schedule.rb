@@ -16,6 +16,7 @@
 # every 4.days do
 #   runner "AnotherModel.prune_old_records"
 # end
+set :output, 'log/cron.log'
 
 every 1.day, at: '0:00 am' do
   runner "ExchangeRate.update_rates"
