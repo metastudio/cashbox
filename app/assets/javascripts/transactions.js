@@ -175,9 +175,13 @@ function addCustomerSelect2($form) {
       }
     },
     createSearchChoice: function (input) {
-      var new_item = lastResultNames.indexOf(input) < 0;
-      if (new_item) {
-        return { id: input, text: input + " (new)" }
+      input = input.replace(/^\s+/, '').replace(/\s+$/, '')
+      if (input !== '')
+      {
+        var new_item = lastResultNames.indexOf(input) < 0;
+        if (new_item) {
+          return { id: input, text: input + " (new)" }
+        }
       }
     }
   });
