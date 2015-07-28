@@ -74,6 +74,6 @@ class InvitationsController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:full_name, :password)
+    params.require(:user).permit(:full_name, :password, :password_confirmation)
   end
 end
