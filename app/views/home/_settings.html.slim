@@ -3,7 +3,7 @@
   .list-group
     = active_link_to 'Organization details', organization_path(current_organization),
       class: 'list-group-item', active: [['organizations']]
-    = active_link_to 'Statistics', organization_statistics_path(current_organization),
+    = active_link_to 'Statistics', statistics_path,
       class: 'list-group-item', active: [['statistics']]
     = active_link_to 'Customers', customers_path, class: 'list-group-item',
       active: [['customers']]
