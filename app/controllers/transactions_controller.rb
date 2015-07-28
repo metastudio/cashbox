@@ -50,7 +50,7 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
-     :comment, :comission, :reference_id, :customer_name, :created_at)
+     :comment, :comission, :reference_id, :customer_id, :customer_name, :created_at)
   end
 
   def transfer_params
