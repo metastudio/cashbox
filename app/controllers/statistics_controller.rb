@@ -17,4 +17,18 @@ class StatisticsController < ApplicationController
       format.json { render json: expenses }
     end
   end
+
+  def income_by_categories
+    incomes = current_organization.by_categories(:incomes, params[:period])
+    respond_to do |format|
+      format.json { render json: incomes }
+    end
+  end
+
+  def expense_by_categories
+    expenses = current_organization.by_categories(:expenses, params[:period])
+    respond_to do |format|
+      format.json { render json: expenses }
+    end
+  end
 end
