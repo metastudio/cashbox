@@ -45,7 +45,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def owner
-    User.find(self.invited_by_id).full_name
+    Member.find(self.invited_by_id).user.to_s
   rescue
     ''
   end

@@ -3,7 +3,7 @@ class Transfer
   include ActiveModel::Validations::Callbacks
 
   attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
-    :bank_account, :bank_account_id, :reference_id,
+    :bank_account, :bank_account_id, :reference_id, :date,
     :inc_transaction, :out_transaction, :exchange_rate,
     :from_currency, :to_currency
 
@@ -104,45 +104,46 @@ class Transfer
   end
 
   private
-    def transfer_amount
-      if bank_account.balance < money_amount + money_comission
-        errors.add(:amount, 'Not enough money')
+
+  def transfer_amount
+    if bank_account.balance < money_amount + money_comission
+      errors.add(:amount, 'Not enough money')
+    end
+  end
+
+  def transfer_account
+    if bank_account_id == reference_id
+      errors.add(:reference_id, "Can't transfer to same account")
+    end
+  end
+
+  def bank_account
+   @bank_account ||= BankAccount.find_by(id: bank_account_id)
+  end
+
+  def form_comment(comment)
+    comment.to_s + "\nComission: " + (comission.blank? ? "0" : comission.to_s)
+  end
+
+  def estimate_amount(out)
+    estimated_amount = out ? (amount_cents + comission_cents) : amount_cents
+    if currency_mismatch?
+      rate = Money.default_bank.get_rate(from_currency, to_currency)
+      Money.default_bank.add_rate(from_currency, to_currency, exchange_rate.to_d)
+      estimated_amount = if out
+        Money.new(estimated_amount, from_currency).cents
+      else
+        Money.new(estimated_amount, from_currency).exchange_to(to_currency).cents
       end
+      Money.default_bank.add_rate(from_currency, to_currency, rate)
     end
+    estimated_amount
+  end
 
-    def transfer_account
-      if bank_account_id == reference_id
-        errors.add(:reference_id, "Can't transfer to same account")
-      end
+  def parse_errors(transaction)
+    transaction.errors.messages.each do |err_msg|
+      field, msg = 0, 1
+      errors.add(err_msg[field], err_msg[msg].join(', '))
     end
-
-    def bank_account
-     @bank_account ||= BankAccount.find_by(id: bank_account_id)
-    end
-
-    def form_comment(comment)
-      comment.to_s + "\nComission: " + (comission.blank? ? "0" : comission.to_s)
-    end
-
-    def estimate_amount(out)
-      estimated_amount = out ? (amount_cents + comission_cents) : amount_cents
-      if currency_mismatch?
-        rate = Money.default_bank.get_rate(from_currency, to_currency)
-        Money.default_bank.add_rate(from_currency, to_currency, exchange_rate.to_d)
-        estimated_amount = if out
-          Money.new(estimated_amount, from_currency).cents
-        else
-          Money.new(estimated_amount, from_currency).exchange_to(to_currency).cents
-        end
-        Money.default_bank.add_rate(from_currency, to_currency, rate)
-      end
-      estimated_amount
-    end
-
-    def parse_errors(transaction)
-      transaction.errors.messages.each do |err_msg|
-        field, msg = 0, 1
-        errors.add(err_msg[field], err_msg[msg].join(', '))
-      end
-    end
+  end
 end

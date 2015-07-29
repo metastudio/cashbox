@@ -1,14 +1,15 @@
 #sidebar
   h1
-    = link_to 'Organization Statistics', organization_statistics_path(current_organization)
+    = link_to 'Organization Statistics', statistics_path
   h1 Accounts
   - if bank_accounts = current_organization.bank_accounts.visible.positioned
     .accounts
       - bank_accounts.grouped_by_currency(current_organization.default_currency).each do |by_curr|
         table.table.table-hover
           - by_curr.last.each do |account|
-            tr class=colorize_amount(account.balance_cents) id="bank_account_#{account.id}"
+            tr class=colorize_amount(account.balance_cents)
               td.name.word-break = link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
+            tr class=colorize_amount(account.balance_cents) id="bank_account_#{account.id}"
               td.amount = money_with_symbol account.balance
       = link_to 'Create a new one', new_bank_account_path
   - else

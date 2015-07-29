@@ -95,6 +95,7 @@ FactoryGirl.define do
     bank_account
     category { |t| create(:category, organization: t.bank_account.organization) }
     amount { rand(30000.0..50000)/rand(10.0..100) }
+    date { Time.now }
 
     trait :income do
       category { |t| create(:category, :income, organization: t.organization) }

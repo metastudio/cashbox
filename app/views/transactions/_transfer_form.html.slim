@@ -18,5 +18,8 @@
       = f.input :comment, label: false
     .col-md-3.col-sm-6.col-xs-6.hidden
       = f.input :exchange_rate, label: false, input_html: { class: 'rate' }
+    .col-md-3.col-sm-6.col-xs-6
+      = f.input :date, as: :string, label: false, placeholder: 'Date',
+      input_html: { class: 'datepicker', value: f.object.date.try(:strftime, '%d/%m/%Y') }
   .col-sm-3
     = render 'transactions/btn_block', f: f, transaction: Transaction.new, selected: 'Transfer'

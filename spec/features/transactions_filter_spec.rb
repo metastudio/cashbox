@@ -285,6 +285,10 @@ describe 'Transactions filter' do
           click_on 'Search'
         end
 
+        after do
+          Timecop.return
+        end
+
         it_behaves_like 'filterable object'
       end
 

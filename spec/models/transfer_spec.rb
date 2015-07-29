@@ -125,7 +125,13 @@ describe Transfer do
       let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id }
 
       context "doesn't create transactions" do
+        # TODO: 1 of 2 transactions is created
         it { expect{subject}.to change{Transaction.count}.by(0) }
+        #before do
+        #  transfer.save
+        #end
+
+        #it { expect(transfer.errors.messages[:amount]).to include('Balance overflow') }
       end
 
       context "add errors on transaction" do

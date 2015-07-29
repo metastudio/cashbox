@@ -24,12 +24,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   protected
-    def after_update_path_for(resource)
-      user_profile_path
-    end
+
+  def after_update_path_for(resource)
+    user_profile_path
+  end
 
   private
-    def update_profile_params
-      params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number])
-    end
+
+  def update_profile_params
+    params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number])
+  end
 end
