@@ -1,7 +1,7 @@
 $(function () {
   if ($('.piecharts').length) {
-    drawChart('current-month', 'current-month-income-by-customers');
-    drawChart('current-month', 'current-month-expense-by-customers');
+    drawChart('current-month', 'current-month-income-by-customers', 'Income by customers');
+    drawChart('current-month', 'current-month-expense-by-customers', 'Expense by customers');
   }
   $(document).on('click', '#periods_bar li a', function () {
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-customers', 'Income by customers');
