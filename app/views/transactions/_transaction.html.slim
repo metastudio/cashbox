@@ -9,7 +9,7 @@ tr.transaction id=dom_id(transaction) class=colorize_transaction(transaction) da
     = link_to transaction.bank_account.to_s,
       root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.bank_account.id)),
       data: { stop_propagation: true } if transaction.bank_account
-  td.col-sm-2
+  td.col-sm-2.word-break
     = link_to transaction.customer.to_s,
       root_path(q: (params[:q] || {}).merge(customer_id_eq: transaction.customer_id)),
       data: { stop_propagation: true } if transaction.customer_id
