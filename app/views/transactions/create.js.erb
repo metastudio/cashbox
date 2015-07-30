@@ -5,7 +5,7 @@
   }
   else {
     $("<%=j render('transactions/transaction', transaction: @transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
-    $("#<%= dom_id(@transaction) %>").addClass('new-transaction');
+    $("#<%= dom_id(@transaction) %>").addClass('darken');
     $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new) %>");
     scrollTo($("#<%= dom_id(@transaction) %>"));
     $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");

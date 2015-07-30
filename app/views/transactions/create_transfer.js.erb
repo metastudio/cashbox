@@ -1,8 +1,8 @@
 <% unless @transfer.errors.any? %>
   $("<%=j render('transactions/transaction', transaction: @out_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
   $("<%=j render('transactions/transaction', transaction: @inc_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
-  $("#<%= dom_id(@out_transaction) %>").addClass('new-transaction');
-  $("#<%= dom_id(@inc_transaction) %>").addClass('new-transaction');
+  $("#<%= dom_id(@out_transaction) %>").addClass('darken');
+  $("#<%= dom_id(@inc_transaction) %>").addClass('darken');
   $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: Transfer.new) %>");
   scrollTo($("#<%= dom_id(@out_transaction) %>"));
   $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");

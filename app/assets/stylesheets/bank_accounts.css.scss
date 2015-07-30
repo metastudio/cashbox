@@ -17,6 +17,14 @@
   background-color: $positive-color !important;
 }
 
+.positive.darken {
+  background-color: darken($positive-color, 20) !important;
+}
+
+.negative.darken {
+  background-color: darken($negative-color, 20) !important;
+}
+
 .empty {
   background-color: $empty-color !important;
 }
