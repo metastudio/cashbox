@@ -1,15 +1,19 @@
 $(function () {
   if ($('.piecharts').length) {
-    drawChart('current-month', 'current-month-income-by-customers', 'Income by customers');
-    drawChart('current-month', 'current-month-expense-by-customers', 'Expense by customers');
+    drawChart('current-month', 'current-month-income-by-categories');
+    drawChart('current-month', 'current-month-expense-by-categories');
+    drawChart('current-month', 'current-month-income-by-customers');
+    drawChart('current-month', 'current-month-expense-by-customers');
   }
   $(document).on('click', '#periods_bar li a', function () {
-    drawChart($(this).data('period'), $(this).data('period') + '-income-by-customers', 'Income by customers');
-    drawChart($(this).data('period'), $(this).data('period') + '-expense-by-customers', 'Expense by customers');
+    drawChart($(this).data('period'), $(this).data('period') + '-income-by-categories');
+    drawChart($(this).data('period'), $(this).data('period') + '-expense-by-categories');
+    drawChart($(this).data('period'), $(this).data('period') + '-income-by-customers');
+    drawChart($(this).data('period'), $(this).data('period') + '-expense-by-customers');
   });
 });
 
-var drawChart = function drawChart(period, element, title) {
+var drawChart = function drawChart(period, element) {
   element = document.getElementById(element);
   if (element) {
     $.ajax({
@@ -18,13 +22,14 @@ var drawChart = function drawChart(period, element, title) {
       data: { period: period }
     })
     .done(function(response) {
-      draw(response, element, title, period);
+      draw(response, element, period);
     })
   };
 
-  function draw(response, css_id, title, period) {
+  function draw(response, css_id, period) {
     if (response == null ) {
       $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
+      $(css_id).width('200').height(26);
       return false;
     };
     var data = response.data;
@@ -34,7 +39,12 @@ var drawChart = function drawChart(period, element, title) {
     var formatter = new google.visualization.NumberFormat(response.currency_format);
     formatter.format(pieData, 1);
     var options = {
-      title: title,
+      chartArea: {
+        left: 10,
+        top:  20,
+        width: '100%',
+        height: '320'
+      },
       tooltip: { isHtml: true },
       sliceVisibilityThreshold: .0000001
     };
