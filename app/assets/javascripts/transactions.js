@@ -56,6 +56,12 @@ $(function () {
   $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id', function(e) {
     prepRateAndHints(exchange_rate = true);
   });
+
+  $('.select2-input').on('keypress', function(e) {
+    if (e.keyCode === 32 && this.selectionStart === 0) {
+      return false;
+    }
+  });
 });
 
 function prepRateAndHints(exchange_rate, hints) {
@@ -157,6 +163,7 @@ function addCustomerSelect2($form) {
   var url = $customerField.data('url');
 
   $customerField.select2({
+    maximumInputLength: 255,
     ajax: {
       url: url,
       dataType: "json",
