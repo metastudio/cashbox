@@ -53,7 +53,7 @@ class Invitation < ActiveRecord::Base
   private
 
   def email_uniq
-    unless organization.invitations.active.where(email: email).empty?
+    unless organization.invitations.where(email: email).empty?
       errors.add(:email, "An invitation has already been sent")
     end
   end
