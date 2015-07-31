@@ -18,6 +18,8 @@ Cashbox::Application.routes.draw do
   resources :statistics, only: :index do
     get :income_by_customers, on: :collection, as: :income_by_customers
     get :expense_by_customers, on: :collection, as: :expense_by_customers
+    get :income_by_categories, on: :collection, as: :income_by_categories
+    get :expense_by_categories, on: :collection, as: :expense_by_categories
   end
   resources :bank_accounts, except: :show do
     put :hide, on: :member
