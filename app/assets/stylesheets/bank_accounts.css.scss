@@ -17,11 +17,11 @@
   background-color: $positive-color !important;
 }
 
-.positive.darken {
+.positive.new-transaction, .positive.total {
   background-color: darken($positive-color, 20) !important;
 }
 
-.negative.darken {
+.negative.new-transaction, .negative.total {
   background-color: darken($negative-color, 20) !important;
 }
 

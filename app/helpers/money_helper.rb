@@ -2,11 +2,23 @@ module MoneyHelper
   include MoneyRails::ActionViewExtension
 
   def colorize_amount(amount)
-    amount > 0 ? 'positive' : (amount < 0 ? 'negative' : 'empty')
+    if amount > 0
+      'positive'
+    elsif amount < 0
+      'negative'
+    else
+      'empty'
+    end
   end
 
-  def darken_colorize_amount(amount)
-    amount > 0 ? 'positive darken' : (amount < 0 ? 'negative darken' : 'empty')
+  def total_colorize_amount(amount)
+    if amount > 0
+      'positive total'
+    elsif amount < 0
+      'negative total'
+    else
+      'empty'
+    end
   end
 
   def money_with_symbol(money)

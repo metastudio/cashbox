@@ -1,4 +1,4 @@
-td class="#{darken ? darken_colorize_amount(flow_amount) : colorize_amount(flow_amount)}"
+td class="#{total ? total_colorize_amount(flow_amount) : colorize_amount(flow_amount)}"
   = money_with_symbol(flow_amount)
   - if flow_amount.currency != def_curr
     =<> "(#{money_with_symbol(flow_amount.exchange_to(def_curr))}"
