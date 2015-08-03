@@ -1,14 +1,15 @@
-= f.button :submit, class: 'btn-primary btn-block'
-- if transaction.persisted?
-  = link_to 'Remove', transaction_path(transaction), remote: true, method: :delete,
-    data: { confirm: 'Are you sure?', disable_with: 'Removing...' },
-    class: 'btn btn-danger btn-block'
-- else
-  = link_to '#', class: 'btn btn-warning btn-block dropdown-toggle', data: { toggle: 'dropdown'} do
-    = selected
-    b.caret
-  ul.dropdown-menu
-    li class=(selected == 'Transfer' ? 'active' : '')
-      = link_to 'Transfer', '#', remote: true
-    li class=(selected == 'Transaction' ? 'active' : '')
-      = link_to 'Transaction', '#', remote: true
+.dropdown
+  = f.button :submit, class: 'btn-primary btn-block'
+  - if transaction.persisted?
+    = link_to 'Remove', transaction_path(transaction), remote: true, method: :delete,
+      data: { confirm: 'Are you sure?', disable_with: 'Removing...' },
+      class: 'btn btn-danger btn-block'
+  - else
+      = link_to '#', class: 'btn btn-warning btn-block dropdown-toggle', data: { toggle: 'dropdown'} do
+        = selected
+        b.caret
+      ul.dropdown-menu
+        li class=(selected == 'Transfer' ? 'active' : '')
+          = link_to 'Transfer', '#', remote: true
+        li class=(selected == 'Transaction' ? 'active' : '')
+          = link_to 'Transaction', '#', remote: true
