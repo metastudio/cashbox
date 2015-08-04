@@ -212,8 +212,7 @@ describe 'Transactions filter' do
       let!(:quarter_start){ Time.now.beginning_of_quarter }
       let!(:transaction)  { Timecop.travel(quarter_start) {
         create :transaction, bank_account: ba } }
-      let!(:transaction2) { Timecop.travel(quarter_start + 1.month) {
-        create :transaction, bank_account: ba } }
+      let!(:transaction2) { create :transaction, bank_account: ba }
       let!(:transaction3) { Timecop.travel(quarter_start - 1.month) {
         create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(quarter_start - 2.month) {
