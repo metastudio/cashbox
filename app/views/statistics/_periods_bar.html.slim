@@ -1,5 +1,7 @@
 .row
   .col-md-12
+    h4 Balance
+    div id='balance-chart' data-url=balance_statistics_path
     .panel.with-nav-tabs
       .panel-heading
         ul.nav.nav-tabs#periods_bar
@@ -8,7 +10,7 @@
           li
             = link_to 'Previous month', '#previous-month', data: { toggle: 'tab', period: 'prev-month' }
           li
-            = link_to 'Last 3 month', '#last-3-month', data: { toggle: 'tab', period: 'last-3-month' }
+            = link_to 'Last 3 month', '#last-3-months', data: { toggle: 'tab', period: 'last-3-months' }
           li
             = link_to 'Current quarter', '#current-quarter', data: { toggle: 'tab', period: 'quarter' }
           li
@@ -21,8 +23,8 @@
             = render 'pie_charts', period: 'current-month'
           .tab-pane#previous-month
             = render 'pie_charts', period: 'prev-month'
-          .tab-pane#last-3-month
-            = render 'pie_charts', period: 'last-3-month'
+          .tab-pane#last-3-months
+            = render 'pie_charts', period: 'last-3-months'
           .tab-pane#current-quarter
             = render 'pie_charts', period: 'quarter'
           .tab-pane#this-year

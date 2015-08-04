@@ -234,9 +234,9 @@ describe 'Transactions filter' do
       let!(:year_start)   { Time.now.beginning_of_year }
       let!(:transaction)  { Timecop.travel(year_start) {
         create :transaction, bank_account: ba } }
-      let!(:transaction2) { Timecop.travel(rand(year_start..Time.now.end_of_year)) {
+      let!(:transaction2) { Timecop.travel(rand(year_start..Time.now)) {
         create :transaction, bank_account: ba } }
-      let!(:transaction3) { Timecop.travel(rand(year_start..Time.now.end_of_year)) {
+      let!(:transaction3) { Timecop.travel(rand(year_start..Time.now)) {
         create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(year_start - 2.year) {
         create :transaction, bank_account: ba } }
