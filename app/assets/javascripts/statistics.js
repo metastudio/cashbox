@@ -1,4 +1,5 @@
 $(function () {
+  drawBalanceChart('balance-chart');
   if ($('.piecharts').length) {
     drawChart('current-month', 'current-month-income-by-categories');
     drawChart('current-month', 'current-month-expense-by-categories');
@@ -45,20 +46,31 @@ var drawChart = function drawChart(period, element) {
         width: '100%',
         height: '320'
       },
-      tooltip: { isHtml: true },
-      sliceVisibilityThreshold: .0000001
+      tooltip: {
+        text: 'percentage',
+        isHtml: true,
+        textStyle: { bold: true }
+      },
+      sliceVisibilityThreshold: 0.0000001
     };
     chart.draw(pieData, options);
 
-    function selectHandler(peroid) {
+    function selectHandler(period) {
       var selectedItem = chart.getSelection()[0];
+      console.log(css_id.classList.contains('customers'));
       if (selectedItem) {
-        var customer = pieData.getValue(selectedItem.row, 0);
-        if (customer != 'Other') {
+        var item = pieData.getValue(selectedItem.row, 0);
+        if (item != 'Other') {
           for (var i = data.length - 1; i >= 0; i--) {
-            if (customer == data[i][0]) {
+            if (item == data[i][0] && css_id.classList.contains('customers')) {
               window.location.href = "/?q%5Bcustomer_id_eq%5D=" + ids[i] +
                 "&q%5Bperiod%5D=" + period;
+              break;
+            } else if (item == data[i][0] && css_id.classList.contains('categories')) {
+              window.location.href = "/?q%5Bcategory_id_eq%5D=" + ids[i] +
+                "&q%5Bperiod%5D=" + period;
+              break;
+            } else {
               break;
             }
           };
@@ -66,5 +78,39 @@ var drawChart = function drawChart(period, element) {
       }
     }
     google.visualization.events.addListener(chart, 'select', selectHandler);
+  }
+};
+
+var drawBalanceChart = function drawBalanceChart(element) {
+  element = document.getElementById(element);
+  if (element) {
+    $.ajax({
+      url: element.getAttribute('data-url'),
+      type: 'get'
+    })
+    .done(function(response) {
+      draw(response, element);
+    })
+  };
+
+  function draw(response, css_id) {
+    if (response == null ) {
+      $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
+      return false;
+    };
+    var data = response.data;
+    var chartData = google.visualization.arrayToDataTable(data);
+    var chart = new google.visualization.ColumnChart(css_id);
+    var formatter = new google.visualization.NumberFormat({suffix: 'р'});
+    formatter.format(chartData, 1);
+    formatter.format(chartData, 2);
+    var options = {
+      chart: {
+            title: 'Balance',
+            subtitle: 'Incomes, Expenses',
+      },
+      tooltip: { isHtml: true }
+    };
+    chart.draw(chartData, options);
   }
 };

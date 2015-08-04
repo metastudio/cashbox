@@ -58,7 +58,6 @@ class Transaction < ActiveRecord::Base
   validates :customer_name, length: { maximum: 255 }
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
   validates :date, presence: true
-  #validate  :check_date, on: :create
 
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
   before_validation :set_date, if: Proc.new{ date.blank? }
@@ -143,17 +142,17 @@ class Transaction < ActiveRecord::Base
   def self.period(period)
     case period
     when 'current-month'
-      where('transactions.date >= ?', Time.now.beginning_of_month)
+      where('transactions.date >= ? AND transactions.date <= ?', Time.now.beginning_of_month, Time.now)
     when 'last-3-months'
-      where('transactions.date >= ?', (Time.now - 3.months).beginning_of_day)
+      where('transactions.date >= ? AND transactions.date <= ?', (Time.now - 3.months).beginning_of_day, Time.now)
     when 'prev-month'
       prev_month_begins = Time.now.beginning_of_month - 1.months
       where('transactions.date between ? AND ?', prev_month_begins,
         prev_month_begins.end_of_month)
     when 'this-year'
-      where('transactions.date >= ?', Time.now.beginning_of_year)
+      where('transactions.date >= ? AND transactions.date <= ?', Time.now.beginning_of_year, Time.now)
     when 'quarter'
-      where('transactions.date >= ?', Time.now.beginning_of_quarter)
+      where('transactions.date >= ? AND transactions.date <= ?', Time.now.beginning_of_quarter, Time.now)
     else
       all
     end

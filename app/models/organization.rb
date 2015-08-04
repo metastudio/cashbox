@@ -56,8 +56,8 @@ class Organization < ActiveRecord::Base
       group('customers.id, bank_accounts.id').map do |transaction|
         {
           total:         transaction.total.to_f,
-          customer_id:   transaction.customer_id,
-          customer_name: transaction.cust_name,
+          selection_id:   transaction.customer_id,
+          selection_name: transaction.cust_name,
           currency:      transaction.curr
         }
       end
@@ -71,8 +71,8 @@ class Organization < ActiveRecord::Base
         }
       end
 
-    customers = calc_to_def_currency_for_customers(selection)
-    data = calc_total_for_customer(customers, selection)
+    customers = calc_to_def_currency_for_selection(selection)
+    data = calc_total_for_selection(customers, selection)
     other_sum = calc_total(other_selection)
 
     data.merge!(0 => ['Other ' + Money.new(other_sum, default_currency).format(symbol_after_without_space: true), other_sum.to_f/100.round(2)]) if other_sum > 0
@@ -89,16 +89,43 @@ class Organization < ActiveRecord::Base
       group('categories.id, bank_accounts.id').map do |transaction|
         {
           total:         transaction.total.to_f,
-          category_id:   transaction.cat_id,
-          category_name: transaction.cat_name,
+          selection_id:   transaction.cat_id,
+          selection_name: transaction.cat_name,
           currency:      transaction.curr
         }
       end
-
-    categories = calc_to_def_currency_for_categories(selection)
-    data = calc_total_for_categories(categories, selection)
+    categories = calc_to_def_currency_for_selection(selection)
+    data = calc_total_for_selection(categories, selection)
 
     data.keys.size > 1 ? { data: data.values, ids: data.keys, currency_format: currency_format } : nil
+  end
+
+  def data_balance
+    period = 1.year.ago.to_datetime..Time.now.to_datetime
+    income_selection = transactions.unscope(:order).incomes.
+      select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date").
+      where(date: period).
+      group('transactions.id, bank_accounts.id').map do |transaction|
+        {
+          date:           transaction.date,
+          total:          transaction.total.to_f,
+          currency:       transaction.curr
+        }
+      end
+    expense_selection = transactions.unscope(:order).expenses.
+      select("sum(abs(transactions.amount_cents)) as total, bank_accounts.currency as curr, transactions.date as date").
+      where(date: period).
+      group('transactions.id, bank_accounts.id').map do |transaction|
+        {
+          date:           transaction.date,
+          total:          transaction.total.to_f,
+          currency:       transaction.curr
+        }
+      end
+    incomes = calc_to_def_currency_for_data_selection(income_selection)
+    expenses = calc_to_def_currency_for_data_selection(expense_selection)
+    data = combine_by_months(period, incomes, expenses)
+    data.size > 1 ? { data: data } : nil
   end
 
   private
@@ -116,50 +143,41 @@ class Organization < ActiveRecord::Base
     sum
   end
 
-  def calc_to_def_currency_for_customers(selection)
-    customers = {}
-    selection.each do |trans|
-      customers[trans[:customer_id]] = trans[:customer_name]
-      trans[:total] = calc_to_def_currency(trans[:total], trans[:currency])
-    end
-    customers
-  end
-
-  def calc_total_for_customer(customers, selection)
+  def calc_to_def_currency_for_data_selection(selection)
     hash = {}
-    hash[nil] = ['Customer', 'Income in default currency']
-    customers.each_pair do |id, name|
-      total_for_customer = 0
-      selection.each do |trans|
-        total_for_customer += trans[:total] if trans[:customer_id] == id
-      end
-      hash[id] = [name + ' ' + Money.new(total_for_customer,
-                    default_currency).format(symbol_after_without_space: true),
-                  (total_for_customer.to_f/100).round(2)]
+    selection.each do |trans|
+      trans[:total] = calc_to_def_currency(trans[:total], trans[:currency])
+      hash[trans[:date].strftime('%b-%y')] = hash[trans[:date].strftime('%b-%y')].nil? ? trans[:total] : hash[trans[:date].strftime('%b-%y')] + trans[:total]
     end
     hash
   end
 
-  def calc_to_def_currency_for_categories(selection)
-    categories = {}
-    selection.each do |trans|
-      categories[trans[:category_id]] = trans[:category_name]
-      trans[:total] = calc_to_def_currency(trans[:total], trans[:currency])
-    end
-    categories
+  def combine_by_months(period, incomes, expenses)
+    keys = period.map(&:beginning_of_month).uniq.map{ |date| date.strftime("%b-%y") }
+    array = keys.map{ |k| [k, (incomes[k].to_f/100).round(2) || 0, (expenses[k].to_f/100).round(2) || 0] }
+    data = array.unshift(['Month', 'Incomes', 'Expenses'])
   end
 
-  def calc_total_for_categories(categories, selection)
+  def calc_to_def_currency_for_selection(selection)
     hash = {}
-    hash[nil] = ['Category', 'Income in default currency']
-    categories.each_pair do |id, name|
-      total_for_category = 0
+    selection.each do |trans|
+      hash[trans[:selection_id]] = trans[:selection_name] if trans[:selection_id]
+      trans[:total] = calc_to_def_currency(trans[:total], trans[:currency])
+    end
+    hash
+  end
+
+  def calc_total_for_selection(selection_hash, selection)
+    hash = {}
+    hash[nil] = ['Hash', 'In default currency']
+    selection_hash.each_pair do |id, name|
+      total = 0
       selection.each do |trans|
-        total_for_category += trans[:total] if trans[:category_id] == id
+        total += trans[:total] if trans[:selection_id] == id
       end
-      hash[id] = [name + ' ' + Money.new(total_for_category,
+      hash[id] = [name.truncate(20) + ' ' + Money.new(total,
                     default_currency).format(symbol_after_without_space: true),
-                  (total_for_category.to_f/100).round(2)]
+                  (total.to_f/100).round(2)]
     end
     hash
   end
