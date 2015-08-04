@@ -45,7 +45,7 @@ class OrganizationsController < ApplicationController
 
   def switch
     session[:current_organization_id] = @organization.id
-    redirect_to root_path
+    redirect_to :back
   end
 
   private
