@@ -10,6 +10,10 @@
     scrollTo($("#<%= dom_id(@transaction) %>"));
     $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
     $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
+
+    if ($("#flow").length) {
+      location.reload();
+    }
   }
 <% else %>
   $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: @transaction) %>");

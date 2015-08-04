@@ -7,6 +7,10 @@
   scrollTo($("#<%= dom_id(@out_transaction) %>"));
   $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
   $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
+
+  if ($("#flow").length) {
+    location.reload();
+  }
 <% else %>
   $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: @transfer) %>");
   <% if @transfer.currency_mismatch? %>
