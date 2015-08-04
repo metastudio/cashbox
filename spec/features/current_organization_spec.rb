@@ -38,11 +38,7 @@ describe "current orgranization" do
       end
     end
 
-    it "see organization that was selected before sign out" do
-      pending 'has not implemneted yet'
-      sign_out
-      sign_in user
-
+    it "see organization that was selected" do
       within("#current_organization") do
         expect(subject).to have_content(user.organizations.last.name)
       end
