@@ -2,13 +2,25 @@ table.table.table-stripped id='flow'
   - def_curr = current_organization.default_currency
   tr
     th[style="width:10%"] Income:
+    - sum = 0
     - @curr_flow.each do |flow|
-      = render 'flow_amount', flow_amount: flow.income, def_curr: def_curr
+      = render 'flow_amount', flow_amount: flow.income, def_curr: def_curr, total: false
+      - sum += flow.income.currency == def_curr ? flow.income : flow.income.exchange_to(def_curr)
+    td class=total_colorize_amount(sum)
+      = money_with_symbol(sum)
   tr
     th Expense:
+    - sum = 0
     - @curr_flow.each do |flow|
-      = render 'flow_amount', flow_amount: flow.expense, def_curr: def_curr
+      = render 'flow_amount', flow_amount: flow.expense, def_curr: def_curr, total: false
+      - sum += flow.expense.currency == def_curr ? flow.expense : flow.expense.exchange_to(def_curr)
+    td class=total_colorize_amount(sum)
+      = money_with_symbol(sum)
   tr
     th Total:
+    - sum = 0
     - @curr_flow.each do |flow|
-      = render 'flow_amount', flow_amount: flow.total, def_curr: def_curr
+      = render 'flow_amount', flow_amount: flow.total, def_curr: def_curr, total: true
+      - sum += flow.total.currency == def_curr ? flow.total : flow.total.exchange_to(def_curr)
+    td class=total_colorize_amount(sum)
+      strong = money_with_symbol(sum)
