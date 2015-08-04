@@ -4,6 +4,15 @@ class StatisticsController < ApplicationController
   def index
   end
 
+  def balance
+    data = current_organization.data_balance
+    puts "!!!!data: " + data.inspect
+    # format: { :data => [['Month', 'Incomes', 'Expenses'], ['Jan', 1000, 200], ['Feb', 500, 2000]] }
+    respond_to do |format|
+      format.json { render json: data }
+    end
+  end
+
   def income_by_customers
     incomes = current_organization.by_customers(:incomes, params[:period])
     respond_to do |format|

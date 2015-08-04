@@ -2,8 +2,6 @@ $(function () {
   addTransactionFormMasks();
   addTranferFormMasks();
 
-  $('#q_date_from').inputmask('d/m/y');
-  $('#q_date_to').inputmask('d/m/y');
   $('#q_amount_eq').inputmask('customized_currency');
   $('#q_customer_id_eq').select2();
 
@@ -136,14 +134,14 @@ function datepickerInit(selector) {
   selector.datepicker({
     format: 'dd/mm/yyyy',
     startDate: '01/01/1900',
-    autoclose: true
+    autoclose: true,
+    todayHighlight: true
   });
 }
 
 function addTransactionFormMasks() {
   var $form = $("form.transaction")
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
-  $form.find('#transaction_date').inputmask('d/m/y');
   datepickerInit($form.find('#transaction_date.datepicker'));
   addCustomerSelect2($form);
 }
@@ -153,7 +151,6 @@ function addTranferFormMasks() {
   $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
   $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
   $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
-  $form.find('#transfer_date').inputmask('d/m/y');
   datepickerInit($form.find('#transfer_date.datepicker'));
 }
 
