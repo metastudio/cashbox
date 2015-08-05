@@ -16,15 +16,11 @@
             ? @q.category_id_eq : nil)
 
     .col-md-3.col-sm-6.col-xs-6
-      - if f.object.customer_id
-        = f.association :customer, as: :select,
-          collection: current_organization.customers, prompt: 'Customer', label: false,
-          value_method: :id, selected: f.object.customer_id
-      - else
-        = f.input :customer_name, label: false,
-          input_html: { data: { url: autocomplete_customers_path,
-            placeholder: 'Customer',
-            value: @q.nil? ? nil : transaction.find_customer_name_by_id(@q.customer_id_eq) } }
+      = f.input :customer_name, label: false,
+        input_html: { data: { url: autocomplete_customers_path,
+          placeholder: transaction.find_customer_name_by_id(f.object.customer_id),
+          value: @q.nil? ? transaction.find_customer_name_by_id(f.object.customer_id) \
+            : (@q.customer_id_eq ? transaction.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
     .col-md-3.col-sm-6.col-xs-6
       - if f.object.bank_account.nil? || f.object.bank_account.visible?

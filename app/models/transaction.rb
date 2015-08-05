@@ -111,7 +111,7 @@ class Transaction < ActiveRecord::Base
   def find_customer_name_by_id(customer_id)
     Customer.find(customer_id).to_s
   rescue
-    ''
+    'Customer'
   end
 
   private
