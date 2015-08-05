@@ -32,7 +32,7 @@ class Transaction < ActiveRecord::Base
   attr_accessor :customer_name
 
   belongs_to :category, inverse_of: :transactions
-  belongs_to :bank_account, inverse_of: :transactions
+  belongs_to :bank_account, inverse_of: :transactions, touch: true
   belongs_to :customer, inverse_of: :transactions
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
@@ -62,8 +62,6 @@ class Transaction < ActiveRecord::Base
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
   before_validation :set_date, if: Proc.new{ date.blank? }
   before_save :check_negative
-  after_save :recalculate_amount
-  after_destroy :recalculate_amount
   after_restore :recalculate_amount
 
   class << self
