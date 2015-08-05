@@ -134,8 +134,10 @@ function datepickerInit(selector) {
   selector.datepicker({
     format: 'dd/mm/yyyy',
     startDate: '01/01/1900',
+    endDate: '+1y',
     autoclose: true,
-    todayHighlight: true
+    todayHighlight: true,
+    todayBtn: true
   });
 }
 
