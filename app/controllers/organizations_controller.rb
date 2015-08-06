@@ -44,8 +44,13 @@ class OrganizationsController < ApplicationController
   end
 
   def switch
-    session[:current_organization_id] = @organization.id
-    redirect_to :back
+    if request.referrer == organization_url(current_organization)
+      session[:current_organization_id] = @organization.id
+      redirect_to organization_url(@organization.id)
+    else
+      session[:current_organization_id] = @organization.id
+      redirect_to :back
+    end
   end
 
   private
