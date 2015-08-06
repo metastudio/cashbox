@@ -10,21 +10,21 @@
 }
 
 .negative {
-  background-color: $negative-color !important;
+  background-color: $negative-color
 }
 
 .positive {
-  background-color: $positive-color !important;
+  background-color: $positive-color;
 }
 
 .positive.new-transaction, .positive.total {
-  background-color: darken($positive-color, 20) !important;
+  background-color: darken($positive-color, 20);
 }
 
 .negative.new-transaction, .negative.total {
-  background-color: darken($negative-color, 20) !important;
+  background-color: darken($negative-color, 20);
 }
 
 .empty {
-  background-color: $empty-color !important;
+  background-color: $empty-color;
 }
