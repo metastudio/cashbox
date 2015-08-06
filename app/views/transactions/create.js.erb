@@ -5,7 +5,13 @@
   }
   else {
     $("<%=j render('transactions/transaction', transaction: @transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
+    var c = $("#<%= dom_id(@transaction) %>").css('backgroundColor');
     $("#<%= dom_id(@transaction) %>").addClass('new-transaction');
+    // $("#<%= dom_id(@transaction) %>").switchClass('new-transaction', '', 400, 'easeInOutExpo');
+    $("#<%= dom_id(@transaction) %>").animate({
+      backgroundColor: c,
+    }, 1000 );
+
     $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new) %>");
     scrollTo($("#<%= dom_id(@transaction) %>"));
     $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
