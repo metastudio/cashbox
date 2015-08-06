@@ -2,25 +2,25 @@ table.table.table-stripped id='flow'
   - def_curr = current_organization.default_currency
   tr
     th[style="width:10%"] Income:
-    - sum = 0
-    - @curr_flow.each do |flow|
-      = render 'flow_amount', flow_amount: flow.income, def_curr: def_curr, total: false
-      - sum += flow.income.currency == def_curr ? flow.income : flow.income.exchange_to(def_curr)
-    td class=total_colorize_amount(sum)
+    - sum = @curr_flow.map{ |f| f.income.currency == def_curr ? f.income : f.income.exchange_to(def_curr) }.sum
+    - if @curr_flow.map{ |f| f.currency != def_curr ? 1 : 0 }.sum > 0
+      - @curr_flow.each do |flow|
+        = render 'flow_amount', flow_amount: flow.income, def_curr: def_curr, total: false
+    td class=total_colorize_amount(sum) align='right'
       = money_with_symbol(sum)
   tr
     th Expense:
-    - sum = 0
-    - @curr_flow.each do |flow|
-      = render 'flow_amount', flow_amount: flow.expense, def_curr: def_curr, total: false
-      - sum += flow.expense.currency == def_curr ? flow.expense : flow.expense.exchange_to(def_curr)
-    td class=total_colorize_amount(sum)
+    - sum = @curr_flow.map{ |f| f.expense.currency == def_curr ? f.expense : f.expense.exchange_to(def_curr) }.sum
+    - if @curr_flow.map{ |f| f.currency != def_curr ? 1 : 0 }.sum > 0
+      - @curr_flow.each do |flow|
+        = render 'flow_amount', flow_amount: flow.expense, def_curr: def_curr, total: false
+    td class=total_colorize_amount(sum) align='right'
       = money_with_symbol(sum)
   tr
     th Total:
-    - sum = 0
-    - @curr_flow.each do |flow|
-      = render 'flow_amount', flow_amount: flow.total, def_curr: def_curr, total: true
-      - sum += flow.total.currency == def_curr ? flow.total : flow.total.exchange_to(def_curr)
-    td class=total_colorize_amount(sum)
+    - sum = @curr_flow.map{ |f| f.total.currency == def_curr ? f.total : f.total.exchange_to(def_curr) }.sum
+    - if @curr_flow.map{ |f| f.currency != def_curr ? 1 : 0 }.sum > 0
+      - @curr_flow.each do |flow|
+        = render 'flow_amount', flow_amount: flow.total, def_curr: def_curr, total: true
+    td class=total_colorize_amount(sum) align='right'
       strong = money_with_symbol(sum)
