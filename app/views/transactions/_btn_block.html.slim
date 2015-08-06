@@ -6,9 +6,9 @@
       class: 'btn btn-danger btn-block'
   - else
       = link_to '#', class: 'btn btn-warning btn-block dropdown-toggle', data: { toggle: 'dropdown'} do
-        = selected
+        => selected
         b.caret
-      ul.dropdown-menu
+      ul.dropdown-menu.pull-right
         li class=(selected == 'Transfer' ? 'active' : '')
           = link_to 'Transfer', '#', remote: true
         li class=(selected == 'Transaction' ? 'active' : '')
