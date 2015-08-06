@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_member
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   private
 
@@ -33,6 +34,11 @@ class ApplicationController < ActionController::Base
 
   def update_last_viewed_at
     current_member.update(last_visited_at: Time.now) if current_member
+  end
+
+  def record_not_found
+    flash[:error] = "Record not found."
+    redirect_to root_path
   end
 
   def user_not_authorized
