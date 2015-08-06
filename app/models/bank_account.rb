@@ -43,6 +43,7 @@ class BankAccount < ActiveRecord::Base
       message: "%{value} is not a valid currency" }
 
   after_create :set_initial_residue
+  after_touch :recalculate_amount!
 
   def residue_cents
     @residue_cents ||= 0
