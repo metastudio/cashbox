@@ -55,12 +55,11 @@ var drawChart = function drawChart(period, element) {
     };
     chart.draw(pieData, options);
 
-    function selectHandler(period) {
+    function selectHandler() {
       var selectedItem = chart.getSelection()[0];
-      console.log(css_id.classList.contains('customers'));
       if (selectedItem) {
         var item = pieData.getValue(selectedItem.row, 0);
-        if (item != 'Other') {
+        if (item.indexOf('Other') == -1) {
           for (var i = data.length - 1; i >= 0; i--) {
             if (item == data[i][0] && css_id.classList.contains('customers')) {
               window.location.href = "/?q%5Bcustomer_id_eq%5D=" + ids[i] +
@@ -71,7 +70,7 @@ var drawChart = function drawChart(period, element) {
                 "&q%5Bperiod%5D=" + period;
               break;
             } else {
-              break;
+              continue;
             }
           };
         };
