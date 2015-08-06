@@ -100,13 +100,24 @@ var drawBalanceChart = function drawBalanceChart(element) {
     var data = response.data;
     var chartData = google.visualization.arrayToDataTable(data);
     var chart = new google.visualization.ColumnChart(css_id);
-    var formatter = new google.visualization.NumberFormat({suffix: 'р'});
+    var formatter = new google.visualization.NumberFormat(response.currency_format);
     formatter.format(chartData, 1);
     formatter.format(chartData, 2);
     var options = {
       chart: {
             title: 'Balance',
             subtitle: 'Incomes, Expenses',
+      },
+      chartArea: {
+        left: 30,
+        top:  30,
+        width: '100%'
+      },
+      vAxis: {
+        minValue: 0,
+        viewWindow: {
+          min: 0
+        }
       },
       tooltip: { isHtml: true }
     };

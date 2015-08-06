@@ -125,7 +125,7 @@ class Organization < ActiveRecord::Base
     incomes = calc_to_def_currency_for_data_selection(income_selection)
     expenses = calc_to_def_currency_for_data_selection(expense_selection)
     data = combine_by_months(period, incomes, expenses)
-    data.size > 1 ? { data: data } : nil
+    data.size > 1 ? { data: data, currency_format: currency_format } : nil
   end
 
   private
