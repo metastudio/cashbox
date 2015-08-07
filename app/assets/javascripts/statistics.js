@@ -109,9 +109,8 @@ var drawBalanceChart = function drawBalanceChart(element) {
             subtitle: 'Incomes, Expenses',
       },
       chartArea: {
-        left: 30,
         top:  30,
-        width: '100%'
+        width: '76%'
       },
       vAxis: {
         minValue: 0,
