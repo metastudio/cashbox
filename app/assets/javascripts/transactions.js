@@ -151,6 +151,7 @@ function addCustomerSelect2($form) {
 
   $customerField.select2({
     maximumInputLength: 255,
+    width: 'resolve',
     ajax: {
       url: url,
       dataType: "json",
