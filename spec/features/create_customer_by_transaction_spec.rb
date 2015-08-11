@@ -15,6 +15,7 @@ describe 'create transaction', js: true do
 
   def create_transaction
     visit root_path
+    click_on 'Add...'
     within '#new_transaction' do
       fill_in 'transaction[amount]', with: amount_str
       select category_name, from: 'transaction[category_id]' if category_name.present?

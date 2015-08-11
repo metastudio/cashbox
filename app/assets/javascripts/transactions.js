@@ -28,17 +28,6 @@ $(function () {
     $('#q_customer_id_eq').select2('data', { id: 0, text: 'Customer' });
   });
 
-  $(document).on('click', ".transaction .dropdown-menu li a, .transfer .dropdown-menu li a", function(e) {
-    if ($(this).html() == 'Transfer') {
-      $('#new_transaction').hide();
-      $('#new_transfer_form').show();
-    }
-    else {
-      $('#new_transfer_form').hide();
-      $('#new_transaction').show();
-    }
-  });
-
   $(document).on('change', '#q_period', function(e) {
     showHidePeriodAdditionalInput();
   });
@@ -75,12 +64,13 @@ function prepRateAndHints(exchange_rate, hints) {
 function showHideExchangeRate(fromCurr, toCurr) {
   if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
     if (!$('#transfer_exchange_rate').is(":visible")) {
-      $('#transfer_exchange_rate').parents('.col-sm-6').removeClass('hidden');
+      $('#transfer_exchange_rate').parents('#rate_col').removeClass('hidden');
     }
   }
   else {
     if ($('#transfer_exchange_rate').is(":visible")) {
-      $('#transfer_exchange_rate').parents('.col-sm-6').addClass('hidden');
+      $('#transfer_exchange_rate').parents('#rate_col').addClass('hidden');
+      $('#transfer_exchange_rate').parents('#rate_col').parent().find('#rate_hint').remove();
     }
   }
 }
@@ -99,34 +89,32 @@ function showHidePeriodAdditionalInput() {
 }
 
 function addRemoveHints(fromCurr, toCurr) {
+  var $transferRate = $('.transfer_exchange_rate');
   if (fromCurr === undefined || toCurr === undefined || fromCurr == toCurr ||
     gon.curr_org_exch_rates === undefined) {
 
     if (gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr] === undefined) {
-      $('.transfer_reference_id').find('.help-block').remove();
+      $transferRate.parents('#rate_col').parent().find('#end_sum_hint').remove();
     }
     return;
   }
 
   var rate_hint = parseFloat(gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
-  var $transferRate = $('.transfer_exchange_rate');
-  if ($transferRate.find('.help-block').html() != rate_hint) {
-    $transferRate.find('.help-block').remove();
-    // there is no help block in the beginning
-    $transferRate.append('<span class="help-block">' + rate_hint + '</span>');
-  }
-
+  var rate_hint_input = '<div id="rate_hint" class="col-md-2 col-sm-4 col-xs-4"> \
+    <div class="form-group string optional"><input class="string optional form-control" \
+    type="text" value="' + rate_hint + '" disabled/></div></div>'
+  $transferRate.parents('#rate_col').parent().find('#rate_hint').remove();
+  $transferRate.parents('#rate_col').parent().append(rate_hint_input);
 
   var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
   var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
   if (amount && rate) {
     var end_sum = (amount * rate).toFixed(2);
-    var $transferReference = $('.transfer_reference_id');
-    if ($transferReference.find('.help-block').html() != end_sum) {
-      $transferReference.find('.help-block').remove();
-      // there is no help block in the beginning
-      $transferReference.append('<span class="help-block">' + end_sum + '</span>');
-    }
+    var end_sum_input = '<div id="end_sum_hint" class="col-md-2 col-sm-4 col-xs-4"> \
+      <div class="form-group string optional"><input class="string optional form-control" \
+      type="text" value="' + end_sum + '" disabled/></div></div>'
+    $transferRate.parents('#rate_col').parent().find('#end_sum_hint').remove();
+    $transferRate.parents('#rate_col').parent().append(end_sum_input);
   }
 }
 

@@ -1,9 +1,13 @@
 <% if @success %>
-  $("#<%= dom_id(@transaction, 'edit_row') %>").remove();
   $("#<%= dom_id(@transaction) %>").replaceWith("<%=j render('transactions/transaction', transaction: @transaction) %>");
   $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
   $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
+  $('#transaction_modal').modal('hide');
 <% else %>
-  $("#<%= dom_id(@transaction, 'edit_row') %>").replaceWith("<%=j render 'transactions/edit_transaction', transaction: @transaction %>");
+  if ($(".tab-pane.active").attr('id') == 'income') {
+    $("#edit_transaction_<%= @transaction.id.to_s %>").replaceWith("<%=j render('transactions/form', type: 'Income', transaction: @transaction) %>");
+  } else {
+    $("#edit_transaction_<%= @transaction.id.to_s %>").replaceWith("<%=j render('transactions/form', type: 'Expense', transaction: @transaction) %>");
+  }
   addTransactionFormMasks();
 <% end %>

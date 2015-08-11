@@ -5,20 +5,23 @@ describe 'create transaction', js: true do
 
   let!(:user)         { create :user }
   let!(:organization) { create :organization, with_user: user }
-  let!(:category)     { create :category, organization: organization }
+  let!(:category)     { create :category, :income, organization: organization }
+  let!(:exp_category) { create :category, :expense, organization: organization }
   let!(:account)      { create :bank_account, residue: 99999999,
     organization: organization }
 
-  let(:amount)        { 1232.23 }
-  let(:amount_str)    { '1,232.23' }
-  let(:category_name){ category.name }
-  let(:account_name)  { account.name }
-  let(:comment)       { "Test transaction" }
+  let(:amount)            { 1232.23 }
+  let(:amount_str)        { '1,232.23' }
+  let(:category_name)     { category.name }
+  let(:exp_category_name) { exp_category.name }
+  let(:account_name)      { account.name }
+  let(:comment)           { "Test transaction" }
 
   let(:transactions) { organization.transactions.where(bank_account_id: account.id, category_id: category.id) }
 
   def create_transaction
     visit root_path
+    click_on 'Add...'
     within '#new_transaction' do
       fill_in 'transaction[amount]', with: amount_str
       select category_name, from: 'transaction[category_id]' if category_name.present?
@@ -39,12 +42,21 @@ describe 'create transaction', js: true do
     context 'choose bank account' do
       before do
         visit root_path
+        click_on 'Add...'
       end
 
       it "displays account name with currency" do
         within '#transaction_bank_account_id' do
           expect(page).to have_css('optgroup', text: account.to_s)
         end
+      end
+
+      it "displays category name" do
+        expect(page).to have_select('transaction[category_id]', with_options: [category_name])
+      end
+
+      it "and not display expense category name" do
+        expect(page).to_not have_select('transaction[category_id]', with_options: [exp_category_name])
       end
     end
   end
@@ -67,13 +79,19 @@ describe 'create transaction', js: true do
       end
     end
 
-    context "when expense category selected" do
-      let!(:category) { create :category, :expense, organization: organization }
+    context "expense category" do
+      before do
+        visit root_path
+        click_on 'Add...'
+        click_on 'Expense'
+      end
 
-      it "creates transaction with negative amount" do
-        expect{
-          subject
-        }.to change{ transactions.where(amount_cents: amount * -100).count }.by(1)
+      it "not present income category" do
+        expect(page).to_not have_select('transaction[category_id]', with_options: [category_name])
+      end
+
+      it "and present expense category" do
+        expect(page).to have_select('transaction[category_id]', with_options: [exp_category_name])
       end
     end
 
@@ -141,4 +159,5 @@ describe 'create transaction', js: true do
       expect(page).to_not have_content(account.to_s)
     end
   end
+
 end

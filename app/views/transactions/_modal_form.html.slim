@@ -1,0 +1,21 @@
+.modal.fade#transaction_modal tabindex='-1' role='dialog' aria-labelledby='modal-title' aria-hidden='true' data-backdrop='static' data-keyboard='true'
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button type='button' class='close' data-dismiss='modal' aria-hidden='true' &times;
+        h4.modal-title#modal_title
+      .modal-body
+        .panel.with-nav-tabs
+          .panel-heading
+            ul.nav.nav-tabs#transaction_type
+              li.income.active
+                = link_to 'Income', '#income', data: { toggle: 'tab', type: 'income' }
+              li.expense
+                = link_to 'Expense', '#expense', data: { toggle: 'tab', type: 'expense' }
+              li.transfer
+                = link_to 'Transfer', '#transfer', data: { toggle: 'tab', type: 'transfer' }
+          .panel-body
+            .tab-content
+              .tab-pane#income.active
+              .tab-pane#expense
+              .tab-pane#transfer

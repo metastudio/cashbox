@@ -27,7 +27,7 @@ Cashbox::Application.routes.draw do
     put :sort, on: :collection
   end
   resources :categories, except: :show
-  resources :transactions,  only: [:create, :edit, :update, :destroy] do
+  resources :transactions,  only: [:new, :create, :edit, :update, :destroy] do
     post :transfer, action: :create_transfer, on: :collection
   end
   resources :members, only: [:index, :edit, :update]
