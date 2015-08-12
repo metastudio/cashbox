@@ -4,6 +4,7 @@ class BankAccountsController < ApplicationController
   before_action :require_organization, only: [:edit, :update, :new, :create,
     :destroy, :hide]
   before_action :find_bank_account, only: :sort
+  after_action :update_last_viewed_at, only: [:create]
 
   def new
     @bank_account = current_organization.bank_accounts.build
