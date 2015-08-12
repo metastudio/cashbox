@@ -10,6 +10,7 @@ class HomeController < ApplicationController
 
     gon.curr_org_exch_rates = current_organization.exchange_rates
 
-    session[:filter] = params[:q] ? params[:q] : nil
+    session[:filter] = params[:q]
+    @transaction = Transaction.new
   end
 end

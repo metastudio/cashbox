@@ -5,9 +5,9 @@
   $('#transaction_modal').modal('hide');
 <% else %>
   if ($(".tab-pane.active").attr('id') == 'income') {
-    $("#edit_transaction_<%= @transaction.id.to_s %>").replaceWith("<%=j render('transactions/form', type: 'Income', transaction: @transaction) %>");
+    $("#<%= dom_id(@transaction, :edit) %>").replaceWith("<%=j render('transactions/form', type: 'Income', transaction: @transaction) %>");
   } else {
-    $("#edit_transaction_<%= @transaction.id.to_s %>").replaceWith("<%=j render('transactions/form', type: 'Expense', transaction: @transaction) %>");
+    $("#<%= dom_id(@transaction, :edit) %>").replaceWith("<%=j render('transactions/form', type: 'Expense', transaction: @transaction) %>");
   }
   addTransactionFormMasks();
 <% end %>

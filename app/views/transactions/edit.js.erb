@@ -1,20 +1,13 @@
-$('#modal_title').html("<i class='glyphicon glyphicon-pencil'></i> Edit Transaction");
+$('#content').html("<%= j render('transactions/modal_content') %>");
 
 <% if @transaction.category.type == 'Income' %>
-  $('#income').html("<%= j render('transactions/form', type: nil, transaction: @transaction) %>");
-  $('li.expense').removeClass('active').hide();
-  $('.tab-pane#expense').removeClass('active');
-  $('li.income').addClass('active').show();
-  $('.tab-pane#income').addClass('active');
+  $('li.expense').remove();
+  $('li.income').addClass('active');
 <% else %>
-  $('#expense').html("<%= j render('transactions/form', type: nil, transaction: @transaction) %>");
-  $('li.income').removeClass('active').hide();
-  $('.tab-pane#income').removeClass('active');
-  $('li.expense').addClass('active').show();
-  $('.tab-pane#expense').addClass('active');
+  $('li.income').remove();
+  $('li.expense').addClass('active');
 <% end %>
-$('li.transfer').removeClass('active').hide();
-$('.tab-pane#transfer').removeClass('active');
+$('li.transfer').remove();
 
 $('#transaction_modal').modal('show');
 addTransactionFormMasks();

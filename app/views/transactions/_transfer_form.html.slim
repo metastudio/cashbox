@@ -25,6 +25,4 @@
       .col-md-6.col-sm-12.col-xs-12
         = f.input :date, as: :string, label: false, placeholder: 'Date',
         input_html: { class: 'datepicker', value: f.object.date.try(:strftime, '%d/%m/%Y') }
-  .col-sm-12
-    = f.button :submit, class: 'btn-primary'
 

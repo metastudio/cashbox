@@ -20,4 +20,8 @@ module LayoutHelper
       raw("<span class='glyphicon glyphicon-question-sign'></span>")
     end
   end
+
+  def submit_title
+    params['action'] == 'new' ? 'Create' : 'Update'
+  end
 end

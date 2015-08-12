@@ -8,7 +8,7 @@
       .col-md-6.col-sm-12.col-xs-12
         - if f.object.category.try(:system?)
           = f.input :category, label: false, disabled: true
-        - elsif params[:action] == 'new'
+        - elsif params[:action] == 'new' || params[:action] == 'create'
           = f.association :category, as: :select,
             collection: current_organization.categories.where(type: type),
             prompt: 'Category', label: false, value_method: :id,
@@ -45,9 +45,3 @@
       .col-md-6.col-sm-12.col-xs-12
         = f.input :date, as: :string, label: false, placeholder: 'Date',
           input_html: { class: 'datepicker', value: f.object.date.try(:strftime, '%d/%m/%Y') }
-  .col-sm-12
-    = f.button :submit, class: 'btn-primary'
-    - if transaction.persisted?
-      = link_to 'Remove', transaction_path(transaction), remote: true, method: :delete,
-        data: { confirm: 'Are you sure?', disable_with: 'Removing...' },
-        class: 'btn btn-danger'

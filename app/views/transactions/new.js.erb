@@ -1,15 +1,4 @@
-$('#modal_title').html("<i class='glyphicon glyphicon-plus'></i> Add New Transaction");
-$('#income').html("<%= j render('transactions/form', type: 'Income', transaction: @transaction) %>");
-$('#expense').html("<%= j render('transactions/form', type: 'Expense', transaction: @transaction) %>");
-$('#transfer').html("<%= j render('transactions/transfer_form', transfer: @transfer) %>");
-
-$('li.income').addClass('active').show();
-$('.tab-pane#income').addClass('active');
-$('li.expense').removeClass('active').show();
-$('.tab-pane#expense').removeClass('active');
-$('li.transfer').removeClass('active').show();
-$('.tab-pane#transfer').removeClass('active');
-
+$('#content').html("<%= j render('transactions/modal_content') %>");
 $('#transaction_modal').modal('show');
 
 addTransactionFormMasks();

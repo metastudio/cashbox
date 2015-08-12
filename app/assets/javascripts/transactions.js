@@ -49,6 +49,16 @@ $(function () {
       return false;
     }
   });
+
+  $(document).on('click', '#submit_btn', function(e) {
+    if ($(".tab-pane.active").attr('id') == 'transfer') {
+      $('.tab-pane.active #new_transfer_form').submit();
+    } else {
+      $('.tab-pane.active #new_transaction').submit();
+      trans_id = $('#submit_btn').data('trans-id');
+      $('#edit_transaction_' + trans_id).submit();
+    }
+  });
 });
 
 function prepRateAndHints(exchange_rate, hints) {

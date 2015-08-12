@@ -32,8 +32,8 @@ describe 'create transfer transaction', js: true do
       select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
       fill_in 'transfer[comission]', with: comission_str
       fill_in 'transfer[comment]',   with: comment
-      click_on 'Create'
     end
+    click_on 'Create'
     page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
   end
 
