@@ -34,7 +34,9 @@ describe "current orgranization" do
 
     before :each do
       click_on 'Change organization'
-      page.find("##{dom_id(user.organizations.last)}").click
+      within "##{dom_id(user.organizations.last, :switch)}" do
+        click_button 'Switch'
+      end
     end
 
     it "see organization name" do

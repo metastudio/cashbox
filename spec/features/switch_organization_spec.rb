@@ -18,7 +18,9 @@ describe 'Switch organization' do
   context 'switch organization' do
     before do
       click_on 'Change organization'
-      page.find("##{dom_id(user.organizations.last)}").click
+      within "##{dom_id(user.organizations.last, :switch)}" do
+        click_on 'Switch'
+      end
     end
 
     it "displays selected organization" do

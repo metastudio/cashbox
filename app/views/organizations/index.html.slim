@@ -16,16 +16,19 @@
           td = organization.name
           td = organization.owners.map(&:email).join(', ')
           td
-            .btn-group.pull-right
-              = link_to 'Switch', switch_organization_path(organization),
-                class: 'btn btn-default btn-sm', id: dom_id(organization), method: :put
-              = link_to 'Show', organization, class: 'btn btn-default btn-sm'
-              - if policy(organization).edit?
-                = link_to 'Edit', edit_organization_path(organization),
-                  class: 'btn btn-default btn-sm'
-              - if policy(organization).destroy?
-                = link_to 'Delete', organization, method: :delete,
-                  data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+            .btn-toolbar
+              .btn-group.pull-right
+                = link_to 'Show', organization, class: 'btn btn-default btn-sm'
+                - if policy(organization).edit?
+                  = link_to 'Edit', edit_organization_path(organization),
+                    class: 'btn btn-default btn-sm'
+                - if policy(organization).destroy?
+                  = link_to 'Delete', organization, method: :delete,
+                    data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+              - unless current_organization == organization
+                .btn-group.pull-right id=dom_id(organization, :switch)
+                  = button_to 'Switch', switch_organization_path(organization),
+                    class: 'btn btn-primary btn-sm', method: :put
 - else
   .alert.alert-warning No organizations
 
