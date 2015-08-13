@@ -109,7 +109,7 @@ class Transaction < ActiveRecord::Base
   def find_customer_name_by_id(customer_id)
     Customer.find(customer_id).to_s
   rescue
-    'Customer'
+    ''
   end
 
   private
@@ -189,7 +189,7 @@ class Transaction < ActiveRecord::Base
   def amount_balance
     if expense?
       errors.add(:amount, 'Not enough money') if amount >
-        bank_account.balance - Money.new(amount_cents_was, bank_account.currency)
+        bank_account.balance - Money.new(amount_cents_was, bank_account.currency).abs
     else
       errors.add(:amount, 'Balance overflow') if Dictionaries.money_max * 100 <
         (bank_account.balance + amount).cents

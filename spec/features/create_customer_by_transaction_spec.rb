@@ -15,14 +15,15 @@ describe 'create transaction', js: true do
 
   def create_transaction
     visit root_path
+    click_on 'Add...'
     within '#new_transaction' do
       fill_in 'transaction[amount]', with: amount_str
       select category_name, from: 'transaction[category_id]' if category_name.present?
       select account_name, from: 'transaction[bank_account_id]' if account_name.present?
       fill_in 'transaction[comment]', with: comment
       select2('new_customer', '#s2id_transaction_customer_name')
-      click_on 'Create'
     end
+    click_on 'Create'
     page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
   end
 

@@ -1,6 +1,6 @@
-.row
-  = render 'transactions/form', transaction: Transaction.new
-  = render 'transactions/transfer_form', transfer: Transfer.new
+= link_to 'Add...', new_transaction_path, remote: true, class: 'btn btn-primary'
 
 .transactions_list
   = render 'transactions/transactions_table', transactions: transactions
+
+= render 'transactions/modal_form'

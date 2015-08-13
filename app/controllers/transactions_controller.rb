@@ -3,6 +3,12 @@ class TransactionsController < ApplicationController
   before_action :set_transaction,  only: [:edit, :update, :destroy]
   after_action :update_last_viewed_at, only: [:create, :create_transfer]
 
+  def new
+    @q = current_organization.transactions.ransack(session[:filter])
+    @transaction = Transaction.new
+    @transfer = Transfer.new
+  end
+
   def create
     @transaction = Transaction.new(transaction_params)
     check_relation_to_curr_org(:transaction)

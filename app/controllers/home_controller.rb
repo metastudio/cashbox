@@ -9,5 +9,8 @@ class HomeController < ApplicationController
     @transactions = @transactions.page(params[:page]).per(50)
 
     gon.curr_org_exch_rates = current_organization.exchange_rates
+
+    session[:filter] = params[:q]
+    @transaction = Transaction.new
   end
 end
