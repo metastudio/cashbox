@@ -133,6 +133,7 @@ function addRemoveHints(fromCurr, toCurr) {
 function datepickerInit(selector) {
   selector.datepicker({
     format: 'dd/mm/yyyy',
+    weekStart: 1,
     startDate: '01/01/1900',
     endDate: '+1y',
     autoclose: true,
