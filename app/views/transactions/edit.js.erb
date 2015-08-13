@@ -1,6 +1,6 @@
 $('#content').html("<%= j render('transactions/modal_content') %>");
 
-<% if @transaction.category.type == 'Income' %>
+<% if @transaction.category.nil? || @transaction.category.type == 'Income' %>
   $('li.expense').remove();
   $('li.income').addClass('active');
 <% else %>

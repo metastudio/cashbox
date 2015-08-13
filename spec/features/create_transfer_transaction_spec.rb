@@ -163,11 +163,11 @@ describe 'create transfer transaction', js: true do
         end
 
         it 'rate' do
-          expect(page).to have_css("#rate_hint input[value=\"#{Money.default_bank.rates["RUB_TO_USD"].round(4)}\"]")
+          expect(page).to have_content("Default rate: #{Money.default_bank.rates["RUB_TO_USD"].round(4)}")
         end
 
         it 'end sum' do
-          expect(page).to have_css("#end_sum_hint input[value=\"#{(amount * rate).round(4)}\"]")
+          expect(page).to have_content("Calculate sum: #{(amount * rate).round(4)}")
         end
       end
 
@@ -184,12 +184,12 @@ describe 'create transfer transaction', js: true do
         end
 
         it 'rate' do
-          expect(page).to_not have_css("#rate_hint input[value=\"#{Money.default_bank.rates["RUB_TO_USD"].round(4)}\"]")
+          expect(page).to_not have_content("#{Money.default_bank.rates["RUB_TO_USD"].round(4)}")
         end
 
 
         it 'end sum' do
-          expect(page).to_not have_css("#end_sum_hint input[value=\"#{(amount * rate).round(4)}\"]")
+          expect(page).to_not have_content("#{(amount * rate).round(4)}")
         end
       end
     end

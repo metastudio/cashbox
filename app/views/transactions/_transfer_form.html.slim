@@ -1,28 +1,18 @@
-= simple_form_for(transfer, url: transfer_transactions_path, remote: true, html: {id: 'new_transfer_form', class: 'transfer'} ) do |f|
+= simple_form_for(transfer, url: transfer_transactions_path, remote: true,
+    html: { id: 'new_transfer_form', class: 'form-horizontal transfer' }, wrapper: :horizontal_form) do |f|
   = f.error_notification
-
-  .col-sm-12
-    .row
-      .col-md-6.col-sm-12.col-xs-12
-        = f.input :amount, label: false, input_html: { class: 'amount' }
-      .col-md-6.col-sm-12.col-xs-12
-        = f.input :comission, label: false, input_html: { class: 'comission' }
-
-    .row
-      - bank_accounts = current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency)
-      .col-md-6.col-sm-12.col-xs-12
-        = f.input :bank_account_id, label: false, as: :grouped_select, include_blank: 'From',
-          collection: bank_accounts, group_method: :last
-      .col-md-6.col-sm-12.col-xs-12
-        = f.input :reference_id, label: false, as: :grouped_select, include_blank: 'To',
-          collection: bank_accounts, group_method: :last
-    .row
-      .col-md-6.col-sm-12.col-xs-12
-        = f.input :comment, label: false
-      .col-md-2.col-sm-4.col-xs-4#rate_col.hidden
-        = f.input :exchange_rate, label: false, input_html: { class: 'rate' }
-    .row
-      .col-md-6.col-sm-12.col-xs-12
-        = f.input :date, as: :string, label: false, placeholder: 'Date',
-        input_html: { class: 'datepicker', value: f.object.date.try(:strftime, '%d/%m/%Y') }
+  = f.input :amount, input_html: { class: 'amount' }
+  = f.input :comission, input_html: { class: 'comission' }
+  - bank_accounts = current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency)
+  = f.input :bank_account_id, as: :grouped_select, include_blank: 'From',
+      collection: bank_accounts, group_method: :last
+  = f.input :reference_id, as: :grouped_select, include_blank: 'To',
+      collection: bank_accounts, group_method: :last
+  = f.input :comment
+  #rate_col.hidden
+    = f.hint 'Default rate:', id: 'rate_hint'
+    = f.input :exchange_rate, input_html: { class: 'rate' }
+    = f.hint 'Calculate sum: ...', id: 'end_sum_hint'
+  = f.input :date, as: :string, placeholder: 'Date',
+      input_html: { class: 'datepicker', value: f.object.date.try(:strftime, '%d/%m/%Y') }
 
