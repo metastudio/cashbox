@@ -55,7 +55,7 @@ $(function () {
     prepRateAndHints(exchange_rate = true);
   });
 
-  $('.select2-input').on('keypress', function(e) {
+  $(document).on('keypress', '.select2-input', function(e) {
     if (e.keyCode === 32 && this.selectionStart === 0) {
       return false;
     }
