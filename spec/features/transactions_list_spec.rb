@@ -56,9 +56,8 @@ describe 'Transactions list' do
 
   context 'when switch organization' do
     before do
-      within "#switch_organization" do
-        click_on org2.name
-      end
+      click_on 'Change organization'
+      page.find("##{dom_id(org2)}").click
     end
 
     it "displays right transactions" do

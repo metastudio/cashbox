@@ -68,7 +68,7 @@ describe 'sidebar' do
         let!(:org2) { create :organization, with_user: user }
         before do
           visit organizations_path
-          click_on org2.name
+          page.find("##{dom_id(org2)}").click
         end
 
         it 'change current_organization' do

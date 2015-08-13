@@ -4,23 +4,25 @@ header
       .navbar-header
         = active_link_to 'CashBox', root_path, class: 'navbar-brand', active: :exclusive
         - if signed_in?
-
           button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          = render 'shared/layout/total_balance'
           ul.nav.navbar-nav.navbar-left
-            = render 'shared/layout/switch_organization'
+            = render 'shared/layout/menu_organization'
+          = render 'shared/layout/total_balance'
 
       - if signed_in?
         #collapse-btn.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
             - if current_organization
-              = active_link_to 'Settings', organization_path(current_organization),
-                wrap_tag: :li, active: [['organizations', 'bank_accounts',
-                'categories', 'members', 'customers', 'statistics', 'invitations']]
-            = active_link_to 'Profile', user_profile_path, wrap_tag: :li,
-              active: [['users/registrations']]
-            li
-              = link_to 'Sign out', destroy_user_session_path, method: :delete
+              = active_link_to 'Statistics', statistics_path, wrap_tag: :li, active: [['statistics']]
+            li.dropdown
+              = link_to '#', class: 'navbar-brand dropdown-toggle', data: {toggle: 'dropdown'} do
+                #current_user
+                  = current_user
+                  b.caret
+              ul.dropdown-menu
+                li= link_to 'Change organization', organizations_path
+                li= link_to 'Edit Profile', user_profile_path
+                li= link_to 'Sign out', destroy_user_session_path, method: :delete

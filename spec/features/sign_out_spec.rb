@@ -7,6 +7,7 @@ describe 'sign out proccess' do
 
   before :each do
     sign_in user
+    click_on user
     click_on("Sign out")
   end
 

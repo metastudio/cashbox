@@ -17,9 +17,8 @@ describe 'Switch organization' do
 
   context 'switch organization' do
     before do
-      within "#switch_organization" do
-        click_on user.organizations.last.name
-      end
+      click_on 'Change organization'
+      page.find("##{dom_id(user.organizations.last)}").click
     end
 
     it "displays selected organization" do
