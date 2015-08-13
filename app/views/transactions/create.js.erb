@@ -10,14 +10,18 @@
     $("#<%= dom_id(@transaction) %>").animate({
       backgroundColor: c,
     }, 1000 );
-
-    $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: Transaction.new) %>");
+    $('#transaction_modal').modal('hide');
     scrollTo($("#<%= dom_id(@transaction) %>"));
     $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
     $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
   }
 <% else %>
-  $("#new_transaction").replaceWith("<%=j render('transactions/form', transaction: @transaction) %>");
+  if ($(".tab-pane.active").attr('id') == 'income') {
+    $(".tab-pane.active #new_transaction").replaceWith("<%=j render('transactions/form', type: 'Income', transaction: @transaction) %>");
+  }
+  else {
+    $(".tab-pane.active #new_transaction").replaceWith("<%=j render('transactions/form', type: 'Expense', transaction: @transaction) %>");
+  }
 <% end %>
 
 addTransactionFormMasks();

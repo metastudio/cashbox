@@ -32,12 +32,14 @@ class Transfer
       @out_transaction = Transaction.new(
         amount_cents: estimate_amount(out = true),
         bank_account_id: bank_account_id, comment: form_comment(comment),
+        date: date,
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_EXPENSE_PARAMS).id)
 
       @inc_transaction = Transaction.new(
         amount_cents: estimate_amount(out = false),
         bank_account_id: reference_id, comment: form_comment(comment),
+        date: date,
         category_id: Category.find_or_create_by(
           Category::CATEGORY_BANK_INCOME_PARAMS).id)
 

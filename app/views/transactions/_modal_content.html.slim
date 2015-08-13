@@ -1,0 +1,27 @@
+.modal-header
+  button type='button' class='close' data-dismiss='modal' aria-hidden='true' &times;
+  h4.modal-title#modal_title Transaction
+.modal-body
+  .panel.with-nav-tabs
+    .panel-heading
+      ul.nav.nav-tabs#transaction_type
+        li.income.active
+          = link_to 'Income', '#income', data: { toggle: 'tab', type: 'income' }
+        li.expense
+          = link_to 'Expense', '#expense', data: { toggle: 'tab', type: 'expense' }
+        li.transfer
+          = link_to 'Transfer', '#transfer', data: { toggle: 'tab', type: 'transfer' }
+    .panel-body
+      .tab-content
+        .tab-pane#income.active
+          = render 'transactions/form', type: 'Income', transaction: @transaction
+        .tab-pane#expense
+          = render 'transactions/form', type: 'Expense', transaction: @transaction
+        .tab-pane#transfer
+          = render 'transactions/transfer_form', transfer: Transfer.new
+.modal-footer
+  button type='button' class='btn btn-primary' id='submit_btn' data-trans-id="#{@transaction.id}"
+    = submit_title
+  - if @transaction.persisted?
+    = link_to 'Remove', transaction_path(@transaction), remote: true, method: :delete,
+        data: { confirm: 'Are you sure?', disable_with: 'Removing...' }, class: 'btn btn-danger'

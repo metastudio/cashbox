@@ -24,7 +24,7 @@ describe 'create transfer transaction', js: true do
 
   def create_transfer
     visit root_path
-    click_on 'Transaction'
+    click_on 'Add...'
     click_on 'Transfer'
     within '#new_transfer_form' do
       fill_in 'transfer[amount]', with: amount_str
@@ -32,8 +32,8 @@ describe 'create transfer transaction', js: true do
       select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
       fill_in 'transfer[comission]', with: comission_str
       fill_in 'transfer[comment]',   with: comment
-      click_on 'Create'
     end
+    click_on 'Create'
     page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
   end
 
@@ -143,7 +143,7 @@ describe 'create transfer transaction', js: true do
 
     before do
       visit root_path
-      click_on 'Transaction'
+      click_on 'Add...'
       click_on 'Transfer'
     end
 
@@ -163,13 +163,11 @@ describe 'create transfer transaction', js: true do
         end
 
         it 'rate' do
-          expect(page).to have_css('.help-block',
-            text: Money.default_bank.rates["RUB_TO_USD"].round(4) )
+          expect(page).to have_content("Default rate: #{Money.default_bank.rates["RUB_TO_USD"].round(4)}")
         end
 
         it 'end sum' do
-          expect(page).to have_css('.help-block',
-            text: (amount * rate).round(4) )
+          expect(page).to have_content("Calculate sum: #{(amount * rate).round(4)}")
         end
       end
 
@@ -181,20 +179,17 @@ describe 'create transfer transaction', js: true do
             select ba2.name, from: 'transfer[reference_id]'
             fill_in 'transfer[exchange_rate]', with: rate
             find("#transfer_comment").click
-            page.has_css?('help-bock')
             select ba3.name, from: 'transfer[bank_account_id]'
           end
         end
 
         it 'rate' do
-          expect(page).to_not have_css('.help-block',
-            text: Money.default_bank.rates["RUB_TO_USD"].round(4) )
+          expect(page).to_not have_content("#{Money.default_bank.rates["RUB_TO_USD"].round(4)}")
         end
 
 
         it 'end sum' do
-          expect(page).to_not have_css('.help-block',
-            text: (amount * rate).round(4) )
+          expect(page).to_not have_content("#{(amount * rate).round(4)}")
         end
       end
     end
@@ -260,41 +255,6 @@ describe 'create transfer transaction', js: true do
 
     it "doesn't display account in select" do
       expect(page).to_not have_content(account.to_s)
-    end
-  end
-
-  context 'switching form' do
-    before do
-      visit root_path
-    end
-
-    context 'has active class for selected' do
-      before do
-        within '#new_transaction' do
-          click_on 'Transaction'
-        end
-      end
-
-      it 'transaction' do
-        within '#new_transaction .dropdown-menu' do
-          expect(page).to have_css('li.active', text: 'Transaction')
-        end
-      end
-
-      context 'when switched' do
-        before do
-          click_on 'Transfer'
-          within '#new_transfer_form' do
-            click_on 'Transfer'
-          end
-        end
-
-        it 'transfer' do
-          within '#new_transfer_form .dropdown-menu' do
-            expect(page).to have_css('li.active', text: 'Transfer')
-          end
-        end
-      end
     end
   end
 end

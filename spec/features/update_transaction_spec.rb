@@ -21,11 +21,11 @@ describe 'update transaction', js: true do
       before do
         id = transactions.last.id
         find("#transaction_#{id} .comment").click
-        page.has_css?("#edit_row_transaction_#{id}")
+        page.has_css?("#edit_transaction_#{id}")
       end
 
       it "shows update form on row click" do
-        expect(subject).to have_selector("input[type=submit][value='Update']")
+        expect(subject).to have_selector('#submit_btn')
       end
     end
 
@@ -34,11 +34,11 @@ describe 'update transaction', js: true do
         click_on 'Last'
         id = transactions.first.id
         find("#transaction_#{id} .comment").click
-        page.has_css?("#edit_row_transaction_#{id}")
+        page.has_css?("#edit_transaction_#{id}")
       end
 
       it "shows update form on row click" do
-        expect(subject).to have_selector("input[type=submit][value='Update']")
+        expect(subject).to have_selector('#submit_btn')
       end
     end
   end
@@ -54,12 +54,12 @@ describe 'update transaction', js: true do
     before do
       visit root_path
       find("#transaction_#{transaction.id} .comment").click
-      page.has_css?("#edit_row_transaction_#{transaction.id}")
-      within "#edit_row_transaction_#{transaction.id}" do
-        page.execute_script("$(\"#edit_row_transaction_#{transaction.id} #transaction_amount\").val('');")
+      page.has_css?("#edit_transaction_#{transaction.id}")
+      within "#edit_transaction_#{transaction.id}" do
+        page.execute_script("$(\"#edit_transaction_#{transaction.id} #transaction_amount\").val('');")
         fill_in 'transaction[amount]', with: new_amount
-        click_on 'Update'
       end
+      click_on 'Update'
     end
 
     it "updates sidebar account balance" do

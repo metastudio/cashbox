@@ -6,8 +6,6 @@ class StatisticsController < ApplicationController
 
   def balance
     data = current_organization.data_balance
-    puts "!!!!data: " + data.inspect
-    # format: { :data => [['Month', 'Incomes', 'Expenses'], ['Jan', 1000, 200], ['Feb', 500, 2000]] }
     respond_to do |format|
       format.json { render json: data }
     end

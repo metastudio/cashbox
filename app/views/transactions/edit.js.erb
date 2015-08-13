@@ -1,4 +1,13 @@
-if($("#<%= dom_id(@transaction, 'edit_row') %>").length == 0) {
-  $("<%=j render 'transactions/edit_transaction', transaction: @transaction %>").hide().insertAfter(".transaction#<%= dom_id(@transaction) %>").slideDown();
-  addTransactionFormMasks();
-}
+$('#content').html("<%= j render('transactions/modal_content') %>");
+
+<% if @transaction.category.nil? || @transaction.category.type == 'Income' %>
+  $('li.expense').remove();
+  $('li.income').addClass('active');
+<% else %>
+  $('li.income').remove();
+  $('li.expense').addClass('active');
+<% end %>
+$('li.transfer').remove();
+
+$('#transaction_modal').modal('show');
+addTransactionFormMasks();

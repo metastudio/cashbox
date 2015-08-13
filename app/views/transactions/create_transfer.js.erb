@@ -11,16 +11,17 @@
   $("#<%= dom_id(@inc_transaction) %>").animate({
     backgroundColor: c_inc,
   }, 1000 );
-  $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: Transfer.new) %>");
-  scrollTo($("#<%= dom_id(@out_transaction) %>"));
+  $('#transaction_modal').modal('hide');
+  scrollTo($("#<%= dom_id(@inc_transaction) %>"));
+
   $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
   $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
 <% else %>
   $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: @transfer) %>");
   <% if @transfer.currency_mismatch? %>
     $('#transfer_comission').parents('.col-sm-2').addClass('col-sm-1').removeClass('col-sm-2');
-    $('#transfer_exchange_rate').parents('.col-sm-6').removeClass('hidden');
+    $('#transfer_exchange_rate').parents('#rate_col').removeClass('hidden');
   <% end %>
 <% end %>
-$("#new_transfer_form").show();
+
 addTranferFormMasks();
