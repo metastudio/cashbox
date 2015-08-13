@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Settings' do
+describe 'Statistics' do
   let(:user) { create :user, :with_organization }
 
   before do
@@ -10,26 +10,30 @@ describe 'Settings' do
   subject { page }
 
   it "root page have settings link" do
-    expect(subject).to have_link('Settings')
+    expect(subject).to have_link('Statistics')
   end
 
   context 'on page' do
-    before { click_link 'Settings' }
+    before { click_link 'Statistics' }
 
-    it { expect(page).to have_css('li.active', text: 'Settings')}
-    it { expect(page).to have_link('Organizations')}
+    it { expect(page).to have_css('li.active', text: 'Statistics')}
     it { expect(page).to have_link('Statistics')}
     it { expect(page).to have_link('Customers')}
     it { expect(page).to have_link('Bank accounts')}
     it { expect(page).to have_link('Categories')}
     it { expect(page).to have_link('Members')}
 
-    it 'Organization details is active by def' do
-      expect(page).to have_css('.active', text: 'Organization details')
+    it 'Statistics is active by def' do
+      expect(page).to have_css('.active', text: 'Income by categories Expense by categories')
+      expect(page).to have_css('.active', text: 'Income by customers Expense by customers')
     end
 
     context 'when switch to other setting' do
-      before { click_link 'Categories' }
+      before do
+        within '.list-group' do
+          click_link 'Categories'
+        end
+      end
       it 'Categories is active now' do
         expect(page).to have_css('.active', text: 'Categories')
       end

@@ -33,8 +33,15 @@ describe "current orgranization" do
     let(:user) { create :user, :with_organizations }
 
     before :each do
-      within '#switch_organization' do
-        click_link user.organizations.last.name
+      click_on 'Change organization'
+      within "##{dom_id(user.organizations.last, :switch)}" do
+        click_button 'Switch'
+      end
+    end
+
+    it "see organization name" do
+      within("#current_organization") do
+        expect(subject).to have_content(user.organizations.last.name)
       end
     end
 

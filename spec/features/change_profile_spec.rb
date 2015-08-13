@@ -14,11 +14,11 @@ describe 'Change profile' do
 
     subject { page }
 
-    it { expect(subject).to have_link('Profile') }
+    it { expect(subject).to have_link('Edit Profile') }
 
     context 'profile editing' do
       before do
-        click_on 'Profile'
+        click_on 'Edit Profile'
         fill_in 'Full name', with: full_name
         fill_in 'Phone number', with: phone_number
         click_on 'Update profile'
@@ -43,10 +43,8 @@ describe 'Change profile' do
 
     context 'password changing' do
       before do
-        click_on 'Profile'
+        click_on 'Edit Profile'
       end
-
-      it { expect(page).to have_css('li.active', text: 'Profile')}
 
       context "with password provided" do
         context "with valid params" do
@@ -70,7 +68,6 @@ describe 'Change profile' do
           click_on 'Update account'
         end
 
-        it { expect(page).to have_css('li.active', text: 'Profile')}
         it { expect(page).to have_inline_error("we need your current password to confirm your changes").for_field('Current password') }
       end
     end
@@ -79,6 +76,6 @@ describe 'Change profile' do
   context 'unsigned in user' do
     before { visit root_path }
 
-    it { expect(page).to have_no_link 'Profile' }
+    it { expect(page).to have_no_link 'Edit Profile' }
   end
 end

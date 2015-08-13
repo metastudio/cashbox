@@ -56,8 +56,9 @@ describe 'Transactions list' do
 
   context 'when switch organization' do
     before do
-      within "#switch_organization" do
-        click_on org2.name
+      click_on 'Change organization'
+      within "##{dom_id(org2, :switch)}" do
+        click_on 'Switch'
       end
     end
 
