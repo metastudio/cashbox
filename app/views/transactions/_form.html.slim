@@ -16,7 +16,7 @@
   - else
     = f.association :category, as: :grouped_select,
       collection: current_organization.categories.grouped_by_type,
-      group_method: :last, prompt: ' Category', value_method: :id,
+      group_method: :last, prompt: 'Category', value_method: :id,
       selected: f.object.category_id
 
   - if f.object.bank_account.nil? || f.object.bank_account.visible?
