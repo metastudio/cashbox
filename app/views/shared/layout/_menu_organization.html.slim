@@ -2,7 +2,7 @@
   li.dropdown
     = link_to '#', class: 'navbar-brand dropdown-toggle', data: {toggle: 'dropdown'} do
       #current_organization
-        = current_organization.name
+        = current_organization
         b.caret
     ul.dropdown-menu
       li= link_to 'Details', organization_path(current_organization)

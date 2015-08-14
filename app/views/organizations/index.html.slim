@@ -13,7 +13,7 @@
     tbody
       - @organizations.each do |organization|
         tr
-          td = organization.name
+          td = organization
           td = organization.owners.map(&:email).join(', ')
           td
             .btn-toolbar
