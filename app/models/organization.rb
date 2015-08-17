@@ -128,6 +128,10 @@ class Organization < ActiveRecord::Base
     data.size > 1 ? { data: data, currency_format: currency_format } : nil
   end
 
+  def to_s
+    name.truncate(30)
+  end
+
   private
 
   def calc_to_def_currency(amount, currency)

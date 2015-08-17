@@ -43,6 +43,6 @@ class User < ActiveRecord::Base
   scope :without, ->(user) { where("id <> ?", user.id) }
 
   def to_s
-    full_name
+    full_name.truncate(30)
   end
 end

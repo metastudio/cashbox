@@ -1,5 +1,5 @@
 - if current_organization
-  h3 = current_organization.name
+  h3 = current_organization
   .list-group
     = active_link_to 'Organization details', organization_path(current_organization),
       class: 'list-group-item', active: [['organizations']]
