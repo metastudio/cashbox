@@ -106,7 +106,8 @@ function addRemoveHints(fromCurr, toCurr) {
   }
 
   var rate_hint = parseFloat(gon.curr_org_exch_rates[fromCurr + '_TO_' + toCurr]).toFixed(4);
-  var rate_hint_input = '<p class="help-block" id="rate_hint">Default rate: ' + rate_hint + '</p>'
+  var rate_hint_input = '<p class="col-md-9 col-md-offset-3 help-block" \
+    id="rate_hint">Default rate: ' + rate_hint + '</p>'
   $transferRate.parents('#rate_col').find('#rate_hint').remove();
   $transferRate.parents('#rate_col').prepend(rate_hint_input);
 
@@ -114,7 +115,8 @@ function addRemoveHints(fromCurr, toCurr) {
   var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
   if (amount && rate) {
     var end_sum = (amount * rate).toFixed(2);
-    var end_sum_input = '<p class="help-block" id="end_sum_hint">Calculate sum: ' + end_sum + '</p>'
+    var end_sum_input = '<p class="col-md-9 col-md-offset-3 help-block" \
+      id="end_sum_hint">Calculate sum: ' + end_sum + '</p>'
     $transferRate.parents('#rate_col').find('#end_sum_hint').remove();
     $transferRate.parents('#rate_col').append(end_sum_input);
   }

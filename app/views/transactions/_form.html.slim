@@ -19,11 +19,6 @@
       group_method: :last, prompt: 'Category', value_method: :id,
       selected: f.object.category_id
 
-  = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
-      placeholder: 'Customer',
-      value: @q.nil? ? transaction.find_customer_name_by_id(f.object.customer_id) \
-        : (@q.customer_id_eq ? transaction.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
-
   - if f.object.bank_account.nil? || f.object.bank_account.visible?
     = f.association :bank_account, as: :grouped_select,
       collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
@@ -33,6 +28,11 @@
         ? @q.bank_account_id_eq : nil)
   - else
     = f.input :bank_account, disabled: true
+
+  = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
+    placeholder: 'Customer',
+    value: @q.nil? ? transaction.find_customer_name_by_id(f.object.customer_id) \
+      : (@q.customer_id_eq ? transaction.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
   = f.input :comment
   = f.input :date, as: :string, placeholder: 'Date',

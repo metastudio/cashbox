@@ -55,7 +55,7 @@ class Transaction < ActiveRecord::Base
   validate  :amount_balance, if: :bank_account
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
-  validates :customer_name, length: { maximum: 255 }
+  validates :customer_name, :comment, length: { maximum: 255 }
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
   validates :date, presence: true
 
