@@ -1,8 +1,5 @@
 .modal-header
   button type='button' class='close' data-dismiss='modal' aria-hidden='true' &nbsp;&times;
-  - if @transaction.persisted?
-    = link_to 'Remove', transaction_path(@transaction), remote: true, method: :delete,
-        data: { confirm: 'Are you sure?', disable_with: 'Removing...' }, class: 'btn btn-danger pull-right'
   h4.modal-title#modal_title Transaction
 .modal-body
   .panel.with-nav-tabs
@@ -26,4 +23,7 @@
   button type='button' class='btn btn-default' data-dismiss='modal' Cancel
   button type='button' class='btn btn-primary' id='submit_btn' data-trans-id="#{@transaction.id}"
     = submit_title
+  - if @transaction.persisted?
+    = link_to 'Remove', transaction_path(@transaction), remote: true, method: :delete,
+        data: { confirm: 'Are you sure?', disable_with: 'Removing...' }, class: 'btn btn-danger pull-left'
 

@@ -12,6 +12,6 @@
             span.no-wrap
               =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
               = show_amount_with_tooltip(total) + ')'
-    a.dropdown-toggle data-target="#dropdown-total" data-toggle="dropdown"
+    a.dropdown-toggle data-target="#dropdown-total" data-toggle="dropdown" href="#"
       = "Total: #{money_with_symbol total_amount}"
       b.caret
