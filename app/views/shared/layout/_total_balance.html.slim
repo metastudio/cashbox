@@ -7,7 +7,7 @@
           - total = current_organization.bank_accounts.total_balance(curr)
           - total_amount = total_amount + total.exchange_to(current_organization.default_currency)
 
-          li.no-wrap class=colorize_amount(total)
+          li.no-wrap class=colorize_ba_amount(total)
             => money_with_symbol total
             - if curr != current_organization.default_currency
               span.no-wrap
