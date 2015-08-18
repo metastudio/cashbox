@@ -2,23 +2,22 @@ header
   nav.navbar.navbar-inverse
     .container-fluid
       .navbar-header
+        button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
         = active_link_to 'CashBox', root_path, class: 'navbar-brand', active: :exclusive
-        - if signed_in?
-          button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          ul.nav.navbar-nav.navbar-left
-            = render 'shared/layout/menu_organization'
-          = render 'shared/layout/total_balance'
 
       - if signed_in?
         #collapse-btn.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            = render 'shared/layout/menu_organization'
+            = render 'shared/layout/total_balance'
           ul.nav.navbar-nav.navbar-right
             - if current_organization
               = active_link_to 'Statistics', statistics_path, wrap_tag: :li, active: [['statistics']]
             li.dropdown
-              = link_to '#', class: 'navbar-brand dropdown-toggle', data: {toggle: 'dropdown'} do
+              = link_to '#', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
                 #current_user
                   = current_user
                   b.caret
