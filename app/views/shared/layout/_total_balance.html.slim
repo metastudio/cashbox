@@ -1,18 +1,17 @@
 - if current_organization
-  #total_balance.pull-left
-    - total_amount = Money.new(0, current_organization.default_currency)
-    #dropdown-total.dropdown
-      ul.dropdown-menu
-        - Dictionaries.currencies.each_with_index do |curr, i|
-          - total = current_organization.bank_accounts.total_balance(curr)
-          - total_amount = total_amount + total.exchange_to(current_organization.default_currency)
+  - total_amount = Money.new(0, current_organization.default_currency)
+  li.dropdown.dropdown-total#total_balance
+    ul.dropdown-menu
+      - Dictionaries.currencies.each_with_index do |curr, i|
+        - total = current_organization.bank_accounts.total_balance(curr)
+        - total_amount = total_amount + total.exchange_to(current_organization.default_currency)
 
-          li.no-wrap class=colorize_amount(total)
-            => money_with_symbol total
-            - if curr != current_organization.default_currency
-              span.no-wrap
-                =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
-                = show_amount_with_tooltip(total) + ')'
-      a.navbar-brand.dropdown-toggle data-target="#dropdown-total" data-toggle="dropdown"
-        = "Total: #{money_with_symbol total_amount}"
-        b.caret
+        li.no-wrap class=colorize_ba_amount(total)
+          => money_with_symbol total
+          - if curr != current_organization.default_currency
+            span.no-wrap
+              =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
+              = show_amount_with_tooltip(total) + ')'
+    a.dropdown-toggle data-target="#dropdown-total" data-toggle="dropdown"
+      = "Total: #{money_with_symbol total_amount}"
+      b.caret

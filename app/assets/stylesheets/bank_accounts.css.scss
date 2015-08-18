@@ -9,6 +9,10 @@
   }
 }
 
+.negative-text {
+  color: darken($negative-color, 20);
+}
+
 .negative {
   background-color: $negative-color
 }

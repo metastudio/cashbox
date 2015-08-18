@@ -11,6 +11,10 @@ module MoneyHelper
     end
   end
 
+  def colorize_ba_amount(amount)
+    'negative-text' if amount < 0
+  end
+
   def total_colorize_amount(amount)
     if amount > 0
       'positive total'
