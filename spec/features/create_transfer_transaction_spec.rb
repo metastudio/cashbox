@@ -48,16 +48,15 @@ describe 'create transfer transaction', js: true do
       expect{ subject }.to change{ transactions.count }.by(2)
     end
 
-    it "shows created transactions in transactions list" do
+    it "show only Receipt transaction in transactions list" do
       create_transfer
       within ".transactions" do
         expect(page).to have_content(amount_str)
-        expect(page).to have_content(
-          number_to_currency(amount + comission, separator: '.', format: '%n'))
+        expect(page).to_not have_content('Transfer')
       end
     end
 
-    it "appends comission to the comment" do
+    it "appends rate and comission to the comment" do
       create_transfer
       within ".transactions" do
         expect(page).to have_content(comment + "\nComission: " + comission.to_s)

@@ -28,3 +28,11 @@
 .empty {
   background-color: $empty-color;
 }
+
+.transaction.transfer {
+  background-color: $transfer-color;
+}
+
+.transaction.new-transfer {
+  background-color: darken($transfer-color, 20);
+}

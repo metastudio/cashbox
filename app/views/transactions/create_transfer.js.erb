@@ -1,13 +1,7 @@
 <% unless @transfer.errors.any? %>
-  $("<%=j render('transactions/transaction', transaction: @out_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
   $("<%=j render('transactions/transaction', transaction: @inc_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
-  var c_out = $("#<%= dom_id(@out_transaction) %>").css('backgroundColor');
   var c_inc = $("#<%= dom_id(@inc_transaction) %>").css('backgroundColor');
-  $("#<%= dom_id(@out_transaction) %>").addClass('new-transaction');
-  $("#<%= dom_id(@inc_transaction) %>").addClass('new-transaction');
-  $("#<%= dom_id(@out_transaction) %>").animate({
-    backgroundColor: c_out,
-  }, 1000 );
+  $("#<%= dom_id(@inc_transaction) %>").addClass('new-transfer');
   $("#<%= dom_id(@inc_transaction) %>").animate({
     backgroundColor: c_inc,
   }, 1000 );

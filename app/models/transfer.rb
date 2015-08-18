@@ -51,6 +51,7 @@ class Transfer
         return false
       else
         @out_transaction.save
+        @inc_transaction.transfer_id = @out_transaction.id
         @inc_transaction.save
         return true
       end
@@ -124,7 +125,8 @@ class Transfer
   end
 
   def form_comment(comment)
-    comment.to_s + "\nComission: " + (comission.blank? ? "0" : comission.to_s)
+    rate = currency_mismatch? ? "\nRate: " + exchange_rate.to_s : ''
+    comment.to_s + "\nComission: " + (comission.blank? ? "0" : comission.to_s) + rate
   end
 
   def estimate_amount(out)

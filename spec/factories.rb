@@ -83,6 +83,12 @@ FactoryGirl.define do
       name 'Transfer'
       system true
     end
+
+    trait :receipt do
+      type 'Income'
+      name 'Receipt'
+      system true
+    end
   end
 
   sequence(:customer_name) { |n| "Customer #{n}" }

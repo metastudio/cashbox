@@ -52,9 +52,12 @@ describe 'categories page' do
     end
 
     describe "Transfer" do
-      it_behaves_like 'system category', "Transfer" do
-        let(:right_transaction) { transfer.out_transaction }
-        let(:wrong_transaction) { another_transfer.out_transaction }
+      let(:right_transaction) { transfer.out_transaction }
+      let(:wrong_transaction) { another_transfer.out_transaction }
+
+      it "not shows transfer transactions" do
+        is_expected.to_not have_css("##{dom_id(right_transaction)}")
+        is_expected.to_not have_css("##{dom_id(wrong_transaction)}")
       end
     end
 

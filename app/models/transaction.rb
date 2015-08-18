@@ -34,6 +34,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions, touch: true
   belongs_to :customer, inverse_of: :transactions
+  belongs_to :transfer, class_name: 'Transaction'
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency
@@ -49,6 +50,9 @@ class Transaction < ActiveRecord::Base
       where('bank_account_transactions.currency' => currency) }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
+  scope :without_transfers, -> { joins('LEFT OUTER JOIN categories category_transactions
+      ON category_transactions.id = transactions.category_id').
+      where('category_transactions.id IS NULL OR category_transactions.name != ?', Category::CATEGORY_TRANSFER_OUTCOME) }
 
   validates :amount, presence: true, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
@@ -62,6 +66,7 @@ class Transaction < ActiveRecord::Base
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
   before_validation :set_date, if: Proc.new{ date.blank? }
   before_save :check_negative
+  before_destroy :destroy_transfer, if: Proc.new{ transfer_id.present? }
   after_restore :recalculate_amount
 
   class << self
@@ -116,6 +121,10 @@ class Transaction < ActiveRecord::Base
 
   def find_customer
     self.customer = Customer.find_or_initialize_by(name: customer_name, organization_id: organization.id)
+  end
+
+  def destroy_transfer
+    Transaction.find(self.transfer_id).delete
   end
 
   def check_negative
