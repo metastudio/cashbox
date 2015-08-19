@@ -55,11 +55,6 @@ class Transaction < ActiveRecord::Base
       ON category_transactions.id = transactions.category_id').
       where('category_transactions.id IS NULL OR category_transactions.name != ?', Category::CATEGORY_TRANSFER_OUTCOME) }
 
-  #scope :without_out, -> {
-  #    joins('LEFT OUTER JOIN categories ON categories.id = transactions.category_id').
-  #    select('categories.id, categories.name').
-  #    where('categories.id IS NULL OR categories.name != ?', Category::CATEGORY_TRANSFER_OUTCOME) }
-
   validates :amount, presence: true, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
   validate  :amount_balance, if: :bank_account
