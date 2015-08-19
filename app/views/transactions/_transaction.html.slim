@@ -11,9 +11,9 @@ tr.transaction id=dom_id(transaction) class=colorize_transaction(transaction) da
       data: { stop_propagation: true } if transaction.bank_account
   td.col-sm-2.word-break
     - if transaction.transfer?
-      = link_to transaction.transfer_out.bank_account.to_s,
-        root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.transfer_out.bank_account.id)),
-        data: { stop_propagation: true } if transaction.transfer_out.bank_account
+      = link_to transaction.transfer_out.try(:bank_account).to_s,
+        root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.transfer_out.try(:bank_account).id)),
+        data: { stop_propagation: true } if transaction.transfer_out.try(:bank_account)
     - else
       = link_to transaction.customer.to_s,
         root_path(q: (params[:q] || {}).merge(customer_id_eq: transaction.customer_id)),

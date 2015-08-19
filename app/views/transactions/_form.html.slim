@@ -29,10 +29,14 @@
   - else
     = f.input :bank_account, disabled: true
 
-  = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
-    placeholder: 'Customer',
-    value: @q.nil? ? transaction.find_customer_name_by_id(f.object.customer_id) \
-      : (@q.customer_id_eq ? transaction.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
+  - if transaction.transfer?
+    = f.input :customer_name, label: 'Out account', input_html: { data: { value: transaction.transfer_out.try(:bank_account).to_s } },
+      disabled: true
+  - else
+    = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
+      placeholder: 'Customer',
+      value: @q.nil? ? transaction.find_customer_name_by_id(f.object.customer_id) \
+        : (@q.customer_id_eq ? transaction.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
   = f.input :comment
   = f.input :date, as: :string, placeholder: 'Date',

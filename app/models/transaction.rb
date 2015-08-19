@@ -118,7 +118,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def transfer?
-    category_id == Category.receipt_id && category_id != nil
+    category_id == Category.receipt_id && category_id.present?
   end
 
   private
