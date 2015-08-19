@@ -59,6 +59,19 @@ describe Transaction do
                 to include("Not enough money")
             end
           end
+
+          context 'compare amount to changed bank_account' do
+            let!(:inc_transaction) { create :transaction, :income, bank_account: account, amount: 10 }
+            let!(:transaction) { create :transaction, :expense, bank_account: account, amount: 5 }
+            let!(:other_bank_account) { create :bank_account }
+
+            before { transaction.bank_account = other_bank_account; transaction.amount = 5 }
+
+            it 'is invalid' do
+              is_expected.to be_invalid
+              expect(subject.errors_on(:amount)).to include("Not enough money")
+            end
+          end
         end
       end
 
