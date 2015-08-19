@@ -1,5 +1,5 @@
 class AddTransferIdToTransactions < ActiveRecord::Migration
   def change
-    add_column :transactions, :transfer_id, :integer
+    add_column :transactions, :transfer_out_id, :integer
   end
 end

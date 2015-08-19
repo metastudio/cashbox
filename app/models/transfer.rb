@@ -50,9 +50,9 @@ class Transfer
         parse_errors(@inc_transaction)
         return false
       else
-        @out_transaction.save
-        @inc_transaction.transfer_id = @out_transaction.id
         @inc_transaction.save
+        @out_transaction.transfer_out_id = @inc_transaction.id
+        @out_transaction.save
         return true
       end
     else
@@ -126,7 +126,7 @@ class Transfer
 
   def form_comment(comment)
     rate = currency_mismatch? ? "\nRate: " + exchange_rate.to_s : ''
-    comment.to_s + "\nComission: " + (comission.blank? ? "0" : comission.to_s) + rate
+    comment.to_s + (comission == '0.00' ? '' : "\nComission: " + comission.to_s) + rate
   end
 
   def estimate_amount(out)

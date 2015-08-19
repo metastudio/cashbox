@@ -57,6 +57,10 @@ class Category < ActiveRecord::Base
     end
   end
 
+  def self.receipt_id
+    @receipt_id ||= find_by(name: CATEGORY_TRANSFER_INCOME).try(:id)
+  end
+
   def income?
     type == CATEGORY_INCOME
   end

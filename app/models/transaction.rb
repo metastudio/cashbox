@@ -34,7 +34,8 @@ class Transaction < ActiveRecord::Base
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions, touch: true
   belongs_to :customer, inverse_of: :transactions
-  belongs_to :transfer, class_name: 'Transaction'
+  belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id'
+  has_one :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency
@@ -50,9 +51,14 @@ class Transaction < ActiveRecord::Base
       where('bank_account_transactions.currency' => currency) }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
-  scope :without_transfers, -> { joins('LEFT OUTER JOIN categories category_transactions
+  scope :without_out, -> { joins('LEFT OUTER JOIN categories category_transactions
       ON category_transactions.id = transactions.category_id').
       where('category_transactions.id IS NULL OR category_transactions.name != ?', Category::CATEGORY_TRANSFER_OUTCOME) }
+
+  #scope :without_out, -> {
+  #    joins('LEFT OUTER JOIN categories ON categories.id = transactions.category_id').
+  #    select('categories.id, categories.name').
+  #    where('categories.id IS NULL OR categories.name != ?', Category::CATEGORY_TRANSFER_OUTCOME) }
 
   validates :amount, presence: true, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
@@ -66,7 +72,6 @@ class Transaction < ActiveRecord::Base
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
   before_validation :set_date, if: Proc.new{ date.blank? }
   before_save :check_negative
-  before_destroy :destroy_transfer, if: Proc.new{ transfer_id.present? }
   after_restore :recalculate_amount
 
   class << self
@@ -117,14 +122,14 @@ class Transaction < ActiveRecord::Base
     ''
   end
 
+  def transfer?
+    category_id == Category.receipt_id && category_id != nil
+  end
+
   private
 
   def find_customer
     self.customer = Customer.find_or_initialize_by(name: customer_name, organization_id: organization.id)
-  end
-
-  def destroy_transfer
-    Transaction.find(self.transfer_id).delete
   end
 
   def check_negative

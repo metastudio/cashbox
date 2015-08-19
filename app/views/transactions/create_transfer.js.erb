@@ -1,7 +1,7 @@
 <% unless @transfer.errors.any? %>
   $("<%=j render('transactions/transaction', transaction: @inc_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
   var c_inc = $("#<%= dom_id(@inc_transaction) %>").css('backgroundColor');
-  $("#<%= dom_id(@inc_transaction) %>").addClass('new-transfer');
+  $("#<%= dom_id(@inc_transaction) %>").addClass('new-transaction');
   $("#<%= dom_id(@inc_transaction) %>").animate({
     backgroundColor: c_inc,
   }, 1000 );

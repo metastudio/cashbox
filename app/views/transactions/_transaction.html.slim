@@ -10,8 +10,13 @@ tr.transaction id=dom_id(transaction) class=colorize_transaction(transaction) da
       root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.bank_account.id)),
       data: { stop_propagation: true } if transaction.bank_account
   td.col-sm-2.word-break
-    = link_to transaction.customer.to_s,
-      root_path(q: (params[:q] || {}).merge(customer_id_eq: transaction.customer_id)),
-      data: { stop_propagation: true } if transaction.customer_id
+    - if transaction.transfer?
+      = link_to transaction.transfer_out.bank_account.to_s,
+        root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.transfer_out.bank_account.id)),
+        data: { stop_propagation: true } if transaction.transfer_out.bank_account
+    - else
+      = link_to transaction.customer.to_s,
+        root_path(q: (params[:q] || {}).merge(customer_id_eq: transaction.customer_id)),
+        data: { stop_propagation: true } if transaction.customer_id
   td.col-sm-2.word-break.comment.hidden-xs = transaction.comment
   td.col-sm-1= I18n.l transaction.date
