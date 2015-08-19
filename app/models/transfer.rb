@@ -50,9 +50,9 @@ class Transfer
         parse_errors(@inc_transaction)
         return false
       else
-        @inc_transaction.save
-        @out_transaction.transfer_out_id = @inc_transaction.id
         @out_transaction.save
+        @inc_transaction.transfer_out_id = @out_transaction.id
+        @inc_transaction.save
         return true
       end
     else

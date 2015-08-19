@@ -34,8 +34,8 @@ class Transaction < ActiveRecord::Base
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions, touch: true
   belongs_to :customer, inverse_of: :transactions
-  belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id'
-  has_one :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
+  belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
+  has_one :transfer_in, class_name: 'Transaction', foreign_key: 'transfer_out_id'
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency
