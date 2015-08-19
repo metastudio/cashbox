@@ -80,7 +80,6 @@ function showHideExchangeRate(fromCurr, toCurr) {
   else {
     if ($('#transfer_exchange_rate').is(":visible")) {
       $('#transfer_exchange_rate').parents('#rate_col').addClass('hidden');
-      //$('#transfer_exchange_rate').parents('#rate_col').find('#rate_hint').remove();
     }
   }
 }
