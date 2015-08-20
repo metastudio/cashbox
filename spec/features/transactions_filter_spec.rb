@@ -86,7 +86,6 @@ describe 'Transactions filter' do
     it 'show system categories' do
       within '#q_category_id_eq' do
         expect(page).to have_content(Category::CATEGORY_TRANSFER_INCOME)
-        expect(page).to have_content(Category::CATEGORY_TRANSFER_OUTCOME)
       end
     end
 

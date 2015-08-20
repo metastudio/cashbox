@@ -15,6 +15,7 @@
 class Category < ActiveRecord::Base
   CATEGORY_INCOME  = 'Income'
   CATEGORY_EXPENSE = 'Expense'
+  CATEGORY_TRANSFERS = 'Transfers'
   CATEGORY_TRANSFER_INCOME  = 'Receipt'
   CATEGORY_TRANSFER_OUTCOME = 'Transfer'
   CATEGORY_TYPES = [CATEGORY_INCOME, CATEGORY_EXPENSE]
@@ -42,17 +43,19 @@ class Category < ActiveRecord::Base
   validates :name, presence: true
   validates :organization_id, presence: true, unless: :system?
 
-  scope :incomes,  -> { where(type: CATEGORY_INCOME)  }
-  scope :expenses, -> { where(type: CATEGORY_EXPENSE) }
+  scope :incomes,   -> { where(type: CATEGORY_INCOME)  }
+  scope :expenses,  -> { where(type: CATEGORY_EXPENSE) }
+  scope :receipts,  -> { where(name: CATEGORY_TRANSFER_INCOME) }
+  scope :transfers, -> { where(name: CATEGORY_TRANSFER_OUTCOME) }
   scope :for_organization, ->(organization) {
-    where("categories.system = ? OR categories.organization_id =?",
-      true, organization.id) }
+    where("categories.system = ? OR categories.organization_id = ?", true, organization.id) }
 
   class << self
     def grouped_by_type
       [
-        [CATEGORY_INCOME, incomes],
-        [CATEGORY_EXPENSE, expenses]
+        [CATEGORY_INCOME, incomes - receipts],
+        [CATEGORY_EXPENSE, expenses - transfers],
+        [CATEGORY_TRANSFERS, receipts]
       ]
     end
   end
