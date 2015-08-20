@@ -15,7 +15,7 @@ class Customer < ActiveRecord::Base
   scope :ordered, -> { order('created_at DESC') }
 
   belongs_to :organization, inverse_of: :customers
-  has_many :transactions, dependent: :destroy, inverse_of: :customer
+  has_many :transactions, inverse_of: :customer
 
   validates :name, presence: true
   validates :organization, presence: true
