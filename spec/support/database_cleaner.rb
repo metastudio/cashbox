@@ -13,6 +13,9 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    # Create system categories before each
+    Category.create!(Category::CATEGORY_BANK_EXPENSE_PARAMS)
+    Category.create!(Category::CATEGORY_BANK_INCOME_PARAMS)
   end
 
   config.after(:each) do
