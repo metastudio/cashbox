@@ -1,0 +1,30 @@
+h4 Filters:
+
+= search_form_for @q, url: root_path, html: { class: 'filter' } do |f|
+  .row
+    .col-xs-4
+      = f.input :amount_eq, label: false, input_html: { maxlength: 25 }
+    .col-xs-4
+      = f.input :comment_cont, label: false, input_html: { maxlength: 255 }
+    .col-xs-4
+      = f.input :category_id_eq, as: :grouped_select, label: false, include_blank: 'Category',
+        collection: Category.for_organization(current_organization).grouped_by_type,
+        group_method: :last
+  .row
+    .col-xs-4
+      = f.input :bank_account_id_eq, label: false, include_blank: 'Account', as: :grouped_select,
+        collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
+    .col-xs-4
+      = f.input :customer_id_eq, as: :select, include_blank: 'Customer',
+        label: false, collection: current_organization.customers
+    .col-xs-4
+      = f.input :period, collection: Transaction.custom_dates, label: false,
+        include_blank: 'Choose period...'
+  #custom-daterange.hidden
+    .col-sm-6
+      = f.input :date_from, input_html: { class: 'datepicker' }
+    .col-sm-6
+      = f.input :date_to, input_html: { class: 'datepicker' }
+  .pull-right.btn-group
+    = f.button :submit, class: 'btn btn-primary'
+    = f.button :button, 'Clear', class: 'btn btn-default clear-form'
