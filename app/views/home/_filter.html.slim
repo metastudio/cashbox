@@ -7,15 +7,15 @@ h4 Filters:
     .col-xs-4
       = f.input :comment_cont, label: false, input_html: { maxlength: 255 }
     .col-xs-4
-      = f.input :category_id_eq, as: :grouped_select, label: false, include_blank: 'Category',
+      = f.input :category_id_in, as: :grouped_select, label: false, placeholder: 'Choose categories...',
         collection: Category.for_organization(current_organization).grouped_by_type,
-        group_method: :last
+        group_method: :last, input_html: { multiple: true }
   .row
     .col-xs-4
       = f.input :bank_account_id_eq, label: false, include_blank: 'Account', as: :grouped_select,
         collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
     .col-xs-4
-      = f.input :customer_id_eq, as: :select, include_blank: 'Customer',
+      = f.input :customer_id_eq, as: :select, placeholder: 'Customer',
         label: false, collection: current_organization.customers
     .col-xs-4
       = f.input :period, collection: Transaction.custom_dates, label: false,

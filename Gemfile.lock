@@ -85,6 +85,9 @@ GEM
     capybara-screenshot (1.0.7)
       capybara (>= 1.0, < 3)
       launchy
+    capybara-select2 (1.0.1)
+      capybara
+      rspec
     capybara-webkit (1.5.0)
       capybara (>= 2.3.0, < 2.5.0)
       json
@@ -382,6 +385,7 @@ DEPENDENCIES
   capybara
   capybara-email
   capybara-screenshot
+  capybara-select2
   capybara-webkit
   database_cleaner
   devise
@@ -420,3 +424,6 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   unicorn
   whenever
+
+BUNDLED WITH
+   1.10.6

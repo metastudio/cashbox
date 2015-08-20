@@ -22,7 +22,7 @@ describe 'categories page' do
     end
 
     it "autoselect category filter" do
-      within '#q_category_id_eq' do
+      within '#q_category_id_in' do
         expect(subject).to have_content(cat.name)
       end
     end

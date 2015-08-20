@@ -84,7 +84,7 @@ describe 'Transactions filter' do
     end
 
     it 'show system categories' do
-      within '#q_category_id_eq' do
+      within '#q_category_id_in' do
         expect(page).to have_content(Category::CATEGORY_TRANSFER_INCOME)
         expect(page).to have_content(Category::CATEGORY_TRANSFER_OUTCOME)
       end
@@ -101,7 +101,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
-        select transaction.category.name, from: 'q[category_id_eq]'
+        select transaction.category.name, from: 'q[category_id_in][]'
         click_on 'Search'
       end
 
@@ -366,7 +366,7 @@ describe 'Transactions filter' do
       visit root_path
       fill_in 'q[amount_eq]', with: "9999"
       fill_in 'q[comment_cont]', with: 'Comment'
-      select cat.name, from: 'q[category_id_eq]'
+      select2(cat.name, css: '#s2id_q_category_id_in')
       select ba.to_s, from: 'q[bank_account_id_eq]'
       select 'Current month', from: 'q[period]'
       click_on 'Clear'
@@ -376,7 +376,7 @@ describe 'Transactions filter' do
       within '#transaction_search' do
         expect(page).to have_css('#q_amount_eq', text: '')
         expect(page).to have_css('#q_comment_cont', text: '')
-        expect(page).to have_css('#q_category_id_eq', text: '')
+        expect(page).to have_css('#s2id_q_category_id_in', text: '')
         expect(page).to have_css('#q_bank_account_id_eq', text: '')
         expect(page).to have_css('#q_period', text: '')
       end
