@@ -21,17 +21,6 @@ describe Transfer do
       context 'when depends on bank account' do
         let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id }
 
-        describe "transfer_amount" do
-          let(:from) { create :bank_account, balance: 100 }
-          let(:to)   { create :bank_account, balance: 200 }
-
-          it 'is invalid' do
-            expect(subject).to be_invalid
-            expect(subject.errors_on(:amount)).
-              to include("Not enough money")
-          end
-        end
-
         describe 'balance overflow' do
           let(:from) { create :bank_account, balance: 10000 }
           let(:to)   { create :bank_account, :full }
@@ -132,19 +121,6 @@ describe Transfer do
         #end
 
         #it { expect(transfer.errors.messages[:amount]).to include('Balance overflow') }
-      end
-
-      context "add errors on transaction" do
-        context "when transfer params wrong" do
-          let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id,
-            amount: from.balance + Money.new(100, from.currency) }
-
-          before do
-            transfer.save
-          end
-
-          it { expect(transfer.errors.messages[:amount]).to include("Not enough money") }
-        end
       end
     end
   end
