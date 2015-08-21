@@ -74,4 +74,29 @@ describe 'update transaction', js: true do
           text: money_with_symbol(new_total))
     end
   end
+
+  context "when updating bank account of transaction" do
+    let(:amount) { 100 }
+    let!(:new_account) { create :bank_account, organization: organization, currency: 'USD' }
+    let!(:old_account) { create :bank_account, organization: organization, currency: 'USD' }
+    let!(:transaction) { create :transaction, bank_account: old_account, amount: amount }
+
+    before do
+      visit root_path
+      find("##{dom_id(transaction)} .comment").click
+      page.has_css?("##{dom_id(transaction, :edit)}")
+      within "##{dom_id(transaction, :edit)}" do
+        select new_account, from: 'transaction[bank_account_id]'
+      end
+      click_on 'Update'
+    end
+
+    it "recalculate boths account's balances" do
+      expect(subject).to have_css("##{dom_id(new_account)} td.amount",
+        text: money_with_symbol(amount))
+      expect(subject).to have_css("##{dom_id(old_account)} td.amount",
+        text: money_with_symbol(0))
+    end
+  end
+
 end

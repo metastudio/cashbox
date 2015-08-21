@@ -33,7 +33,6 @@ class BankAccount < ActiveRecord::Base
 
   validates :name,     presence: true
   validates :balance,  presence: true, numericality: {
-    greater_than_or_equal_to: 0,
     less_than_or_equal_to: Dictionaries.money_max }
   validates :residue,  presence: true, numericality: {
     greater_than_or_equal_to: 0,
