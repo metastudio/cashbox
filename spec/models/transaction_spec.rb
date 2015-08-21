@@ -20,7 +20,7 @@ require 'spec_helper'
 describe Transaction do
   context "association" do
     it { should belong_to(:category) }
-    it { should belong_to(:bank_account)  }
+    it { should belong_to(:bank_account).touch(true)  }
     it { expect(subject).to belong_to(:customer) }
     it { should have_one(:organization).through(:bank_account) }
   end
@@ -31,36 +31,6 @@ describe Transaction do
 
     context "custom" do
       subject { transaction }
-
-      context 'when expense' do
-        let(:account) { create :bank_account }
-
-
-        context 'when not enough money' do
-          let(:transaction) { build :transaction, :expense, bank_account: account }
-
-          it 'is invalid' do
-            expect(subject).to be_invalid
-            expect(subject.errors_on(:amount)).
-              to include("Not enough money")
-          end
-        end
-
-        describe 'on update' do
-          context 'compare amount to bank_account-amount_was' do
-            let!(:transaction) { create :transaction, bank_account: account }
-            let!(:category)    { create :category, :expense }
-
-            before { transaction.category = category }
-
-            it 'is invalid' do
-              expect(subject).to be_invalid
-              expect(subject.errors_on(:amount)).
-                to include("Not enough money")
-            end
-          end
-        end
-      end
 
       context 'amount value' do
         it_behaves_like 'has money ceiling', 'amount' do

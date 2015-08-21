@@ -194,12 +194,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def amount_balance
-    if expense?
-      errors.add(:amount, 'Not enough money') if amount >
-        bank_account.balance - Money.new(amount_cents_was, bank_account.currency).abs
-    else
-      errors.add(:amount, 'Balance overflow') if Dictionaries.money_max * 100 <
-        (bank_account.balance + amount).cents
-    end
+    errors.add(:amount, 'Balance overflow') if Dictionaries.money_max * 100 <
+      (bank_account.balance + amount).cents
   end
 end
