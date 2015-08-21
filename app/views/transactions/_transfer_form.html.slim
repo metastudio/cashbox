@@ -10,9 +10,9 @@
       collection: bank_accounts, group_method: :last
   = f.input :comment
   #rate_col.hidden
-    = f.hint 'Default rate:', id: 'rate_hint'
+    = f.hint 'Default rate:', id: 'rate_hint', class: 'col-md-9 col-md-offset-3'
     = f.input :exchange_rate, input_html: { class: 'rate' }
-    = f.hint 'Calculate sum: ...', id: 'end_sum_hint'
+    = f.hint 'Calculate sum: ...', id: 'end_sum_hint', class: 'col-md-9 col-md-offset-3'
   = f.input :date, as: :string, placeholder: 'Date',
       input_html: { class: 'datepicker', value: f.object.date.try(:strftime, '%d/%m/%Y') }
 

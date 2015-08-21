@@ -34,6 +34,8 @@ class Transaction < ActiveRecord::Base
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions, touch: true
   belongs_to :customer, inverse_of: :transactions
+  belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
+  has_one :transfer_in, class_name: 'Transaction', foreign_key: 'transfer_out_id'
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency
@@ -49,6 +51,7 @@ class Transaction < ActiveRecord::Base
       where('bank_account_transactions.currency' => currency) }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
+  scope :without_out, -> { where('category_id IS NULL OR category_id != ?', Category.transfer_out_id) }
 
   validates :amount, presence: true, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
@@ -110,6 +113,10 @@ class Transaction < ActiveRecord::Base
     Customer.find(customer_id).to_s
   rescue
     ''
+  end
+
+  def transfer?
+    category_id == Category.receipt_id
   end
 
   private
