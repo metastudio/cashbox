@@ -7,6 +7,7 @@
     = render partial: 'transactions/transactions', locals: { transactions: @transactions }
 
 = content_for :footer
-  .footer.navbar.navbar-default.navbar-fixed-bottom#footer
-    .container
-      = render 'home/flow' if params[:q]
+  - if params[:q]
+    .footer.navbar.navbar-default.navbar-fixed-bottom#footer
+      .container
+        = render 'home/flow'
