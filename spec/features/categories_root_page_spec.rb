@@ -62,7 +62,7 @@ describe 'categories page' do
     end
 
     describe "Receipt" do
-      it_behaves_like 'system category', "Receipt" do
+      it_behaves_like 'system category', "Transfer" do
         let(:right_transaction) { transfer.inc_transaction }
         let(:wrong_transaction) { another_transfer.inc_transaction }
       end

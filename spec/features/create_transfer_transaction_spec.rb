@@ -48,11 +48,11 @@ describe 'create transfer transaction', js: true do
       expect{ subject }.to change{ transactions.count }.by(2)
     end
 
-    it "show only Receipt transaction in transactions list" do
+    it "show only Transfer transaction in transactions list" do
       create_transfer
       within ".transactions" do
         expect(page).to have_content(amount_str)
-        expect(page).to_not have_content('Transfer')
+        expect(page).to_not have_content('Transfer out')
       end
     end
 
@@ -165,8 +165,8 @@ describe 'create transfer transaction', js: true do
           expect(page).to have_content("Default rate: #{Money.default_bank.rates["RUB_TO_USD"].round(4)}")
         end
 
-        it 'end sum' do
-          expect(page).to have_content("Calculate sum: #{(amount * rate).round(4)}")
+        it 'calculate end sum' do
+          expect(page).to have_field('Calculate sum', with: "#{(amount * rate).round(4)}")
         end
       end
 
