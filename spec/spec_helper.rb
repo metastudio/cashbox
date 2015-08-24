@@ -26,8 +26,6 @@ RSpec.configure do |config|
   # for dom_id and dom_class in specs
   include ActionView::RecordIdentifier
 
-  config.include Select2Helper, type: :feature
-
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
