@@ -166,7 +166,6 @@ describe 'create transfer transaction', js: true do
         end
 
         it 'calculate end sum' do
-          expect(page).to have_content('Calculate sum')
           expect(page).to have_field('Calculate sum', with: "#{(amount * rate).round(4)}")
         end
       end
