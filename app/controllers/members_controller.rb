@@ -4,6 +4,7 @@ class MembersController < ApplicationController
 
   def index
     @members = current_organization.members.includes(:user)
+    @invitations = current_organization.invitations.page(params[:page]).per(10)
   end
 
   def edit
