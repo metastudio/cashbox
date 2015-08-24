@@ -51,6 +51,7 @@ class InvitationsController < ApplicationController
         redirect_to root_path, notice: "You joined #{@invitation.member.organization.name}."
       else
         session['user_return_to'] = accept_invitation_path(token: @invitation.token)
+        sign_out current_user
         redirect_to new_user_session_path
       end
     else

@@ -16,7 +16,6 @@ class Transfer
   validates :reference_id, presence: true
   validates :exchange_rate, presence: true, numericality: { greater_than: 0,
     less_than: 10_000 }, if: :currency_mismatch?
-  validate :transfer_amount, unless: Proc.new { bank_account_id.blank? }
   validate :transfer_account
 
   def initialize(attributes = {})
@@ -107,12 +106,6 @@ class Transfer
   end
 
   private
-
-  def transfer_amount
-    if bank_account.balance < money_amount + money_comission
-      errors.add(:amount, 'Not enough money')
-    end
-  end
 
   def transfer_account
     if bank_account_id == reference_id
