@@ -104,7 +104,7 @@ class Organization < ActiveRecord::Base
     period = 1.year.ago.to_datetime..Time.now.to_datetime
     income_selection = transactions.unscope(:order).incomes.
       select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date").
-      where(date: period).
+      where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.receipt_id).
       group('transactions.id, bank_accounts.id').map do |transaction|
         {
           date:           transaction.date,
@@ -114,7 +114,7 @@ class Organization < ActiveRecord::Base
       end
     expense_selection = transactions.unscope(:order).expenses.
       select("sum(abs(transactions.amount_cents)) as total, bank_accounts.currency as curr, transactions.date as date").
-      where(date: period).
+      where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.transfer_out_id).
       group('transactions.id, bank_accounts.id').map do |transaction|
         {
           date:           transaction.date,
