@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
   validates :full_name, presence: true
+  validates :password, :password_confirmation, length: { maximum: 30 }
 
   before_create :build_profile, if: ->{ profile.blank? }
 
