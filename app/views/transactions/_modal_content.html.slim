@@ -6,7 +6,7 @@
     .panel-heading
       ul.nav.nav-tabs#transaction_type
         li.income.active
-          = link_to 'Income', '#income', data: { toggle: 'tab', type: 'income' }
+          = link_to @transaction.transfer? ? 'Transfer' : 'Income', '#income', data: { toggle: 'tab', type: 'income' }
         li.expense
           = link_to 'Expense', '#expense', data: { toggle: 'tab', type: 'expense' }
         li.transfer
