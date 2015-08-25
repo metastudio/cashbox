@@ -4,6 +4,7 @@ $(function () {
 
   $('#q_amount_eq').inputmask('customized_currency');
   $('#q_customer_id_eq').select2();
+  $('#q_category_id_in').select2();
 
   showHidePeriodAdditionalInput();
 
@@ -25,7 +26,8 @@ $(function () {
 
     // clear all fields in the form, instead of the standard reset
     $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
-    $('#q_customer_id_eq').select2('data', { id: 0, text: 'Customer' });
+    $('#q_customer_id_eq').select2('data', null);
+    $('#q_category_id_in').select2('data', []);
   });
 
   $(document).on('change', '#q_period', function(e) {

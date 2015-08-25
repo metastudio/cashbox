@@ -1,7 +1,13 @@
 = content_for :sidebar
   = render 'home/sidebar'
-  = render 'transactions/filter', url: root_path
 
+= render 'filter', url: root_path
 .row
   .col-sm-12
     = render partial: 'transactions/transactions', locals: { transactions: @transactions }
+
+= content_for :footer
+  - if params[:q]
+    .footer.navbar.navbar-default.navbar-fixed-bottom#footer
+      .container
+        = render 'home/flow'

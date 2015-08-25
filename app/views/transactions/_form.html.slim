@@ -11,8 +11,7 @@
       collection: current_organization.categories.where(type: type),
       prompt: 'Category', value_method: :id,
       selected: @q.nil? ? f.object.category_id \
-        : (@q.category_id_eq && !Category.find(@q.category_id_eq).system? \
-        ? @q.category_id_eq : nil)
+        : (@q.category_id_in ? @q.category_id_in : nil)
   - else
     = f.association :category, as: :grouped_select,
       collection: current_organization.categories.grouped_by_type,
