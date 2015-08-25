@@ -119,6 +119,10 @@ class Transaction < ActiveRecord::Base
     category_id == Category.receipt_id
   end
 
+  def transfer_out?
+    category_id == Category.transfer_out_id
+  end
+
   private
 
   def find_customer

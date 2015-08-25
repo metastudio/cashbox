@@ -8,7 +8,7 @@
         li.income.active
           = link_to 'Income', '#income', data: { toggle: 'tab', type: 'income' }
         li.expense
-          = link_to 'Expense', '#expense', data: { toggle: 'tab', type: 'expense' }
+          = link_to @transaction.transfer_out? ? 'Transfer' : 'Expense', '#expense', data: { toggle: 'tab', type: 'expense' }
         li.transfer
           = link_to 'Transfer', '#transfer', data: { toggle: 'tab', type: 'transfer' }
     .panel-body
