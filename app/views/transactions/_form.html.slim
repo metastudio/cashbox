@@ -18,24 +18,27 @@
       group_method: :last, prompt: 'Category', value_method: :id,
       selected: f.object.category_id
 
-  - if f.object.bank_account.nil? || f.object.bank_account.visible?
-    = f.association :bank_account, as: :grouped_select,
-      collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
-      prompt: 'Bank account', group_method: :last,
-      selected: @q.nil? ? f.object.bank_account_id \
-        : (@q.bank_account_id_eq && current_organization.bank_accounts.find(@q.bank_account_id_eq).visible? \
-        ? @q.bank_account_id_eq : nil)
-  - else
-    = f.input :bank_account, disabled: true
-
   - if transaction.transfer?
-    = f.input :customer_name, label: 'Out account', input_html: { data: { value: transaction.transfer_out.try(:bank_account).to_s } },
+    = f.input :customer_name, label: 'From', input_html: { data: { value: transaction.transfer_out.try(:bank_account).to_s } },
+      disabled: true
+  - elsif transaction.transfer_out?
+    = f.input :customer_name, label: 'To', input_html: { data: { value: transaction.transfer_in.try(:bank_account).to_s } },
       disabled: true
   - else
     = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
       value: @q.nil? ? transaction.find_customer_name_by_id(f.object.customer_id) \
         : (@q.customer_id_eq ? transaction.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
+
+  - if f.object.bank_account.nil? || f.object.bank_account.visible?
+    = f.association :bank_account, as: :grouped_select,
+      collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
+      prompt: 'Bank account', group_method: :last, label: transaction.transfer? ? 'To' : 'Bank account',
+      selected: @q.nil? ? f.object.bank_account_id \
+        : (@q.bank_account_id_eq && current_organization.bank_accounts.find(@q.bank_account_id_eq).visible? \
+        ? @q.bank_account_id_eq : nil)
+  - else
+    = f.input :bank_account, disabled: true
 
   = f.input :comment
   = f.input :date, as: :string, placeholder: 'Date',

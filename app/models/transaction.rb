@@ -51,7 +51,8 @@ class Transaction < ActiveRecord::Base
       where('bank_account_transactions.currency' => currency) }
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
-  scope :without_out, -> { where('category_id IS NULL OR category_id != ?', Category.transfer_out_id) }
+  scope :without_out, -> (bank_account) { where('category_id IS NULL OR category_id != ?
+      OR bank_account_id = ?', Category.transfer_out_id, bank_account) }
 
   validates :amount, presence: true, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
@@ -117,6 +118,10 @@ class Transaction < ActiveRecord::Base
 
   def transfer?
     category_id == Category.receipt_id
+  end
+
+  def transfer_out?
+    category_id == Category.transfer_out_id
   end
 
   private

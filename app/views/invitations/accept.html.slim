@@ -2,6 +2,6 @@
   = simple_form_for @user, url: create_user_from_invitation_path(token: @invitation.token) do |f|
     = f.input :email, input_html: { value: @invitation.email }, disabled: true
     = f.input :full_name
-    = f.input :password
-    = f.input :password_confirmation
+    = f.input :password, input_html: { maxlength: 30 }
+    = f.input :password_confirmation, input_html: { maxlength: 30 }
     = f.submit 'Submit', class: 'btn btn-primary'

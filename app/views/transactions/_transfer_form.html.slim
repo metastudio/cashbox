@@ -5,14 +5,17 @@
   = f.input :comission, input_html: { class: 'comission' }
   - bank_accounts = current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency)
   = f.input :bank_account_id, as: :grouped_select, include_blank: 'From',
-      collection: bank_accounts, group_method: :last
+      collection: bank_accounts, group_method: :last, label: 'From'
   = f.input :reference_id, as: :grouped_select, include_blank: 'To',
-      collection: bank_accounts, group_method: :last
+      collection: bank_accounts, group_method: :last, label: 'To'
   = f.input :comment
   #rate_col.hidden
     = f.hint 'Default rate:', id: 'rate_hint', class: 'col-md-9 col-md-offset-3'
     = f.input :exchange_rate, input_html: { class: 'rate' }
-    = f.hint 'Calculate sum: ...', id: 'end_sum_hint', class: 'col-md-9 col-md-offset-3'
+    .form-group.string.optional.transfer_sum
+      label for='end_sum' class='string optional control-label col-sm-3' Calculate sum
+      .col-sm-9
+        input type='text' class='string optional form-control' id='end_sum' placeholder='Sum'
   = f.input :date, as: :string, placeholder: 'Date',
       input_html: { class: 'datepicker', value: f.object.date.try(:strftime, '%d/%m/%Y') }
 

@@ -42,7 +42,7 @@ $(function () {
     prepRateAndHints(exchange_rate = false);
   });
 
-  $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id', function(e) {
+  $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id, #end_sum', function(e) {
     prepRateAndHints(exchange_rate = true);
   });
 
@@ -77,6 +77,13 @@ function showHideExchangeRate(fromCurr, toCurr) {
   if (fromCurr != undefined && toCurr != undefined && fromCurr != toCurr ) {
     if (!$('#transfer_exchange_rate').is(":visible")) {
       $('#transfer_exchange_rate').parents('#rate_col').removeClass('hidden');
+    }
+    var $transferRate = $('.transfer_exchange_rate');
+    var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
+    var sum = parseFloat($('#end_sum').val().replace(/\,/g,''));
+    if (amount && sum) {
+      var rate = (sum/amount).toFixed(2);
+      $transferRate.parents('#rate_col').find('#transfer_exchange_rate').val(rate);
     }
   }
   else {
@@ -116,10 +123,7 @@ function addRemoveHints(fromCurr, toCurr) {
   var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
   if (amount && rate) {
     var end_sum = (amount * rate).toFixed(2);
-    var end_sum_input = '<p class="col-md-9 col-md-offset-3 help-block" \
-      id="end_sum_hint">Calculate sum: ' + end_sum + '</p>'
-    $transferRate.parents('#rate_col').find('#end_sum_hint').remove();
-    $transferRate.parents('#rate_col').append(end_sum_input);
+    $transferRate.parents('#rate_col').find('#end_sum').val(end_sum);
   }
 }
 
