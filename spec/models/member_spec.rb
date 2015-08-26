@@ -7,7 +7,7 @@
 #  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
-#  role            :string           not null
+#  role            :string(255)      not null
 #  last_visited_at :datetime
 #
 

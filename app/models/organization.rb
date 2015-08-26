@@ -3,10 +3,10 @@
 # Table name: organizations
 #
 #  id               :integer          not null, primary key
-#  name             :string           not null
+#  name             :string(255)      not null
 #  created_at       :datetime
 #  updated_at       :datetime
-#  default_currency :string           default("USD")
+#  default_currency :string(255)      default("USD")
 #
 
 class Organization < ActiveRecord::Base
@@ -20,6 +20,7 @@ class Organization < ActiveRecord::Base
   has_many :invitations, through: :members, source: :created_invitations,
     inverse_of: :organization, dependent: :destroy
   has_many :customers, dependent: :destroy, inverse_of: :organization
+  has_many :invoices, dependent: :destroy, inverse_of: :organization
 
   validates :name, presence: true
 

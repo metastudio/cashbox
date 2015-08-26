@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821113430) do
+ActiveRecord::Schema.define(version: 20150826055705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,36 @@ ActiveRecord::Schema.define(version: 20150821113430) do
 
   add_index "invitations", ["invited_by_id"], name: "index_invitations_on_invited_by_id", using: :btree
   add_index "invitations", ["token"], name: "index_invitations_on_token", unique: true, using: :btree
+
+  create_table "invoice_items", force: :cascade do |t|
+    t.integer  "invoice_id",                      null: false
+    t.integer  "customer_id"
+    t.integer  "amount_cents",    default: 0,     null: false
+    t.string   "amount_currency", default: "USD", null: false
+    t.decimal  "hours"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invoice_items", ["invoice_id"], name: "index_invoice_items_on_invoice_id", using: :btree
+
+  create_table "invoices", force: :cascade do |t|
+    t.integer  "organization_id",                 null: false
+    t.integer  "customer_id",                     null: false
+    t.datetime "starts_at"
+    t.datetime "ends_at",                         null: false
+    t.string   "currency",        default: "USD", null: false
+    t.integer  "amount_cents",    default: 0,     null: false
+    t.string   "amount_currency", default: "USD", null: false
+    t.datetime "sent_at"
+    t.datetime "paid_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invoices", ["customer_id"], name: "index_invoices_on_customer_id", using: :btree
+  add_index "invoices", ["organization_id"], name: "index_invoices_on_organization_id", using: :btree
 
   create_table "members", force: :cascade do |t|
     t.integer  "user_id",                     null: false
