@@ -9,11 +9,6 @@ class InvitationsController < ApplicationController
     @invitation = Invitation.new
   end
 
-  def index
-    authorize :invitation
-    @invitations = current_organization.invitations.page(params[:page]).per(10)
-  end
-
   def create
     @invitation = current_member.created_invitations.build(invitation_params)
     authorize @invitation
@@ -28,9 +23,9 @@ class InvitationsController < ApplicationController
   def resend
     authorize @invitation
     if @invitation.send_invitation
-      redirect_to invitations_path, notice: 'An invitation has been resent'
+      redirect_to members_path, notice: 'An invitation has been resent'
     else
-      redirect_to invitations_path, error: 'Couldn\'t resend an invitation'
+      redirect_to members_path, error: 'Couldn\'t resend an invitation'
     end
   end
 
@@ -38,9 +33,9 @@ class InvitationsController < ApplicationController
     @invitation = Invitation.find(params[:id])
     authorize @invitation
     if @invitation.destroy
-      redirect_to invitations_path, notice: 'An inventation was destroyed successfully'
+      redirect_to members_path, notice: 'An inventation was destroyed successfully'
     else
-      redirect_to invitations_path, error: 'Couldn\'t destroy an invitation'
+      redirect_to members_path, error: 'Couldn\'t destroy an invitation'
     end
   end
 
