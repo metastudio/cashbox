@@ -1,0 +1,16 @@
+tr id=dom_id(invoice)
+  td = invoice.customer.to_s
+  td = l invoice.starts_at if invoice.starts_at
+  td = l invoice.ends_at
+  td = money_with_symbol(invoice.amount)
+  td = l invoice.sent_at if invoice.sent_at
+  td = l invoice.paid_at if invoice.paid_at
+  td
+    .btn-group.pull-right
+      = link_to 'Show', invoice_path(invoice),
+        class: 'btn btn-default btn-small'
+      = link_to 'Edit', edit_invoice_path(invoice),
+        class: 'btn btn-default btn-small'
+      = link_to 'Destroy', invoice, method: :delete,
+        data: { confirm: 'Are you sure?' },
+        class: 'btn btn-danger btn-small'

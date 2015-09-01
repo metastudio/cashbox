@@ -44,6 +44,7 @@ gem 'active_link_to'
 gem 'russian_central_bank'
 gem 'gon'
 gem 'whenever', require: false
+gem 'cocoon'
 
 group :development, :test do
   gem 'rspec-rails'

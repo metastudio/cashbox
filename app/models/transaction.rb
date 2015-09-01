@@ -111,12 +111,6 @@ class Transaction < ActiveRecord::Base
     end
   end
 
-  def find_customer_name_by_id(customer_id)
-    Customer.find(customer_id).to_s
-  rescue
-    ''
-  end
-
   def transfer?
     category_id == Category.receipt_id
   end

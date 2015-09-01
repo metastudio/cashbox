@@ -19,6 +19,8 @@
 class Invoice < ActiveRecord::Base
   monetize :amount_cents, with_model_currency: :currency
 
+  scope :ordered, -> { order('created_at DESC') }
+
   belongs_to :organization, inverse_of: :invoices
   belongs_to :customer, inverse_of: :invoices
   has_many :invoice_items, inverse_of: :invoice, dependent: :destroy
@@ -26,7 +28,7 @@ class Invoice < ActiveRecord::Base
     reject_if: proc { |param| param[:amount].blank? },
     allow_destroy: true
 
-  validates :organization, :customer, :ends_at, :amount, :currency, presence: true
+  validates :organization, :customer_id, :ends_at, :amount, :currency, presence: true
   validates :amount, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
   validates :currency, inclusion: { in: Dictionaries.currencies,

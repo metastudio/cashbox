@@ -129,6 +129,12 @@ class Organization < ActiveRecord::Base
     data.size > 1 ? { data: data, currency_format: currency_format } : nil
   end
 
+  def find_customer_name_by_id(customer_id)
+    self.customers.find(customer_id).to_s
+  rescue
+    ''
+  end
+
   def to_s
     name.truncate(30)
   end

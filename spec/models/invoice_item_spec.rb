@@ -33,7 +33,8 @@ describe InvoiceItem do
 
       it 'is invalid' do
         expect(subject).to be_invalid
-        expect(subject.errors_on(:base)).to include('Customer or Description must be present')
+        expect(subject.errors_on(:customer_id)).to include('Customer or Description must be present')
+        expect(subject.errors_on(:description)).to include('Customer or Description must be present')
       end
     end
   end

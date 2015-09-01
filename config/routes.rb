@@ -34,6 +34,9 @@ Cashbox::Application.routes.draw do
   resources :customers, except: :show do
     get 'autocomplete', on: :collection
   end
+  resources :invoices do
+    resources :invoice_items, except: :show
+  end
   resources :invitations, only: [:new, :create, :destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
   get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation

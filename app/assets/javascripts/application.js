@@ -24,8 +24,10 @@
 //= require transactions
 //= require bank_accounts
 //= require statistics
+//= require invoices
 //= require jquery.inputmask.customization
 //= require select2
+//= require cocoon
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);

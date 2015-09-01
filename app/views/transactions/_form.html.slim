@@ -27,8 +27,8 @@
   - else
     = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
-      value: @q.nil? ? transaction.find_customer_name_by_id(f.object.customer_id) \
-        : (@q.customer_id_eq ? transaction.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
+      value: @q.nil? ? current_organization.find_customer_name_by_id(f.object.customer_id) \
+        : (@q.customer_id_eq ? current_organization.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
   - if f.object.bank_account.nil? || f.object.bank_account.visible?
     = f.association :bank_account, as: :grouped_select,

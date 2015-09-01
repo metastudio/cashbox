@@ -27,8 +27,9 @@ class InvoiceItem < ActiveRecord::Base
   private
 
   def customer_or_description
-    if customer.nil? && description.blank?
-      errors.add(:base, 'Customer or Description must be present')
+    if customer_id.nil? && description.blank?
+      errors.add(:customer_id, 'Customer or Description must be present')
+      errors.add(:description, 'Customer or Description must be present')
     end
   end
 end

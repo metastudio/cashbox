@@ -1,0 +1,9 @@
+tr.nested-fields
+  td
+    = f.input :customer_id, as: :select, placeholder: 'Customer',
+      collection: current_organization.customers, input_html: { class: 'nested-customer' }
+    = f.input :amount, input_html: { class: 'nested-amount' }
+  td
+    = f.input :hours, input_html: { class: 'nested-hours' }
+    = f.input :description, input_html: { class: 'nested-description' }
+  td = link_to_remove_association 'delete', f

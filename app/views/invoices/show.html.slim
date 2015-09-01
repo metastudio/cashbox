@@ -1,0 +1,37 @@
+.page-header
+  .pull-right
+    = link_to 'Back', invoices_path, class: 'btn btn-primary'
+  h1 = "Invoice ##{@invoice.id}"
+
+table.table.table-stripped.table-hover.invoices
+  thead
+    tr
+      th Customer
+      th Date range
+      th Invoice total
+      th Sent date
+      th Paid date
+  tbody
+    = render @invoice
+
+h4 Invoice items
+- if @invoice.invoice_items.any?
+  table.table.table-stripped.table-hover
+    thead
+      tr
+        th Customer
+        th Amount
+        th Hours
+        th Description
+    tbody
+      - @invoice.invoice_items.each do |item|
+        tr
+          td = item.customer.to_s
+          td = money_with_symbol(item.amount)
+          td = item.hours
+          td = item.description
+- else
+  .alert.alert-warning No items
+
+= content_for :sidebar
+  = render 'home/settings'

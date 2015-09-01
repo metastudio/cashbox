@@ -1,0 +1,34 @@
+.row
+  .col-sm-6
+    = simple_form_for(@invoice, html: { class: 'invoice' }) do |f|
+      = f.error_notification
+
+      .form-inputs
+        = f.input :currency, collection: Dictionaries.currencies, autofocus: true
+        = f.input :customer_id, as: :select, placeholder: 'Customer',
+          collection: current_organization.customers
+        = f.input :starts_at, as: :string, placeholder: 'Start date',
+          input_html: { class: 'datepicker' }
+        = f.input :ends_at, as: :string, placeholder: 'End date',
+          input_html: { class: 'datepicker' }
+        = f.input :amount
+        = f.input :sent_at, as: :string, placeholder: 'Sent date',
+          input_html: { class: 'datepicker' }
+        = f.input :paid_at, as: :string, placeholder: 'Paid date',
+          input_html: { class: 'datepicker' }
+        #invoice
+          h4 Invoice items
+          table.table.invoice-form-items
+            thead
+              tr
+                th
+                th
+                th
+                th
+            tbody
+              = f.fields_for :invoice_items do |i|
+                = render 'invoice_item_fields', f: i
+          .links= link_to_add_association 'Add item', f, :invoice_items
+
+      .form-actions
+        = f.button :submit, class: 'btn-primary'
