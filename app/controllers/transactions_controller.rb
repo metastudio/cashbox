@@ -56,7 +56,9 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
-     :comment, :comission, :reference_id, :customer_id, :customer_name, :date)
+      :comment, :comission, :reference_id, :customer_id, :customer_name, :date,
+      transfer_out_attributes: [:id, :amount, :category_id, :bank_account_id,
+        :comment, :comission, :customer_id, :date])
   end
 
   def transfer_params

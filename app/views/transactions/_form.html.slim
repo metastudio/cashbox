@@ -19,12 +19,17 @@
       group_method: :last, prompt: 'Category', value_method: :id,
       selected: f.object.category_id
 
-  - if transaction.transfer?
-    = f.input :customer_name, label: 'From', input_html: { data: { value: transaction.transfer_out.try(:bank_account).to_s } },
-      disabled: true
-  - elsif transaction.transfer_out?
-    = f.input :customer_name, label: 'To', input_html: { data: { value: transaction.transfer_in.try(:bank_account).to_s } },
-      disabled: true
+  - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
+    = f.simple_fields_for :transfer_out, transaction.transfer_out do |t|
+      = t.input :amount, as: :hidden, input_html: { id: 'transfer-out-amount' }
+      = t.input :category_id, as: :hidden
+      = t.input :customer_id, as: :hidden
+      = t.input :comment, as: :hidden
+      = t.input :date, as: :hidden
+      = t.association :bank_account, as: :grouped_select,
+        collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
+        prompt: 'Bank account', group_method: :last, label: 'From',
+        selected: t.object.bank_account_id
   - else
     = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
