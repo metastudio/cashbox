@@ -1,9 +1,11 @@
-.page-header
-  h2 Edit invoice
+.row
+  .col-sm-6.col-sm-offset-3
+    .page-header
+      .pull-right
+        = link_to 'Back', invoices_path, class: 'btn btn-primary'
+      h2 Edit invoice
 
-= render 'form'
-
-= link_to 'Back', invoices_path
+    = render 'form'
 
 = content_for :sidebar
-  = render 'home/settings'
+  = render 'home/sidebar'

@@ -14,22 +14,29 @@
 #
 
 class InvoiceItem < ActiveRecord::Base
-  monetize :amount_cents, with_model_currency: :currency
+  attr_accessor :customer_name
 
   belongs_to :invoice, inverse_of: :invoice_items
   belongs_to :customer
 
-  validates :invoice, :amount, presence: true
+  monetize :amount_cents, with_model_currency: :currency
+
+  validates :invoice, presence: true
+  validates :amount, presence: true
+  validates :description, presence: true, unless: :customer_id?
   validates :amount, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
-  validate :customer_or_description
+
+  before_validation :find_customer, if: Proc.new{ self.customer_name.present? }
+
+  def customer_name=(value)
+    attribute_will_change!("customer_name") if @customer_name != value
+    @customer_name = value
+  end
 
   private
 
-  def customer_or_description
-    if customer_id.nil? && description.blank?
-      errors.add(:customer_id, 'Customer or Description must be present')
-      errors.add(:description, 'Customer or Description must be present')
-    end
+  def find_customer
+    self.customer = Customer.find_or_initialize_by(name: customer_name, organization_id: invoice.organization.id)
   end
 end

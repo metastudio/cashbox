@@ -18,7 +18,7 @@
   .alert.alert-warning No invoices
 
 #paginator.col-md-offset-5
-  = paginate @invoices, remote: true
+  = paginate @invoices
 
 = content_for :sidebar
-  = render 'home/settings'
+  = render 'home/sidebar'

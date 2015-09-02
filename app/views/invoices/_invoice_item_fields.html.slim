@@ -1,7 +1,8 @@
 tr.nested-fields
   td
-    = f.input :customer_id, as: :select, placeholder: 'Customer',
-      collection: current_organization.customers, input_html: { class: 'nested-customer' }
+    = f.input :customer_name, input_html: { class: 'nested-customer',
+      data: { url: autocomplete_customers_path, placeholder: 'Customer',
+      value: current_organization.find_customer_name_by_id(f.object.customer_id) } }
     = f.input :amount, input_html: { class: 'nested-amount' }
   td
     = f.input :hours, input_html: { class: 'nested-hours' }

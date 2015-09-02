@@ -27,7 +27,6 @@ describe Invoice do
 
   context 'validation' do
     it { is_expected.to validate_presence_of(:organization) }
-    it { is_expected.to validate_presence_of(:customer_id) }
     it { is_expected.to validate_presence_of(:ends_at) }
     it { is_expected.to validate_presence_of(:currency) }
     it { is_expected.to validate_numericality_of(:amount).

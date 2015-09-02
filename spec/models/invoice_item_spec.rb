@@ -26,16 +26,16 @@ describe InvoiceItem do
     it { is_expected.to validate_numericality_of(:amount).
       is_greater_than(0).is_less_than_or_equal_to(Dictionaries.money_max) }
 
-    context 'when customer and description are empty' do
-      let!(:invoice_item) { build :invoice_item, customer: nil, description: '' }
+    context 'when customer is empty' do
+      before { allow(subject).to receive(:customer_id?).and_return(false) }
 
-      subject { invoice_item }
+      it { is_expected.to validate_presence_of(:description) }
+    end
 
-      it 'is invalid' do
-        expect(subject).to be_invalid
-        expect(subject.errors_on(:customer_id)).to include('Customer or Description must be present')
-        expect(subject.errors_on(:description)).to include('Customer or Description must be present')
-      end
+    context 'when customer is present' do
+      before { allow(subject).to receive(:customer_id?).and_return(true) }
+
+      it { is_expected.to_not validate_presence_of(:description) }
     end
   end
 end

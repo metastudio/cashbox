@@ -14,7 +14,7 @@ describe 'Create invoice', js: true do
   context 'Create invoice without items' do
     before do
       click_on 'New Invoice'
-      select2 customer.name, css: '#s2id_invoice_customer_id', search: true
+      select2 customer.name, css: '#s2id_invoice_customer_name', search: true
       fill_in 'Ends at', with: Time.now.strftime('%d/%m/%Y')
       fill_in 'invoice[amount]', with: amount_str
       click_on 'Create Invoice'
@@ -26,7 +26,7 @@ describe 'Create invoice', js: true do
   context 'Create invoice with items' do
     before do
       click_on 'New Invoice'
-      select2 customer.name, css: '#s2id_invoice_customer_id', search: true
+      select2 customer.name, css: '#s2id_invoice_customer_name', search: true
       fill_in 'Ends at', with: Time.now.strftime('%d/%m/%Y')
       fill_in 'invoice[amount]', with: amount_str
       click_on 'Add item'

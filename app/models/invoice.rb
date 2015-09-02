@@ -17,20 +17,34 @@
 #
 
 class Invoice < ActiveRecord::Base
-  monetize :amount_cents, with_model_currency: :currency
-
-  scope :ordered, -> { order('created_at DESC') }
+  attr_accessor :customer_name
 
   belongs_to :organization, inverse_of: :invoices
   belongs_to :customer, inverse_of: :invoices
   has_many :invoice_items, inverse_of: :invoice, dependent: :destroy
-  accepts_nested_attributes_for :invoice_items,
-    reject_if: proc { |param| param[:amount].blank? },
-    allow_destroy: true
 
-  validates :organization, :customer_id, :ends_at, :amount, :currency, presence: true
+  accepts_nested_attributes_for :invoice_items,
+    reject_if: :all_blank, allow_destroy: true
+
+  monetize :amount_cents, with_model_currency: :currency
+
+  validates :organization, presence: true
+  validates :ends_at, presence: true
+  validates :amount, presence: true
+  validates :currency, presence: true
+  validates :customer_name, length: { maximum: 255 }
   validates :amount, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
   validates :currency, inclusion: { in: Dictionaries.currencies,
     message: "%{value} is not a valid currency" }
+
+  scope :ordered, -> { order('created_at DESC') }
+
+  before_validation :find_customer, if: Proc.new{ customer_name.present? }
+
+  private
+
+  def find_customer
+    self.customer = Customer.find_or_initialize_by(name: customer_name, organization_id: organization.id)
+  end
 end
