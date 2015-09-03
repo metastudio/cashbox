@@ -142,6 +142,7 @@ function datepickerInit(selector) {
 function addTransactionFormMasks() {
   var $form = $("form.transaction")
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
+  $form.find('#transfer-out-amount').inputmask('customized_currency');
   datepickerInit($form.find('#transaction_date.datepicker'));
   addCustomerSelect2($form);
 }
