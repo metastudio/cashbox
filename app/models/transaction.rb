@@ -37,6 +37,7 @@ class Transaction < ActiveRecord::Base
   belongs_to :customer, inverse_of: :transactions
   belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
   has_one :transfer_in, class_name: 'Transaction', foreign_key: 'transfer_out_id'
+  accepts_nested_attributes_for :transfer_out
   has_one :organization, through: :bank_account, inverse_of: :transactions
 
   monetize :amount_cents, with_model_currency: :currency
@@ -55,7 +56,7 @@ class Transaction < ActiveRecord::Base
   scope :without_out, -> (bank_account) { where('category_id IS NULL OR category_id != ?
       OR bank_account_id = ?', Category.transfer_out_id, bank_account) }
 
-  validates :amount, presence: true, numericality: { greater_than: 0,
+  validates :amount, presence: true, numericality: {
     less_than_or_equal_to: Dictionaries.money_max }
   validate  :amount_balance, if: :bank_account
   validates :category, presence: true, unless: :residue?
@@ -63,10 +64,12 @@ class Transaction < ActiveRecord::Base
   validates :customer_name, :comment, length: { maximum: 255 }
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
   validates :date, presence: true
+  validate :check_bank_accounts, on: :update, if: Proc.new{ transfer? }
 
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
   before_validation :set_date, if: Proc.new{ date.blank? }
   before_save :check_negative
+  before_save :sync_date, if: Proc.new{ transfer? }
   after_restore :recalculate_amount
 
   class << self
@@ -123,6 +126,16 @@ class Transaction < ActiveRecord::Base
 
   def find_customer
     self.customer = Customer.find_or_initialize_by(name: customer_name, organization_id: organization.id)
+  end
+
+  def sync_date
+    transfer_out.update(date: date)
+  end
+
+  def check_bank_accounts
+    if bank_account_id == transfer_out.bank_account_id
+      errors.add(:bank_account_id, "Can't transfer to same account")
+    end
   end
 
   def check_negative

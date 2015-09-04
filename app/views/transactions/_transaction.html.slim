@@ -1,3 +1,4 @@
+- transaction = transaction.transfer_in if transaction.transfer_out?
 tr.transaction id=dom_id(transaction) class=colorize_transaction(transaction) data-edit-url=edit_transaction_path(transaction)
   td.col-sm-2 = money_with_symbol transaction.amount
 
@@ -7,11 +8,11 @@ tr.transaction id=dom_id(transaction) class=colorize_transaction(transaction) da
       data: { stop_propagation: true } if transaction.category
   td.col-sm-3.word-break
     - if transaction.transfer?
-      = link_to transaction.transfer_out.try(:bank_account).to_s + ' -> ' + transaction.bank_account.to_s,
-        root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.bank_account.id)),
-        data: { stop_propagation: true } if transaction.bank_account
-    - elsif transaction.transfer_out?
-      = link_to transaction.bank_account.to_s + ' -> ' + transaction.transfer_in.try(:bank_account).to_s,
+      => link_to transaction.transfer_out.try(:bank_account).to_s,
+        root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.transfer_out.bank_account.id)),
+        data: { stop_propagation: true } if transaction.transfer_out.try(:bank_account)
+      |->
+      =< link_to transaction.bank_account.to_s,
         root_path(q: (params[:q] || {}).merge(bank_account_id_eq: transaction.bank_account.id)),
         data: { stop_propagation: true } if transaction.bank_account
     - else

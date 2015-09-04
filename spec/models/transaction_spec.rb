@@ -136,16 +136,6 @@ describe Transaction do
             expect(subject).to be_truthy
           end
         end
-
-        context "and negative amount" do
-          let(:amount) { -123.32 }
-
-          it 'is invalid' do
-            expect(transaction).to be_invalid
-            expect(transaction.errors_on(:amount)).
-              to include("must be greater than 0")
-          end
-        end
       end
 
       context "for expense category" do
@@ -168,10 +158,8 @@ describe Transaction do
         context "and negative amount" do
           let(:amount) { -123.32 }
 
-          it 'is invalid' do
-            expect(transaction).to be_invalid
-            expect(transaction.errors_on(:amount)).
-              to include("must be greater than 0")
+          it 'is valid' do
+            expect(transaction).to be_valid
           end
         end
       end
