@@ -21,7 +21,7 @@
 
   - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
     = f.simple_fields_for :transfer_out, transaction.transfer_out do |t|
-      = t.input :amount, as: :hidden, input_html: { id: 'transfer-out-amount' }
+      = t.input :amount, input_html: { id: 'transfer-out-amount' }, label: 'From amount'
       = t.input :category_id, as: :hidden
       = t.input :customer_id, as: :hidden
       = t.input :comment, as: :hidden
@@ -30,6 +30,7 @@
         collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
         prompt: 'Bank account', group_method: :last, label: 'From',
         selected: t.object.bank_account_id
+
   - else
     = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
