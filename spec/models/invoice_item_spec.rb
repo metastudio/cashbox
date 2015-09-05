@@ -19,6 +19,7 @@ describe InvoiceItem do
   context 'association' do
     it { is_expected.to belong_to(:invoice) }
     it { is_expected.to belong_to(:customer) }
+    it { is_expected.to delegate_method(:organization).to(:invoice) }
   end
 
   context 'validation' do
@@ -26,16 +27,16 @@ describe InvoiceItem do
     it { is_expected.to validate_numericality_of(:amount).
       is_greater_than(0).is_less_than_or_equal_to(Dictionaries.money_max) }
 
-    context 'when customer is empty' do
-      before { allow(subject).to receive(:customer_id?).and_return(false) }
+    context 'customer_name.blank?' do
+      let!(:invoice) { create :invoice }
 
-      it { is_expected.to validate_presence_of(:description) }
-    end
+      it 'validates presence of description when true' do
+        expect(invoice.invoice_items.build(customer_name: '')).to validate_presence_of(:description)
+      end
 
-    context 'when customer is present' do
-      before { allow(subject).to receive(:customer_id?).and_return(true) }
-
-      it { is_expected.to_not validate_presence_of(:description) }
+      it 'does not validates presence of description when false' do
+        expect(invoice.invoice_items.build(customer_name: 'customer')).to_not validate_presence_of(:description)
+      end
     end
   end
 end

@@ -3,7 +3,7 @@
 
   .form-inputs
     = f.input :currency, collection: Dictionaries.currencies, autofocus: true
-    = f.input :customer_name, input_html: { data: { url: autocomplete_customers_path,
+    = f.input :customer_name, input_html: { class: 'customer-select2', data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
       value: current_organization.find_customer_name_by_id(f.object.customer_id) } }
     = f.input :starts_at, as: :string, placeholder: 'Start date',

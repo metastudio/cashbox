@@ -14,29 +14,18 @@
 #
 
 class InvoiceItem < ActiveRecord::Base
-  attr_accessor :customer_name
+  include CustomerConcern
+  customer_concern_callbacks
 
   belongs_to :invoice, inverse_of: :invoice_items
   belongs_to :customer
 
   monetize :amount_cents, with_model_currency: :currency
+  delegate :organization, to: :invoice
 
   validates :invoice, presence: true
   validates :amount, presence: true
-  validates :description, presence: true, unless: :customer_id?
+  validates :description, presence: true, if: 'customer_name.blank?'
   validates :amount, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
-
-  before_validation :find_customer, if: Proc.new{ self.customer_name.present? }
-
-  def customer_name=(value)
-    attribute_will_change!("customer_name") if @customer_name != value
-    @customer_name = value
-  end
-
-  private
-
-  def find_customer
-    self.customer = Customer.find_or_initialize_by(name: customer_name, organization_id: invoice.organization.id)
-  end
 end

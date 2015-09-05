@@ -36,3 +36,53 @@ function scrollTo($el) {
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
 })
+
+$(function () {
+  addCustomerSelect2('.customer-select2');
+  addCustomerSelect2('.nested-customer-select2');
+})
+
+function addCustomerSelect2(fields) {
+  var lastResultNames = [];
+  $(fields).each(function() {
+    $(this).select2({
+      maximumInputLength: 255,
+      width: 'resolve',
+      ajax: {
+        url: $(this).data('url'),
+        dataType: "json",
+        data: function (name_includes) {
+          var queryParameters = {
+            query: { term: name_includes }
+          }
+          return queryParameters;
+        },
+        results: function(data, page) {
+          lastResultNames = $.map( data, function(customer, i) { return customer.name });
+          return {
+            results: $.map( data, function(customer, i) {
+              return {
+                id: customer.name, text: customer.name
+              }
+            })
+          }
+        }
+      },
+      createSearchChoice: function (input) {
+        input = input.replace(/^\s+/, '').replace(/\s+$/, '')
+        if (input !== '')
+        {
+          var new_item = lastResultNames.indexOf(input) < 0;
+          if (new_item) {
+            return { id: input, text: input + " (new)" }
+          }
+        }
+      }
+    });
+
+    var name = $(this).data('value');
+    if (name) {
+      $(this).select2("data", { id: name, text: name });
+    }
+  });
+}

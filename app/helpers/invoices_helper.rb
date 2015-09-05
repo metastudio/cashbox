@@ -1,9 +1,5 @@
 module InvoicesHelper
   def invoice_date_range(invoice)
-    if invoice.starts_at
-      (l invoice.starts_at).to_s + ' - ' + (l invoice.ends_at).to_s
-    else
-      l invoice.ends_at
-    end
+    [invoice.starts_at, invoice.ends_at].compact.map{ |d| l d }.join(' - ')
   end
 end
