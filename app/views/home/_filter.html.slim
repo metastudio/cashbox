@@ -12,11 +12,12 @@ h4 Filters:
         group_method: :last, input_html: { multiple: true }
   .row
     .col-xs-4
-      = f.input :bank_account_id_eq, label: false, include_blank: 'Account', as: :grouped_select,
-        collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency), group_method: :last
+      = f.input :bank_account_id_in, label: false, placeholder: 'Choose accounts...', as: :grouped_select,
+        collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
+        group_method: :last, input_html: { multiple: true }
     .col-xs-4
-      = f.input :customer_id_eq, as: :select, placeholder: 'Customer',
-        label: false, collection: current_organization.customers
+      = f.input :customer_id_in, as: :select, placeholder: 'Choose customers...',
+        label: false, collection: current_organization.customers, input_html: { multiple: true }
     .col-xs-4
       = f.input :period, collection: Transaction.custom_dates, label: false,
         include_blank: 'Choose period...'
