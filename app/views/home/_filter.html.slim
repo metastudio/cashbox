@@ -1,4 +1,4 @@
-h4 Filters:
+h2 Filters
 
 = search_form_for @q, url: root_path, html: { class: 'filter' } do |f|
   .row
@@ -20,7 +20,7 @@ h4 Filters:
     .col-xs-4
       = f.input :period, collection: Transaction.custom_dates, label: false,
         include_blank: 'Choose period...'
-  #custom-daterange.hidden
+  .row#custom-daterange.hidden
     .col-sm-6
       = f.input :date_from, input_html: { class: 'datepicker' }
     .col-sm-6
