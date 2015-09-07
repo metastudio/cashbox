@@ -59,7 +59,7 @@ describe 'create transfer transaction', js: true do
     it "appends rate and comission to the comment" do
       create_transfer
       within ".transactions" do
-        expect(page).to have_content(comment + "\nComission: " + comission.to_s)
+        expect(page).to have_content(comment + "\nComission: " + comission_str)
       end
     end
 
