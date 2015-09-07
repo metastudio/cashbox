@@ -1,13 +1,16 @@
 .page-header
   h1 Listing members
 
-table.table.table-hover.categories
+table.table.table-hover
   thead
     tr
       th User
       th Role
-  tbody
+  tbody.members
     = render @members
+
+#members-paginator.col-md-offset-5
+  = paginate @members, remote: true, param_name: 'member_page'
 
 #role_modal_container
 

@@ -3,8 +3,8 @@ class MembersController < ApplicationController
   before_filter :find_member, only: [:edit, :update]
 
   def index
-    @members = current_organization.members.includes(:user)
-    @invitations = current_organization.invitations.page(params[:page]).per(10)
+    @members = current_organization.members.includes(:user).page(params[:member_page]).per(10)
+    @invitations = current_organization.invitations.page(params[:invitation_page]).per(10)
   end
 
   def edit
