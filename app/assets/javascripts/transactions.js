@@ -8,6 +8,12 @@ $(function () {
 
   showHidePeriodAdditionalInput();
 
+  if ($('#flow').length) {
+    $('body').css('padding-bottom', '130px');
+  } else {
+    $('body').css('padding-bottom', '45px');
+  }
+
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
     e.preventDefault();
 
