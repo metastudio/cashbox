@@ -1,4 +1,4 @@
-- transaction = transaction.transfer_in if transaction.transfer_out?
+- transaction = transaction.transfer_in if transaction.transfer_out? && transaction.transfer_in
 tr.transaction id=dom_id(transaction) class=colorize_transaction(transaction) data-edit-url=edit_transaction_path(transaction)
   td.col-sm-2 = money_with_symbol transaction.amount
 

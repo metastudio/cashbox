@@ -1,6 +1,7 @@
 class Transfer
   include ActiveModel::Validations
   include ActiveModel::Validations::Callbacks
+  include MoneyRails::ActionViewExtension
 
   attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
     :bank_account, :bank_account_id, :reference_id, :date,
@@ -119,7 +120,8 @@ class Transfer
 
   def form_comment(comment)
     rate = currency_mismatch? ? "\nRate: " + exchange_rate.to_s : ''
-    comment.to_s + (comission == '0.00' ? '' : "\nComission: " + comission.to_s) + rate
+    comment.to_s + (comission == '0.00' ? '' : "\nComission: " +
+      humanized_money_with_symbol(money_comission, symbol_after_without_space: true)) + rate
   end
 
   def estimate_amount(out)
