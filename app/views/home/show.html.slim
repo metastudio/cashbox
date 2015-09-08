@@ -7,7 +7,11 @@
     = render partial: 'transactions/transactions', locals: { transactions: @transactions }
 
 = content_for :footer
-  - if params[:q]
-    .footer.navbar.navbar-default.navbar-fixed-bottom#footer
-      .container
-        = render 'home/flow'
+  .footer.navbar.navbar-default.navbar-fixed-bottom#footer
+    .container
+      - if params[:q]
+        .col-sm-9
+          = render 'home/flow'
+      - else
+        .col-sm-12
+          center.footer-text Cashbox &copy; #{Date.today.year}

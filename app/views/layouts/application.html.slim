@@ -1,7 +1,7 @@
 doctype html
 html
   = render 'shared/layout/head'
-  body
+  body class="#{params[:q] ? 'with-flow' : ''}"
     = render 'shared/layout/header'
     .container-fluid
       = render 'shared/layout/flash_messages'
