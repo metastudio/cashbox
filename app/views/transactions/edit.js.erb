@@ -3,9 +3,11 @@ $('#content').html("<%= j render('transactions/modal_content') %>");
 <% if @transaction.category.nil? || @transaction.category.type == 'Income' %>
   $('li.expense').remove();
   $('li.income').addClass('active');
+  $('.tab-pane#income').show();
 <% else %>
   $('li.income').remove();
   $('li.expense').addClass('active');
+  $('.tab-pane#expense').show();
 <% end %>
 $('li.transfer').remove();
 
