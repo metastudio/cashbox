@@ -1,8 +1,12 @@
 body {
   padding-bottom: 45px;
-  .with_flow {
+  &.with-flow {
     padding-bottom: 130px;
   }
+}
+
+.footer-text {
+  margin: 20px;
 }
 
 .word-break {
