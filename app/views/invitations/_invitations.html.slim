@@ -4,7 +4,7 @@
       = link_to 'New Invitation', new_invitation_path, class: 'btn btn-success'
     h1 Invitations
   - if invitations.present?
-    table.table.table-stripped.table-hover.invitations
+    table.table.table-stripped.table-hover
       thead
         tr
           th Inviter
@@ -13,10 +13,10 @@
           th Accepted
           th Date
           th
-      tbody
+      tbody.invitations
         = render invitations
   - else
     .alert.alert-warning No invitations
 
-#paginator.col-md-offset-5
-  = paginate invitations, remote: true
+  #invitations-paginator.col-md-offset-5
+    = paginate invitations, remote: true, param_name: 'invitation_page'

@@ -6,7 +6,7 @@ class HomeController < ApplicationController
     @q = current_organization.transactions.ransack(params[:q])
     @transactions = @q.result
     @curr_flow = @transactions.flow_ordered(current_organization.default_currency) if params[:q]
-    @transactions = @transactions.without_out(@q.bank_account_id_eq).page(params[:page]).per(50)
+    @transactions = @transactions.without_out(@q.bank_account_id_in).page(params[:page]).per(50)
 
     gon.curr_org_exch_rates = current_organization.exchange_rates
 

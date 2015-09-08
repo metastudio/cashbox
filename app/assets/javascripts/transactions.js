@@ -5,6 +5,8 @@ $(function () {
   $('#q_amount_eq').inputmask('customized_currency');
   $('#q_customer_id_eq').select2();
   $('#q_category_id_in').select2();
+  $('#q_bank_account_id_in').select2();
+  $('#q_customer_id_in').select2();
 
   showHidePeriodAdditionalInput();
 
@@ -28,6 +30,8 @@ $(function () {
     $(this).closest('form').find(':input').removeAttr('checked').removeAttr('selected').not(':button, :submit, :reset, :hidden, :radio, :checkbox').val('');
     $('#q_customer_id_eq').select2('data', null);
     $('#q_category_id_in').select2('data', []);
+    $('#q_bank_account_id_in').select2('data', []);
+    $('#q_customer_id_in').select2('data', []);
   });
 
   $(document).on('change', '#q_period', function(e) {

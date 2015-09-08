@@ -4,13 +4,13 @@
   h1 Listing categories
 
 - if @categories.present?
-  table.table.table-stripped.table-hover.categories
+  table.table.table-stripped.table-hover
     thead
       tr
         th Name
         th Type
         th
-    tbody
+    tbody.categories
       = render partial: 'category', collection: @categories
 
 - else
