@@ -5,7 +5,9 @@ $(function () {
   $('#q_amount_eq').inputmask('customized_currency');
   $('#q_customer_id_eq').select2();
 
-  showHidePeriodAdditionalInput();
+  $(document).on('shown.bs.tab', '#transaction_type a[data-toggle="tab"]', function (e) {
+    localStorage.setItem('lastTransactionTab', $(this).attr('href'));
+  });
 
   $(document).on('click', '.transaction[data-edit-url]', function(e) {
     e.preventDefault();
