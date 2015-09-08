@@ -1,2 +1,4 @@
+$('.members').html('<%= j render(@members) %>');
+$('#members-paginator').html('<%= j (paginate(@members, remote: true, param_name: "member_page").to_s) %>');
 $('.invitations').html('<%= j render(@invitations) %>');
-$('#paginator').html('<%= j (paginate(@invitations, remote: true).to_s) %>');
+$('#invitations-paginator').html('<%= j (paginate(@invitations, remote: true, param_name: "invitation_page").to_s) %>');
