@@ -119,7 +119,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
-      select transaction.bank_account.to_s, from: 'q[bank_account_id_eq]'
+      select transaction.bank_account.to_s, from: 'q[bank_account_id_in][]'
       click_on 'Search'
     end
 
@@ -359,6 +359,7 @@ describe 'Transactions filter' do
 
   context 'clear btn', js: true do
     let!(:cat)  { create :category, organization: org }
+    let!(:cust) { create :customer, organization: org }
     let!(:ba)   { create :bank_account, organization: org }
 
     before do
@@ -366,7 +367,8 @@ describe 'Transactions filter' do
       fill_in 'q[amount_eq]', with: "9999"
       fill_in 'q[comment_cont]', with: 'Comment'
       select2(cat.name, css: '#s2id_q_category_id_in')
-      select ba.to_s, from: 'q[bank_account_id_eq]'
+      select2(cust.to_s, css: '#s2id_q_customer_id_in')
+      select2(ba.to_s, css: '#s2id_q_bank_account_id_in')
       select 'Current month', from: 'q[period]'
       click_on 'Clear'
     end
@@ -376,7 +378,8 @@ describe 'Transactions filter' do
         expect(page).to have_css('#q_amount_eq', text: '')
         expect(page).to have_css('#q_comment_cont', text: '')
         expect(page).to have_css('#s2id_q_category_id_in', text: '')
-        expect(page).to have_css('#q_bank_account_id_eq', text: '')
+        expect(page).to have_css('#s2id_q_customer_id_in', text: '')
+        expect(page).to have_css('#s2id_q_bank_account_id_in', text: '')
         expect(page).to have_css('#q_period', text: '')
       end
     end
