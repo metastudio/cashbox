@@ -40,4 +40,12 @@ class Invoice < ActiveRecord::Base
     message: "%{value} is not a valid currency" }
 
   scope :ordered, -> { order('created_at DESC') }
+
+  after_save :set_currency
+
+  private
+
+  def set_currency
+    invoice_items.each{ |i| i.update(currency: currency) }
+  end
 end

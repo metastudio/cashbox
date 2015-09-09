@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150826055705) do
+ActiveRecord::Schema.define(version: 20150909054901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,10 +79,10 @@ ActiveRecord::Schema.define(version: 20150826055705) do
   add_index "invitations", ["token"], name: "index_invitations_on_token", unique: true, using: :btree
 
   create_table "invoice_items", force: :cascade do |t|
-    t.integer  "invoice_id",                      null: false
+    t.integer  "invoice_id",                   null: false
     t.integer  "customer_id"
-    t.integer  "amount_cents",    default: 0,     null: false
-    t.string   "amount_currency", default: "USD", null: false
+    t.integer  "amount_cents", default: 0,     null: false
+    t.string   "currency",     default: "USD", null: false
     t.decimal  "hours"
     t.text     "description"
     t.datetime "created_at"
@@ -98,7 +98,6 @@ ActiveRecord::Schema.define(version: 20150826055705) do
     t.datetime "ends_at",                         null: false
     t.string   "currency",        default: "USD", null: false
     t.integer  "amount_cents",    default: 0,     null: false
-    t.string   "amount_currency", default: "USD", null: false
     t.datetime "sent_at"
     t.datetime "paid_at"
     t.datetime "created_at"

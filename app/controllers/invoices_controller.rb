@@ -20,7 +20,7 @@ class InvoicesController < ApplicationController
     @invoice = current_organization.invoices.build(invoice_params)
 
     if @invoice.save
-      redirect_to invoices_path, notice: 'Invoice was successfully created.'
+      redirect_to invoice_path(@invoice), notice: 'Invoice was successfully created.'
     else
       render action: 'new'
     end
@@ -28,7 +28,7 @@ class InvoicesController < ApplicationController
 
   def update
     if @invoice.update(invoice_params)
-      redirect_to invoices_path, notice: 'Invoice was successfully updated.'
+      redirect_to invoice_path(@invoice), notice: 'Invoice was successfully updated.'
     else
       render action: 'edit'
     end
@@ -36,7 +36,7 @@ class InvoicesController < ApplicationController
 
   def destroy
     @invoice.destroy
-    redirect_to invoices_path
+    redirect_to invoices_path, notice: 'Invoice was successfully deleted.'
   end
 
   private

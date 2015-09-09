@@ -151,7 +151,7 @@ FactoryGirl.define do
     amount 500
 
     trait :with_items do
-      invoice_item { |t| create(:invoice_item) }
+      invoice_items { create_list :invoice_item, 3 }
     end
   end
 

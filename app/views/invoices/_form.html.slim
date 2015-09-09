@@ -18,12 +18,6 @@
     #invoice
       h4 Invoice items
       table.table.invoice-form-items
-        thead
-          tr
-            th
-            th
-            th
-            th
         tbody
           = f.fields_for :invoice_items do |i|
             = render 'invoice_item_fields', f: i
