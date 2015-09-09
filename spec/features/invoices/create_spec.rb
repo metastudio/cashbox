@@ -34,13 +34,12 @@ describe 'Create invoice', js: true do
   context 'Create invoice with items' do
     let(:first_item_amount) { Money.new(1100) }
     let(:last_item_amount)  { Money.new(1200) }
+    let(:total_amount)      { first_item_amount + last_item_amount }
 
     before do
       click_on 'New Invoice'
       select2 customer.name, css: '#s2id_invoice_customer_name', search: true
       fill_in 'Ends at', with: Time.now.strftime('%d/%m/%Y')
-      page.execute_script("$(\"invoice[amount]\").val('');")
-      fill_in 'invoice[amount]', with: amount
       click_on 'Add item'
       first('#invoice .nested-fields input.nested-amount').set(first_item_amount)
       first('#invoice .nested-fields input.nested-hours').set('1.1')
@@ -55,7 +54,7 @@ describe 'Create invoice', js: true do
       click_on 'Show'
     end
 
-    it { expect(page).to have_css('td', text: money_with_symbol(amount)) }
+    it { expect(page).to have_css('td', text: money_with_symbol(total_amount)) }
     it { expect(page).to have_css('td', text: money_with_symbol(first_item_amount)) }
     it { expect(page).to have_css('td', text: money_with_symbol(last_item_amount)) }
     it { expect(page).to have_content '1.1' }

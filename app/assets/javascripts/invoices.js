@@ -5,6 +5,12 @@ $(function () {
     .on('cocoon:after-insert', function(e) {
       $('.nested-fields td').css('padding', '8px');
       addCustomerSelect2('.nested-customer-select2:last');
+      $('#invoice_amount').prop('disabled', true);
+    })
+    .on('cocoon:after-remove', function(e) {
+      if ($('#invoice tr.nested-fields:visible').length <= 0) {
+        $('#invoice_amount').prop('disabled', false);
+      }
     })
 });
 
