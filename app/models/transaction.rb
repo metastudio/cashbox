@@ -8,11 +8,12 @@
 #  bank_account_id  :integer          not null
 #  created_at       :datetime
 #  updated_at       :datetime
-#  comment          :string
-#  transaction_type :string
+#  comment          :string(255)
+#  transaction_type :string(255)
 #  deleted_at       :datetime
 #  customer_id      :integer
-#  date             :datetime
+#  date             :datetime         not null
+#  transfer_out_id  :integer
 #
 
 require "./lib/time_range.rb"
@@ -111,12 +112,6 @@ class Transaction < ActiveRecord::Base
         ["Custom", "custom"]
       ]
     end
-  end
-
-  def find_customer_name_by_id(customer_id)
-    Customer.find(customer_id).to_s
-  rescue
-    ''
   end
 
   def transfer?

@@ -3,7 +3,7 @@ class CreateBankAccounts < ActiveRecord::Migration
     create_table :bank_accounts do |t|
       t.string :name,                          null: false
       t.string :description
-      t.money :balance,                        null: false
+      t.monetize :balance,                        null: false
       t.references :organization, index: true, null: false
 
       t.timestamps

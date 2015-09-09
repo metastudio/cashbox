@@ -3,10 +3,11 @@
 # Table name: customers
 #
 #  id              :integer          not null, primary key
-#  name            :string(255)      not null
-#  organization_id :integer
+#  name            :string           not null
+#  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
+#  deleted_at      :datetime
 #
 
 require 'spec_helper'

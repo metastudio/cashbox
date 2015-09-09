@@ -146,11 +146,11 @@ function datepickerInit(selector) {
 }
 
 function addTransactionFormMasks() {
-  var $form = $("form.transaction")
+  var $form = $("form.transaction");
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
   $form.find('#transfer-out-amount').inputmask('customized_currency');
   datepickerInit($form.find('#transaction_date.datepicker'));
-  addCustomerSelect2($form);
+  addCustomerSelect2('.customer-select2');
 }
 
 function addTranferFormMasks() {
@@ -159,50 +159,4 @@ function addTranferFormMasks() {
   $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
   $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
   datepickerInit($form.find('#transfer_date.datepicker'));
-}
-
-function addCustomerSelect2($form) {
-  var lastResultNames = [];
-  var $customerField = $form.find("input[name='transaction[customer_name]']");
-  var url = $customerField.data('url');
-
-  $customerField.select2({
-    maximumInputLength: 255,
-    width: 'resolve',
-    ajax: {
-      url: url,
-      dataType: "json",
-      data: function (name_includes) {
-        var queryParameters = {
-          query: { term: name_includes }
-        }
-        return queryParameters;
-      },
-      results: function(data, page) {
-        lastResultNames = $.map( data, function(customer, i) { return customer.name });
-        return {
-          results: $.map( data, function(customer, i) {
-            return {
-              id: customer.name, text: customer.name
-            }
-          })
-        }
-      }
-    },
-    createSearchChoice: function (input) {
-      input = input.replace(/^\s+/, '').replace(/\s+$/, '')
-      if (input !== '')
-      {
-        var new_item = lastResultNames.indexOf(input) < 0;
-        if (new_item) {
-          return { id: input, text: input + " (new)" }
-        }
-      }
-    }
-  });
-
-  var name = $customerField.data('value');
-  if (name) {
-    $customerField.select2("data", { id: name, text: name });
-  }
 }

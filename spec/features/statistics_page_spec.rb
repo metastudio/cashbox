@@ -22,6 +22,7 @@ describe 'Statistics' do
     it { expect(page).to have_link('Bank accounts')}
     it { expect(page).to have_link('Categories')}
     it { expect(page).to have_link('Members')}
+    it { expect(page).to have_link('Invoices')}
 
     it 'Statistics is active by def' do
       expect(page).to have_css('.active', text: 'Income by categories Expense by categories')

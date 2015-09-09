@@ -3,10 +3,11 @@
 # Table name: customers
 #
 #  id              :integer          not null, primary key
-#  name            :string(255)      not null
-#  organization_id :integer
+#  name            :string           not null
+#  organization_id :integer          not null
 #  created_at      :datetime
 #  updated_at      :datetime
+#  deleted_at      :datetime
 #
 
 class Customer < ActiveRecord::Base
@@ -16,6 +17,8 @@ class Customer < ActiveRecord::Base
 
   belongs_to :organization, inverse_of: :customers
   has_many :transactions, inverse_of: :customer
+  has_many :invoices, inverse_of: :customer
+  has_many :invoice_items
 
   validates :name, presence: true
   validates :organization, presence: true

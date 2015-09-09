@@ -142,4 +142,22 @@ FactoryGirl.define do
     member  { create :member }
     accepted { false }
   end
+
+  factory :invoice do
+    organization
+    customer
+    ends_at { Time.now }
+    currency 'RUB'
+    amount 500
+
+    trait :with_items do
+      invoice_items { create_list :invoice_item, 3 }
+    end
+  end
+
+  factory :invoice_item do
+    invoice
+    customer_name
+    amount 500
+  end
 end

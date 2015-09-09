@@ -3,10 +3,10 @@
 # Table name: organizations
 #
 #  id               :integer          not null, primary key
-#  name             :string           not null
+#  name             :string(255)      not null
 #  created_at       :datetime
 #  updated_at       :datetime
-#  default_currency :string           default("USD")
+#  default_currency :string(255)      default("USD")
 #
 
 class Organization < ActiveRecord::Base
@@ -20,6 +20,7 @@ class Organization < ActiveRecord::Base
   has_many :invitations, through: :members, source: :created_invitations,
     inverse_of: :organization, dependent: :destroy
   has_many :customers, dependent: :destroy, inverse_of: :organization
+  has_many :invoices, dependent: :destroy, inverse_of: :organization
 
   validates :name, presence: true
 
@@ -126,6 +127,12 @@ class Organization < ActiveRecord::Base
     expenses = calc_to_def_currency_for_data_selection(expense_selection)
     data = combine_by_months(period, incomes, expenses)
     data.size > 1 ? { data: data, currency_format: currency_format } : nil
+  end
+
+  def find_customer_name_by_id(customer_id)
+    self.customers.find(customer_id).to_s
+  rescue
+    ''
   end
 
   def to_s
