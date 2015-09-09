@@ -9,7 +9,6 @@
 #  ends_at         :datetime         not null
 #  currency        :string           default("USD"), not null
 #  amount_cents    :integer          default(0), not null
-#  amount_currency :string           default("USD"), not null
 #  sent_at         :datetime
 #  paid_at         :datetime
 #  created_at      :datetime

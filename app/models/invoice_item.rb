@@ -2,15 +2,15 @@
 #
 # Table name: invoice_items
 #
-#  id              :integer          not null, primary key
-#  invoice_id      :integer          not null
-#  customer_id     :integer
-#  amount_cents    :integer          default(0), not null
-#  amount_currency :string           default("USD"), not null
-#  hours           :decimal(, )
-#  description     :text
-#  created_at      :datetime
-#  updated_at      :datetime
+#  id           :integer          not null, primary key
+#  invoice_id   :integer          not null
+#  customer_id  :integer
+#  amount_cents :integer          default(0), not null
+#  currency     :string           default("USD"), not null
+#  hours        :decimal(, )
+#  description  :text
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
 class InvoiceItem < ActiveRecord::Base
