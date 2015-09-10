@@ -1,4 +1,10 @@
 $('#content').html("<%= j render('transactions/modal_content') %>");
+var lastTab = localStorage.getItem('lastTransactionTab');
+if (lastTab) {
+  $('#transaction_type a[href=' + lastTab + ']').tab('show');
+} else {
+  $('#transaction_type a[data-toggle="tab"]:first').tab('show');
+}
 $('#transaction_modal').modal('show');
 
 addTransactionFormMasks();

@@ -5,7 +5,7 @@
   .panel.with-nav-tabs
     .panel-heading
       ul.nav.nav-tabs#transaction_type
-        li.income.active
+        li.income
           = link_to @transaction.transfer? ? 'Transfer' : 'Income', '#income', data: { toggle: 'tab', type: 'income' }
         li.expense
           = link_to @transaction.transfer_out? ? 'Transfer' : 'Expense', '#expense', data: { toggle: 'tab', type: 'expense' }
@@ -13,7 +13,7 @@
           = link_to 'Transfer', '#transfer', data: { toggle: 'tab', type: 'transfer' }
     .panel-body
       .tab-content
-        .tab-pane#income.active
+        .tab-pane#income
           = render 'transactions/form', type: 'Income', transaction: @transaction
         .tab-pane#expense
           = render 'transactions/form', type: 'Expense', transaction: @transaction
