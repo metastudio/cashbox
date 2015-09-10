@@ -12,9 +12,9 @@ set :slack_team,    "metastudiohq"
 set :slack_token,   "IbhiHvzuGfjdAX5A9OUqaI8V"
 set :slack_channel, ->{ '#cashbox' }
 set :slack_via_slackbot, ->{ true }
-set :slack_msg_starting, ->{ ":yellow_heart: #{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
-set :slack_msg_finished, ->{ ":green_heart: #{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
-set :slack_msg_failed,   ->{ ":broken_heart: *ERROR!* #{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
+set :slack_msg_starting, ->{ ":pray: #{ENV['USER'] || ENV['USERNAME']} has started deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
+set :slack_msg_finished, ->{ ":tada: #{ENV['USER'] || ENV['USERNAME']} has finished deploying branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
+set :slack_msg_failed,   ->{ ":trollface: :headbang: *ERROR!* #{ENV['USER'] || ENV['USERNAME']} failed to deploy branch #{fetch :branch} of #{fetch :application} to #{fetch :rails_env, 'production'}." }
 
 set :rollbar_token, 'baf56cf5e8054cb2823811018eef04a6'
 set :rollbar_env,  Proc.new { fetch :stage }
