@@ -45,6 +45,7 @@ gem 'russian_central_bank'
 gem 'gon'
 gem 'whenever', require: false
 gem 'cocoon'
+gem 'validates_overlap'
 
 group :development, :test do
   gem 'rspec-rails'

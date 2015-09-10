@@ -33,7 +33,7 @@ describe Invoice do
       is_greater_than(0).is_less_than_or_equal_to(Dictionaries.money_max) }
     it { is_expected.to validate_inclusion_of(:currency).in_array(Dictionaries.currencies) }
 
-    context 'check customer date range crossing' do
+    context 'check customer date range overlaping' do
       let!(:org)      { create :organization }
       let!(:customer) { create :customer }
       let!(:invoice)  { create :invoice, customer_name: customer.name,
@@ -51,23 +51,23 @@ describe Invoice do
 
       it 'Show error on starts_at' do
         invoice1.valid?
-        expect(invoice1.errors[:ends_at]).to include('Overlap date for this customer')
+        expect(invoice1.errors[:starts_at]).to include('overlaps with another record')
       end
       it 'Show error on ends_at' do
         invoice2.valid?
-        expect(invoice2.errors[:ends_at]).to include('Overlap date for this customer')
+        expect(invoice2.errors[:starts_at]).to include('overlaps with another record')
       end
       it 'Show errors on starts_at and ends_at' do
         invoice3.valid?
-        expect(invoice3.errors[:ends_at]).to include('Overlap date for this customer')
+        expect(invoice3.errors[:starts_at]).to include('overlaps with another record')
       end
       it 'Show errors on starts_at and ends_at' do
         invoice4.valid?
-        expect(invoice4.errors[:ends_at]).to include('Overlap date for this customer')
+        expect(invoice4.errors[:starts_at]).to include('overlaps with another record')
       end
       it 'Dont show errors on starts_at and ends_at' do
         invoice5.valid?
-        expect(invoice5.errors[:ends_at]).to_not include('Overlap date for this customer')
+        expect(invoice5.errors[:starts_at]).to_not include('overlaps with another record')
       end
     end
   end

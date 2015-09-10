@@ -38,7 +38,7 @@ class Invoice < ActiveRecord::Base
     less_than_or_equal_to: Dictionaries.money_max }
   validates :currency, inclusion: { in: Dictionaries.currencies,
     message: "%{value} is not a valid currency" }
-  validate :check_overlap_dates_for_customer, if: 'customer_name.present?'
+  validates :starts_at, :ends_at, overlap: { scope: 'customer_id' }
 
   scope :ordered,    -> { order('created_at DESC') }
   scope :all_except, -> (invoice) { where.not(id: invoice) }
@@ -46,17 +46,6 @@ class Invoice < ActiveRecord::Base
   after_save :set_currency
 
   private
-
-  def check_overlap_dates_for_customer
-    self.customer.invoices.all_except(self.id).where(organization: self.organization).each do |i|
-      self_start = self.starts_at ? self.starts_at : self.ends_at
-      i_start = i.starts_at ? i.starts_at : i.ends_at
-      if (self_start..self.ends_at).overlaps? (i_start..i.ends_at)
-        errors.add(:starts_at, 'Overlap date for this customer') if self.starts_at
-        errors.add(:ends_at, 'Overlap date for this customer')
-      end
-    end
-  end
 
   def set_currency
     invoice_items.each{ |i| i.update(currency: currency) }
