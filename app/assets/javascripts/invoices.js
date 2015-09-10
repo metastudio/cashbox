@@ -8,9 +8,7 @@ $(function () {
       $('#invoice_amount').prop('disabled', true);
     })
     .on('cocoon:after-remove', function(e) {
-      if ($('#invoice tr.nested-fields:visible').length <= 0) {
-        $('#invoice_amount').prop('disabled', false);
-      }
+      $('#invoice_amount').prop('disabled', ($('#invoice tr.nested-fields:visible').size() > 0));
     })
 });
 

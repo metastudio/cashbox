@@ -49,5 +49,18 @@ describe 'Update invoice', js: true do
     it { expect(page).to have_css('td',
       text: money_with_symbol(Money.new(new_item_amount, invoice.currency))) }
     it { expect(page).to have_content 'First Nested Description' }
+
+    context 'invoice amount must be disabled then invoice has items' do
+      before do
+        click_on 'Edit'
+      end
+
+      it { expect(page).to have_css('#invoice_amount:disabled') }
+      it 'amount must be enabled after delete all items' do
+        page.all('a', text: 'delete').each(&:click)
+        expect(page).to_not have_css('#invoice_amount:disabled')
+        expect(page).to have_css('#invoice_amount')
+      end
+    end
   end
 end

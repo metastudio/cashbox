@@ -63,4 +63,12 @@ describe 'Create invoice', js: true do
     it { expect(page).to have_content 'Last Nested Description' }
   end
 
+  context 'set invoice amount disabled then add invoice items' do
+    before do
+      click_on 'New Invoice'
+      click_on 'Add item'
+    end
+
+    it { expect(page).to have_css('#invoice_amount:disabled') }
+  end
 end
