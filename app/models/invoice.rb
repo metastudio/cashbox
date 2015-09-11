@@ -40,9 +40,14 @@ class Invoice < ActiveRecord::Base
 
   scope :ordered, -> { order('created_at DESC') }
 
+  before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   after_save :set_currency
 
   private
+
+  def calculate_total_amount
+    self.amount_cents = invoice_items.reject(&:marked_for_destruction?).sum(&:amount_cents)
+  end
 
   def set_currency
     invoice_items.each{ |i| i.update(currency: currency) }

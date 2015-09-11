@@ -40,18 +40,27 @@ describe 'Update invoice', js: true do
       within "##{dom_id(invoice_with_items)}" do
         click_on 'Edit'
       end
-      page.execute_script("$(\"##{dom_id(invoice_with_items, :edit)} #invoice_amount\").val('');")
-      fill_in 'invoice[amount]', with: new_amount
       first('#invoice .nested-fields input.nested-amount').set(new_item_amount)
       first('#invoice .nested-fields textarea.nested-description').set('First Nested Description')
       click_on 'Update Invoice'
     end
 
     it { expect(page).to have_content 'Invoice was successfully updated' }
-    it { expect(page).to have_css("##{dom_id(invoice_with_items)} td",
-      text: money_with_symbol(Money.new(new_amount, invoice.currency))) }
     it { expect(page).to have_css('td',
       text: money_with_symbol(Money.new(new_item_amount, invoice.currency))) }
     it { expect(page).to have_content 'First Nested Description' }
+
+    context 'invoice amount must be disabled then invoice has items' do
+      before do
+        click_on 'Edit'
+      end
+
+      it { expect(page).to have_css('#invoice_amount:disabled') }
+      it 'amount must be enabled after delete all items' do
+        page.all('a', text: 'delete').each(&:click)
+        expect(page).to_not have_css('#invoice_amount:disabled')
+        expect(page).to have_css('#invoice_amount')
+      end
+    end
   end
 end
