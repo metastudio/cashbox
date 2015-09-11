@@ -146,6 +146,7 @@ FactoryGirl.define do
   factory :invoice do
     organization
     customer
+    customer_name
     ends_at { Time.now }
     currency 'RUB'
     amount 500
