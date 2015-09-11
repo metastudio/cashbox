@@ -51,23 +51,23 @@ describe Invoice do
 
       it 'Show error on starts_at' do
         invoice1.valid?
-        expect(invoice1.errors[:starts_at]).to include('overlaps with another record')
+        expect(invoice1.errors[:starts_at]).to include('overlaps with another Invoice')
       end
       it 'Show error on ends_at' do
         invoice2.valid?
-        expect(invoice2.errors[:starts_at]).to include('overlaps with another record')
+        expect(invoice2.errors[:starts_at]).to include('overlaps with another Invoice')
       end
       it 'Show errors on starts_at and ends_at' do
         invoice3.valid?
-        expect(invoice3.errors[:starts_at]).to include('overlaps with another record')
+        expect(invoice3.errors[:starts_at]).to include('overlaps with another Invoice')
       end
       it 'Show errors on starts_at and ends_at' do
         invoice4.valid?
-        expect(invoice4.errors[:starts_at]).to include('overlaps with another record')
+        expect(invoice4.errors[:starts_at]).to include('overlaps with another Invoice')
       end
       it 'Dont show errors on starts_at and ends_at' do
         invoice5.valid?
-        expect(invoice5.errors[:starts_at]).to_not include('overlaps with another record')
+        expect(invoice5.errors[:starts_at]).to_not include('overlaps with another Invoice')
       end
     end
   end

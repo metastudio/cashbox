@@ -38,10 +38,9 @@ class Invoice < ActiveRecord::Base
     less_than_or_equal_to: Dictionaries.money_max }
   validates :currency, inclusion: { in: Dictionaries.currencies,
     message: "%{value} is not a valid currency" }
-  validates :starts_at, :ends_at, overlap: { scope: 'customer_id' }
+  validates :starts_at, :ends_at, overlap: { scope: 'customer_id', message_content: 'overlaps with another Invoice' }
 
-  scope :ordered,    -> { order('created_at DESC') }
-  scope :all_except, -> (invoice) { where.not(id: invoice) }
+  scope :ordered, -> { order('created_at DESC') }
 
   after_save :set_currency
 
