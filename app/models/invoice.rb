@@ -5,8 +5,8 @@
 #  id              :integer          not null, primary key
 #  organization_id :integer          not null
 #  customer_id     :integer          not null
-#  starts_at       :datetime
-#  ends_at         :datetime         not null
+#  starts_at       :date
+#  ends_at         :date             not null
 #  currency        :string           default("USD"), not null
 #  amount_cents    :integer          default(0), not null
 #  sent_at         :datetime
@@ -32,14 +32,17 @@ class Invoice < ActiveRecord::Base
   validates :ends_at, presence: true
   validates :amount, presence: true
   validates :currency, presence: true
+  validates :customer_name, presence: true
 
   validates :amount, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
   validates :currency, inclusion: { in: Dictionaries.currencies,
     message: "%{value} is not a valid currency" }
+  validates :starts_at, :ends_at, overlap: { scope: 'customer_id', message_content: 'overlaps with another Invoice' }
 
   scope :ordered, -> { order('created_at DESC') }
 
+  before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   after_save :set_currency
 
   private
@@ -61,6 +64,10 @@ class Invoice < ActiveRecord::Base
     else
       all
     end
+  end
+
+  def calculate_total_amount
+    self.amount_cents = invoice_items.reject(&:marked_for_destruction?).sum(&:amount_cents)
   end
 
   def set_currency
