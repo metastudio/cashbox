@@ -148,7 +148,7 @@ class Organization < ActiveRecord::Base
   end
 
   def data_balance
-    period = 1.year.ago.to_datetime..Time.now.to_datetime
+    period = 1.year.ago.to_datetime..Time.current.to_datetime
     income_selection = transactions.unscope(:order).incomes.
       select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date").
       where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.receipt_id).

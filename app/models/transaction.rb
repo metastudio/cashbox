@@ -104,11 +104,11 @@ class Transaction < ActiveRecord::Base
 
     def custom_dates
       [
-        ["Current month: #{TimeRange.format(Time.now, 'current')}", "current-month"],
-        ["Previous month: #{TimeRange.format(Time.now, 'prev_month')}", "prev-month"],
-        ["Last 3 months: #{TimeRange.format(Time.now, 'last_3')}", "last-3-months"],
-        ["Quarter: #{TimeRange.format(Time.now, 'quarter')}", "quarter"],
-        ["This year: #{TimeRange.format(Time.now, 'year')}", "this-year"],
+        ["Current month: #{TimeRange.format(Time.current, 'current')}", "current-month"],
+        ["Previous month: #{TimeRange.format(Time.current, 'prev_month')}", "prev-month"],
+        ["Last 3 months: #{TimeRange.format(Time.current, 'last_3')}", "last-3-months"],
+        ["Quarter: #{TimeRange.format(Time.current, 'quarter')}", "quarter"],
+        ["This year: #{TimeRange.format(Time.current, 'year')}", "this-year"],
         ["Custom", "custom"]
       ]
     end
@@ -145,7 +145,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def set_date
-    self.date = Time.now
+    self.date = Time.current
   end
 
   def recalculate_amount
@@ -160,17 +160,17 @@ class Transaction < ActiveRecord::Base
   def self.period(period)
     case period
     when 'current-month'
-      where('transactions.date >= ? AND transactions.date <= ?', Time.now.beginning_of_month, Time.now)
+      where('transactions.date between ? AND ?', Date.current.beginning_of_month, Date.current.end_of_month)
     when 'last-3-months'
-      where('transactions.date >= ? AND transactions.date <= ?', (Time.now - 3.months).beginning_of_day, Time.now)
+      where('transactions.date between ? AND ?', (Date.current - 3.months).beginning_of_day, Date.current.end_of_month)
     when 'prev-month'
-      prev_month_begins = Time.now.beginning_of_month - 1.months
+      prev_month_begins = Date.current.beginning_of_month - 1.months
       where('transactions.date between ? AND ?', prev_month_begins,
         prev_month_begins.end_of_month)
     when 'this-year'
-      where('transactions.date >= ? AND transactions.date <= ?', Time.now.beginning_of_year, Time.now)
+      where('transactions.date between ? AND ?', Date.current.beginning_of_year, Date.current.end_of_year)
     when 'quarter'
-      where('transactions.date >= ? AND transactions.date <= ?', Time.now.beginning_of_quarter, Time.now)
+      where('transactions.date between ? AND ?', Date.current.beginning_of_quarter, Date.current.end_of_quarter)
     else
       all
     end

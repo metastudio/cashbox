@@ -14,9 +14,7 @@ module LayoutHelper
   def show_amount_with_tooltip(amount)
     cb = Money.default_bank
     def_curr = current_organization.default_currency
-    link_to '#', class: 'exchange-helper', title: "#{amount.currency}/#{def_curr}, rate: #{cb.get_rate(amount.currency, def_curr).round(4)}, by #{l cb.rates_updated_at}", data: { toggle: 'tooltip', placement: 'top'} do
-      raw("<span class='glyphicon glyphicon-question-sign'></span>")
-    end
+    show_tooltip_with_text("#{amount.currency}/#{def_curr}, rate: #{cb.get_rate(amount.currency, def_curr).round(4)}, by #{l cb.rates_updated_at}")
   end
 
   def show_tooltip_with_text(text)

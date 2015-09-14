@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'TimeRange' do
 
   describe "format" do
-    subject { TimeRange::format(Time.now, period) }
+    subject { TimeRange::format(Time.current, period) }
 
     context 'this year' do
       before do

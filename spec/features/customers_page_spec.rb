@@ -6,7 +6,7 @@ describe 'customers page' do
   let(:org2) { user.organizations.last }
   let!(:org1_customer) { create :customer, organization: org1 }
   let!(:org2_customer) { create :customer, organization: org2 }
-  let!(:org1_deleted_customer) { create :customer, deleted_at: Time.now }
+  let!(:org1_deleted_customer) { create :customer, deleted_at: Time.current }
 
   before do
     sign_in user
