@@ -13,3 +13,12 @@
     .col-md-6.col-sm-12.col-xs-12
       h4 Expense by customers
       .piechart.customers id="#{period}-expense-by-customers" data-url=expense_by_customers_statistics_path
+  .row
+    .col-md-12
+      h4 Totals by customers
+      .piechart.customers id="#{period}-totals-by-customers" data-url=totals_by_customers_statistics_path
+  .row
+    .col-md-12
+      h4 Balances by customers
+      .balance-chart id="#{period}-balances-by-customers" data-url=balances_by_customers_statistics_path
+

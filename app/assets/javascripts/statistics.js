@@ -1,16 +1,20 @@
 $(function () {
-  drawBalanceChart('balance-chart');
+  drawBalanceChart(null, 'main-balance');
   if ($('.piecharts').length) {
     drawChart('current-month', 'current-month-income-by-categories');
     drawChart('current-month', 'current-month-expense-by-categories');
     drawChart('current-month', 'current-month-income-by-customers');
     drawChart('current-month', 'current-month-expense-by-customers');
+    drawChart('current-month', 'current-month-totals-by-customers');
+    drawBalanceChart('current-month', 'current-month-balances-by-customers');
   }
   $(document).on('click', '#periods_bar li a', function () {
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-categories');
     drawChart($(this).data('period'), $(this).data('period') + '-expense-by-categories');
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-customers');
     drawChart($(this).data('period'), $(this).data('period') + '-expense-by-customers');
+    drawChart($(this).data('period'), $(this).data('period') + '-totals-by-customers');
+    drawBalanceChart($(this).data('period'), $(this).data('period') + '-balances-by-customers');
   });
 });
 
@@ -80,7 +84,7 @@ var drawChart = function drawChart(period, element) {
   }
 };
 
-var drawBalanceChart = function drawBalanceChart(element) {
+var drawBalanceChart = function drawBalanceChart(period, element) {
   element = document.getElementById(element);
   if (element) {
     $.ajax({

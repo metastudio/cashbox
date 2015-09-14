@@ -44,6 +44,25 @@ class Invoice < ActiveRecord::Base
 
   private
 
+  def self.period(period)
+    case period
+    when 'current-month'
+      where('invoices.ends_at >= ? AND invoices.ends_at <= ?', Time.now.beginning_of_month, Time.now)
+    when 'last-3-months'
+      where('invoices.ends_at >= ? AND invoices.ends_at <= ?', (Time.now - 3.months).beginning_of_day, Time.now)
+    when 'prev-month'
+      prev_month_begins = Time.now.beginning_of_month - 1.months
+      where('invoices.ends_at between ? AND ?', prev_month_begins,
+        prev_month_begins.end_of_month)
+    when 'this-year'
+      where('invoices.ends_at >= ? AND invoices.ends_at <= ?', Time.now.beginning_of_year, Time.now)
+    when 'quarter'
+      where('invoices.ends_at >= ? AND invoices.ends_at <= ?', Time.now.beginning_of_quarter, Time.now)
+    else
+      all
+    end
+  end
+
   def set_currency
     invoice_items.each{ |i| i.update(currency: currency) }
   end
