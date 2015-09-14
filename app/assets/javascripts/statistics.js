@@ -89,14 +89,15 @@ var drawBalanceChart = function drawBalanceChart(period, element) {
   if (element) {
     $.ajax({
       url: element.getAttribute('data-url'),
-      type: 'get'
+      type: 'get',
+      data: { period: period }
     })
     .done(function(response) {
-      draw(response, element);
+      draw(response, element, period);
     })
   };
 
-  function draw(response, css_id) {
+  function draw(response, css_id, period) {
     if (response == null ) {
       $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
       return false;
