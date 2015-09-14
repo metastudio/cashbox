@@ -17,7 +17,7 @@ describe 'Create invoice', js: true do
     before do
       click_on 'New Invoice'
       select2 customer.name, css: '#s2id_invoice_customer_name', search: true
-      fill_in 'Ends at', with: Time.now.strftime('%d/%m/%Y')
+      fill_in 'Ends at', with: Date.current.strftime('%d/%m/%Y')
       page.execute_script("$(\"invoice[amount]\").val('');")
       fill_in 'invoice[amount]', with: amount
       click_on 'Create Invoice'
@@ -39,7 +39,7 @@ describe 'Create invoice', js: true do
     before do
       click_on 'New Invoice'
       select2 customer.name, css: '#s2id_invoice_customer_name', search: true
-      fill_in 'Ends at', with: Time.now.strftime('%d/%m/%Y')
+      fill_in 'Ends at', with: Date.current.strftime('%d/%m/%Y')
       click_on 'Add item'
       first('#invoice .nested-fields input.nested-amount').set(first_item_amount)
       first('#invoice .nested-fields input.nested-hours').set('1.1')

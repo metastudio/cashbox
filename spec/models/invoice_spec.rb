@@ -37,17 +37,17 @@ describe Invoice do
       let!(:org)      { create :organization }
       let!(:customer) { create :customer }
       let!(:invoice)  { create :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.today - 10.days, ends_at: Date.today }
+        organization: org, starts_at: Date.current - 10.days, ends_at: Date.current }
       let(:invoice1) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.today - 9.days, ends_at: Date.today + 1.days }
+        organization: org, starts_at: Date.current - 9.days, ends_at: Date.current + 1.days }
       let(:invoice2) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.today - 11.days, ends_at: Date.today }
+        organization: org, starts_at: Date.current - 11.days, ends_at: Date.current }
       let(:invoice3) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.today - 9.days, ends_at: Date.today }
+        organization: org, starts_at: Date.current - 9.days, ends_at: Date.current }
       let(:invoice4) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.today - 11.days, ends_at: Date.today + 1.days }
+        organization: org, starts_at: Date.current - 11.days, ends_at: Date.current + 1.days }
       let(:invoice5) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.today + 2.days, ends_at: Date.today + 10.days }
+        organization: org, starts_at: Date.current + 2.days, ends_at: Date.current + 10.days }
 
       it 'Show error on starts_at' do
         invoice1.valid?

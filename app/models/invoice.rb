@@ -47,6 +47,25 @@ class Invoice < ActiveRecord::Base
 
   private
 
+  def self.period(period)
+    case period
+    when 'current-month'
+      where('invoices.ends_at between ? AND ?', Date.current.beginning_of_month, Date.current.end_of_month)
+    when 'last-3-months'
+      where('invoices.ends_at between ? AND ?', (Date.current - 3.months).beginning_of_day, Date.current.end_of_month)
+    when 'prev-month'
+      prev_month_begins = Date.current.beginning_of_month - 1.months
+      where('invoices.ends_at between ? AND ?', prev_month_begins,
+        prev_month_begins.end_of_month)
+    when 'this-year'
+      where('invoices.ends_at between ? AND ?', Date.current.beginning_of_year, Date.current.end_of_year)
+    when 'quarter'
+      where('invoices.ends_at between ? AND ?', Date.current.beginning_of_quarter, Date.current.end_of_quarter)
+    else
+      all
+    end
+  end
+
   def calculate_total_amount
     self.amount_cents = invoice_items.reject(&:marked_for_destruction?).sum(&:amount_cents)
   end
