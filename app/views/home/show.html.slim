@@ -6,12 +6,11 @@
   .col-sm-12
     = render partial: 'transactions/transactions', locals: { transactions: @transactions }
 
-= content_for :footer
-  .footer.navbar.navbar-default.navbar-fixed-bottom#footer
-    .container
-      - if params[:q]
-        .col-sm-9
-          = render 'home/flow'
-      - else
-        .col-sm-12
-          center.footer-text Cashbox &copy; #{Date.today.year}
+- if params[:q]
+  = content_for :footer
+    .footer.navbar.navbar-default.navbar-fixed-bottom#footer
+      .col-sm-9
+        .row
+          .col-sm-12
+            .row
+              = render 'home/flow'
