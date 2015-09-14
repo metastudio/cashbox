@@ -50,17 +50,17 @@ class Invoice < ActiveRecord::Base
   def self.period(period)
     case period
     when 'current-month'
-      where('invoices.ends_at >= ? AND invoices.ends_at <= ?', Time.now.beginning_of_month, Time.now)
+      where('invoices.ends_at between ? AND ?', Date.today.beginning_of_month, Date.today.end_of_month)
     when 'last-3-months'
-      where('invoices.ends_at >= ? AND invoices.ends_at <= ?', (Time.now - 3.months).beginning_of_day, Time.now)
+      where('invoices.ends_at between ? AND ?', (Date.today - 3.months).beginning_of_day, Date.today.end_of_month)
     when 'prev-month'
-      prev_month_begins = Time.now.beginning_of_month - 1.months
+      prev_month_begins = Date.today.beginning_of_month - 1.months
       where('invoices.ends_at between ? AND ?', prev_month_begins,
         prev_month_begins.end_of_month)
     when 'this-year'
-      where('invoices.ends_at >= ? AND invoices.ends_at <= ?', Time.now.beginning_of_year, Time.now)
+      where('invoices.ends_at between ? AND ?', Date.today.beginning_of_year, Date.today.end_of_year)
     when 'quarter'
-      where('invoices.ends_at >= ? AND invoices.ends_at <= ?', Time.now.beginning_of_quarter, Time.now)
+      where('invoices.ends_at between ? AND ?', Date.today.beginning_of_quarter, Date.today.end_of_quarter)
     else
       all
     end

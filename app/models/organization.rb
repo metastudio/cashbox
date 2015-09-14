@@ -65,7 +65,8 @@ class Organization < ActiveRecord::Base
     expenses = calc_total_for_selection(customers, selection)
 
     data = total_incomes.merge(expenses){ |k, v1, v2| [find_customer_name_by_id(k) + ' ' +
-      Money.new((v1[1] + v2[1])*100, default_currency).format(symbol_after_without_space: true), v1[1] + v2[1]] }
+      Money.new((v1[1] + v2[1])*100, default_currency).format(symbol_after_without_space: true),
+        (v1[1] + v2[1]).to_f > 0 ? v1[1] + v2[1] : 0] }
     data[nil] = ["Hash", "In default currency"]
 
     data.keys.size > 1 ? { data: data.values, ids: data.keys, currency_format: currency_format } : nil

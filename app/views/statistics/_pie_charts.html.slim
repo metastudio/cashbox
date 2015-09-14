@@ -15,10 +15,14 @@
       .piechart.customers id="#{period}-expense-by-customers" data-url=expense_by_customers_statistics_path
   .row
     .col-md-12
-      h4 Totals by customers
+      h4
+        | Totals by customers
+        =< show_tooltip_with_text('Data based on InvoiceItems and Transactions')
       .piechart.customers id="#{period}-totals-by-customers" data-url=totals_by_customers_statistics_path
   .row
     .col-md-12
-      h4 Balances by customers
+      h4
+        | Balances by customers
+        =< show_tooltip_with_text('Data based on InvoiceItems and Transactions')
       .balance-chart id="#{period}-balances-by-customers" data-url=balances_by_customers_statistics_path
 

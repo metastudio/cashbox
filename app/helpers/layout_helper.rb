@@ -19,6 +19,12 @@ module LayoutHelper
     end
   end
 
+  def show_tooltip_with_text(text)
+    link_to '#', class: 'exchange-helper', title: text, data: { toggle: 'tooltip', placement: 'top'} do
+      raw("<span class='glyphicon glyphicon-question-sign'></span>")
+    end
+  end
+
   def submit_title
     params['action'] == 'new' ? 'Create' : 'Update'
   end
