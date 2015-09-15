@@ -53,21 +53,45 @@ describe Invoice do
         invoice1.valid?
         expect(invoice1.errors[:starts_at]).to include('overlaps with another Invoice')
       end
-      it 'Show error on ends_at' do
+      it 'Show error on starts_at' do
         invoice2.valid?
         expect(invoice2.errors[:starts_at]).to include('overlaps with another Invoice')
       end
-      it 'Show errors on starts_at and ends_at' do
+      it 'Show errors on starts_at' do
         invoice3.valid?
         expect(invoice3.errors[:starts_at]).to include('overlaps with another Invoice')
       end
-      it 'Show errors on starts_at and ends_at' do
+      it 'Show errors on starts_at' do
         invoice4.valid?
         expect(invoice4.errors[:starts_at]).to include('overlaps with another Invoice')
       end
-      it 'Dont show errors on starts_at and ends_at' do
+      it 'Dont show errors' do
         invoice5.valid?
         expect(invoice5.errors[:starts_at]).to_not include('overlaps with another Invoice')
+      end
+    end
+
+    context 'check ends_at after starts_at if starts_at present' do
+      let!(:org)      { create :organization }
+      let!(:customer) { create :customer }
+      let(:invoice)   { build :invoice, customer_name: customer.name,
+        organization: org, starts_at: Date.current - 1.days, ends_at: Date.current }
+      let(:invoice1)  { build :invoice, customer_name: customer.name,
+        organization: org, starts_at: Date.current + 2.days, ends_at: Date.current + 1.days  }
+      let(:invoice2)  { build :invoice, customer_name: customer.name,
+        organization: org, starts_at: nil, ends_at: Date.current + 3.days  }
+
+      it 'Dont show errors' do
+        invoice.valid?
+        expect(invoice.errors[:ends_at]).to_not include("must be after or equal to #{invoice.starts_at}")
+      end
+      it 'Show error on ends_at' do
+        invoice1.valid?
+        expect(invoice1.errors[:ends_at]).to include("must be after or equal to #{invoice1.starts_at}")
+      end
+      it 'Dont show errors' do
+        invoice2.valid?
+        expect(invoice2.errors[:ends_at]).to_not include("must be after or equal to #{invoice2.starts_at}")
       end
     end
   end
