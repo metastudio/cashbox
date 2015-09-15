@@ -83,15 +83,15 @@ describe Invoice do
 
       it 'Dont show errors' do
         invoice.valid?
-        expect(invoice.errors[:ends_at]).to_not include("must be after or equal to #{invoice.starts_at}")
+        expect(invoice.errors[:ends_at]).to_not include("must be after or equal to #{I18n.l(invoice.starts_at)}")
       end
       it 'Show error on ends_at' do
         invoice1.valid?
-        expect(invoice1.errors[:ends_at]).to include("must be after or equal to #{invoice1.starts_at}")
+        expect(invoice1.errors[:ends_at]).to include("must be after or equal to #{I18n.l(invoice1.starts_at)}")
       end
       it 'Dont show errors' do
         invoice2.valid?
-        expect(invoice2.errors[:ends_at]).to_not include("must be after or equal to #{invoice2.starts_at}")
+        expect(invoice2.errors[:ends_at]).to_not include("must be after or equal to")
       end
     end
   end
