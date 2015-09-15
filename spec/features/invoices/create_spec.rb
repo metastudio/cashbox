@@ -78,6 +78,7 @@ describe 'Create invoice', js: true do
         within all('#invoice .nested-fields').last do
           find('input.nested-amount').set('2.00')
         end
+        # for exec change event
         find("#invoice_amount").click
       end
 
