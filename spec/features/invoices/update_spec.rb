@@ -40,6 +40,7 @@ describe 'Update invoice', js: true do
       within "##{dom_id(invoice_with_items)}" do
         click_on 'Edit'
       end
+      page.execute_script("$('#invoice .nested-fields:first input.nested-amount').val('');")
       first('#invoice .nested-fields input.nested-amount').set(new_item_amount)
       first('#invoice .nested-fields textarea.nested-description').set('First Nested Description')
       click_on 'Update Invoice'
