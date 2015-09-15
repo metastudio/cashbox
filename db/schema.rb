@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150910054909) do
+ActiveRecord::Schema.define(version: 20150915100601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,10 +79,10 @@ ActiveRecord::Schema.define(version: 20150910054909) do
   add_index "invitations", ["token"], name: "index_invitations_on_token", unique: true, using: :btree
 
   create_table "invoice_items", force: :cascade do |t|
-    t.integer  "invoice_id",                   null: false
+    t.integer  "invoice_id",                             null: false
     t.integer  "customer_id"
-    t.integer  "amount_cents", default: 0,     null: false
-    t.string   "currency",     default: "USD", null: false
+    t.integer  "amount_cents", limit: 8, default: 0,     null: false
+    t.string   "currency",               default: "USD", null: false
     t.decimal  "hours"
     t.text     "description"
     t.datetime "created_at"
@@ -92,12 +92,12 @@ ActiveRecord::Schema.define(version: 20150910054909) do
   add_index "invoice_items", ["invoice_id"], name: "index_invoice_items_on_invoice_id", using: :btree
 
   create_table "invoices", force: :cascade do |t|
-    t.integer  "organization_id",                 null: false
-    t.integer  "customer_id",                     null: false
+    t.integer  "organization_id",                           null: false
+    t.integer  "customer_id",                               null: false
     t.date     "starts_at"
-    t.date     "ends_at",                         null: false
-    t.string   "currency",        default: "USD", null: false
-    t.integer  "amount_cents",    default: 0,     null: false
+    t.date     "ends_at",                                   null: false
+    t.string   "currency",                  default: "USD", null: false
+    t.integer  "amount_cents",    limit: 8, default: 0,     null: false
     t.datetime "sent_at"
     t.datetime "paid_at"
     t.datetime "created_at"
