@@ -7,14 +7,14 @@
       placeholder: 'Customer',
       value: current_organization.find_customer_name_by_id(f.object.customer_id) } }
     = f.input :starts_at, as: :string, placeholder: 'Start date',
-      input_html: { class: 'datepicker' }
+      input_html: { class: 'datepicker', value: f.object.starts_at.present? ? l(f.object.starts_at) : nil }
     = f.input :ends_at, as: :string, placeholder: 'End date',
-      input_html: { class: 'datepicker' }
+      input_html: { class: 'datepicker', value: f.object.ends_at.present? ? l(f.object.ends_at) : nil }
     = f.input :amount, disabled: @invoice.invoice_items.any?, input_html: { maxlength: 25 }
     = f.input :sent_at, as: :string, placeholder: 'Sent date',
-      input_html: { class: 'datepicker' }
+      input_html: { class: 'datepicker', value: f.object.sent_at.present? ? l(f.object.sent_at) : nil }
     = f.input :paid_at, as: :string, placeholder: 'Paid date',
-      input_html: { class: 'datepicker' }
+      input_html: { class: 'datepicker', value: f.object.paid_at.present? ? l(f.object.paid_at) : nil }
     #invoice
       h4 Invoice items
       table.table.invoice-form-items
