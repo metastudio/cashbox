@@ -2,7 +2,7 @@
     wrapper: :horizontal_form) do |f|
   = f.error_notification
 
-  = f.input :amount, input_html: { value: f.object.amount == 0 ? nil : f.object.amount }
+  = f.input :amount, input_html: { value: f.object.amount == 0 ? nil : f.object.amount, maxlength: 25 }
 
   - if f.object.category.try(:system?)
     = f.input :category, disabled: true
@@ -20,7 +20,7 @@
 
   - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
     = f.simple_fields_for :transfer_out, transaction.transfer_out do |t|
-      = t.input :amount, input_html: { id: 'transfer-out-amount' }, label: 'From amount'
+      = t.input :amount, input_html: { id: 'transfer-out-amount', maxlength: 25 }, label: 'From amount'
       = t.input :category_id, as: :hidden
       = t.input :customer_id, as: :hidden
       = t.input :comment, as: :hidden

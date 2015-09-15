@@ -10,7 +10,7 @@
       input_html: { class: 'datepicker' }
     = f.input :ends_at, as: :string, placeholder: 'End date',
       input_html: { class: 'datepicker' }
-    = f.input :amount, disabled: @invoice.invoice_items.any?
+    = f.input :amount, disabled: @invoice.invoice_items.any?, input_html: { maxlength: 25 }
     = f.input :sent_at, as: :string, placeholder: 'Sent date',
       input_html: { class: 'datepicker' }
     = f.input :paid_at, as: :string, placeholder: 'Paid date',
