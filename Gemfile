@@ -46,6 +46,7 @@ gem 'gon'
 gem 'whenever', require: false
 gem 'cocoon'
 gem 'validates_overlap'
+gem 'date_validator'
 
 group :development, :test do
   gem 'rspec-rails'

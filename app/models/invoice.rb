@@ -39,6 +39,7 @@ class Invoice < ActiveRecord::Base
   validates :currency, inclusion: { in: Dictionaries.currencies,
     message: "%{value} is not a valid currency" }
   validates :starts_at, :ends_at, overlap: { scope: 'customer_id', message_content: 'overlaps with another Invoice' }
+  validates :ends_at, date: { after_or_equal_to: :starts_at }, if: :starts_at
 
   scope :ordered, -> { order('created_at DESC') }
 
