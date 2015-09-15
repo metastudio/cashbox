@@ -141,7 +141,7 @@ function datepickerInit(selector) {
     endDate: '+1y',
     autoclose: true,
     todayHighlight: true,
-    todayBtn: true
+    todayBtn: 'linked'
   });
 }
 
