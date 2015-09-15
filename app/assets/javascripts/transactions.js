@@ -1,6 +1,7 @@
 $(function () {
   addTransactionFormMasks();
   addTranferFormMasks();
+  showHidePeriodAdditionalInput();
 
   $('#q_amount_eq').inputmask('customized_currency');
   $('#q_customer_id_eq').select2();
@@ -34,6 +35,7 @@ $(function () {
     $('#q_category_id_in').select2('data', []);
     $('#q_bank_account_id_in').select2('data', []);
     $('#q_customer_id_in').select2('data', []);
+    showHidePeriodAdditionalInput();
   });
 
   $(document).on('change', '#q_period', function(e) {

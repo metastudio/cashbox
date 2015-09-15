@@ -3,7 +3,7 @@ tr.nested-fields
     = f.input :customer_name, input_html: { class: 'nested-customer-select2',
       data: { url: autocomplete_customers_path, placeholder: 'Customer',
       value: current_organization.find_customer_name_by_id(f.object.customer_id) } }
-    = f.input :amount, input_html: { class: 'nested-amount' }
+    = f.input :amount, input_html: { class: 'nested-amount', maxlength: 25 }
   td
     = f.input :hours, input_html: { class: 'nested-hours' }
     = f.input :description, input_html: { class: 'nested-description' }
