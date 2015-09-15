@@ -20,6 +20,8 @@ Cashbox::Application.routes.draw do
     get :expense_by_customers, on: :collection, as: :expense_by_customers
     get :income_by_categories, on: :collection, as: :income_by_categories
     get :expense_by_categories, on: :collection, as: :expense_by_categories
+    get :totals_by_customers, on: :collection, as: :totals_by_customers
+    get :balances_by_customers, on: :collection, as: :balances_by_customers
     get :balance, on: :collection, as: :balance
   end
   resources :bank_accounts, except: :show do

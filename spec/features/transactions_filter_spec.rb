@@ -208,7 +208,7 @@ describe 'Transactions filter' do
     end
 
     context "when last quarter" do
-      let!(:quarter_start){ Time.now.beginning_of_quarter }
+      let!(:quarter_start){ Time.current.beginning_of_quarter }
       let!(:transaction)  { Timecop.travel(quarter_start) {
         create :transaction, bank_account: ba } }
       let!(:transaction2) { create :transaction, bank_account: ba }
@@ -229,12 +229,12 @@ describe 'Transactions filter' do
     end
 
     context "when last year" do
-      let!(:year_start)   { Time.now.beginning_of_year }
+      let!(:year_start)   { Time.current.beginning_of_year }
       let!(:transaction)  { Timecop.travel(year_start) {
         create :transaction, bank_account: ba } }
-      let!(:transaction2) { Timecop.travel(rand(year_start..Time.now)) {
+      let!(:transaction2) { Timecop.travel(rand(year_start..Time.current)) {
         create :transaction, bank_account: ba } }
-      let!(:transaction3) { Timecop.travel(rand(year_start..Time.now)) {
+      let!(:transaction3) { Timecop.travel(rand(year_start..Time.current)) {
         create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(year_start - 2.year) {
         create :transaction, bank_account: ba } }
@@ -292,11 +292,11 @@ describe 'Transactions filter' do
 
       context 'edge values' do
         let!(:transaction)  { create :transaction, bank_account: ba }
-        let!(:transaction2) { Timecop.travel( Time.now + 5.days) {
+        let!(:transaction2) { Timecop.travel( Time.current + 5.days) {
           create :transaction, bank_account: ba } }
-        let!(:transaction3) { Timecop.travel( Time.now + 10.days) {
+        let!(:transaction3) { Timecop.travel( Time.current + 10.days) {
           create :transaction, bank_account: ba } }
-        let!(:transaction4) { Timecop.travel( Time.now - 2.day) {
+        let!(:transaction4) { Timecop.travel( Time.current - 2.day) {
           create :transaction, bank_account: ba } }
         let(:correct_items) { [transaction2, transaction3] }
         let(:wrong_items)   { [transaction, transaction4] }
@@ -305,8 +305,8 @@ describe 'Transactions filter' do
           visit root_path
           select 'Custom', from: 'q[period]'
           page.has_content?('To:')
-          fill_in 'From:', with: (Time.now + 5.days).strftime('%d/%m/%Y')
-          fill_in 'To:', with: (Time.now + 10.days).strftime('%d/%m/%Y')
+          fill_in 'From:', with: (Time.current + 5.days).strftime('%d/%m/%Y')
+          fill_in 'To:', with: (Time.current + 10.days).strftime('%d/%m/%Y')
           click_on 'Search'
         end
 

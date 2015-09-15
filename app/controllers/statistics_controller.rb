@@ -25,6 +25,20 @@ class StatisticsController < ApplicationController
     end
   end
 
+  def totals_by_customers
+    totals = current_organization.totals_by_customers(params[:period])
+    respond_to do |format|
+      format.json { render json: totals }
+    end
+  end
+
+  def balances_by_customers
+    balances = current_organization.balances_by_customers(params[:period])
+    respond_to do |format|
+      format.json { render json: balances }
+    end
+  end
+
   def income_by_categories
     incomes = current_organization.by_categories(:incomes, params[:period])
     respond_to do |format|

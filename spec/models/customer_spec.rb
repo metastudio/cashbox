@@ -28,7 +28,7 @@ describe Customer do
   context 'when restoring' do
     let(:org)       { create :organization }
     let!(:customer) { create :customer, organization: org, name: 'Customer' }
-    let!(:deleted_customer) { create :customer, organization: org, name: 'Customer', deleted_at: Time.now }
+    let!(:deleted_customer) { create :customer, organization: org, name: 'Customer', deleted_at: Time.current }
 
     it 'raise error when record exists with same organization and name' do
       expect{ deleted_customer.restore! }.to raise_error(ActiveRecord::RecordInvalid)

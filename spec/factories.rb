@@ -101,7 +101,7 @@ FactoryGirl.define do
     bank_account
     category { |t| create(:category, organization: t.bank_account.organization) }
     amount { rand(30000.0..50000)/rand(10.0..100) }
-    date { Time.now }
+    date { Time.current }
 
     trait :income do
       category { |t| create(:category, :income, organization: t.organization) }
@@ -147,7 +147,7 @@ FactoryGirl.define do
     organization
     customer
     customer_name
-    ends_at { Time.now }
+    ends_at { Date.current }
     currency 'RUB'
     amount 500
 
