@@ -70,5 +70,20 @@ describe 'Create invoice', js: true do
     end
 
     it { expect(page).to have_css('#invoice_amount:disabled') }
+
+    context 'calculate invoice amount' do
+      before do
+        first('#invoice .nested-fields input.nested-amount').set('4.00')
+        click_on 'Add item'
+        within all('#invoice .nested-fields').last do
+          find('input.nested-amount').set('2.00')
+        end
+        find("#invoice_amount").click
+      end
+
+      it { expect(page).to have_field('Amount', with: '6.00', disabled: true) }
+    end
   end
+
+
 end
