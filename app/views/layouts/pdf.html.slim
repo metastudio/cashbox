@@ -1,0 +1,9 @@
+doctype html
+html
+  head
+    title Cashbox
+    = wicked_pdf_stylesheet_link_tag    'application', media: 'all'
+    = wicked_pdf_javascript_include_tag 'application'
+    = csrf_meta_tags
+  body
+    = yield

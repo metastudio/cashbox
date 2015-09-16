@@ -14,6 +14,17 @@ class InvoicesController < ApplicationController
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "invoice_#{@invoice.customer.to_s}_#{@invoice.ends_at.month}_#{@invoice.ends_at.year}", # Excluding ".pdf" extension.
+          layout: 'pdf.html.slim',
+          print_media_type: true,
+          page_size: 'A4',
+          orientation: 'Landscape',
+          margin: { top: 5, bottom: 5, left: 10, right: 10 }
+      end
+    end
   end
 
   def create
