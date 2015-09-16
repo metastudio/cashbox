@@ -25,4 +25,18 @@ describe MemberPolicy do
     it { expect(subject).not_to permit(user_context, user_member) }
   end
 
+  permissions :destroy? do
+    it { expect(subject).not_to permit(owner_context, owner_member) }
+    it { expect(subject).to permit(owner_context, admin_member) }
+    it { expect(subject).to permit(owner_context, user_member) }
+
+    it { expect(subject).not_to permit(admin_context, owner_member) }
+    it { expect(subject).not_to permit(admin_context, admin_member) }
+    it { expect(subject).to permit(admin_context, user_member) }
+
+    it { expect(subject).not_to permit(user_context, owner_member) }
+    it { expect(subject).not_to permit(user_context, admin_member) }
+    it { expect(subject).not_to permit(user_context, user_member) }
+  end
+
 end

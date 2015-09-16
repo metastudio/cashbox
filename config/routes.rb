@@ -32,7 +32,7 @@ Cashbox::Application.routes.draw do
   resources :transactions,  only: [:new, :create, :edit, :update, :destroy] do
     post :transfer, action: :create_transfer, on: :collection
   end
-  resources :members, only: [:index, :edit, :update]
+  resources :members, only: [:index, :edit, :update, :destroy]
   resources :customers, except: :show do
     get 'autocomplete', on: :collection
   end

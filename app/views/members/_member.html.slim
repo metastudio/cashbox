@@ -1,3 +1,5 @@
 tr id=dom_id(member)
   td= member.user_full_name
   td= policy(member).update? ? link_to(member.role, edit_member_path(member), remote: true) : member.role
+  td= link_to 'Remove', member_path(member), method: :delete, data: { confirm: 'Are you sure?' },
+        class: 'btn btn-danger' if policy(member).destroy?
