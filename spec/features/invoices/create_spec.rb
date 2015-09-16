@@ -31,8 +31,8 @@ describe 'Create invoice', js: true do
   end
 
   context 'Create invoice with items' do
-    let(:first_item_amount) { 1100 }
-    let(:last_item_amount)  { 1200 }
+    let(:first_item_amount) { Money.new(1100) }
+    let(:last_item_amount)  { Money.new(1200) }
     let(:total_amount)      { Money.new(first_item_amount + last_item_amount) }
 
     before do
@@ -53,8 +53,8 @@ describe 'Create invoice', js: true do
     end
 
     it { expect(page).to have_css('td', text: money_with_symbol(total_amount)) }
-    it { expect(page).to have_css('td', text: first_item_amount) }
-    it { expect(page).to have_css('td', text: last_item_amount) }
+    it { expect(page).to have_css('td', text: money_with_symbol(first_item_amount)) }
+    it { expect(page).to have_css('td', text: money_with_symbol(last_item_amount)) }
     it { expect(page).to have_content '1.1' }
     it { expect(page).to have_content '2.1' }
     it { expect(page).to have_content 'First Nested Description' }

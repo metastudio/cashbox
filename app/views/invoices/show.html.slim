@@ -62,7 +62,7 @@ table.table.table-bordered.invoice
           td.align-right
             /= item.date
           td.align-right = item.hours
-          td.align-right = item.amount
+          td.align-right = money_with_symbol(item.amount)
 
 = content_for :sidebar
   = render 'home/sidebar'
