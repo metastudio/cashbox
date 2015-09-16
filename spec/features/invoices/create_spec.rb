@@ -26,15 +26,14 @@ describe 'Create invoice', js: true do
     it { expect(page).to have_content 'Invoice was successfully created' }
     it { expect(page).to have_content customer.name }
     it { expect(page).to have_css('td', text: money_with_symbol(amount)) }
-    it { expect(page).to have_link 'Show' }
     it { expect(page).to have_link 'Edit' }
     it { expect(page).to have_link 'Destroy' }
   end
 
   context 'Create invoice with items' do
-    let(:first_item_amount) { Money.new(1100) }
-    let(:last_item_amount)  { Money.new(1200) }
-    let(:total_amount)      { first_item_amount + last_item_amount }
+    let(:first_item_amount) { 1100 }
+    let(:last_item_amount)  { 1200 }
+    let(:total_amount)      { Money.new(first_item_amount + last_item_amount) }
 
     before do
       click_on 'New Invoice'
@@ -51,12 +50,11 @@ describe 'Create invoice', js: true do
         find('textarea.nested-description').set('Last Nested Description')
       end
       click_on 'Create Invoice'
-      click_on 'Show'
     end
 
     it { expect(page).to have_css('td', text: money_with_symbol(total_amount)) }
-    it { expect(page).to have_css('td', text: money_with_symbol(first_item_amount)) }
-    it { expect(page).to have_css('td', text: money_with_symbol(last_item_amount)) }
+    it { expect(page).to have_css('td', text: first_item_amount) }
+    it { expect(page).to have_css('td', text: last_item_amount) }
     it { expect(page).to have_content '1.1' }
     it { expect(page).to have_content '2.1' }
     it { expect(page).to have_content 'First Nested Description' }

@@ -1,37 +1,68 @@
 .page-header
-  .pull-right
+  .btn-group.pull-right
+    = link_to 'Destroy', @invoice, method: :delete,
+      data: { confirm: 'Are you sure?' },
+      class: 'btn btn-danger'
+    = link_to 'Edit', edit_invoice_path(@invoice),
+      class: 'btn btn-default'
     = link_to 'Back', invoices_path, class: 'btn btn-primary'
-  h1 = "Invoice #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
 
-table.table.table-stripped.table-hover.invoices
+  h2 = "Invoice #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
+
+table.table.table-bordered.invoice
   thead
-    tr
-      th Customer
-      th[colspan='2'] Date range
-      th Invoice total
-      th Sent date
-      th Paid date
+    th[colspan='2']
+      h2 = current_member.user_full_name
+    th[colspan='2']
+      h1.align-right INVOICE
   tbody
-    = render @invoice
+    tr
+      td
+        /= current_member.user_address
+      td
+        |Bank account for wire transfers:<br>
+        = current_member.user_full_name
+        |<br>Address:<br>
+        /= current_member.user_address
+        /= current_member.bank
+        |<br>correspondent account<br>
+        /=< @invoice.customer.bank
+        |<br>Account:
+        /=< @invoice.customer.account
+        |<br>Currency:
+        =< @invoice.currency
+      td
+      td.align-right
+        strong DATE: #{l @invoice.ends_at}
+    tr
+      td
+        |BILL TO:<br>
+        = @invoice.customer.to_s
+        /= @invoice.customer.address
+        /= @invoice.customer.phone
+      td
+      td
+        h2 Total:
+      td
+        h2.align-right = money_with_symbol(@invoice.amount)
+    tr
+      td
+        strong Task
+      td
+        strong Date
+      td.align-right
+        strong Hours
+      td.align-right
+        strong = @invoice.currency
 
-h4 Invoice items
-- if @invoice.invoice_items.any?
-  table.table.table-stripped.table-hover
-    thead
-      tr
-        th Customer
-        th Amount
-        th Hours
-        th Description
-    tbody
+    - if @invoice.invoice_items.any?
       - @invoice.invoice_items.each do |item|
         tr
-          td = item.customer.to_s
-          td = money_with_symbol(item.amount)
-          td = item.hours
           td = item.description
-- else
-  .alert.alert-warning No items
+          td.align-right
+            /= item.date
+          td.align-right = item.hours
+          td.align-right = item.amount
 
 = content_for :sidebar
   = render 'home/sidebar'

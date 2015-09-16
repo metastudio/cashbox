@@ -28,8 +28,7 @@ describe 'Update invoice', js: true do
     end
 
     it { expect(page).to have_content 'Invoice was successfully updated' }
-    it { expect(page).to have_css("##{dom_id(invoice)} td",
-      text: money_with_symbol(Money.new(new_amount, invoice.currency))) }
+    it { expect(page).to have_css('td', text: money_with_symbol(Money.new(new_amount, invoice.currency))) }
     it { expect(page).to have_content customer2.name }
   end
 
