@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
   layout 'settings'
-  before_filter :find_member, only: [:edit, :update]
+  before_action :find_member, only: [:edit, :update, :destroy]
 
   def index
     @members = current_organization.members.includes(:user).page(params[:member_page]).per(10)
@@ -12,6 +12,11 @@ class MembersController < ApplicationController
 
   def update
     @member.update_attributes(member_params)
+  end
+
+  def destroy
+    @member.destroy
+    redirect_to members_path, notice: 'Member was successfully removed from organization.'
   end
 
   private

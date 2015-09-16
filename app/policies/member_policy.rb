@@ -8,4 +8,8 @@ class MemberPolicy < ApplicationPolicy
     owner_or_admin_with_access?
   end
 
+  def destroy?
+    owner_or_admin_with_access? && record.id != member.id
+  end
+
 end
