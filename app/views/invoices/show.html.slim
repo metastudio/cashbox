@@ -19,7 +19,7 @@ table.table.table-bordered.invoice
       td
       td
       td
-        h1.align-right INVOICE
+        h1.align-right.uppercase Invoice
     tr
       td
         /= current_member.user_address
@@ -37,10 +37,10 @@ table.table.table-bordered.invoice
         =< @invoice.currency
       td
       td.align-right
-        strong DATE: #{l @invoice.ends_at}
+        strong.uppercase Date: #{l @invoice.ends_at}
     tr
       td
-        |BILL TO:<br>
+        .uppercase Bill to:
         = @invoice.customer.to_s
         /= @invoice.customer.address
         /= @invoice.customer.phone
