@@ -1,10 +1,19 @@
 $('#content').html("<%= j render('transactions/modal_content') %>");
-var lastTab = localStorage.getItem('lastTransactionTab');
-if (lastTab) {
-  $('#transaction_type a[href=' + lastTab + ']').tab('show');
-} else {
-  $('#transaction_type a[data-toggle="tab"]:first').tab('show');
-}
+
+<% if params[:invoice_id] %>
+  $('li.expense').remove();
+  $('li.income').addClass('active');
+  $('.tab-pane#income').addClass('active');
+  $('li.transfer').remove();
+<% else %>
+  var lastTab = localStorage.getItem('lastTransactionTab');
+  if (lastTab) {
+    $('#transaction_type a[href=' + lastTab + ']').tab('show');
+  } else {
+    $('#transaction_type a[data-toggle="tab"]:first').tab('show');
+  }
+<% end %>
+
 $('#transaction_modal').modal('show');
 
 addTransactionFormMasks();

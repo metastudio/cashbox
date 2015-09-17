@@ -21,6 +21,7 @@ class Invoice < ActiveRecord::Base
 
   belongs_to :organization, inverse_of: :invoices
   belongs_to :customer, inverse_of: :invoices
+  has_one :income_transaction, foreign_key: 'invoice_id', class_name: 'Transaction'
   has_many :invoice_items, inverse_of: :invoice, dependent: :destroy
 
   accepts_nested_attributes_for :invoice_items,
@@ -32,7 +33,7 @@ class Invoice < ActiveRecord::Base
   validates :ends_at, presence: true
   validates :amount, presence: true
   validates :currency, presence: true
-  validates :customer_name, presence: true
+  validates :customer_name, presence: true, unless: :customer_id
 
   validates :amount, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }

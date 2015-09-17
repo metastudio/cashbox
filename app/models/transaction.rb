@@ -14,11 +14,13 @@
 #  customer_id      :integer
 #  date             :datetime         not null
 #  transfer_out_id  :integer
+#  invoice_id       :integer
 #
 
 require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
+  include MoneyRails::ActionViewExtension
   include TimeRange
   TRANSACTION_TYPES = %w(Residue)
 
@@ -30,11 +32,12 @@ class Transaction < ActiveRecord::Base
     end
   end
 
-  attr_accessor :customer_name
+  attr_accessor :customer_name, :comission
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions, touch: true
   belongs_to :customer, inverse_of: :transactions
+  belongs_to :invoice
   belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
   has_one :transfer_in, class_name: 'Transaction', foreign_key: 'transfer_out_id'
   accepts_nested_attributes_for :transfer_out
@@ -64,12 +67,15 @@ class Transaction < ActiveRecord::Base
   validates :customer_name, :comment, length: { maximum: 255 }
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
   validates :date, presence: true
+  validates :comission, numericality: { greater_than_or_equal_to: 0 },
+    length: { maximum: 10 }, allow_blank: true
   validate :check_bank_accounts, on: :update, if: Proc.new{ transfer? }
 
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
   before_validation :set_date, if: Proc.new{ date.blank? }
   before_save :check_negative
   before_save :sync_date, if: Proc.new{ transfer? }
+  before_save :calculate_amount, if: :comission
   after_restore :recalculate_amount
 
   class << self
@@ -148,9 +154,20 @@ class Transaction < ActiveRecord::Base
     self.date = Time.current
   end
 
+  def calculate_amount
+    self.amount = Money.new(amount_cents - comission.to_d * 100, currency)
+    add_comission_to_comment
+  end
+
   def recalculate_amount
     bank_account.recalculate_amount!
     nil
+  end
+
+  def add_comission_to_comment
+    self.comment = 'Comission: ' +
+      humanized_money_with_symbol(Money.new(comission.to_d * 100, bank_account.currency),
+      symbol_after_without_space: true)
   end
 
   def residue?

@@ -29,14 +29,21 @@
         collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
         prompt: 'Bank account', group_method: :last, label: 'From',
         selected: t.object.bank_account_id
-
+  - elsif params[:invoice_id] && params[:customer_id] || f.object.invoice_id
+    = f.input :customer_name, as: :hidden
   - else
     = f.input :customer_name, input_html: { class: 'customer-select2', data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
       value: @q.nil? ? current_organization.find_customer_name_by_id(f.object.customer_id) \
         : (@q.customer_id_eq ? current_organization.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
-  - if f.object.bank_account.nil? || f.object.bank_account.visible?
+  - if params[:invoice_id] && params[:currency] || f.object.invoice_id
+    = f.association :bank_account, as: :grouped_select,
+      collection: current_organization.bank_accounts.where(currency: params[:currency] || \
+      current_organization.invoices.find(f.object.invoice_id).currency).visible.positioned.grouped_by_currency(current_organization.default_currency),
+      prompt: 'Bank account', group_method: :last, label: transaction.transfer? ? 'To' : 'Bank account',
+      selected: f.object.bank_account_id
+  - elsif f.object.bank_account.nil? || f.object.bank_account.visible?
     = f.association :bank_account, as: :grouped_select,
       collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
       prompt: 'Bank account', group_method: :last, label: transaction.transfer? ? 'To' : 'Bank account',
@@ -46,6 +53,16 @@
   - else
     = f.input :bank_account, disabled: true
 
-  = f.input :comment
+  - if params[:invoice_id] || f.object.invoice_id
+    = f.input :comission, input_html: { class: 'comission' }
+
+  - if params[:invoice_id] || f.object.invoice_id
+    = f.input :comment, as: :hidden
+  - else
+    = f.input :comment
+
   = f.input :date, as: :string, placeholder: 'Date',
     input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date) : nil }
+
+  - if params[:invoice_id] || f.object.invoice_id
+    = f.input :invoice_id, as: :hidden

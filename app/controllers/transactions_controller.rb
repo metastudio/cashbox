@@ -5,14 +5,21 @@ class TransactionsController < ApplicationController
 
   def new
     @q = current_organization.transactions.ransack(session[:filter])
-    @transaction = Transaction.new
-    @transfer = Transfer.new
+    if params[:invoice_id]
+      @transaction = Transaction.new(customer_name: current_organization.find_customer_name_by_id(params[:customer_id]),
+        amount: params[:amount], invoice_id: params[:invoice_id])
+    else
+      @transaction = Transaction.new
+      @transfer = Transfer.new
+    end
   end
 
   def create
     @transaction = Transaction.new(transaction_params)
     check_relation_to_curr_org(:transaction)
-    @transaction.save
+    if @transaction.save
+      @transaction.invoice.update(paid_at: @transaction.date) if @transaction.invoice
+    end
   end
 
   def create_transfer
@@ -56,7 +63,7 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
-      :comment, :comission, :reference_id, :customer_id, :customer_name, :date,
+      :comment, :comission, :reference_id, :customer_id, :customer_name, :date, :invoice_id,
       transfer_out_attributes: [:id, :amount, :category_id, :bank_account_id,
         :comment, :comission, :customer_id, :date])
   end
