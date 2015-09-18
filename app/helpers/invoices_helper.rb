@@ -4,8 +4,10 @@ module InvoicesHelper
   end
 
   def colorize_invoice(invoice)
-    css_class = 'paid' if invoice.paid_at.present?
-    css_class = 'overdue' if invoice.paid_at.nil? && Date.current - invoice.ends_at > 15
-    css_class
+    if invoice.paid_at.present?
+      'paid'
+    elsif Date.current - invoice.ends_at > 15
+      'overdue'
+    end
   end
 end
