@@ -22,7 +22,8 @@ class InvoicesController < ApplicationController
           print_media_type: true,
           page_size: 'A4',
           orientation: 'Landscape',
-          margin: { top: 5, bottom: 5, left: 10, right: 10 }
+          margin: { top: 5, bottom: 5, left: 10, right: 10 },
+          show_as_html: params[:debug].present?
       end
     end
   end

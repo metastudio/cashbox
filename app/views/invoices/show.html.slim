@@ -5,7 +5,7 @@
       class: 'btn btn-danger'
     = link_to 'Edit', edit_invoice_path(@invoice),
       class: 'btn btn-default'
-    = link_to 'Save', invoice_path(@invoice, format: :pdf),
+    = link_to 'Download as PDF', invoice_path(@invoice, {format: :pdf}.merge((Rails.env.test?) ? { debug: true } : {})),
       class: 'btn btn-default'
     = link_to 'Back', invoices_path, class: 'btn btn-primary'
 
