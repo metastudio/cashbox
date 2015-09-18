@@ -30,7 +30,7 @@
         prompt: 'Bank account', group_method: :last, label: 'From',
         selected: t.object.bank_account_id
   - elsif params[:invoice_id] && params[:customer_id] || f.object.invoice_id
-    = f.input :customer_name, as: :hidden
+    = f.input :customer_name, disabled: true
   - else
     = f.input :customer_name, input_html: { class: 'customer-select2', data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
@@ -56,13 +56,10 @@
   - if params[:invoice_id] || f.object.invoice_id
     = f.input :comission, input_html: { class: 'comission' }
 
-  - if params[:invoice_id] || f.object.invoice_id
-    = f.input :comment, as: :hidden
-  - else
-    = f.input :comment
+  = f.input :comment
 
   = f.input :date, as: :string, placeholder: 'Date',
-    input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date) : nil }
+    input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date.to_date) : nil }
 
   - if params[:invoice_id] || f.object.invoice_id
     = f.input :invoice_id, as: :hidden

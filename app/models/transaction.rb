@@ -77,6 +77,7 @@ class Transaction < ActiveRecord::Base
   before_save :sync_date, if: Proc.new{ transfer? }
   before_save :calculate_amount, if: :comission
   after_restore :recalculate_amount
+  after_save :update_invoice_paid_at, if: :invoice
 
   class << self
     def flow_ordered(def_currency)
@@ -165,13 +166,17 @@ class Transaction < ActiveRecord::Base
   end
 
   def add_comission_to_comment
-    self.comment = 'Comission: ' +
+    self.comment += "\nComission: " +
       humanized_money_with_symbol(Money.new(comission.to_d * 100, bank_account.currency),
       symbol_after_without_space: true)
   end
 
   def residue?
     self.transaction_type == 'Residue'
+  end
+
+  def update_invoice_paid_at
+    self.invoice.update(paid_at: self.date)
   end
 
   def self.period(period)

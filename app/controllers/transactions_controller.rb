@@ -17,9 +17,7 @@ class TransactionsController < ApplicationController
   def create
     @transaction = Transaction.new(transaction_params)
     check_relation_to_curr_org(:transaction)
-    if @transaction.save
-      @transaction.invoice.update(paid_at: @transaction.date) if @transaction.invoice
-    end
+    @transaction.save
   end
 
   def create_transfer
