@@ -45,13 +45,13 @@ describe 'invoices index page' do
     end
 
     it "overdue invoice has class 'overdue'" do
-      within '#invoice_list' do
+      within '#invoices_list' do
         expect(subject).to have_css("tr.invoice.overdue##{dom_id(overdue_invoice)}")
       end
     end
 
     it "paid invoice has class 'paid'" do
-      within '#invoice_list' do
+      within '#invoices_list' do
         expect(subject).to have_css("tr.invoice.paid##{dom_id(paid_invoice)}")
       end
     end
