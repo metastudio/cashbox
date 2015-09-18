@@ -39,3 +39,12 @@
     background-color: darken($transfer-color, 20);
   }
 }
+
+.invoice {
+  &.paid {
+    background-color: $paid-invoice-color;
+  }
+  &.overdue {
+    background-color: darken($overdue-invoice-color, 20);
+  }
+}
