@@ -17,7 +17,7 @@ class InvoicesController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        render pdf: "invoice_#{@invoice.customer.to_s}_#{@invoice.ends_at.month}_#{@invoice.ends_at.year}", # Excluding ".pdf" extension.
+        render pdf: @invoice.pdf_filename, # Excluding ".pdf" extension.
           layout: 'pdf.html.slim',
           print_media_type: true,
           page_size: 'A4',

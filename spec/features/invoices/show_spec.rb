@@ -13,9 +13,9 @@ describe 'invoices show page', js: true do
   subject{ page }
 
   context 'Download as PDF' do
-    let!(:invoice) { create :invoice, organization: org }
+    let!(:invoice) { create :invoice, :with_items, organization: org }
 
-    context 'Download' do
+    context 'with usual download mode' do
       before do
         visit invoice_path(invoice)
         click_on 'Download as PDF'
@@ -23,22 +23,20 @@ describe 'invoices show page', js: true do
 
       it { expect(page.response_headers['Content-Type']).to eq 'application/pdf' }
       it { expect(page.response_headers['Content-Disposition']).to \
-        include("#{invoice.customer.to_s}_#{invoice.ends_at.month}_#{invoice.ends_at.year}.pdf") }
+        include(invoice.pdf_filename + '.pdf') }
       it { expect(page.response_headers['Content-Length']).to_not eq 0 || nil }
     end
 
-    context 'Content' do
+    context 'with debug mode' do
       before do
         visit invoice_path(invoice, format: :pdf, debug: true)
       end
 
-      it 'PDF content' do
-        expect(subject).to have_css('h1.uppercase', text: 'INVOICE')
-        expect(subject).to have_css('strong.uppercase', text: 'DATE')
+      it 'show Invoice details' do
+        expect(subject).to have_content('INVOICE')
         expect(subject).to have_content(I18n.l(invoice.ends_at))
-        expect(subject).to have_content(invoice.currency)
-        expect(subject).to have_content('Bank account for wire transfers:')
         expect(subject).to have_content(money_with_symbol(invoice.amount))
+        expect(subject).to have_content(invoice.invoice_items.last.description)
       end
     end
   end
