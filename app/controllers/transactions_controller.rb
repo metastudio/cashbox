@@ -1,13 +1,15 @@
 class TransactionsController < ApplicationController
   before_action :require_organization
   before_action :set_transaction,  only: [:edit, :update, :destroy]
+  before_action :find_invoice, only: [:new]
   after_action :update_last_viewed_at, only: [:create, :create_transfer]
 
   def new
     @q = current_organization.transactions.ransack(session[:filter])
-    if params[:invoice_id]
-      @transaction = Transaction.new(customer_name: current_organization.find_customer_name_by_id(params[:customer_id]),
-        amount: params[:amount], invoice_id: params[:invoice_id])
+    if @invoice.present?
+      @transaction = Transaction.new(customer_id: @invoice.customer_id,
+        customer_name: current_organization.find_customer_name_by_id(@invoice.customer_id),
+        amount: @invoice.amount.to_d, invoice: @invoice)
     else
       @transaction = Transaction.new
       @transfer = Transfer.new
@@ -53,6 +55,10 @@ class TransactionsController < ApplicationController
       curr_bank_accounts.find_by_id(tparams[:reference_id]).try(:id) if tparams[:reference_id]
     trans.customer_id =
       current_organization.customers.find_by_name(tparams[:customer_name]).try(:id) if trans == @transaction
+  end
+
+  def find_invoice
+    @invoice = current_organization.invoices.find(params[:invoice_id]) if params[:invoice_id]
   end
 
   def set_transaction

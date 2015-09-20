@@ -176,7 +176,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def update_invoice_paid_at
-    self.invoice.update(paid_at: self.date)
+    self.organization.invoices.where(id: self.invoice_id).first.try(:update, {paid_at: self.date})
   end
 
   def self.period(period)
