@@ -58,7 +58,8 @@ class Organization < ActiveRecord::Base
     incomes = calc_total_for_selection(customers, selection)
 
     total_incomes = invoice_incomes.merge(incomes){ |k, v1, v2| [find_customer_name_by_id(k) + ' ' +
-      (v1[1] + v2[1]).to_s, v1[1] + v2[1]] }
+      Money.new((v1[1] + v2[1])*100, default_currency).format(symbol_after_without_space: true),
+        v1[1] + v2[1]] }
 
     selection = get_customers_selection_by_transactions(:expenses, customer_ids, period)
     customers = calc_to_def_currency_for_selection(selection)
@@ -67,7 +68,9 @@ class Organization < ActiveRecord::Base
     data = total_incomes.merge(expenses){ |k, v1, v2| [find_customer_name_by_id(k) + ' ' +
       Money.new((v1[1] + v2[1])*100, default_currency).format(symbol_after_without_space: true),
         (v1[1] + v2[1]).to_f > 0 ? v1[1] + v2[1] : 0] }
-    data[nil] = ["Hash", "In default currency"]
+
+    data = Hash[data.sort_by{|k, v| v[1]}.reverse]
+    data = {nil => ["Hash", "In default currency"]}.merge(data)
 
     data.keys.size > 1 ? { data: data.values, ids: data.keys, currency_format: currency_format } : nil
   end
@@ -123,6 +126,8 @@ class Organization < ActiveRecord::Base
     other_sum = calc_total(other_selection)
 
     data.merge!(0 => ['Other ' + Money.new(other_sum, default_currency).format(symbol_after_without_space: true), other_sum.to_f/100.round(2)]) if other_sum > 0
+    data = Hash[data.sort_by{|k, v| v[1]}.reverse]
+    data = {nil => ["Hash", "In default currency"]}.merge(data)
     data.keys.size > 1 ? { data: data.values, ids: data.keys, currency_format: currency_format } : nil
   end
 
@@ -143,6 +148,9 @@ class Organization < ActiveRecord::Base
       end
     categories = calc_to_def_currency_for_selection(selection)
     data = calc_total_for_selection(categories, selection)
+
+    data = Hash[data.sort_by{|k, v| v[1]}.reverse]
+    data = {nil => ["Hash", "In default currency"]}.merge(data)
 
     data.keys.size > 1 ? { data: data.values, ids: data.keys, currency_format: currency_format } : nil
   end
@@ -265,7 +273,6 @@ class Organization < ActiveRecord::Base
 
   def calc_total_for_selection(selection_hash, selection)
     hash = {}
-    hash[nil] = ['Hash', 'In default currency']
     selection_hash.each_pair do |id, name|
       total = 0
       selection.each do |trans|
