@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'invoices show page', js: true do
+describe 'Invoice show page' do
   include MoneyHelper
 
   let(:user) { create :user }
@@ -33,7 +33,7 @@ describe 'invoices show page', js: true do
       end
 
       it 'show Invoice details' do
-        expect(subject).to have_content('INVOICE')
+        expect(subject).to have_content('Invoice')
         expect(subject).to have_content(I18n.l(invoice.ends_at))
         expect(subject).to have_content(money_with_symbol(invoice.amount))
         expect(subject).to have_content(invoice.invoice_items.last.description)
