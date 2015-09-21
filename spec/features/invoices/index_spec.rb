@@ -35,4 +35,25 @@ describe 'invoices index page' do
       expect(subject).to_not have_content(org2_invoice.customer)
     end
   end
+
+  context 'colorize invoice' do
+    let!(:overdue_invoice) { create :invoice, organization: org, ends_at: Date.current - 16.days }
+    let!(:paid_invoice) { create :invoice, organization: org, paid_at: Date.current }
+
+    before do
+      visit invoices_path
+    end
+
+    it "overdue invoice has class 'overdue'" do
+      within '#invoices_list' do
+        expect(subject).to have_css("tr.invoice.overdue##{dom_id(overdue_invoice)}")
+      end
+    end
+
+    it "paid invoice has class 'paid'" do
+      within '#invoices_list' do
+        expect(subject).to have_css("tr.invoice.paid##{dom_id(paid_invoice)}")
+      end
+    end
+  end
 end
