@@ -21,10 +21,12 @@ describe 'Invoice show page' do
         click_on 'Download as PDF'
       end
 
-      it { expect(page.response_headers['Content-Type']).to eq 'application/pdf' }
-      it { expect(page.response_headers['Content-Disposition']).to \
-        include(invoice.pdf_filename + '.pdf') }
-      it { expect(page.response_headers['Content-Length']).to_not eq 0 || nil }
+      it 'has correct response headers' do
+        expect(page.response_headers['Content-Type']).to eq 'application/pdf'
+        expect(page.response_headers['Content-Disposition']).to \
+          include(invoice.pdf_filename + '.pdf')
+        expect(page.response_headers['Content-Length']).to_not eq 0 || nil
+      end
     end
 
     context 'with debug mode' do
