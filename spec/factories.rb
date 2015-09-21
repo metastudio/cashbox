@@ -156,9 +156,12 @@ FactoryGirl.define do
     end
   end
 
+  sequence(:task_description) { |n| "Test description #{n}" }
   factory :invoice_item do
     invoice
     customer_name
     amount 500
+    hours 0.5
+    description { generate :task_description }
   end
 end

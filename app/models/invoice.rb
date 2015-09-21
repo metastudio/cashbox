@@ -46,6 +46,10 @@ class Invoice < ActiveRecord::Base
   before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   after_save :set_currency
 
+  def pdf_filename
+    "#{self.customer.to_s}_#{self.ends_at.month}_#{self.ends_at.year}"
+  end
+
   private
 
   def self.period(period)
