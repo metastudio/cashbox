@@ -1,4 +1,4 @@
-tr id=dom_id(invoice)
+tr.invoice id=dom_id(invoice) class=colorize_invoice(invoice)
   td = invoice.customer.to_s
   td = l invoice.starts_at if invoice.starts_at
   td = l invoice.ends_at

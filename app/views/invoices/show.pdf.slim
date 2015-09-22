@@ -1,25 +1,12 @@
-.page-header
-  .btn-group.pull-right
-    = link_to 'Destroy', @invoice, method: :delete,
-      data: { confirm: 'Are you sure?' },
-      class: 'btn btn-danger'
-    = link_to 'Edit', edit_invoice_path(@invoice),
-      class: 'btn btn-default'
-    = link_to 'Download as PDF', invoice_path(@invoice, format: :pdf),
-      class: 'btn btn-default'
-    = link_to 'Back', invoices_path, class: 'btn btn-primary'
-
-  h2 = "Invoice #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
-
-table.table.table-bordered.invoice
+table.table.invoice
   tbody
     tr
       td
         h2 = current_member.user_full_name
       td
       td
-      td
-        h1.align-right.uppercase Invoice
+      td.align-right
+        h1.uppercase Invoice
     tr
       td
         /= current_member.user_address
@@ -45,10 +32,10 @@ table.table.table-bordered.invoice
         /= @invoice.customer.address
         /= @invoice.customer.phone
       td
-      td
+      td.align-right
         h2 Total:
-      td
-        h2.align-right = money_with_symbol(@invoice.amount)
+      td.align-right
+        h2 = money_with_symbol(@invoice.amount)
     tr
       td
         strong Task
@@ -63,7 +50,7 @@ table.table.table-bordered.invoice
       - @invoice.invoice_items.each do |item|
         tr
           td = item.description
-          td.align-right
+          td
             /= item.date
           td.align-right = item.hours
           td.align-right = money_with_symbol(item.amount)

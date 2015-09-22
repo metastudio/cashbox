@@ -47,6 +47,8 @@ gem 'whenever', require: false
 gem 'cocoon'
 gem 'validates_overlap'
 gem 'date_validator'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
 group :development, :test do
   gem 'rspec-rails'
