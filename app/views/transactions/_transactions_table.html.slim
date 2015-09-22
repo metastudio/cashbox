@@ -1,17 +1,15 @@
 - if transactions.present?
-  .row
-    .col-sx-12
-      table.table.table-hover.transactions
-        thead
-          tr
-            td = sort_link(@q, :amount_cents, 'Amount')
-            td = sort_link(@q, :category_name, 'Category')
-            td = 'Account'
-            td = sort_link(@q, :customer_name, 'Customer')
-            td.hidden-xs = sort_link(@q, :comment)
-            td = sort_link(@q, :date, 'Date')
-        tbody
-          = render transactions
+  table.table.table-hover.transactions
+    thead
+      tr
+        td = sort_link(@q, :amount_cents, 'Amount')
+        td = sort_link(@q, :category_name, 'Category')
+        td = 'Account'
+        td = sort_link(@q, :customer_name, 'Customer')
+        td.hidden-xs = sort_link(@q, :comment)
+        td = sort_link(@q, :date, 'Date')
+    tbody
+      = render transactions
   .paginator.col-md-offset-5
     = paginate transactions, remote: true
 - elsif params[:q].blank?

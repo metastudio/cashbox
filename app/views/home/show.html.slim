@@ -2,15 +2,10 @@
   = render 'home/sidebar'
 
 = render 'filter', url: root_path
-.row
-  .col-sm-12
-    = render partial: 'transactions/transactions', locals: { transactions: @transactions }
+= render partial: 'transactions/transactions', locals: { transactions: @transactions }
 
 - if params[:q]
   = content_for :footer
     .footer.navbar.navbar-default.navbar-fixed-bottom#footer
       .col-sm-9
-        .row
-          .col-sm-12
-            .row
-              = render 'home/flow'
+        = render 'home/flow'
