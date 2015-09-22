@@ -54,6 +54,10 @@ $(function () {
     prepRateAndHints(exchange_rate = true);
   });
 
+  $(document).on('change', '#transaction_amount, #transaction_comission', function(e) {
+    changeAmountHint();
+  });
+
   $(document).on('keypress', '.select2-input', function(e) {
     if (e.keyCode === 32 && this.selectionStart === 0) {
       return false;
@@ -132,6 +136,15 @@ function addRemoveHints(fromCurr, toCurr) {
   if (amount && rate) {
     var end_sum = (amount * rate).toFixed(2);
     $transferRate.parents('#rate_col').find('#end_sum').val(end_sum);
+  }
+}
+
+function changeAmountHint() {
+  var invoice_amount = parseFloat($('#transaction_amount').val());
+  var comission = parseFloat($('#transaction_comission').val());
+  if (invoice_amount && comission) {
+    var transaction_amount = invoice_amount - comission;
+    $('#total_amount_hint').text('Total amount: ' + transaction_amount.toFixed(2));
   }
 }
 
