@@ -389,6 +389,7 @@ describe 'Transactions filter' do
     context 'when uncategorized transactions shown' do
       let!(:ba)   { create :bank_account, organization: org, residue: 100 }
       let(:amount){ money_with_symbol Money.empty(org.default_currency) }
+
       before do
         visit root_path
         within '.accounts' do
@@ -403,6 +404,21 @@ describe 'Transactions filter' do
           expect(page).to have_content("Total: #{amount}")
         end
       end
+    end
+
+    context 'should display without transfers amounts' do
+      let!(:transaction) { create :transaction, :income, bank_account: ba, organization: org }
+      let(:amount)       { money_with_symbol Money.new(transaction.amount, org.default_currency) }
+      let!(:transfer)    { create :transfer, :with_different_currencies, bank_account_id: ba.id }
+
+      before do
+        visit root_path
+        within "##{dom_id(transaction)}" do
+          click_link ba.to_s
+        end
+      end
+
+      it { expect(page).to have_content("Total: #{amount}") }
     end
   end
 end
