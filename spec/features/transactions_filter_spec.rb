@@ -418,7 +418,11 @@ describe 'Transactions filter' do
         end
       end
 
-      it { expect(page).to have_content("Total: #{amount}") }
+      it 'display correct total amount' do
+        within '#flow' do
+          expect(page).to have_content("Total: #{amount}")
+        end
+      end
     end
   end
 end
