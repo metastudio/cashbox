@@ -72,12 +72,23 @@ describe 'invoices index page' do
         fill_in 'transaction[comission]', with: comission
         fill_in 'transaction[comment]', with: 'TestComment'
       end
+      click_on 'Create'
+      page.has_content?(/(Please review the problems below)/) # wait after page rerender
+    end
+
+    it 'for has valid attributes and hint with calculated total amount' do
+      visit invoices_path
+      click_on 'Complete Invoice'
+      within '#new_transaction' do
+        select category.name, from: 'transaction[category_id]'
+        select account.name, from: 'transaction[bank_account_id]'
+        fill_in 'transaction[comission]', with: comission
+        fill_in 'transaction[comment]', with: 'TestComment'
+      end
       expect(page).to_not have_select('Category', with_options: [wrong_category.name])
       expect(page).to_not have_select('Bank Account', with_options: [wrong_account.name])
       expect(page).to have_field('Comission', with: comission)
       expect(page).to have_content("Total amount: #{invoice.amount - comission}" )
-      click_on 'Create'
-      sleep 1 # wait after page rerender
     end
 
     subject{ create_transaction_by_invoice; page }
@@ -89,7 +100,9 @@ describe 'invoices index page' do
       end
 
       it 'invoice paid_at must present' do
-        expect(page).to have_content(invoice.paid_at)
+        within "tr##{dom_id(invoice)} td.paid_at" do
+          expect(page).to have_content(invoice.paid_at)
+        end
       end
     end
 

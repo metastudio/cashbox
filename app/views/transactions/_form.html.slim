@@ -6,7 +6,7 @@
 
   - if f.object.category.try(:system?)
     = f.input :category, disabled: true
-  - elsif params[:action] == ('new' || 'create')
+  - elsif params[:action] == 'new' || params[:action] == 'create'
     = f.association :category, as: :select,
       collection: current_organization.categories.where(type: type),
       prompt: 'Category', value_method: :id,
@@ -18,7 +18,7 @@
       group_method: :last, prompt: 'Category', value_method: :id,
       selected: f.object.category_id
 
-  - if transaction.transfer? && params[:action] == ('edit' || 'update')
+  - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
     = f.simple_fields_for :transfer_out, transaction.transfer_out do |t|
       = t.input :amount, input_html: { id: 'transfer-out-amount', maxlength: 25 }, label: 'From amount'
       = t.input :category_id, as: :hidden
@@ -54,7 +54,7 @@
   - else
     = f.input :bank_account, disabled: true
 
-  - if (@invoice.present? || f.object.invoice_id) && params[:action] == ('new' || 'create')
+  - if (@invoice.present? || f.object.invoice_id) && (params[:action] == 'new' || params[:action] == 'create')
     = f.input :comission, input_html: { class: 'comission' }
     = f.hint "Total amount: #{Money.new(f.object.amount.to_d*100 - (f.object.comission.present? ? f.object.comission : 0),
       @invoice.currency)}", id: 'total_amount_hint', class: 'col-md-9 col-md-offset-3'

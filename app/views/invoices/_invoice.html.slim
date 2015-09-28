@@ -4,7 +4,7 @@ tr.invoice id=dom_id(invoice) class=colorize_invoice(invoice)
   td = l invoice.ends_at
   td = money_with_symbol(invoice.amount)
   td = l invoice.sent_at if invoice.sent_at
-  td = l invoice.paid_at if invoice.paid_at
+  td.paid_at = l invoice.paid_at if invoice.paid_at
   td
     .btn-group.pull-right
       - if invoice.income_transaction.nil? && invoice.paid_at.blank?
