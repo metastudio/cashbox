@@ -41,14 +41,14 @@ describe 'Update invoice', js: true do
       end
       page.execute_script("$('#invoice .nested-fields:first input.nested-amount').val('');")
       first('#invoice .nested-fields input.nested-amount').set(new_item_amount)
-      first('#invoice .nested-fields textarea.nested-description').set('First Nested Description')
       click_on 'Update Invoice'
     end
 
-    it { expect(page).to have_content 'Invoice was successfully updated' }
-    it { expect(page).to have_css('td',
-      text: money_with_symbol(Money.new(new_item_amount, invoice.currency))) }
-    it { expect(page).to have_content 'First Nested Description' }
+    it 'invoice updated with items' do
+      expect(page).to have_content 'Invoice was successfully updated'
+      expect(page).to have_css('td',
+        text: money_with_symbol(Money.new(new_item_amount, invoice.currency)))
+    end
 
     context 'invoice amount must be disabled then invoice has items' do
       before do

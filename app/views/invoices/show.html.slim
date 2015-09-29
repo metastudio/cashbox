@@ -15,15 +15,15 @@ table.table.table-bordered.invoice
   tbody
     tr
       td
-        h2 = current_member.user_full_name
+        h2.word-break = current_member.user_full_name
       td
       td
       td
-        h1.align-right.uppercase Invoice
+        h1.align-right.uppercase.invoice-title Invoice
     tr
       td
         /= current_member.user_address
-      td
+      td.word-break
         |Bank account for wire transfers:<br>
         = current_member.user_full_name
         |<br>Address:<br>
@@ -62,7 +62,7 @@ table.table.table-bordered.invoice
     - if @invoice.invoice_items.any?
       - @invoice.invoice_items.each do |item|
         tr
-          td = item.description
+          td = item.customer ? item.customer.to_s : item.description
           td.align-right
             /= item.date
           td.align-right = item.hours
