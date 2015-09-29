@@ -38,7 +38,7 @@ describe 'Invoice show page' do
         expect(subject).to have_content('Invoice')
         expect(subject).to have_content(I18n.l(invoice.ends_at))
         expect(subject).to have_content(money_with_symbol(invoice.amount))
-        expect(subject).to have_content(invoice.invoice_items.last.description)
+        expect(subject).to have_content(invoice.invoice_items.last.customer.to_s)
       end
     end
   end
