@@ -29,14 +29,22 @@
         collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
         prompt: 'Bank account', group_method: :last, label: 'From',
         selected: t.object.bank_account_id
-
+  - elsif @invoice.present? || f.object.invoice_id
+    = f.input :customer_name, disabled: true,
+      input_html: { value: current_organization.find_customer_name_by_id(f.object.customer_id) }
   - else
     = f.input :customer_name, input_html: { class: 'customer-select2', data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
       value: @q.nil? ? current_organization.find_customer_name_by_id(f.object.customer_id) \
         : (@q.customer_id_eq ? current_organization.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
-  - if f.object.bank_account.nil? || f.object.bank_account.visible?
+  - if @invoice.present? || f.object.invoice_id
+    = f.association :bank_account, as: :grouped_select,
+      collection: current_organization.bank_accounts.by_currency(@invoice.present? ? @invoice.currency \
+      : current_organization.invoices.find_by(id: f.object.invoice_id).try(:currency)).visible.positioned.grouped_by_currency(current_organization.default_currency),
+      prompt: 'Bank account', group_method: :last, label: transaction.transfer? ? 'To' : 'Bank account',
+      selected: f.object.bank_account_id
+  - elsif f.object.bank_account.nil? || f.object.bank_account.visible?
     = f.association :bank_account, as: :grouped_select,
       collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
       prompt: 'Bank account', group_method: :last, label: transaction.transfer? ? 'To' : 'Bank account',
@@ -46,6 +54,14 @@
   - else
     = f.input :bank_account, disabled: true
 
+  - if (@invoice.present? || f.object.invoice_id) && (params[:action] == 'new' || params[:action] == 'create')
+    = f.input :comission, input_html: { class: 'comission' }
+    = f.hint "Total amount: #{Money.new(f.object.amount.to_d*100 - (f.object.comission.present? ? f.object.comission : 0),
+      @invoice.currency)}", id: 'total_amount_hint', class: 'col-md-9 col-md-offset-3'
+
   = f.input :comment
+
   = f.input :date, as: :string, placeholder: 'Date',
     input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date.to_date) : nil }
+
+  = f.input :invoice_id, as: :hidden

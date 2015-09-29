@@ -28,7 +28,7 @@ class BankAccount < ActiveRecord::Base
   monetize :residue_cents, with_model_currency: :currency
 
   scope :visible,     -> { where(visible: true) }
-  scope :by_currency, -> (currency) { where('bank_accounts.currency' => currency) }
+  scope :by_currency, -> (currency) { where('bank_accounts.currency' => currency) if currency.present? }
   scope :positioned,  -> { order(position: :asc) }
 
   validates :name,     presence: true

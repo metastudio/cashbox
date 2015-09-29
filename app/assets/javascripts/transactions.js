@@ -54,6 +54,10 @@ $(function () {
     prepRateAndHints(exchange_rate = true);
   });
 
+  $(document).on('change', '#transaction_amount, #transaction_comission', function(e) {
+    changeAmountHint();
+  });
+
   $(document).on('keypress', '.select2-input', function(e) {
     if (e.keyCode === 32 && this.selectionStart === 0) {
       return false;
@@ -135,6 +139,15 @@ function addRemoveHints(fromCurr, toCurr) {
   }
 }
 
+function changeAmountHint() {
+  var invoice_amount = parseFloat($('#transaction_amount').val());
+  var comission = parseFloat($('#transaction_comission').val());
+  if (invoice_amount && comission) {
+    var transaction_amount = invoice_amount - comission;
+    $('#total_amount_hint').text('Total amount: ' + transaction_amount.toFixed(2));
+  }
+}
+
 function datepickerInit(selector) {
   selector.datepicker({
     format: 'dd/mm/yyyy',
@@ -150,6 +163,7 @@ function datepickerInit(selector) {
 function addTransactionFormMasks() {
   var $form = $("form.transaction");
   $form.find("input[name='transaction[amount]']").inputmask('customized_currency');
+  $form.find("input[name='transaction[comission]']").inputmask('customized_currency');
   $form.find('#transfer-out-amount').inputmask('customized_currency');
   datepickerInit($form.find('#transaction_date.datepicker'));
   addCustomerSelect2('.customer-select2');

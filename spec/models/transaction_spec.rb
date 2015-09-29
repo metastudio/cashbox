@@ -14,6 +14,7 @@
 #  customer_id      :integer
 #  date             :datetime         not null
 #  transfer_out_id  :integer
+#  invoice_id       :integer
 #
 
 require 'spec_helper'
