@@ -6,7 +6,7 @@
         table.table.table-hover
           - by_curr.last.each do |account|
             tr class=colorize_ba_amount(account.balance_cents) id=dom_id(account)
-              td.name.word-break = link_to account.to_s, root_path(q: { bank_account_id_eq: account.id })
+              td.name.word-break = link_to account.to_s, root_path(q: { bank_account_id_in: account.id })
               td.amount = money_with_symbol account.balance
       = link_to 'Create a new one', new_bank_account_path
   - else

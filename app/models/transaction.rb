@@ -81,7 +81,9 @@ class Transaction < ActiveRecord::Base
           SUM(CASE WHEN categories.type = 'Income' THEN transactions.amount_cents ELSE 0 END) AS income,
           SUM(CASE WHEN categories.type = 'Expense' THEN transactions.amount_cents ELSE 0 END) AS expense,
           bank_accounts.currency AS currency
-       ").group("bank_accounts.currency")
+        ").
+        where('category_id != ? AND category_id != ?', Category.receipt_id, Category.transfer_out_id).
+        group("bank_accounts.currency")
 
       if amount_flow.empty?
         amount_flow << AmountFlow.new(
