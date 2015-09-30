@@ -156,7 +156,11 @@ describe 'Transactions filter' do
         create :transaction, bank_account: ba } }
       let!(:transaction4) { Timecop.travel(2.month.ago) {
         create :transaction, bank_account: ba } }
-      let(:correct_items) { [transaction,  transaction2] }
+      let!(:transaction5) { Timecop.travel(Date.current.end_of_month) {
+        create :transaction, bank_account: ba } }
+      let!(:transaction6) { Timecop.travel(Date.current.beginning_of_month) {
+        create :transaction, bank_account: ba } }
+      let(:correct_items) { [transaction,  transaction2, transaction5, transaction6] }
       let(:wrong_items)   { [transaction3, transaction4] }
 
       before do
