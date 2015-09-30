@@ -56,8 +56,8 @@
 
   - if (@invoice.present? || f.object.invoice_id) && (params[:action] == 'new' || params[:action] == 'create')
     = f.input :comission, input_html: { class: 'comission' }
-    = f.hint "Total amount: #{Money.new(f.object.amount.to_d*100 - (f.object.comission.present? ? f.object.comission : 0),
-      @invoice.currency)}", id: 'total_amount_hint', class: 'col-md-9 col-md-offset-3'
+    = f.hint "Total amount: #{Money.new(f.object.amount.to_d*100 - (f.object.comission.present? ? f.object.comission.to_d : 0),
+      @invoice ? @invoice.currency : f.object.currency)}", id: 'total_amount_hint', class: 'col-md-9 col-md-offset-3'
 
   = f.input :comment
 
