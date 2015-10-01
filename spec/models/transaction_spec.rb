@@ -40,6 +40,18 @@ describe Transaction do
         end
       end
 
+      context 'when has commission' do
+        let(:account) { create :bank_account, currency: 'RUB' }
+        let(:invoice) { create :invoice }
+        let!(:transaction) { build :transaction, :income, bank_account: account,
+          invoice: invoice, amount: 100, comission: 200 }
+
+        it 'is invalid' do
+          expect(subject).to be_invalid
+          expect(subject.errors_on(:comission)).to include("Can't be more than amount")
+        end
+      end
+
       context 'when balance overflow' do
         let(:account)      { create :bank_account, :full }
         let!(:transaction) { build :transaction, :income, bank_account: account,
