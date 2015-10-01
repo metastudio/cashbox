@@ -1,21 +1,23 @@
 = simple_form_for(transfer, url: transfer_transactions_path, remote: true,
     html: { id: 'new_transfer_form', class: 'form-horizontal transfer' }, wrapper: :horizontal_form) do |f|
   = f.error_notification
-  = f.input :amount, input_html: { class: 'amount', maxlength: 25 }
-  = f.input :comission, input_html: { class: 'comission' }
   - bank_accounts = current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency)
   = f.input :bank_account_id, as: :grouped_select, include_blank: 'From',
       collection: bank_accounts, group_method: :last, label: 'From'
   = f.input :reference_id, as: :grouped_select, include_blank: 'To',
       collection: bank_accounts, group_method: :last, label: 'To'
-  = f.input :comment
+  = f.input :amount, input_html: { class: 'amount', maxlength: 25 }
+
   #rate_col.hidden
     = f.hint 'Default rate:', id: 'rate_hint', class: 'col-md-9 col-md-offset-3'
-    = f.input :exchange_rate, input_html: { class: 'rate' }
     .form-group.string.optional.transfer_sum
       label for='end_sum' class='string optional control-label col-sm-3' Calculate sum
       .col-sm-9
         input type='text' class='string optional form-control' id='end_sum' placeholder='Sum'
+    = f.input :exchange_rate, input_html: { class: 'rate' }
+
+  = f.input :comission, input_html: { class: 'comission' }
+  = f.input :comment
   = f.input :date, as: :string, placeholder: 'Date',
       input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date.to_date) : nil }
 
