@@ -69,6 +69,7 @@ class Transaction < ActiveRecord::Base
   validates :date, presence: true
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
     length: { maximum: 10 }, allow_blank: true
+  validate :check_comission, if: :comission
   validate :check_bank_accounts, on: :update, if: Proc.new{ transfer? }
 
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
@@ -155,6 +156,10 @@ class Transaction < ActiveRecord::Base
 
   def set_date
     self.date = Time.current
+  end
+
+  def check_comission
+    errors.add(:comission, "Can't be more than amount") if self.comission.to_d >= self.amount.to_d
   end
 
   def calculate_amount
