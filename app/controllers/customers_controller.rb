@@ -52,7 +52,7 @@ class CustomersController < ApplicationController
   end
 
   def customer_params
-    params.require(:customer).permit(:name)
+    params.require(:customer).permit(:name, :invoice_details)
   end
 
   def query_params

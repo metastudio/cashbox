@@ -4,6 +4,7 @@ FactoryGirl.define do
   sequence(:full_name) { |n| "Test User#{n}" }
   sequence(:transaction_comment) { |n| "Test transaction comment #{n}" }
   sequence(:phone_number) { |n| "12345#{n}" }
+  sequence(:invoice_details) { |n| "«TestBank» Bank S.W.I.F.T. TESTRU2K #{n}" }
   factory :user do
     email
     password
@@ -52,6 +53,7 @@ FactoryGirl.define do
   factory :bank_account do
     organization
     name { generate :bank_account_name }
+    invoice_details { generate :invoice_details }
     balance 0
     currency 'RUB'
 
@@ -92,9 +94,11 @@ FactoryGirl.define do
   end
 
   sequence(:customer_name) { |n| "Customer #{n}" }
+
   factory :customer do
     organization
     name { generate :customer_name }
+    invoice_details { generate :invoice_details }
   end
 
   factory :transaction do

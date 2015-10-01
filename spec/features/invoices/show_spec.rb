@@ -5,6 +5,7 @@ describe 'Invoice show page' do
 
   let(:user) { create :user }
   let(:org)  { create :organization, with_user: user }
+  let!(:org_ba) { create :bank_account, organization: org, currency: 'RUB' }
 
   before do
     sign_in user
@@ -39,6 +40,8 @@ describe 'Invoice show page' do
         expect(subject).to have_content(I18n.l(invoice.ends_at))
         expect(subject).to have_content(money_with_symbol(invoice.amount))
         expect(subject).to have_content(invoice.invoice_items.last.customer.to_s)
+        expect(subject).to have_content(invoice.customer.invoice_details)
+        expect(subject).to have_content(org_ba.invoice_details)
       end
     end
   end

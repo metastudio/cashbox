@@ -17,6 +17,7 @@ describe 'customers page' do
 
   it "customer index page displays current organization's customers" do
     expect(subject).to have_content(org1_customer.name)
+    expect(subject).to have_content(org1_customer.invoice_details)
   end
 
   it "customer index page doesn't display another customers" do

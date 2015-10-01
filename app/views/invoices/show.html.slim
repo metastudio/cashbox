@@ -26,13 +26,9 @@ table.table.table-bordered.invoice
       td.word-break
         |Bank account for wire transfers:<br>
         = current_member.user_full_name
-        |<br>Address:<br>
-        /= current_member.user_address
-        /= current_member.bank
+        p= current_organization.bank_accounts.visible.by_currency(@invoice.currency).first.try(:invoice_details)
         |<br>correspondent account<br>
-        /=< @invoice.customer.bank
-        |<br>Account:
-        /=< @invoice.customer.account
+        = @invoice.customer.invoice_details
         |<br>Currency:
         =< @invoice.currency
       td

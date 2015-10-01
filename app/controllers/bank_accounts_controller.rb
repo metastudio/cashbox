@@ -65,6 +65,6 @@ class BankAccountsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bank_account_params
-      params.require(:bank_account).permit(:name, :description, :currency, :residue)
+      params.require(:bank_account).permit(:name, :description, :currency, :residue, :invoice_details)
     end
 end
