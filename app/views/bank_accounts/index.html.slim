@@ -9,16 +9,18 @@
       table.table.table-stripped.table-hover
         thead
           tr
-            th.col-sm-3 Name
-            th.col-sm-3 Description
-            th.col-sm-3 Balance
+            th.col-sm-2 Name
+            th.col-sm-2 Description
+            th.col-sm-2 Balance
+            th.col-sm-3 Invoice Details
             th
         tbody id="#{curr_with_accounts.first.downcase}-accounts" data-url=sort_bank_accounts_path
           - curr_with_accounts.last.each do |bank_account|
             tr.item data-item-id=bank_account.id class=colorize_amount(bank_account.balance) data-start-position=bank_account.position
               td.word-break = bank_account.to_s
-              td = bank_account.description
+              td.word-break = bank_account.description
               td = money_with_symbol bank_account.balance
+              td.word-break = bank_account.invoice_details
               td
                 - if current_organization.present?
                   .btn-group.pull-right

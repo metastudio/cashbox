@@ -13,11 +13,16 @@ describe 'Create bank account' do
     click_on 'New bank account'
     fill_in 'Name', with: account_name
     fill_in 'Description', with: 'Some description'
+    fill_in 'Invoice details', with: 'Test Invoice Details'
     fill_in 'Residue', with: residue
     click_on 'Create Bank account'
   end
 
-  it { expect(page).to have_content 'Bank account was successfully created' }
+  it 'shows created bank account' do
+    expect(page).to have_content 'Bank account was successfully created'
+    expect(page).to have_content account_name
+    expect(page).to have_content 'Test Invoice Details'
+  end
 
 
   describe 'Initial residue transaction' do

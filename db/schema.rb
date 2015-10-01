@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917080915) do
+ActiveRecord::Schema.define(version: 20150930135905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20150917080915) do
     t.datetime "deleted_at"
     t.boolean  "visible",                     default: true
     t.integer  "position"
+    t.text     "invoice_details"
   end
 
   add_index "bank_accounts", ["deleted_at"], name: "index_bank_accounts_on_deleted_at", using: :btree
@@ -52,6 +53,7 @@ ActiveRecord::Schema.define(version: 20150917080915) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.text     "invoice_details"
   end
 
   add_index "customers", ["deleted_at"], name: "index_customers_on_deleted_at", using: :btree
