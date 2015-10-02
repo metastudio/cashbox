@@ -11,6 +11,7 @@
 #  description  :text
 #  created_at   :datetime
 #  updated_at   :datetime
+#  date         :date
 #
 
 class InvoiceItem < ActiveRecord::Base

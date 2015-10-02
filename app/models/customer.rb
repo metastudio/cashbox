@@ -8,6 +8,7 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  deleted_at      :datetime
+#  invoice_details :text
 #
 
 class Customer < ActiveRecord::Base

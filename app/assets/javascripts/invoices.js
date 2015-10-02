@@ -6,6 +6,7 @@ $(function () {
       $('.nested-fields td').css('padding', '8px');
       addCustomerSelect2('.nested-customer-select2:last');
       $('.nested-amount:last').inputmask('customized_currency');
+      datepickerInit($('form.invoice').find('.nested-date:last'));
       $('#invoice_amount').prop('disabled', true);
     })
     .on('cocoon:after-remove', function(e) {
@@ -23,6 +24,9 @@ function addInvoiceFormMasks() {
   $form.find("input[name='invoice[amount]']").inputmask('customized_currency');
   $('.nested-amount').each(function() {
     $(this).inputmask('customized_currency');
+  });
+  $('.nested-date').each(function() {
+    datepickerInit($(this));
   });
   datepickerInit($form.find('#invoice_starts_at.datepicker'));
   datepickerInit($form.find('#invoice_ends_at.datepicker'));

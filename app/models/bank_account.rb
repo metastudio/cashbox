@@ -13,6 +13,7 @@
 #  deleted_at      :datetime
 #  visible         :boolean          default(TRUE)
 #  position        :integer
+#  invoice_details :text
 #
 
 class BankAccount < ActiveRecord::Base

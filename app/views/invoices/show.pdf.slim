@@ -47,6 +47,6 @@ table.table.invoice
         tr
           td = item.customer ? item.customer.to_s : item.description
           td
-            /= item.date
+            = item.date
           td.align-right = item.hours
           td.align-right = money_with_symbol(item.amount)
