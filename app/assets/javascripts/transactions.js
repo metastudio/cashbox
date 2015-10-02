@@ -140,9 +140,9 @@ function addRemoveHints(fromCurr, toCurr) {
 }
 
 function changeAmountHint() {
-  var invoice_amount = parseFloat($('#transaction_amount').val());
-  var comission = parseFloat($('#transaction_comission').val());
-  if (invoice_amount && comission) {
+  if ($('#transaction_comission').length) {
+    var invoice_amount = parseFloat($('#transaction_amount').val().replace(/\,/g,'')) || 0;
+    var comission = parseFloat($('#transaction_comission').val().replace(/\,/g,'')) || 0;
     var transaction_amount = invoice_amount - comission;
     $('#total_amount_hint').text('Total amount: ' + transaction_amount.toFixed(2));
   }
