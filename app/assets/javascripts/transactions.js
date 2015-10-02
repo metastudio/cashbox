@@ -1,4 +1,5 @@
 $(function () {
+  $('#transaction_search').hide();
   addTransactionFormMasks();
   addTranferFormMasks();
   showHidePeriodAdditionalInput();
@@ -72,6 +73,10 @@ $(function () {
       trans_id = $('#submit_btn').data('trans-id');
       $('#edit_transaction_' + trans_id).submit();
     }
+  });
+
+  $(document).on('click', '#toggle_filter', function(e) {
+    $('#transaction_search').slideToggle();
   });
 });
 

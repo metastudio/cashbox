@@ -1,4 +1,6 @@
-h2 Filters
+h2
+  = link_to 'Filters', '#', id: 'toggle_filter'
+  b.caret
 
 = search_form_for @q, url: root_path, html: { class: 'filter' } do |f|
   .row
