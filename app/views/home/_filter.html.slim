@@ -2,7 +2,7 @@ h2
   = link_to 'Filters', '#', id: 'toggle_filter'
   b.caret
 
-= search_form_for @q, url: root_path, html: { class: 'filter' } do |f|
+= search_form_for @q, url: root_path, html: { class: "filter #{'init-hidden' unless params[:q]}" } do |f|
   .row
     .col-xs-4
       = f.input :amount_eq, label: false, input_html: { maxlength: 25 }

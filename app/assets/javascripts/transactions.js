@@ -1,5 +1,4 @@
 $(function () {
-  $('#transaction_search').hide();
   addTransactionFormMasks();
   addTranferFormMasks();
   showHidePeriodAdditionalInput();
@@ -76,7 +75,9 @@ $(function () {
   });
 
   $(document).on('click', '#toggle_filter', function(e) {
-    $('#transaction_search').slideToggle();
+    e.preventDefault();
+
+    $('#transaction_search').stop().slideToggle('fast');
   });
 });
 
