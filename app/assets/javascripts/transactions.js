@@ -73,6 +73,12 @@ $(function () {
       $('#edit_transaction_' + trans_id).submit();
     }
   });
+
+  $(document).on('click', '#toggle_filter', function(e) {
+    e.preventDefault();
+
+    $('#transaction_search').stop().slideToggle('fast');
+  });
 });
 
 function prepRateAndHints(exchange_rate, hints) {
