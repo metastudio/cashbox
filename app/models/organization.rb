@@ -21,6 +21,7 @@ class Organization < ActiveRecord::Base
     inverse_of: :organization, dependent: :destroy
   has_many :customers, dependent: :destroy, inverse_of: :organization
   has_many :invoices, dependent: :destroy, inverse_of: :organization
+  has_many :invoice_items, through: :invoices
 
   validates :name, presence: true
 
@@ -212,18 +213,31 @@ class Organization < ActiveRecord::Base
   end
 
   def get_customers_selection_by_invoice_items(period)
-    invoices.period(period).
-      select('sum(invoice_items.amount_cents) as total, invoice_items.id,
-        invoice_items.customer_id as item_customer_id, invoice_items.currency as curr').
+    nil_date_items = invoices.period(period).
+      select('sum(invoice_items.amount_cents) as total, invoice_items.customer_id, invoice_items.currency').
       joins(:invoice_items).
-      group('invoice_items.id, invoice_items.currency').map do |invoice|
-        {
-          total:          invoice.total.to_f,
-          selection_id:   invoice.item_customer_id,
-          selection_name: find_customer_name_by_id(invoice.item_customer_id),
-          currency:       invoice.curr
-        }
-      end
+      where('invoice_items.date IS NULL').
+      group('invoice_items.customer_id, invoice_items.currency').map do |item|
+      {
+        total:          item.total.to_f,
+        selection_id:   item.customer_id,
+        selection_name: find_customer_name_by_id(item.customer_id),
+        currency:       item.currency
+      }
+    end
+
+    items = invoice_items.period(period).
+      select('sum(invoice_items.amount_cents) as total, invoice_items.customer_id, invoice_items.currency').
+      where('invoice_items.date IS NOT NULL').
+      group('invoice_items.customer_id, invoice_items.currency').map do |item|
+      {
+        total:          item.total.to_f,
+        selection_id:   item.customer_id,
+        selection_name: find_customer_name_by_id(item.customer_id),
+        currency:       item.currency
+      }
+    end
+    selection = nil_date_items + items
   end
 
   def calc_to_def_currency(amount, currency)
