@@ -48,7 +48,7 @@ gem 'cocoon'
 gem 'validates_overlap'
 gem 'date_validator'
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
+gem 'wkhtmltopdf-binary'
 
 group :development, :test do
   gem 'rspec-rails'
