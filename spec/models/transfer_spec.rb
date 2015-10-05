@@ -18,6 +18,18 @@ describe Transfer do
 
       subject { transfer }
 
+      context 'when has commission' do
+        let(:from) { create :bank_account }
+        let(:to)   { create :bank_account }
+        let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id,
+          amount: 100, comission: 200 }
+
+        it 'is invalid' do
+          expect(subject).to be_invalid
+          expect(subject.errors_on(:comission)).to include("Can't be more than amount")
+        end
+      end
+
       context 'when depends on bank account' do
         let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id }
 
