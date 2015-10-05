@@ -13,8 +13,6 @@
 class Customer < ActiveRecord::Base
   acts_as_paranoid
 
-  scope :ordered, -> { order('created_at DESC') }
-
   belongs_to :organization, inverse_of: :customers
   has_many :transactions, inverse_of: :customer
   has_many :invoices, inverse_of: :customer
@@ -23,6 +21,9 @@ class Customer < ActiveRecord::Base
   validates :name, presence: true
   validates :organization, presence: true
   validates :name, uniqueness: { scope: [:organization_id, :deleted_at] }
+
+  scope :ordered, -> { order('created_at DESC') }
+  scope :with_name, ->(name) { where('name ilike ?', "%#{name}%") }
 
   # gem 'paranoia' doesn't run validation callbacks on restore
   before_restore :run_validations
