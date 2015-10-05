@@ -1,6 +1,6 @@
 tr id=dom_id(customer)
   td = customer.to_s
-  td = customer.invoice_details
+  td.word-break = customer.invoice_details
   td
     .btn-group.pull-right
       = link_to 'Edit', edit_customer_path(customer),
