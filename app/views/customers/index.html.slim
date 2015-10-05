@@ -7,9 +7,9 @@
   table.table.table-stripped.table-hover
     thead
       tr
-        th Name
-        th Invoice Details
-        th
+        th.col-sm-3 Name
+        th.col-sm-6 Invoice Details
+        th.col-sm-3
     tbody.customers
       = render partial: 'customer', collection: @customers
 - else
