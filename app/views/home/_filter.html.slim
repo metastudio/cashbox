@@ -1,6 +1,7 @@
 h2
-  = link_to 'Filters', '#', id: 'toggle_filter'
-  b.caret
+  = link_to '#', id: 'toggle_filter' do
+    |Filters
+    b.caret
 
 = search_form_for @q, url: root_path, html: { class: "filter #{'init-hidden' unless params[:q]}" } do |f|
   .row
