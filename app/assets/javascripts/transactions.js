@@ -135,7 +135,7 @@ function addRemoveHints(fromCurr, toCurr) {
   var rate_hint_input = '<p class="col-md-9 col-md-offset-3 help-block" \
     id="rate_hint">Default rate: ' + rate_hint + '</p>'
   $transferRate.parents('#rate_col').find('#rate_hint').remove();
-  $transferRate.parents('#rate_col').prepend(rate_hint_input);
+  $transferRate.parents('#rate_col').append(rate_hint_input);
 
   var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
   var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
