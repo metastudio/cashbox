@@ -72,6 +72,68 @@ describe Organization do
     end
   end
 
+  describe "#totals_by_customers" do
+    let(:org) { create :organization, default_currency: 'USD' }
+
+    context 'def currency' do
+      let!(:customer) { create :customer }
+      let!(:invoice)  { create :invoice, customer_name: customer.name,
+        organization: org, ends_at: Date.current, currency: 'USD' }
+
+
+      context 'current month' do
+        let!(:invoice_item) { create :invoice_item, invoice: invoice,
+          customer_name: customer.name, date: Date.current, amount: 500 }
+
+        subject { org.totals_by_customers('current-month')[:data][1] }
+
+        it 'is counted' do
+          expect(subject).to eq [invoice_item.customer.name + ' ' +
+            Money.new(invoice_item.amount, org.default_currency).format, invoice_item.amount.to_f]
+        end
+      end
+
+      context 'previous month' do
+        let!(:invoice_item) { create :invoice_item, invoice: invoice,
+          customer_name: customer.name, date: Date.current - 1.months, amount: 500 }
+
+        subject { org.totals_by_customers('current-month') }
+
+        it 'is not counted' do
+          expect(subject).to be_nil
+        end
+      end
+
+      context 'without invoice item date' do
+        let!(:invoice_item) { create :invoice_item, invoice: invoice,
+          customer_name: customer.name, date: nil, amount: 500 }
+
+        subject { org.totals_by_customers('current-month')[:data][1] }
+
+        it 'is counted with invoice ends_at date' do
+          expect(subject).to eq [invoice_item.customer.name + ' ' +
+            Money.new(invoice_item.amount, org.default_currency).format, invoice_item.amount.to_f]
+        end
+      end
+
+      context 'without invoice item date and invoice ends_at in previous month' do
+        let!(:invoice_item) { create :invoice_item, invoice: invoice,
+          customer_name: customer.name, date: nil, amount: 500 }
+
+        before do
+          invoice.update(ends_at: Date.current - 1.months)
+        end
+
+        subject { org.totals_by_customers('current-month') }
+
+        it 'is not counted' do
+          expect(subject).to be_nil
+        end
+      end
+    end
+
+  end
+
   describe "#by_customers(categories_type, :income)" do
     let(:org) { create :organization, default_currency: 'USD' }
 
