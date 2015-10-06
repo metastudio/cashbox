@@ -153,7 +153,7 @@ describe 'create transfer transaction', js: true do
       context 'show' do
         before do
           within '#new_transfer_form' do
-            fill_in 'transfer[amount]', with: amount
+            fill_in 'transfer[amount]', with: amount_str
             select ba1.name, from: 'transfer[bank_account_id]'
             select ba2.name, from: 'transfer[reference_id]'
             fill_in 'transfer[exchange_rate]', with: rate
@@ -166,14 +166,15 @@ describe 'create transfer transaction', js: true do
         end
 
         it 'calculate end sum' do
-          expect(page).to have_field('Calculate sum', with: "#{(amount * rate).round(4)}")
+          expect(page).to have_field('Calculate sum',
+            with: "#{number_to_currency(amount * rate, separator: '.', format: '%n')}")
         end
       end
 
       context 'not show' do
         before do
           within '#new_transfer_form' do
-            fill_in 'transfer[amount]', with: amount
+            fill_in 'transfer[amount]', with: amount_str
             select ba1.name, from: 'transfer[bank_account_id]'
             select ba2.name, from: 'transfer[reference_id]'
             fill_in 'transfer[exchange_rate]', with: rate
@@ -255,5 +256,43 @@ describe 'create transfer transaction', js: true do
     it "doesn't display account in select" do
       expect(page).to_not have_content(account.to_s)
     end
+  end
+
+  describe 'create transfer with enter calculate sum' do
+    let!(:ba1) { create :bank_account, :with_transactions, organization: organization, currency: 'RUB' }
+    let!(:ba2) { create :bank_account, :with_transactions, organization: organization, currency: 'EUR' }
+    let(:sum)  { Money.new(24645000, ba2.currency) }
+
+    before do
+      visit root_path
+      click_on 'Add...'
+      click_on 'Transfer'
+      within '#new_transfer_form' do
+        fill_in 'transfer[amount]', with: amount_str
+        select ba1.name, from: 'transfer[bank_account_id]'
+        select ba2.name, from: 'transfer[reference_id]'
+        fill_in 'transfer[calculate_sum]', with: sum
+        fill_in 'transfer[comission]', with: comission_str
+        fill_in 'transfer[comment]',   with: comment
+      end
+      click_on 'Create'
+      page.has_content?(/(Please review the problems below)/) # wait
+    end
+
+    subject{ page }
+
+    it "show transaction with calculate sum in transactions list" do
+      within ".transactions" do
+        expect(page).to have_content(money_with_symbol(sum))
+      end
+    end
+
+    it "appends rate and comission to the comment" do
+      within ".transactions" do
+        expect(page).to have_content(comment + "\nComission: " + comission_str)
+        expect(page).to have_content("\nRate: #{(sum.to_d/amount.to_d).round(2)}")
+      end
+    end
+
   end
 end

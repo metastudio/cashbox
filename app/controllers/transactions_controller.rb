@@ -78,6 +78,6 @@ class TransactionsController < ApplicationController
 
   def transfer_params
     params.require(:transfer).permit(:amount, :bank_account_id, :reference_id,
-     :comment, :comission, :exchange_rate, :date)
+     :comment, :comission, :exchange_rate, :date, :calculate_sum)
   end
 end

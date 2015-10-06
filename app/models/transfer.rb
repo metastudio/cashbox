@@ -6,12 +6,14 @@ class Transfer
   attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
     :bank_account, :bank_account_id, :reference_id, :date,
     :inc_transaction, :out_transaction, :exchange_rate,
-    :from_currency, :to_currency
+    :from_currency, :to_currency, :calculate_sum
 
   validates :amount, presence: true,
     numericality: { less_than_or_equal_to: Dictionaries.money_max }
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
     length: { maximum: 10 }, allow_blank: true
+  validates :calculate_sum, numericality: { greater_than_or_equal_to: 0 },
+    length: { maximum: 25 }, allow_blank: true
   validates :comment, length: { maximum: 255 }
   validates_presence_of :bank_account_id
   validates :reference_id, presence: true
