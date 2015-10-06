@@ -14,7 +14,7 @@ describe 'Invoice show page' do
   subject{ page }
 
   context 'Download as PDF' do
-    let!(:invoice) { create :invoice, :with_items, organization: org }
+    let!(:invoice) { create :invoice, :with_items, number: '1234567812345678', organization: org }
 
     context 'with usual download mode' do
       before do
@@ -42,6 +42,7 @@ describe 'Invoice show page' do
         expect(subject).to have_content(invoice.invoice_items.last.customer.to_s)
         expect(subject).to have_content(invoice.customer.invoice_details)
         expect(subject).to have_content(org_ba.invoice_details)
+        expect(subject).to have_content("Invoice# #{invoice.number}")
       end
     end
   end

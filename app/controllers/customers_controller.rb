@@ -38,7 +38,7 @@ class CustomersController < ApplicationController
   end
 
   def autocomplete
-    @customers = current_organization.customers.where("name like ?", "%#{query_params[:term]}%")
+    @customers = current_organization.customers.with_name(query_params[:term])
 
     respond_to do |format|
       format.json { render json: @customers , only: [:id, :name] }

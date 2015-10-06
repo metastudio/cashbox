@@ -80,7 +80,6 @@ describe Organization do
       let!(:invoice)  { create :invoice, customer_name: customer.name,
         organization: org, ends_at: Date.current, currency: 'USD' }
 
-
       context 'current month' do
         let!(:invoice_item) { create :invoice_item, invoice: invoice,
           customer_name: customer.name, date: Date.current, amount: 500 }
@@ -128,6 +127,28 @@ describe Organization do
 
         it 'is not counted' do
           expect(subject).to be_nil
+        end
+      end
+
+      context 'calculate with customer transactions' do
+        let!(:invoice_item) { create :invoice_item, invoice: invoice,
+          customer_name: customer.name, date: nil, amount: 500 }
+
+        let(:account){ create :bank_account, organization: org, currency: 'USD',
+          residue: 9999999 }
+        let!(:transaction) { create :transaction, :with_customer, :income,
+            bank_account: account }
+
+        before do
+          transaction.update(customer_name: invoice_item.customer_name)
+        end
+
+        subject { org.totals_by_customers('current-month')[:data][1] }
+
+        it 'is counted with transaction amount' do
+          expect(subject).to eq [invoice_item.customer.name + ' ' +
+            Money.new(invoice_item.amount + transaction.amount, org.default_currency).format,
+              invoice_item.amount.to_f + transaction.amount.to_f]
         end
       end
     end

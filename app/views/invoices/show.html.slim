@@ -9,7 +9,7 @@
       class: 'btn btn-default'
     = link_to 'Back', invoices_path, class: 'btn btn-primary'
 
-  h2 = "Invoice #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
+  h2 = "Invoice ##{@invoice.number} #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
 
 table.table.table-bordered.invoice
   tbody
@@ -34,6 +34,8 @@ table.table.table-bordered.invoice
       td
       td.align-right
         strong.uppercase Date: #{l @invoice.ends_at}
+        p
+          strong Invoice# #{@invoice.number}
     tr
       td
         .uppercase Bill to:
