@@ -61,7 +61,7 @@ table.table.table-bordered.invoice
       - @invoice.invoice_items.each do |item|
         tr
           td = item.customer ? item.customer.to_s : item.description
-          td.align-right
-            /= item.date
+          td
+            = item.date
           td.align-right = item.hours
           td.align-right = money_with_symbol(item.amount)
