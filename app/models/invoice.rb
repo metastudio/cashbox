@@ -34,7 +34,7 @@ class Invoice < ActiveRecord::Base
   validates :amount, presence: true
   validates :currency, presence: true
   validates :customer_name, presence: true, unless: :customer_id
-
+  validates :number, length: { maximum: 16 }
   validates :amount, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
   validates :currency, inclusion: { in: Dictionaries.currencies,
