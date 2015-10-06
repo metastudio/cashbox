@@ -55,8 +55,22 @@ var drawChart = function drawChart(period, element) {
         isHtml: true,
         textStyle: { bold: true }
       },
-      sliceVisibilityThreshold: 0.0000001
+      sliceVisibilityThreshold: 0
     };
+
+    var total = google.visualization.data.group(pieData, [{
+      type: 'string',
+      column: 0,
+      modifier: function () {return 'Hash';}
+    }], [{
+      type: 'number',
+      column: 1,
+      aggregation: google.visualization.data.sum
+    }]);
+
+    var suffix = response.currency_format['suffix'] || ''
+    var prefix = response.currency_format['prefix'] || ''
+    pieData.addRow(['Total: ' + prefix + total.getValue(0, 1) + suffix, 0]);
     chart.draw(pieData, options);
 
     function selectHandler() {
