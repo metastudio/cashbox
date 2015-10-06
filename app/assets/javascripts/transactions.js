@@ -50,7 +50,7 @@ $(function () {
     prepRateAndHints(exchange_rate = false);
   });
 
-  $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id, #end_sum', function(e) {
+  $(document).on('change', '#transfer_bank_account_id, #transfer_reference_id, #transfer_calculate_sum', function(e) {
     prepRateAndHints(exchange_rate = true);
   });
 
@@ -98,7 +98,7 @@ function showHideExchangeRate(fromCurr, toCurr) {
     }
     var $transferRate = $('.transfer_exchange_rate');
     var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
-    var sum = parseFloat($('#end_sum').val().replace(/\,/g,''));
+    var sum = parseFloat($('#transfer_calculate_sum').val().replace(/\,/g,''));
     if (amount && sum) {
       var rate = (sum/amount).toFixed(2);
       $transferRate.parents('#rate_col').find('#transfer_exchange_rate').val(rate);
@@ -141,7 +141,7 @@ function addRemoveHints(fromCurr, toCurr) {
   var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
   if (amount && rate) {
     var end_sum = (amount * rate).toFixed(2);
-    $transferRate.parents('#rate_col').find('#end_sum').val(end_sum);
+    $transferRate.parents('#rate_col').find('#transfer_calculate_sum').val(end_sum);
   }
 }
 
@@ -179,6 +179,7 @@ function addTranferFormMasks() {
   var $form = $("form.transfer");
   $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
   $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
+  $form.find("input[name='transfer[calculate_sum]']").inputmask('customized_currency');
   $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
   datepickerInit($form.find('#transfer_date.datepicker'));
 }
