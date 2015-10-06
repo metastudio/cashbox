@@ -35,4 +35,21 @@ describe Customer do
       expect{ deleted_customer.restore! }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
+
+  context 'scopes' do
+    context 'with_name(name)' do
+      it 'should return names of customers insensitive with downcase' do
+        c1 = create :customer, name: 'Bill'
+        c2 = create :customer, name: 'bob'
+        c3 = create :customer, name: 'John'
+        expect(Customer.with_name('b')).to match_array [c1, c2]
+      end
+
+      it 'should return names of customers insensitive with uppercase' do
+        c1 = create :customer, name: 'Bill'
+        c2 = create :customer, name: 'bob'
+        expect(Customer.with_name('B')).to match_array [c1, c2]
+      end
+    end
+  end
 end
