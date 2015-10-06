@@ -43,20 +43,6 @@ var drawChart = function drawChart(period, element) {
     var chart = new google.visualization.PieChart(css_id);
     var formatter = new google.visualization.NumberFormat(response.currency_format);
     formatter.format(pieData, 1);
-    var options = {
-      chartArea: {
-        left: 10,
-        top:  20,
-        width: '100%',
-        height: '320'
-      },
-      tooltip: {
-        text: 'percentage',
-        isHtml: true,
-        textStyle: { bold: true }
-      },
-      sliceVisibilityThreshold: 0
-    };
 
     var total = google.visualization.data.group(pieData, [{
       type: 'string',
@@ -70,7 +56,22 @@ var drawChart = function drawChart(period, element) {
 
     var suffix = response.currency_format['suffix'] || ''
     var prefix = response.currency_format['prefix'] || ''
-    pieData.addRow(['Total: ' + prefix + total.getValue(0, 1) + suffix, 0]);
+
+    var options = {
+      title: 'Total: ' + prefix + total.getValue(0, 1).format(2) + suffix,
+      chartArea: {
+        left: 10,
+        top:  20,
+        width: '100%',
+        height: '320'
+      },
+      tooltip: {
+        text: 'percentage',
+        isHtml: true,
+        textStyle: { bold: true }
+      },
+      sliceVisibilityThreshold: 0
+    };
     chart.draw(pieData, options);
 
     function selectHandler() {
@@ -141,4 +142,9 @@ var drawBalanceChart = function drawBalanceChart(period, element) {
     };
     chart.draw(chartData, options);
   }
+};
+
+Number.prototype.format = function(n, x) {
+  var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+  return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
 };
