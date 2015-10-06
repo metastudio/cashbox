@@ -73,6 +73,12 @@ $(function () {
       $('#edit_transaction_' + trans_id).submit();
     }
   });
+
+  $(document).on('click', '#toggle_filter', function(e) {
+    e.preventDefault();
+
+    $('#transaction_search').stop().slideToggle('fast');
+  });
 });
 
 function prepRateAndHints(exchange_rate, hints) {
@@ -129,7 +135,7 @@ function addRemoveHints(fromCurr, toCurr) {
   var rate_hint_input = '<p class="col-md-9 col-md-offset-3 help-block" \
     id="rate_hint">Default rate: ' + rate_hint + '</p>'
   $transferRate.parents('#rate_col').find('#rate_hint').remove();
-  $transferRate.parents('#rate_col').prepend(rate_hint_input);
+  $transferRate.parents('#rate_col').append(rate_hint_input);
 
   var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
   var rate = parseFloat($('#transfer_exchange_rate').val().replace(/\,/g,''));
@@ -140,9 +146,9 @@ function addRemoveHints(fromCurr, toCurr) {
 }
 
 function changeAmountHint() {
-  var invoice_amount = parseFloat($('#transaction_amount').val());
-  var comission = parseFloat($('#transaction_comission').val());
-  if (invoice_amount && comission) {
+  if ($('#transaction_comission').length) {
+    var invoice_amount = parseFloat($('#transaction_amount').val().replace(/\,/g,'')) || 0;
+    var comission = parseFloat($('#transaction_comission').val().replace(/\,/g,'')) || 0;
     var transaction_amount = invoice_amount - comission;
     $('#total_amount_hint').text('Total amount: ' + transaction_amount.toFixed(2));
   }

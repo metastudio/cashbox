@@ -9,12 +9,12 @@
   = f.input :amount, input_html: { class: 'amount', maxlength: 25 }
 
   #rate_col.hidden
-    = f.hint 'Default rate:', id: 'rate_hint', class: 'col-md-9 col-md-offset-3'
     .form-group.string.optional.transfer_sum
       label for='end_sum' class='string optional control-label col-sm-3' Calculate sum
       .col-sm-9
         input type='text' class='string optional form-control' id='end_sum' placeholder='Sum'
     = f.input :exchange_rate, input_html: { class: 'rate' }
+    = f.hint 'Default rate:', id: 'rate_hint', class: 'col-md-9 col-md-offset-3'
 
   = f.input :comission, input_html: { class: 'comission' }
   = f.input :comment

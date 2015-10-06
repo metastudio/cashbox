@@ -5,6 +5,11 @@ body {
   }
 }
 
+.init-hidden {
+  // instead of bootstrap 3 hidden class with !important
+  display: none;
+}
+
 .footer-text {
   margin: 20px;
 }

@@ -27,6 +27,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
+      click_on 'Filters'
       fill_in 'q[amount_eq]', with: amount_eq
       click_on 'Search'
     end
@@ -62,6 +63,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
+      click_on 'Filters'
       fill_in 'q[comment_cont]', with: comment_cont
       click_on 'Search'
     end
@@ -81,6 +83,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
+      click_on 'Filters'
     end
 
     it 'show system categories' do
@@ -119,6 +122,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
+      click_on 'Filters'
       select transaction.bank_account.to_s, from: 'q[bank_account_id_in][]'
       click_on 'Search'
     end
@@ -140,6 +144,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
+      click_on 'Filters'
       fill_in 'q[amount_eq]', with: 100
       fill_in 'q[comment_cont]', with: 'Comment'
       click_on 'Search'
@@ -165,6 +170,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
+        click_on 'Filters'
         select 'Current month', from: 'q[period]'
         click_on 'Search'
       end
@@ -184,6 +190,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
+        click_on 'Filters'
         select 'Previous month', from: 'q[period]'
         click_on 'Search'
       end
@@ -204,6 +211,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
+        click_on 'Filters'
         select 'Last 3 months', from: 'q[period]'
         click_on 'Search'
       end
@@ -225,6 +233,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
+        click_on 'Filters'
         select 'Quarter', from: 'q[period]'
         click_on 'Search'
       end
@@ -247,6 +256,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
+        click_on 'Filters'
         select 'This year', from: 'q[period]'
         click_on 'Search'
       end
@@ -268,6 +278,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
+        click_on 'Filters'
         select 'Custom', from: 'q[period]'
         page.has_content?('To:')
         fill_in 'From:', with: (Time.new(2012,12,10)).strftime('%d/%m/%Y')
@@ -283,6 +294,7 @@ describe 'Transactions filter' do
 
         before do
           Timecop.travel(2012,12,12)
+          click_on 'Filters'
           select 'Previous month', from: 'q[period]'
           click_on 'Search'
         end
@@ -307,6 +319,7 @@ describe 'Transactions filter' do
 
         before do
           visit root_path
+          click_on 'Filters'
           select 'Custom', from: 'q[period]'
           page.has_content?('To:')
           fill_in 'From:', with: (Time.current + 5.days).strftime('%d/%m/%Y')
@@ -333,6 +346,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
+      click_on 'Filters'
       fill_in 'q[amount_eq]', with: 100
       select 'Previous month', from: 'q[period]'
       click_on 'Search'
@@ -352,6 +366,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
+      click_on 'Filters'
       within "#transaction_#{transaction2.id}" do
         click_on transaction2.bank_account.name
         click_on transaction2.category.name
@@ -368,6 +383,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
+      click_on 'Filters'
       fill_in 'q[amount_eq]', with: "9999"
       fill_in 'q[comment_cont]', with: 'Comment'
       select2(cat.name, css: '#s2id_q_category_id_in')
@@ -396,6 +412,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
+        click_on 'Filters'
         within '.accounts' do
           click_link ba.to_s
         end
@@ -417,6 +434,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
+        click_on 'Filters'
         within "##{dom_id(transaction)}" do
           click_link ba.to_s
         end

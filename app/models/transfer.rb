@@ -18,6 +18,7 @@ class Transfer
   validates :exchange_rate, presence: true, numericality: { greater_than: 0,
     less_than: 10_000 }, if: :currency_mismatch?
   validate :transfer_account
+  validate :check_comission, if: :comission
 
   def initialize(attributes = {})
     attributes.each do |name, value|
@@ -107,6 +108,12 @@ class Transfer
   end
 
   private
+
+  def check_comission
+    errors.add(:comission, "Can't be more than amount") if self.comission.to_d > self.amount.to_d
+  rescue
+    nil
+  end
 
   def transfer_account
     if bank_account_id == reference_id
