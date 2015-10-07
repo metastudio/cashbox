@@ -42,7 +42,7 @@ describe 'Invoice show page' do
         expect(subject).to have_content(invoice.invoice_items.last.customer.to_s)
         expect(subject).to have_content(invoice.customer.invoice_details)
         expect(subject).to have_content(org_ba.invoice_details)
-        expect(subject).to have_content("Invoice# #{invoice.number}")
+        expect(subject).to have_content("Invoice # #{invoice.number}")
       end
     end
   end
