@@ -48,7 +48,7 @@ class Transaction < ActiveRecord::Base
   delegate :currency, to: :bank_account, allow_nil: true
   delegate :income?, :expense?, to: :category, allow_nil: true
 
-  default_scope { order(date: :desc) }
+  default_scope { order(created_at: :desc) }
   # scope :by_currency, ->(currency) { joins(:bank_account).where('bank_accounts.currency' => currency) }
   scope :by_currency, ->(currency) { joins("INNER JOIN bank_accounts bank_account_transactions
       ON bank_account_transactions.id = transactions.bank_account_id
