@@ -1,12 +1,12 @@
 $(function () {
-  drawTotalBalanceChart(null, 'main-balance');
+  drawBalanceChart(null, 'main-balance');
   if ($('.piecharts').length) {
     drawChart('current-month', 'current-month-income-by-categories');
     drawChart('current-month', 'current-month-expense-by-categories');
     drawChart('current-month', 'current-month-income-by-customers');
     drawChart('current-month', 'current-month-expense-by-customers');
     drawChart('current-month', 'current-month-totals-by-customers');
-    drawCustomersBalanceChart('current-month', 'current-month-balances-by-customers');
+    drawBalanceChart('current-month', 'current-month-balances-by-customers');
   }
   $(document).on('click', '#periods_bar li a', function () {
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-categories');
@@ -14,7 +14,7 @@ $(function () {
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-customers');
     drawChart($(this).data('period'), $(this).data('period') + '-expense-by-customers');
     drawChart($(this).data('period'), $(this).data('period') + '-totals-by-customers');
-    drawCustomersBalanceChart($(this).data('period'), $(this).data('period') + '-balances-by-customers');
+    drawBalanceChart($(this).data('period'), $(this).data('period') + '-balances-by-customers');
   });
 });
 
@@ -99,7 +99,7 @@ var drawChart = function drawChart(period, element) {
   }
 };
 
-var drawTotalBalanceChart = function drawTotalBalanceChart(period, element) {
+var drawBalanceChart = function drawBalanceChart(period, element) {
   element = document.getElementById(element);
   if (element) {
     $.ajax({
@@ -119,11 +119,17 @@ var drawTotalBalanceChart = function drawTotalBalanceChart(period, element) {
     };
     var data = response.data;
     var chartData = google.visualization.arrayToDataTable(data);
-    var chart = new google.visualization.ComboChart(css_id);
+    var chart = null;
+    if (css_id.id == 'main-balance') {
+      chart = new google.visualization.ComboChart(css_id);
+    } else {
+      chart = new google.visualization.ColumnChart(css_id);
+    }
     var formatter = new google.visualization.NumberFormat(response.currency_format);
     formatter.format(chartData, 1);
     formatter.format(chartData, 2);
-    formatter.format(chartData, 3);
+    if (css_id.id == 'main-balance') { formatter.format(chartData, 3) };
+
     var options = {
       chart: {
         title: 'Balance',
@@ -135,45 +141,6 @@ var drawTotalBalanceChart = function drawTotalBalanceChart(period, element) {
       },
       seriesType: 'bars',
       series: {2: {type: 'line'}},
-      tooltip: { isHtml: true }
-    };
-    chart.draw(chartData, options);
-  }
-};
-
-var drawCustomersBalanceChart = function drawCustomersBalanceChart(period, element) {
-  element = document.getElementById(element);
-  if (element) {
-    $.ajax({
-      url: element.getAttribute('data-url'),
-      type: 'get',
-      data: { period: period }
-    })
-    .done(function(response) {
-      draw(response, element, period);
-    })
-  };
-
-  function draw(response, css_id, period) {
-    if (response == null ) {
-      $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
-      return false;
-    };
-    var data = response.data;
-    var chartData = google.visualization.arrayToDataTable(data);
-    var chart = new google.visualization.ColumnChart(css_id);
-    var formatter = new google.visualization.NumberFormat(response.currency_format);
-    formatter.format(chartData, 1);
-    formatter.format(chartData, 2);
-    var options = {
-      chart: {
-        title: 'Balance',
-        subtitle: 'Incomes, Expenses',
-      },
-      chartArea: {
-        top:  30,
-        width: '76%'
-      },
       tooltip: { isHtml: true }
     };
     chart.draw(chartData, options);
