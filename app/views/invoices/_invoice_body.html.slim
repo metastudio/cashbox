@@ -1,0 +1,56 @@
+table.table.invoice class="#{'table-bordered' if request.format.html?}"
+  tbody
+    tr
+      td
+        h2.word-break = current_member.user_full_name
+      td
+      td
+      td
+        h1.align-right.uppercase.invoice-title Invoice
+    tr
+      td
+        /= current_member.user_address
+      td.word-break
+        |Bank account for wire transfers:<br>
+        = current_member.user_full_name
+        p= current_organization.bank_accounts.visible.by_currency(@invoice.currency).first.try(:invoice_details)
+        |<br>correspondent account<br>
+        = @invoice.customer.try(:invoice_details)
+        |<br>Currency:
+        =< @invoice.currency
+      td
+      td.align-right
+        strong.uppercase Date: #{l @invoice.ends_at}
+        - if @invoice.number.present?
+          p
+            strong Invoice # #{@invoice.number}
+    tr
+      td
+        .uppercase Bill to:
+        = @invoice.customer.to_s
+        /= @invoice.customer.address
+        /= @invoice.customer.phone
+      td
+      td.align-right
+        h2 Total:
+      td
+        h2.align-right = money_with_symbol(@invoice.amount)
+
+    - if @invoice.invoice_items.any?
+      tr
+        td
+          strong Task
+        td
+          strong Date
+        td.align-right
+          strong Hours
+        td.align-right
+          strong = @invoice.currency
+
+      - @invoice.invoice_items.each do |item|
+        tr
+          td = item.customer ? item.customer.to_s : item.description
+          td
+            = item.date
+          td.align-right = item.hours
+          td.align-right = money_with_symbol(item.amount)
