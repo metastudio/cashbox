@@ -257,13 +257,13 @@ class Organization < ActiveRecord::Base
     hash = {}
     selection.each do |trans|
       trans[:total] = calc_to_def_currency(trans[:total], trans[:currency])
-      hash[trans[:date].strftime('%b-%y')] = hash[trans[:date].strftime('%b-%y')].nil? ? trans[:total] : hash[trans[:date].strftime('%b-%y')] + trans[:total]
+      hash[trans[:date].strftime('%b, %Y')] = hash[trans[:date].strftime('%b, %Y')].nil? ? trans[:total] : hash[trans[:date].strftime('%b, %Y')] + trans[:total]
     end
     hash
   end
 
   def combine_by_months(period, incomes, expenses)
-    keys = period.map(&:beginning_of_month).uniq.map{ |date| date.strftime("%b-%y") }
+    keys = period.map(&:beginning_of_month).uniq.map{ |date| date.strftime("%b, %Y") }
     array = keys.map{ |k| [k, (incomes[k].to_f/100).round(2) || 0, (expenses[k].to_f/100).round(2) || 0,
       ((incomes[k].to_f - expenses[k].to_f)/100).round(2)] }
     data = array.unshift(['Month', 'Incomes', 'Expenses', 'Total balance'])
