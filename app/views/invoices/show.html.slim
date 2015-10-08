@@ -34,8 +34,9 @@ table.table.table-bordered.invoice
       td
       td.align-right
         strong.uppercase Date: #{l @invoice.ends_at}
-        p
-          strong Invoice # #{@invoice.number}
+        - if @invoice.number.present?
+          p
+            strong Invoice # #{@invoice.number}
     tr
       td
         .uppercase Bill to:
