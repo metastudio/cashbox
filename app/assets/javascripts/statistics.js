@@ -119,25 +119,22 @@ var drawBalanceChart = function drawBalanceChart(period, element) {
     };
     var data = response.data;
     var chartData = google.visualization.arrayToDataTable(data);
-    var chart = new google.visualization.ColumnChart(css_id);
+    var chart = new google.visualization.ComboChart(css_id);
     var formatter = new google.visualization.NumberFormat(response.currency_format);
     formatter.format(chartData, 1);
     formatter.format(chartData, 2);
+    formatter.format(chartData, 3);
     var options = {
       chart: {
-            title: 'Balance',
-            subtitle: 'Incomes, Expenses',
+        title: 'Balance',
+        subtitle: 'Incomes, Expenses, Total balance',
       },
       chartArea: {
         top:  30,
         width: '76%'
       },
-      vAxis: {
-        minValue: 0,
-        viewWindow: {
-          min: 0
-        }
-      },
+      seriesType: 'bars',
+      series: {2: {type: 'line'}},
       tooltip: { isHtml: true }
     };
     chart.draw(chartData, options);
