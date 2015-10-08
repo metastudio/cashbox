@@ -41,14 +41,14 @@ describe Customer do
     let!(:customer)  { create :customer, organization: org, name: 'Customer' }
     let!(:transaction) { create :transaction, :income, customer: customer, organization: org }
 
-    subject { transaction }
+    subject { transaction.reload }
 
     before do
       customer.destroy
     end
 
     it 'remove from transactions' do
-      expect(transaction.reload.customer_id).to eq nil
+      expect(subject.customer_id).to eq nil
     end
   end
 
