@@ -83,7 +83,7 @@ describe Organization do
         subject { org.data_balance[:data][13] }
 
         it 'has contaion current month, income, expense and total amounts' do
-          expect(subject).to eq [Date.current.strftime("%b-%y"),
+          expect(subject).to eq [Date.current.strftime("%b, %Y"),
             inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
         end
       end
@@ -98,7 +98,7 @@ describe Organization do
         subject { org.data_balance[:data][12] }
 
         it 'has contaion previous month, income, expense and total amounts' do
-          expect(subject).to eq [(Date.current - 1.months).strftime("%b-%y"),
+          expect(subject).to eq [(Date.current - 1.months).strftime("%b, %Y"),
             inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
         end
       end
