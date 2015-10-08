@@ -15,7 +15,7 @@ class Customer < ActiveRecord::Base
   acts_as_paranoid
 
   belongs_to :organization, inverse_of: :customers
-  has_many :transactions, inverse_of: :customer
+  has_many :transactions, inverse_of: :customer, dependent: :nullify
   has_many :invoices, inverse_of: :customer
   has_many :invoice_items
 

@@ -16,7 +16,7 @@ require 'spec_helper'
 describe Customer do
   context 'association' do
     it { expect(subject).to belong_to(:organization) }
-    it { expect(subject).to have_many(:transactions) }
+    it { expect(subject).to have_many(:transactions).dependent(:nullify) }
   end
 
   context 'validations' do
@@ -33,6 +33,22 @@ describe Customer do
 
     it 'raise error when record exists with same organization and name' do
       expect{ deleted_customer.restore! }.to raise_error(ActiveRecord::RecordInvalid)
+    end
+  end
+
+  context 'after destroy' do
+    let(:org)       { create :organization }
+    let!(:customer)  { create :customer, organization: org, name: 'Customer' }
+    let!(:transaction) { create :transaction, :income, customer: customer, organization: org }
+
+    subject { transaction.reload }
+
+    before do
+      customer.destroy
+    end
+
+    it 'remove from transactions' do
+      expect(subject.customer_id).to eq nil
     end
   end
 
