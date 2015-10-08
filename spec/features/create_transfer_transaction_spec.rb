@@ -260,7 +260,7 @@ describe 'create transfer transaction', js: true do
 
   describe 'create transfer with enter calculate sum' do
     let!(:ba1) { create :bank_account, :with_transactions, organization: organization, currency: 'RUB' }
-    let!(:ba2) { create :bank_account, :with_transactions, organization: organization, currency: 'EUR' }
+    let!(:ba2) { create :bank_account, :with_transactions, organization: organization, currency: 'USD' }
     let(:sum)  { Money.new(24645000, ba2.currency) }
 
     before do

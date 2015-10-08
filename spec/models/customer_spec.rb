@@ -36,6 +36,22 @@ describe Customer do
     end
   end
 
+  context 'after destroy' do
+    let(:org)       { create :organization }
+    let!(:customer)  { create :customer, organization: org, name: 'Customer' }
+    let!(:transaction) { create :transaction, :income, customer: customer, organization: org }
+
+    subject { transaction }
+
+    before do
+      customer.destroy
+    end
+
+    it 'remove from transactions' do
+      expect(transaction.reload.customer_id).to eq nil
+    end
+  end
+
   context 'scopes' do
     context 'with_name(name)' do
       it 'should return names of customers insensitive with downcase' do
