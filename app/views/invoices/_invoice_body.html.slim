@@ -13,30 +13,30 @@ table.table.invoice class="#{'table-bordered' if request.format.html?}"
       td.word-break
         |Bank account for wire transfers:<br>
         = current_member.user_full_name
-        p= current_organization.bank_accounts.visible.by_currency(@invoice.currency).first.try(:invoice_details)
+        p= current_organization.bank_accounts.visible.by_currency(invoice.currency).first.try(:invoice_details)
         |<br>correspondent account<br>
-        = @invoice.customer.try(:invoice_details)
+        = invoice.customer.try(:invoice_details)
         |<br>Currency:
-        =< @invoice.currency
+        =< invoice.currency
       td
       td.align-right
-        strong.uppercase Date: #{l @invoice.ends_at}
-        - if @invoice.number.present?
+        strong.uppercase Date: #{l invoice.ends_at}
+        - if invoice.number.present?
           p
-            strong Invoice # #{@invoice.number}
+            strong Invoice # #{invoice.number}
     tr
       td
         .uppercase Bill to:
-        = @invoice.customer.to_s
-        /= @invoice.customer.address
-        /= @invoice.customer.phone
+        = invoice.customer.to_s
+        /= invoice.customer.address
+        /= invoice.customer.phone
       td
       td.align-right
         h2 Total:
       td
-        h2.align-right = money_with_symbol(@invoice.amount)
+        h2.align-right = money_with_symbol(invoice.amount)
 
-    - if @invoice.invoice_items.any?
+    - if invoice.invoice_items.any?
       tr
         td
           strong Task
@@ -45,9 +45,9 @@ table.table.invoice class="#{'table-bordered' if request.format.html?}"
         td.align-right
           strong Hours
         td.align-right
-          strong = @invoice.currency
+          strong = invoice.currency
 
-      - @invoice.invoice_items.each do |item|
+      - invoice.invoice_items.each do |item|
         tr
           td = item.customer ? item.customer.to_s : item.description
           td
