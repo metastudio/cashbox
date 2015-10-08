@@ -33,10 +33,6 @@ describe Organization do
       Dictionaries.currencies << 'EUR' unless Dictionaries.currencies.include?('EUR')
     end
 
-    after do
-      Dictionaries.currencies.delete('EUR') if Dictionaries.currencies.include?('EUR')
-    end
-
     context 'with updated Dictionary for including EUR' do
       let!(:org) { create :organization }
       let!(:ba)  { create :bank_account, currency: 'USD', organization: org }
