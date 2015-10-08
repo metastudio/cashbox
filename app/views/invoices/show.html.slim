@@ -47,17 +47,18 @@ table.table.table-bordered.invoice
         h2 Total:
       td
         h2.align-right = money_with_symbol(@invoice.amount)
-    tr
-      td
-        strong Task
-      td
-        strong Date
-      td.align-right
-        strong Hours
-      td.align-right
-        strong = @invoice.currency
 
     - if @invoice.invoice_items.any?
+      tr
+        td
+          strong Task
+        td
+          strong Date
+        td.align-right
+          strong Hours
+        td.align-right
+          strong = @invoice.currency
+
       - @invoice.invoice_items.each do |item|
         tr
           td = item.customer ? item.customer.to_s : item.description
