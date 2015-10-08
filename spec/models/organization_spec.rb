@@ -37,7 +37,7 @@ describe Organization do
       Dictionaries.currencies.delete('JPY') if Dictionaries.currencies.include?('JPY')
     end
 
-    context 'with updated Dictionary for including AED' do
+    context 'with updated Dictionary for including JPY' do
       let!(:org) { create :organization }
       let!(:ba)  { create :bank_account, currency: 'USD', organization: org }
       let!(:ba2) { create :bank_account, currency: 'RUB', organization: org }
