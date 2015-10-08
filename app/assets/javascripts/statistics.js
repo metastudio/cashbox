@@ -119,11 +119,19 @@ var drawBalanceChart = function drawBalanceChart(period, element) {
     };
     var data = response.data;
     var chartData = google.visualization.arrayToDataTable(data);
-    var chart = new google.visualization.ComboChart(css_id);
+    var chart = null;
+    if (css_id.id == 'main-balance') {
+      chart = new google.visualization.ComboChart(css_id);
+    } else {
+      chart = new google.visualization.ColumnChart(css_id);
+    }
     var formatter = new google.visualization.NumberFormat(response.currency_format);
     formatter.format(chartData, 1);
     formatter.format(chartData, 2);
-    formatter.format(chartData, 3);
+    if (css_id.id == 'main-balance') {
+      formatter.format(chartData, 3)
+    };
+
     var options = {
       chart: {
         title: 'Balance',
