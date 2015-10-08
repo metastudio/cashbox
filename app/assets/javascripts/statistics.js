@@ -128,7 +128,9 @@ var drawBalanceChart = function drawBalanceChart(period, element) {
     var formatter = new google.visualization.NumberFormat(response.currency_format);
     formatter.format(chartData, 1);
     formatter.format(chartData, 2);
-    if (css_id.id == 'main-balance') { formatter.format(chartData, 3) };
+    if (css_id.id == 'main-balance') {
+      formatter.format(chartData, 3)
+    };
 
     var options = {
       chart: {
