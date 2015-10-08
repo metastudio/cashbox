@@ -264,8 +264,9 @@ class Organization < ActiveRecord::Base
 
   def combine_by_months(period, incomes, expenses)
     keys = period.map(&:beginning_of_month).uniq.map{ |date| date.strftime("%b-%y") }
-    array = keys.map{ |k| [k, (incomes[k].to_f/100).round(2) || 0, (expenses[k].to_f/100).round(2) || 0] }
-    data = array.unshift(['Month', 'Incomes', 'Expenses'])
+    array = keys.map{ |k| [k, (incomes[k].to_f/100).round(2) || 0, (expenses[k].to_f/100).round(2) || 0,
+      ((incomes[k].to_f - expenses[k].to_f)/100).round(2)] }
+    data = array.unshift(['Month', 'Incomes', 'Expenses', 'Total balance'])
   end
 
   def combine_by_customers(customer_ids, incomes, expenses)

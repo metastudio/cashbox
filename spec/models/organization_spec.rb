@@ -12,7 +12,7 @@
 require 'spec_helper'
 
 describe Organization do
-  context 'assocation' do
+  context 'association' do
     it { should have_many(:owners).class_name('User').through(:members) }
     it { should have_many(:members).dependent(:destroy) }
     it { should have_many(:bank_accounts).dependent(:destroy) }
@@ -68,6 +68,43 @@ describe Organization do
       let(:curr) { 'RUB' }
       it 'is correct' do
         expect(org.ordered_curr).to eq [curr, 'USD']
+      end
+    end
+  end
+
+  describe "#data_balance" do
+    let(:org) { create :organization, default_currency: 'USD' }
+
+    context 'def currency' do
+      let(:account){ create :bank_account, organization: org, currency: 'USD',
+        residue: 9999999 }
+
+      context 'current month' do
+        let!(:inc_transaction) { create :transaction, :income, bank_account: account }
+        let!(:exp_transaction) { create :transaction, :expense, bank_account: account }
+        let(:total) { inc_transaction.amount.to_f - exp_transaction.amount.abs.to_f }
+
+        subject { org.data_balance[:data][13] }
+
+        it 'has contaion current month, income, expense and total amounts' do
+          expect(subject).to eq [Date.current.strftime("%b-%y"),
+            inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
+        end
+      end
+
+      context 'has contaion previous month, income, expense and total amounts' do
+        let!(:inc_transaction) { create :transaction, :income, bank_account: account,
+          date: Date.current - 1.months }
+        let!(:exp_transaction) { create :transaction, :expense, bank_account: account,
+          date: Date.current - 1.months }
+        let(:total) { inc_transaction.amount.to_f - exp_transaction.amount.abs.to_f }
+
+        subject { org.data_balance[:data][12] }
+
+        it 'has contaion previous month, income, expense and total amounts' do
+          expect(subject).to eq [(Date.current - 1.months).strftime("%b-%y"),
+            inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
+        end
       end
     end
   end
