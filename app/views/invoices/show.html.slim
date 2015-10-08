@@ -28,14 +28,15 @@ table.table.table-bordered.invoice
         = current_member.user_full_name
         p= current_organization.bank_accounts.visible.by_currency(@invoice.currency).first.try(:invoice_details)
         |<br>correspondent account<br>
-        = @invoice.customer.invoice_details
+        = @invoice.customer.try(:invoice_details)
         |<br>Currency:
         =< @invoice.currency
       td
       td.align-right
         strong.uppercase Date: #{l @invoice.ends_at}
-        p
-          strong Invoice # #{@invoice.number}
+        - if @invoice.number.present?
+          p
+            strong Invoice # #{@invoice.number}
     tr
       td
         .uppercase Bill to:
