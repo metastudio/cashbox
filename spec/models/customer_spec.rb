@@ -16,7 +16,7 @@ require 'spec_helper'
 describe Customer do
   context 'association' do
     it { expect(subject).to belong_to(:organization) }
-    it { expect(subject).to have_many(:transactions) }
+    it { expect(subject).to have_many(:transactions).dependent(:nullify) }
   end
 
   context 'validations' do

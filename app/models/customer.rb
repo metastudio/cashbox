@@ -15,7 +15,7 @@ class Customer < ActiveRecord::Base
   acts_as_paranoid
 
   belongs_to :organization, inverse_of: :customers
-  has_many :transactions, inverse_of: :customer
+  has_many :transactions, inverse_of: :customer, dependent: :nullify
   has_many :invoices, inverse_of: :customer
   has_many :invoice_items
 
@@ -28,17 +28,12 @@ class Customer < ActiveRecord::Base
 
   # gem 'paranoia' doesn't run validation callbacks on restore
   before_restore :run_validations
-  before_destroy :remove_from_transactions
 
   def to_s
     name.truncate(30)
   end
 
   private
-
-  def remove_from_transactions
-    self.organization.transactions.where(customer: self).find_each {|t| t.update(customer_id: nil) }
-  end
 
   def run_validations
     self.deleted_at = nil
