@@ -17,6 +17,8 @@ describe Customer do
   context 'association' do
     it { expect(subject).to belong_to(:organization) }
     it { expect(subject).to have_many(:transactions).dependent(:nullify) }
+    it { expect(subject).to have_many(:invoices) }
+    it { expect(subject).to have_many(:invoice_items).dependent(:nullify) }
   end
 
   context 'validations' do
