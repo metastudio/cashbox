@@ -17,7 +17,7 @@ class Customer < ActiveRecord::Base
   belongs_to :organization, inverse_of: :customers
   has_many :transactions, inverse_of: :customer, dependent: :nullify
   has_many :invoices, inverse_of: :customer
-  has_many :invoice_items
+  has_many :invoice_items, dependent: :nullify
 
   validates :name, presence: true
   validates :organization, presence: true
