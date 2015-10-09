@@ -80,17 +80,21 @@ describe Organization do
     context 'def currency' do
       let(:account){ create :bank_account, organization: org, currency: 'USD',
         residue: 9999999 }
+      let(:other_account) { create :bank_account, organization: org, currency: 'RUB', residue: 0 }
 
       context 'current month' do
+        let!(:transfer) { create :transfer, bank_account_id: account.id, reference_id: other_account.id,
+          amount: 1000 }
         let!(:inc_transaction) { create :transaction, :income, bank_account: account }
         let!(:exp_transaction) { create :transaction, :expense, bank_account: account }
-        let(:total) { inc_transaction.amount.to_f - exp_transaction.amount.abs.to_f }
+        let(:total) { org.bank_accounts.total_balance(account.currency) +
+          org.bank_accounts.total_balance(other_account.currency) }
 
         subject { org.data_balance[:data][13] }
 
-        it 'has contaion current month, income, expense and total amounts' do
+        it 'has contaion current month, income, expense and total amounts for all months' do
           expect(subject).to eq [Date.current.strftime("%b, %Y"),
-            inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
+            inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.to_f]
         end
       end
 
@@ -103,7 +107,7 @@ describe Organization do
 
         subject { org.data_balance[:data][12] }
 
-        it 'has contaion previous month, income, expense and total amounts' do
+        it 'has contaion previous month, income, expense and total amounts for all months' do
           expect(subject).to eq [(Date.current - 1.months).strftime("%b, %Y"),
             inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
         end

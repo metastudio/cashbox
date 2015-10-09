@@ -157,7 +157,7 @@ class Organization < ActiveRecord::Base
   end
 
   def data_balance
-    period = 1.year.ago.to_datetime..Time.current.to_datetime
+    period = 1.year.ago.to_date..Date.current.end_of_month
     income_selection = transactions.unscope(:order).incomes.
       select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date").
       where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.receipt_id).
@@ -178,9 +178,31 @@ class Organization < ActiveRecord::Base
           currency:       transaction.curr
         }
       end
+
+    totals_selection = transactions.unscope(:order).
+      select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date").
+      where('DATE(date) BETWEEN ? AND ?', period.begin, period.end).
+      group('transactions.id, bank_accounts.id').map do |transaction|
+        {
+          date:           transaction.date,
+          total:          transaction.total.to_f,
+          currency:       transaction.curr
+        }
+      end
+
     incomes = calc_to_def_currency_for_data_selection(income_selection)
     expenses = calc_to_def_currency_for_data_selection(expense_selection)
-    data = combine_by_months(period, incomes, expenses)
+    totals = calc_to_def_currency_for_data_selection(totals_selection)
+
+    total_sum = Money.new(0, self.default_currency)
+    Dictionaries.currencies.each_with_index do |currency|
+      total = Money.new(self.transactions.where('DATE(date) < ?', period.begin).
+        sum(:amount_cents), currency)
+      total.exchange_to(self.default_currency) if currency != self.default_currency
+      total_sum += total
+    end
+
+    data = combine_by_months(period, incomes, expenses, totals, total_sum)
     data.size > 1 ? { data: data, currency_format: currency_format } : nil
   end
 
@@ -262,10 +284,12 @@ class Organization < ActiveRecord::Base
     hash
   end
 
-  def combine_by_months(period, incomes, expenses)
+  def combine_by_months(period, incomes, expenses, totals, total_sum)
     keys = period.map(&:beginning_of_month).uniq.map{ |date| date.strftime("%b, %Y") }
-    array = keys.map{ |k| [k, (incomes[k].to_f/100).round(2) || 0, (expenses[k].to_f/100).round(2) || 0,
-      ((incomes[k].to_f - expenses[k].to_f)/100).round(2)] }
+    array = keys.map do |k|
+      total_sum = total_sum.to_f + (totals[k] || 0)/100
+      [k, (incomes[k] || 0)/100, (expenses[k] || 0)/100, total_sum]
+    end
     data = array.unshift(['Month', 'Incomes', 'Expenses', 'Total balance'])
   end
 
