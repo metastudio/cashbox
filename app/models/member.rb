@@ -28,6 +28,8 @@ class Member < ActiveRecord::Base
 
   delegate :full_name, to: :user, prefix: true
 
+  scope :ordered, -> { order('created_at DESC') }
+
   def owner_or_admin?
     owner? || admin?
   end

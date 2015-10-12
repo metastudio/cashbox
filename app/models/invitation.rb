@@ -32,7 +32,8 @@ class Invitation < ActiveRecord::Base
 
   delegate :organization, to: :member
 
-  scope :active, -> { where(accepted: false) }
+  scope :ordered, -> { order('created_at DESC') }
+  scope :active,  -> { where(accepted: false) }
 
   def accept!(user)
     user_member = Member.find_or_create_by!(user: user, organization_id: member.organization_id)
