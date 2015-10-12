@@ -18,9 +18,8 @@ module LayoutHelper
   end
 
   def show_tooltip_with_text(text)
-    link_to '#', class: 'exchange-helper', title: text, data: { toggle: 'tooltip', placement: 'top'} do
-      raw("<span class='glyphicon glyphicon-question-sign'></span>")
-    end
+    content_tag(:span, '', title: text, class: 'glyphicon glyphicon-question-sign exchange-helper',
+      data: { toggle: 'tooltip', placement: 'top' } )
   end
 
   def submit_title

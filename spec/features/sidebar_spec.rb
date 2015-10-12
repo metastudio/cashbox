@@ -31,7 +31,7 @@ describe 'sidebar' do
 
     it 'display exchange rate' do
       within '#total_balance' do
-        expect(page).to have_xpath("//a[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{Money.default_bank.get_rate(account.currency, org.default_currency).round(4)}')]")
+        expect(page).to have_xpath("//span[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{Money.default_bank.get_rate(account.currency, org.default_currency).round(4)}')]")
       end
     end
 
