@@ -23,7 +23,7 @@ table.table.invoice class="#{'table-bordered' if request.format.html?}"
         strong.uppercase Date: #{l invoice.ends_at}
         - if invoice.number.present?
           p
-            strong Invoice # #{invoice.number}
+            strong Invoice ##{invoice.number}
     tr
       td
         .uppercase Bill to:
