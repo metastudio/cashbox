@@ -87,6 +87,8 @@ describe Organization do
           amount: 1000 }
         let!(:inc_transaction) { create :transaction, :income, bank_account: account }
         let!(:exp_transaction) { create :transaction, :expense, bank_account: account }
+        let!(:old_transaction) { create :transaction, :income, bank_account: account,
+          date: Date.current - 2.years }
         let(:total) { org.bank_accounts.total_balance(account.currency) +
           org.bank_accounts.total_balance(other_account.currency) }
 

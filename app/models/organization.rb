@@ -164,7 +164,7 @@ class Organization < ActiveRecord::Base
       group('transactions.id, bank_accounts.id').map do |transaction|
         {
           date:           transaction.date,
-          total:          transaction.total.to_f,
+          total:          transaction.total,
           currency:       transaction.curr
         }
       end
@@ -174,7 +174,7 @@ class Organization < ActiveRecord::Base
       group('transactions.id, bank_accounts.id').map do |transaction|
         {
           date:           transaction.date,
-          total:          transaction.total.to_f,
+          total:          transaction.total,
           currency:       transaction.curr
         }
       end
@@ -185,7 +185,7 @@ class Organization < ActiveRecord::Base
       group('transactions.id, bank_accounts.id').map do |transaction|
         {
           date:           transaction.date,
-          total:          transaction.total.to_f,
+          total:          transaction.total,
           currency:       transaction.curr
         }
       end
@@ -196,13 +196,12 @@ class Organization < ActiveRecord::Base
 
     total_sum = Money.new(0, self.default_currency)
     Dictionaries.currencies.each_with_index do |currency|
-      total = Money.new(self.transactions.where('DATE(date) < ?', period.begin).
+      total = Money.new(self.transactions.where('DATE(date) < ? AND currency = ?', period.begin, currency).
         sum(:amount_cents), currency)
-      total.exchange_to(self.default_currency) if currency != self.default_currency
-      total_sum += total
+      total_sum += currency != self.default_currency ? total.exchange_to(self.default_currency) : total
     end
 
-    data = combine_by_months(period, incomes, expenses, totals, total_sum)
+    data = combine_by_months(period, incomes, expenses, totals, total_sum.to_f)
     data.size > 1 ? { data: data, currency_format: currency_format } : nil
   end
 
@@ -263,8 +262,9 @@ class Organization < ActiveRecord::Base
   end
 
   def calc_to_def_currency(amount, currency)
-    amount = Money.new(amount, currency).exchange_to(default_currency).cents if currency != default_currency
-    amount
+    amount = currency != default_currency \
+      ? Money.new(amount, currency).exchange_to(default_currency).cents
+      : Money.new(amount, default_currency).cents
   end
 
   def calc_total(selection)
@@ -279,7 +279,8 @@ class Organization < ActiveRecord::Base
     hash = {}
     selection.each do |trans|
       trans[:total] = calc_to_def_currency(trans[:total], trans[:currency])
-      hash[trans[:date].strftime('%b, %Y')] = hash[trans[:date].strftime('%b, %Y')].nil? ? trans[:total] : hash[trans[:date].strftime('%b, %Y')] + trans[:total]
+      hash[trans[:date].strftime('%b, %Y')] = hash[trans[:date].strftime('%b, %Y')].nil? \
+        ? trans[:total] : hash[trans[:date].strftime('%b, %Y')] + trans[:total]
     end
     hash
   end
@@ -287,8 +288,8 @@ class Organization < ActiveRecord::Base
   def combine_by_months(period, incomes, expenses, totals, total_sum)
     keys = period.map(&:beginning_of_month).uniq.map{ |date| date.strftime("%b, %Y") }
     array = keys.map do |k|
-      total_sum = total_sum.to_f + (totals[k] || 0)/100
-      [k, (incomes[k] || 0)/100, (expenses[k] || 0)/100, total_sum]
+      total_sum = total_sum + (totals[k].to_f || 0)/100
+      [k, (incomes[k].to_f || 0)/100, (expenses[k].to_f || 0)/100, total_sum]
     end
     data = array.unshift(['Month', 'Incomes', 'Expenses', 'Total balance'])
   end
