@@ -202,7 +202,7 @@ class Organization < ActiveRecord::Base
       total_sum += total
     end
 
-    data = combine_by_months(period, incomes, expenses, totals, total_sum)
+    data = combine_by_months(period, incomes, expenses, totals, total_sum.to_f)
     data.size > 1 ? { data: data, currency_format: currency_format } : nil
   end
 
@@ -287,8 +287,8 @@ class Organization < ActiveRecord::Base
   def combine_by_months(period, incomes, expenses, totals, total_sum)
     keys = period.map(&:beginning_of_month).uniq.map{ |date| date.strftime("%b, %Y") }
     array = keys.map do |k|
-      total_sum = total_sum.to_f + (totals[k] || 0)/100
-      [k, (incomes[k] || 0)/100, (expenses[k] || 0)/100, total_sum]
+      total_sum = total_sum + (totals[k].to_f || 0)/100
+      [k, (incomes[k].to_f || 0)/100, (expenses[k].to_f || 0)/100, total_sum]
     end
     data = array.unshift(['Month', 'Incomes', 'Expenses', 'Total balance'])
   end
