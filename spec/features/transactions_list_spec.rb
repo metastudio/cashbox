@@ -183,13 +183,13 @@ describe 'Transactions list' do
 
     it 'display exchange date' do
       within '#total_balance' do
-        expect(page).to have_xpath("//a[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{I18n.l(Money.default_bank.rates_updated_at)}')]")
+        expect(page).to have_xpath("//span[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{I18n.l(Money.default_bank.rates_updated_at)}')]")
       end
     end
 
     it 'display exchange rate' do
       within '#total_balance' do
-        expect(page).to have_xpath("//a[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{Money.default_bank.get_rate(org1_ba2.currency, org1.default_currency).round(4)}')]")
+        expect(page).to have_xpath("//span[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{Money.default_bank.get_rate(org1_ba2.currency, org1.default_currency).round(4)}')]")
       end
     end
 
