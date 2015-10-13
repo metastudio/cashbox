@@ -124,6 +124,13 @@ describe 'sidebar' do
         visit members_path
       end
       it_behaves_like 'activatable', 'Members'
+
+      describe 'new invitation' do
+        before do
+          visit new_invitation_path
+        end
+        it_behaves_like 'activatable', 'Members'
+      end
     end
   end
 end
