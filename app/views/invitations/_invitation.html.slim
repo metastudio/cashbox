@@ -1,7 +1,7 @@
 tr
-  td.word-break = invitation.owner
   td.word-break = invitation.email
   td = invitation.role.capitalize
+  td.word-break = invitation.owner
   td = invitation.accepted? ? 'Yes' : 'No'
   td = I18n.l invitation.created_at
   td.text-right
