@@ -94,5 +94,13 @@ describe Invoice do
         expect(invoice2.errors[:ends_at]).to_not include("must be after or equal to")
       end
     end
+
+    context 'strip invoice number' do
+      let(:invoice) { create :invoice, number: '   test test   ' }
+
+      it 'has striped invoice number' do
+        expect(invoice.number).to eq 'test test'
+      end
+    end
   end
 end

@@ -45,6 +45,7 @@ class Invoice < ActiveRecord::Base
   scope :ordered, -> { order('created_at DESC') }
 
   before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
+  before_validation :strip_number
   after_save :set_currency
 
   def pdf_filename
@@ -70,6 +71,10 @@ class Invoice < ActiveRecord::Base
     else
       all
     end
+  end
+
+  def strip_number
+    self.number.strip! if self.number.present?
   end
 
   def calculate_total_amount
