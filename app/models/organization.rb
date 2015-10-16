@@ -327,6 +327,7 @@ class Organization < ActiveRecord::Base
 
   def currency_format
     currency = Money::Currency.find(default_currency)
-    format = currency.symbol_first ? { prefix: currency.symbol } : { suffix: currency.symbol }
+    format = currency.symbol_first ? { prefix: currency.symbol, decimalSymbol: '.', groupingSymbol: ',' }
+                                   : { suffix: currency.symbol, decimalSymbol: '.', groupingSymbol: ',' }
   end
 end
