@@ -33,44 +33,6 @@ describe Invoice do
       is_greater_than(0).is_less_than_or_equal_to(Dictionaries.money_max) }
     it { is_expected.to validate_inclusion_of(:currency).in_array(Dictionaries.currencies) }
 
-    context 'check customer date range overlaping' do
-      let!(:org)      { create :organization }
-      let!(:customer) { create :customer }
-      let!(:invoice)  { create :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.current - 10.days, ends_at: Date.current }
-      let(:invoice1) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.current - 9.days, ends_at: Date.current + 1.days }
-      let(:invoice2) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.current - 11.days, ends_at: Date.current }
-      let(:invoice3) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.current - 9.days, ends_at: Date.current }
-      let(:invoice4) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.current - 11.days, ends_at: Date.current + 1.days }
-      let(:invoice5) { build :invoice, customer_name: customer.name,
-        organization: org, starts_at: Date.current + 2.days, ends_at: Date.current + 10.days }
-
-      it 'Show error on starts_at' do
-        invoice1.valid?
-        expect(invoice1.errors[:starts_at]).to include('overlaps with another Invoice')
-      end
-      it 'Show error on starts_at' do
-        invoice2.valid?
-        expect(invoice2.errors[:starts_at]).to include('overlaps with another Invoice')
-      end
-      it 'Show errors on starts_at' do
-        invoice3.valid?
-        expect(invoice3.errors[:starts_at]).to include('overlaps with another Invoice')
-      end
-      it 'Show errors on starts_at' do
-        invoice4.valid?
-        expect(invoice4.errors[:starts_at]).to include('overlaps with another Invoice')
-      end
-      it 'Dont show errors' do
-        invoice5.valid?
-        expect(invoice5.errors[:starts_at]).to_not include('overlaps with another Invoice')
-      end
-    end
-
     context 'check ends_at after starts_at if starts_at present' do
       let!(:org)      { create :organization }
       let!(:customer) { create :customer }
