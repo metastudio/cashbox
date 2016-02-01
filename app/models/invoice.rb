@@ -13,6 +13,7 @@
 #  paid_at         :datetime
 #  created_at      :datetime
 #  updated_at      :datetime
+#  number          :string
 #
 
 class Invoice < ActiveRecord::Base
