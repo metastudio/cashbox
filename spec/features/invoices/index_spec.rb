@@ -64,7 +64,7 @@ describe 'invoices index page' do
     let(:comission) { Money.new(100, invoice.currency) }
 
     def create_transaction_by_invoice
-      visit invoices_path
+      visit invoice_path(invoice)
       click_on 'Complete Invoice'
       within '#new_transaction' do
         select category.name, from: 'transaction[category_id]'
@@ -77,7 +77,7 @@ describe 'invoices index page' do
     end
 
     it 'for has valid attributes and hint with calculated total amount' do
-      visit invoices_path
+      visit invoice_path(invoice)
       click_on 'Complete Invoice'
       within '#new_transaction' do
         select category.name, from: 'transaction[category_id]'

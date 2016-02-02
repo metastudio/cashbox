@@ -8,7 +8,7 @@ describe 'Edit invoice', js: true do
 
   before do
     sign_in user
-    visit invoices_path
+    visit invoice_path(invoice)
   end
 
   context 'Edit invoice' do
