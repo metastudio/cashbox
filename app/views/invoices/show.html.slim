@@ -9,7 +9,7 @@
       class: 'btn btn-default'
     = link_to 'Back', invoices_path, class: 'btn btn-primary'
 
-  h2 = "Invoice ##{@invoice.number} #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
+  h2 = "Invoice #{@invoice.number.present? ? '#' + @invoice.number : ''} #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
 
 = render 'invoices/invoice_body', invoice: @invoice
 
