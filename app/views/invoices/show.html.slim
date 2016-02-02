@@ -6,7 +6,7 @@
     = link_to 'Edit', edit_invoice_path(@invoice),
       class: 'btn btn-default'
     = link_to 'Download as PDF', invoice_path(@invoice, format: :pdf),
-      class: 'btn btn-default'
+      class: 'btn btn-default', target: '_blank'
     = link_to 'Back', invoices_path, class: 'btn btn-primary'
 
   h2 = "Invoice ##{@invoice.number} #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
