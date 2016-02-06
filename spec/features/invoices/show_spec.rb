@@ -45,5 +45,18 @@ describe 'Invoice show page' do
         expect(subject).to have_content("Invoice ##{invoice.number}")
       end
     end
+
+    context 'not show number # if number is empty' do
+      let!(:invoice) { create :invoice, :with_items, number: '', organization: org }
+
+      before do
+        visit invoice_path(invoice, format: :pdf, debug: true)
+      end
+
+      it 'show Invoice title without #' do
+        expect(subject).to have_content("Invoice")
+        expect(subject).not_to have_content("#")
+      end
+    end
   end
 end
