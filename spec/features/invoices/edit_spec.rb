@@ -16,7 +16,7 @@ describe 'Edit invoice', js: true do
       click_on 'Edit'
     end
 
-    it { expect(page).to have_content 'Edit invoice' }
+    it { expect(page).to have_content "Invoice ##{invoice.number} #{invoice.customer} / Edit" }
     it { expect(page).to have_content 'Invoice items' }
     it { expect(page).to have_link 'Add item' }
 
