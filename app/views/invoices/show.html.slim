@@ -5,6 +5,9 @@
       class: 'btn btn-danger'
     = link_to 'Edit', edit_invoice_path(@invoice),
       class: 'btn btn-default'
+    - if @invoice.income_transaction.nil? && @invoice.paid_at.blank?
+        = link_to 'Complete Invoice', new_transaction_path(invoice_id: @invoice.id),
+          remote: true, class: 'btn btn-primary btn-small'
     = link_to 'Download as PDF', invoice_path(@invoice, format: :pdf),
       class: 'btn btn-default', target: '_blank'
     = link_to 'Back', invoices_path, class: 'btn btn-primary'
@@ -15,3 +18,5 @@
 
 = content_for :sidebar
   = render 'home/sidebar'
+
+= render 'transactions/modal_form'
