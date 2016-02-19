@@ -2,7 +2,9 @@
   .col-sm-6.col-sm-offset-3
     .page-header
       h2
-        => link_to "Invoice ##{@invoice.number.present? ? '#' + @invoice.number : ''} #{@invoice.customer.to_s}", invoice_path(@invoice)
+        => link_to 'Invoices', invoices_path
+        | /
+        =<> link_to "Invoice ##{@invoice.number.present? ? '#' + @invoice.number : ''} #{@invoice.customer.to_s}", invoice_path(@invoice)
         | / Edit
 
     = render 'form'
