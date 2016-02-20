@@ -3,6 +3,9 @@
     = link_to 'New Invoice', new_invoice_path, class: 'btn btn-success'
   h1 Listing invoices
 
+ul.nav.nav-tabs
+  = nav_link 'All Invoices', invoices_path
+  = nav_link "Unpaid (#{unpaid_invoices.count})", unpaid_invoices_path
 - if @invoices.present?
   table.table.table-stripped.table-hover.invoices#invoices_list
     thead

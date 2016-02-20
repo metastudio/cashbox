@@ -6,6 +6,11 @@ class InvoicesController < ApplicationController
     @invoices = current_organization.invoices.ordered.page(params[:page]).per(10)
   end
 
+  def unpaid
+    @invoices = current_organization.invoices.unpaid.ordered.page(params[:page]).per(10)
+    render :index
+  end
+
   def new
     @invoice = current_organization.invoices.build
   end

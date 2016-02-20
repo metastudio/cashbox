@@ -127,4 +127,29 @@ describe 'invoices index page' do
       end
     end
   end
+
+  describe 'Invoices filtering' do
+    let!(:unpaid) { create :invoice, organization: org }
+    let!(:paid) { create :invoice, :paid, organization: org }
+
+    before do
+      visit invoices_path
+    end
+
+    it "displays all invoices" do
+      expect(page).to have_css "#invoice_#{unpaid.id}"
+      expect(page).to have_css "#invoice_#{paid.id}"
+    end
+
+    context 'select unpaid only' do
+      before do
+        click_link "Unpaid (1)"
+      end
+
+      it "displays unpaid invoices only" do
+        expect(page).to have_css "#invoice_#{unpaid.id}"
+        expect(page).to have_no_css "#invoice_#{paid.id}"
+      end
+    end
+  end
 end

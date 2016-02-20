@@ -43,6 +43,7 @@ class Invoice < ActiveRecord::Base
   validates :ends_at, date: { after_or_equal_to: :starts_at }, if: :starts_at
 
   scope :ordered, -> { order('created_at DESC') }
+  scope :unpaid, -> { where(paid_at: nil) }
 
   before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
