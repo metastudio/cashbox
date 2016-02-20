@@ -158,6 +158,10 @@ FactoryGirl.define do
     trait :with_items do
       invoice_items { create_list :invoice_item, 3 }
     end
+
+    trait :paid do
+      paid_at { Time.now }
+    end
   end
 
   sequence(:task_description) { |n| "Test description #{n}" }
