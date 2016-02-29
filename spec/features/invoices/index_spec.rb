@@ -152,4 +152,196 @@ describe 'invoices index page' do
       end
     end
   end
+
+  describe 'Invoices sorting' do
+    context 'by customer name' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org }
+
+      before do
+        visit invoices_path
+        within "#customer_col_head" do
+          find('a.sort-up').click
+        end
+      end
+
+      it "sorts by customer name asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Adam'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Eve'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          within "#customer_col_head" do
+            find('a.sort-down').click
+          end
+        end
+
+        it "sorts by customer name desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Eve'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Adam'
+          end
+        end
+      end
+    end
+
+    context 'by date range' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, ends_at: 1.day.ago }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, ends_at: 2.days.ago }
+
+      before do
+        visit invoices_path
+        within "#date_range_col_head" do
+          find('a.sort-up').click
+        end
+      end
+
+      it "sorts by date range asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Eve'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Adam'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          within "#date_range_col_head" do
+            find('a.sort-down').click
+          end
+        end
+
+        it "sorts by date range desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Adam'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Eve'
+          end
+        end
+      end
+    end
+
+    context 'by invoice total' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, amount_cents: 20 }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, amount_cents: 10 }
+
+      before do
+        visit invoices_path
+        within "#invoice_total_col_head" do
+          find('a.sort-up').click
+        end
+      end
+
+      it "sorts by invoice total asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Eve'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Adam'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          within "#invoice_total_col_head" do
+            find('a.sort-down').click
+          end
+        end
+
+        it "sorts by invoice total desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Adam'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Eve'
+          end
+        end
+      end
+    end
+
+    context 'by sent date' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, sent_at: 2.days.ago }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, sent_at: 1.day.ago }
+
+      before do
+        visit invoices_path
+        within "#sent_date_col_head" do
+          find('a.sort-up').click
+        end
+      end
+
+      it "sorts by sent date asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Adam'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Eve'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          within "#sent_date_col_head" do
+            find('a.sort-down').click
+          end
+        end
+
+        it "sorts by sent date desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Eve'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Adam'
+          end
+        end
+      end
+    end
+
+    context 'by paid date' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, paid_at: 2.days.ago }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, paid_at: 1.day.ago }
+
+      before do
+        visit invoices_path
+        within "#paid_date_col_head" do
+          find('a.sort-up').click
+        end
+      end
+
+      it "sorts by paid date asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Adam'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Eve'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          within "#paid_date_col_head" do
+            find('a.sort-down').click
+          end
+        end
+
+        it "sorts by paid date desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Eve'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Adam'
+          end
+        end
+      end
+    end
+  end
 end

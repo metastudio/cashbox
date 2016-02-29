@@ -49,6 +49,7 @@ gem 'validates_overlap'
 gem 'date_validator'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem 'font-awesome-rails', '~>4.5.0.1'
 
 group :development, :test do
   gem 'rspec-rails'
