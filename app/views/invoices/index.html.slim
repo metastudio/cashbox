@@ -5,16 +5,16 @@
 
 ul.nav.nav-tabs
   = nav_link 'All Invoices', invoices_path
-  = nav_link "Unpaid (#{unpaid_invoices.count})", unpaid_invoices_path
+  = nav_link "Unpaid (#{unpaid_invoices.count})", invoices_path(q: { unpaid: true })
 - if @invoices.present?
   table.table.table-stripped.table-hover.invoices#invoices_list
     thead
       tr
-        th#customer_col_head= sortable 'Customer', 'customer'
-        th#date_range_col_head[colspan='2']= sortable 'Date range', 'date_range'
-        th#invoice_total_col_head= sortable 'Invoice total', 'invoice_total'
-        th#sent_date_col_head= sortable 'Sent date', 'sent_date'
-        th#paid_date_col_head= sortable 'Paid date', 'paid_date'
+        th#customer_col_head= sort_link(@q, :customer_name, 'Customer')
+        th#date_range_col_head[colspan='2']= sort_link(@q, :ends_at, 'Date range')
+        th#invoice_total_col_head= sort_link(@q, :amount_cents, 'Invoice total')
+        th#sent_date_col_head= sort_link(@q, :sent_at, 'Sent date')
+        th#paid_date_col_head= sort_link(@q, :paid_at, 'Paid date')
         th
     tbody
       = render @invoices

@@ -10,9 +10,9 @@ describe 'invoices index page' do
 
   include_context 'invoices pagination'
   it_behaves_like 'paginateable' do
-    let!(:list)      { create_list :invoice, invoices_count, organization: org }
+    let!(:list)      { create_list(:invoice, invoices_count, organization: org); org.invoices.ransack({ customer_name: :asc }).result  }
     let(:list_class) { '.invoices' }
-    let(:list_page)  { invoices_path }
+    let(:list_page)  { invoices_path(q: {customer_name: :asc}) }
   end
 
   context "show only current organization's invoices" do
@@ -161,7 +161,7 @@ describe 'invoices index page' do
       before do
         visit invoices_path
         within "#customer_col_head" do
-          find('a.sort-up').click
+          click_link 'Customer'
         end
       end
 
@@ -177,7 +177,7 @@ describe 'invoices index page' do
       context 'sort desc' do
         before do
           within "#customer_col_head" do
-            find('a.sort-down').click
+            click_link 'Customer'
           end
         end
 
@@ -198,33 +198,29 @@ describe 'invoices index page' do
 
       before do
         visit invoices_path
-        within "#date_range_col_head" do
-          find('a.sort-up').click
-        end
+        click_link 'Date range'
       end
 
       it "sorts by date range asc" do
         within all('#invoices_list tr.invoice').first do
-          expect(page).to have_content 'Eve'
+          expect(page).to have_content 'Adam'
         end
         within all('#invoices_list tr.invoice').last do
-          expect(page).to have_content 'Adam'
+          expect(page).to have_content 'Eve'
         end
       end
 
       context 'sort desc' do
         before do
-          within "#date_range_col_head" do
-            find('a.sort-down').click
-          end
+          click_link 'Date range'
         end
 
         it "sorts by date range desc" do
           within all('#invoices_list tr.invoice').first do
-            expect(page).to have_content 'Adam'
+            expect(page).to have_content 'Eve'
           end
           within all('#invoices_list tr.invoice').last do
-            expect(page).to have_content 'Eve'
+            expect(page).to have_content 'Adam'
           end
         end
       end
@@ -236,9 +232,7 @@ describe 'invoices index page' do
 
       before do
         visit invoices_path
-        within "#invoice_total_col_head" do
-          find('a.sort-up').click
-        end
+        click_link 'Invoice total'
       end
 
       it "sorts by invoice total asc" do
@@ -252,9 +246,7 @@ describe 'invoices index page' do
 
       context 'sort desc' do
         before do
-          within "#invoice_total_col_head" do
-            find('a.sort-down').click
-          end
+          click_link 'Invoice total'
         end
 
         it "sorts by invoice total desc" do
@@ -274,9 +266,7 @@ describe 'invoices index page' do
 
       before do
         visit invoices_path
-        within "#sent_date_col_head" do
-          find('a.sort-up').click
-        end
+        click_link 'Sent date'
       end
 
       it "sorts by sent date asc" do
@@ -290,9 +280,7 @@ describe 'invoices index page' do
 
       context 'sort desc' do
         before do
-          within "#sent_date_col_head" do
-            find('a.sort-down').click
-          end
+          click_link 'Sent date'
         end
 
         it "sorts by sent date desc" do
@@ -312,9 +300,7 @@ describe 'invoices index page' do
 
       before do
         visit invoices_path
-        within "#paid_date_col_head" do
-          find('a.sort-up').click
-        end
+        click_link 'Paid date'
       end
 
       it "sorts by paid date asc" do
@@ -328,9 +314,7 @@ describe 'invoices index page' do
 
       context 'sort desc' do
         before do
-          within "#paid_date_col_head" do
-            find('a.sort-down').click
-          end
+          click_link 'Paid date'
         end
 
         it "sorts by paid date desc" do

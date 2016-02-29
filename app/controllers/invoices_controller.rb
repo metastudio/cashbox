@@ -1,15 +1,11 @@
 class InvoicesController < ApplicationController
   before_action :set_invoice, only: [:edit, :show, :update, :destroy]
   before_action :require_organization
-  before_action :fetch_invoices, only: [:index, :unpaid]
-  before_action :order_invoices, only: [:index, :unpaid]
 
   def index
-  end
-
-  def unpaid
-    @invoices = @invoices.unpaid
-    render :index
+    @q = current_organization.invoices.ransack(params[:q])
+    @q.sorts = 'ends_at asc' if @q.sorts.empty?
+    @invoices = @q.result.page(params[:page]).per(10)
   end
 
   def new
@@ -68,39 +64,5 @@ class InvoicesController < ApplicationController
       :currency, :amount, :sent_at, :paid_at, :customer_name, :number,
       invoice_items_attributes: [:id, :customer_id, :customer_name, :amount,
         :date, :hours, :description, :_destroy])
-  end
-
-  def fetch_invoices
-    @invoices = current_organization.invoices.page(params[:page]).per(10)
-  end
-
-  def order_invoices
-    case params[:order]
-    when 'customer'
-      @invoices = @invoices.customer_name_asc if params[:direction] == 'asc'
-      @invoices = @invoices.customer_name_desc if params[:direction] == 'desc'
-
-    when 'date_range'
-      @invoices = @invoices.ends_at_asc if params[:direction] == 'asc'
-      @invoices = @invoices.ends_at_desc if params[:direction] == 'desc'
-
-    when 'invoice_total'
-      @invoices = @invoices.less_amount if params[:direction] == 'asc'
-      @invoices = @invoices.more_amount if params[:direction] == 'desc'
-
-    when 'sent_date'
-      @invoices = @invoices.sent_at_asc if params[:direction] == 'asc'
-      @invoices = @invoices.sent_at_desc if params[:direction] == 'desc'
-
-    when 'paid_date'
-      @invoices = @invoices.paid_at_asc if params[:direction] == 'asc'
-      @invoices = @invoices.paid_at_desc if params[:direction] == 'desc'
-
-    else
-      @invoices = @invoices.ordered
-    end
-
-
-    return false
   end
 end

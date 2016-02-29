@@ -84,6 +84,10 @@ class Invoice < ActiveRecord::Base
     end
   end
 
+  def self.ransackable_scopes(auth_object=nil)
+    %i(unpaid)
+  end
+
   def strip_number
     self.number.strip! if self.number.present?
   end
