@@ -152,4 +152,8 @@ describe 'invoices index page' do
       end
     end
   end
+
+  describe "Debtor customers" do
+
+  end
 end
