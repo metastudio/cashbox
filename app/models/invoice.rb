@@ -44,16 +44,7 @@ class Invoice < ActiveRecord::Base
 
   scope :ordered, -> { order('created_at DESC') }
   scope :unpaid, -> { where(paid_at: nil) }
-  scope :less_amount, -> { order('amount_cents ASC') }
-  scope :more_amount, -> { order('amount_cents DESC') }
-  scope :customer_name_asc, -> { includes(:customer).order('customers.name ASC') }
-  scope :customer_name_desc, -> { includes(:customer).order('customers.name DESC') }
-  scope :ends_at_asc, -> { order('ends_at ASC') }
-  scope :ends_at_desc, -> { order('ends_at DESC') }
-  scope :sent_at_asc, -> { order('sent_at ASC') }
-  scope :sent_at_desc, -> { order('sent_at DESC') }
-  scope :paid_at_asc, -> { order('paid_at ASC') }
-  scope :paid_at_desc, -> { order('paid_at DESC') }
+
 
   before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
