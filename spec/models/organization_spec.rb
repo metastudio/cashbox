@@ -202,6 +202,7 @@ describe Organization do
 
   describe "#by_customers(categories_type, :income)" do
     let(:org) { create :organization, default_currency: 'USD' }
+    let!(:zero_transaction) { create :transaction, :with_customer, :income, bank_account: account, amount: 0 }
 
     context 'def currency' do
       let(:account){ create :bank_account, organization: org, currency: 'USD',
@@ -278,6 +279,7 @@ describe Organization do
 
   describe "#by_customers(categories_type, :expense)" do
     let(:org)    { create :organization, default_currency: 'USD' }
+    let!(:zero_transaction) { create :transaction, :with_customer, :income, bank_account: account, amount: 0 }
 
     context 'def currency' do
       let(:account){ create :bank_account, organization: org, currency: 'USD',
@@ -354,6 +356,7 @@ describe Organization do
 
   describe "#by_categories(categories_type, :income)" do
     let(:org) { create :organization, default_currency: 'USD' }
+    let!(:zero_transaction) { create :transaction, :with_customer, :income, bank_account: account, amount: 0 }
 
     context 'def currency' do
       let(:account){ create :bank_account, organization: org, currency: 'USD',
@@ -428,6 +431,7 @@ describe Organization do
 
   describe "#by_categories(categories_type, :expense)" do
     let(:org)    { create :organization, default_currency: 'USD' }
+    let!(:zero_transaction) { create :transaction, :with_customer, :income, bank_account: account, amount: 0 }
 
     context 'def currency' do
       let(:account){ create :bank_account, organization: org, currency: 'USD',
