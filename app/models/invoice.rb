@@ -40,10 +40,11 @@ class Invoice < ActiveRecord::Base
     less_than_or_equal_to: Dictionaries.money_max }
   validates :currency, inclusion: { in: Dictionaries.currencies,
     message: "%{value} is not a valid currency" }
-  validates :starts_at, :ends_at, overlap: { scope: 'customer_id', message_content: 'overlaps with another Invoice' }
   validates :ends_at, date: { after_or_equal_to: :starts_at }, if: :starts_at
 
   scope :ordered, -> { order('created_at DESC') }
+  scope :unpaid, -> { where(paid_at: nil) }
+
 
   before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
@@ -72,6 +73,10 @@ class Invoice < ActiveRecord::Base
     else
       all
     end
+  end
+
+  def self.ransackable_scopes(auth_object=nil)
+    %i(unpaid)
   end
 
   def strip_number

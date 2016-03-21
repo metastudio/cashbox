@@ -10,4 +10,8 @@ module InvoicesHelper
       'overdue'
     end
   end
+
+  def unpaid_invoices
+    current_organization.invoices.unpaid
+  end
 end

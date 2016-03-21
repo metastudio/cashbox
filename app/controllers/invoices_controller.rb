@@ -3,7 +3,9 @@ class InvoicesController < ApplicationController
   before_action :require_organization
 
   def index
-    @invoices = current_organization.invoices.ordered.page(params[:page]).per(10)
+    @q = current_organization.invoices.ransack(params[:q])
+    @q.sorts = 'ends_at asc' if @q.sorts.empty?
+    @invoices = @q.result.page(params[:page]).per(10)
   end
 
   def new

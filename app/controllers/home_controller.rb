@@ -4,6 +4,7 @@ class HomeController < ApplicationController
 
   def show
     @q = current_organization.transactions.ransack(params[:q])
+    @q.sorts = ['date desc', 'created_at desc'] if @q.sorts.blank?
     @transactions = @q.result
     @curr_flow = @transactions.flow_ordered(current_organization.default_currency) if params[:q]
     @transactions = @transactions.without_out(@q.bank_account_id_in).page(params[:page]).per(50)

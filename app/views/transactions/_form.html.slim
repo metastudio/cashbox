@@ -25,10 +25,7 @@
       = t.input :customer_id, as: :hidden
       = t.input :comment, as: :hidden
       = t.input :date, as: :hidden
-      = t.association :bank_account, as: :grouped_select,
-        collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
-        prompt: 'Bank account', group_method: :last, label: 'From',
-        selected: t.object.bank_account_id
+      = t.input :bank_account, disabled: true
   - elsif @invoice.present? || f.object.invoice_id
     = f.input :customer_name, disabled: true,
       input_html: { value: current_organization.find_customer_name_by_id(f.object.customer_id) }
@@ -38,7 +35,9 @@
       value: @q.nil? ? current_organization.find_customer_name_by_id(f.object.customer_id) \
         : (@q.customer_id_eq ? current_organization.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
-  - if @invoice.present? || f.object.invoice_id
+  - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
+    = f.input :bank_account, disabled: true 
+  - elsif @invoice.present? || f.object.invoice_id
     = f.association :bank_account, as: :grouped_select,
       collection: current_organization.bank_accounts.by_currency(@invoice.present? ? @invoice.currency \
       : current_organization.invoices.find_by(id: f.object.invoice_id).try(:currency)).visible.positioned.grouped_by_currency(current_organization.default_currency),

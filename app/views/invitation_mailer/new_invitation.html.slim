@@ -1,4 +1,4 @@
 = "You are invited to #{h @organization.name} as #{h @invitation.role}. "
 
 = "To accept, please click the following link "
-= link_to 'Accept', accept_invitation_url(token: @invitation.token)
+= link_to 'Accept', accept_invitation_url(token: @invitation.token), target: '_blank'
