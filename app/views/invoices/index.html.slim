@@ -15,7 +15,6 @@ ul.nav.nav-tabs
         th#invoice_total_col_head= sort_link(@q, :amount_cents, 'Invoice total')
         th#sent_date_col_head= sort_link(@q, :sent_at, 'Sent date')
         th#paid_date_col_head= sort_link(@q, :paid_at, 'Paid date')
-        th
     tbody
       = render @invoices
 - else
