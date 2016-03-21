@@ -103,7 +103,7 @@ class Organization < ActiveRecord::Base
     selection = transactions.unscope(:order).period(period).
       select("#{sum} as total, customers.name as cust_name, customers.id as customer_id, bank_accounts.currency as curr").
       joins(:customer).
-      where('transactions.category_id in (?) and transactions.amount_cents > 0', categories.send(categories_type).pluck(:id)).
+      where('transactions.category_id in (?) and abs(transactions.amount_cents) > 0', categories.send(categories_type).pluck(:id)).
       group('customers.id, bank_accounts.id').map do |transaction|
         {
           total:         transaction.total.to_f,
@@ -138,7 +138,7 @@ class Organization < ActiveRecord::Base
     selection = transactions.unscope(:order).period(period).
       select("#{sum} as total, categories.name as cat_name, categories.id as cat_id, bank_accounts.currency as curr").
       joins(:category).
-      where('transactions.category_id in (?) and transactions.amount_cents > 0', categories.send(categories_type).pluck(:id)).
+      where('transactions.category_id in (?) and abs(transactions.amount_cents) > 0', categories.send(categories_type).pluck(:id)).
       group('categories.id, bank_accounts.id').map do |transaction|
         {
           total:         transaction.total.to_f,
