@@ -45,6 +45,7 @@ class Invoice < ActiveRecord::Base
   scope :ordered, -> { order('created_at DESC') }
   scope :unpaid, -> { where(paid_at: nil) }
 
+
   before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
   after_save :set_currency
@@ -72,6 +73,10 @@ class Invoice < ActiveRecord::Base
     else
       all
     end
+  end
+
+  def self.ransackable_scopes(auth_object=nil)
+    %i(unpaid)
   end
 
   def strip_number

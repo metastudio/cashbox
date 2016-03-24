@@ -10,9 +10,9 @@ describe 'invoices index page' do
 
   include_context 'invoices pagination'
   it_behaves_like 'paginateable' do
-    let!(:list)      { create_list :invoice, invoices_count, organization: org }
+    let!(:list)      { create_list(:invoice, invoices_count, organization: org); org.invoices.ransack({ customer_name: :asc }).result  }
     let(:list_class) { '.invoices' }
-    let(:list_page)  { invoices_path }
+    let(:list_page)  { invoices_path(q: {customer_name: :asc}) }
   end
 
   context "show only current organization's invoices" do
@@ -170,6 +170,182 @@ describe 'invoices index page' do
 
       within "#debtor_customer_#{invoice2.customer_id}" do
         expect(page).to have_content "#{invoice2.customer.name} #{invoice2_money.format}(#{invoice2_money.exchange_to('USD').format})"
+      end
+    end
+  end
+
+  describe 'Invoices sorting' do
+    context 'by customer name' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org }
+
+      before do
+        visit invoices_path
+        within "#customer_col_head" do
+          click_link 'Customer'
+        end
+      end
+
+      it "sorts by customer name asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Adam'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Eve'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          within "#customer_col_head" do
+            click_link 'Customer'
+          end
+        end
+
+        it "sorts by customer name desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Eve'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Adam'
+          end
+        end
+      end
+    end
+
+    context 'by date range' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, ends_at: 1.day.ago }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, ends_at: 2.days.ago }
+
+      before do
+        visit invoices_path
+        click_link 'Date range'
+      end
+
+      it "sorts by date range asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Adam'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Eve'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          click_link 'Date range'
+        end
+
+        it "sorts by date range desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Eve'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Adam'
+          end
+        end
+      end
+    end
+
+    context 'by invoice total' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, amount_cents: 20 }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, amount_cents: 10 }
+
+      before do
+        visit invoices_path
+        click_link 'Invoice total'
+      end
+
+      it "sorts by invoice total asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Eve'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Adam'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          click_link 'Invoice total'
+        end
+
+        it "sorts by invoice total desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Adam'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Eve'
+          end
+        end
+      end
+    end
+
+    context 'by sent date' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, sent_at: 2.days.ago }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, sent_at: 1.day.ago }
+
+      before do
+        visit invoices_path
+        click_link 'Sent date'
+      end
+
+      it "sorts by sent date asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Adam'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Eve'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          click_link 'Sent date'
+        end
+
+        it "sorts by sent date desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Eve'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Adam'
+          end
+        end
+      end
+    end
+
+    context 'by paid date' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, paid_at: 2.days.ago }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, paid_at: 1.day.ago }
+
+      before do
+        visit invoices_path
+        click_link 'Paid date'
+      end
+
+      it "sorts by paid date asc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Adam'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Eve'
+        end
+      end
+
+      context 'sort desc' do
+        before do
+          click_link 'Paid date'
+        end
+
+        it "sorts by paid date desc" do
+          within all('#invoices_list tr.invoice').first do
+            expect(page).to have_content 'Eve'
+          end
+          within all('#invoices_list tr.invoice').last do
+            expect(page).to have_content 'Adam'
+          end
+        end
       end
     end
   end
