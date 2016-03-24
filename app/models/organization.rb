@@ -211,6 +211,11 @@ class Organization < ActiveRecord::Base
     ''
   end
 
+  def invoice_debtors
+    debtors_ids = self.invoices.unpaid.pluck(:customer_id).uniq
+    Customer.where(id: debtors_ids)
+  end
+
   def to_s
     name.truncate(30)
   end

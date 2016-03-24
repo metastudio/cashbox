@@ -154,6 +154,23 @@ describe 'invoices index page' do
   end
 
   describe "Debtor customers" do
+    let!(:invoice1) { create :invoice, organization: org, currency: 'EUR', amount_cents: 3000 }
+    let!(:invoice2) { create :invoice, organization: org, currency: 'RUB', amount_cents: 10000 }
+    let(:invoice1_money) { Money.new(3000, 'EUR') }
+    let(:invoice2_money) { Money.new(10000, 'RUB') }
+    before do
+      Money.default_currency = :usd
+      visit invoices_path
+    end
 
+    it "displays debtors" do
+      within "#debtor_customer_#{invoice1.customer_id}" do
+        expect(page).to have_content "#{invoice1.customer.name} #{invoice1_money.format}(#{invoice1_money.exchange_to('USD').format})"
+      end
+
+      within "#debtor_customer_#{invoice2.customer_id}" do
+        expect(page).to have_content "#{invoice2.customer.name} #{invoice2_money.format}(#{invoice2_money.exchange_to('USD').format})"
+      end
+    end
   end
 end
