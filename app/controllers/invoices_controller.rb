@@ -1,11 +1,13 @@
 class InvoicesController < ApplicationController
   before_action :set_invoice, only: [:edit, :show, :update, :destroy]
   before_action :require_organization
+  before_action :find_invoices, only: [:index, :unpaid]
 
   def index
-    @q = current_organization.invoices.ransack(params[:q])
-    @q.sorts = 'ends_at asc' if @q.sorts.empty?
-    @invoices = @q.result.page(params[:page]).per(10)
+  end
+
+  def unpaid
+    render :index
   end
 
   def new
@@ -57,6 +59,12 @@ class InvoicesController < ApplicationController
 
   def set_invoice
     @invoice = current_organization.invoices.find(params[:id])
+  end
+
+  def find_invoices
+    @q = current_organization.invoices.ransack(params[:q])
+    @q.sorts = 'ends_at asc' if @q.sorts.empty?
+    @invoices = @q.result.page(params[:page]).per(10)
   end
 
   def invoice_params
