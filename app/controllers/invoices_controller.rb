@@ -4,7 +4,7 @@ class InvoicesController < ApplicationController
 
   def index
     @q = current_organization.invoices.ransack(params[:q])
-    @q.sorts = 'ends_at asc' if @q.sorts.empty?
+    @q.sorts = 'ends_at desc' if @q.sorts.empty?
     @invoices = @q.result.page(params[:page]).per(10)
   end
 
