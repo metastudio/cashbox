@@ -49,7 +49,7 @@ describe Organization do
       # not only within RUB
       it 'return only present currency rates' do
         expect(org.exchange_rates.keys).to eq ['RUB_TO_USD', 'USD_TO_RUB', 'RUB_TO_EUR', 'EUR_TO_RUB',
-          'RUB_TO_JPY', 'JPY_TO_RUB']
+          'RUB_TO_JPY', 'JPY_TO_RUB', 'EUR_TO_USD', 'USD_TO_EUR']
       end
     end
   end
