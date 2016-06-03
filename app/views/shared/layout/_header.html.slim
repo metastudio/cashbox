@@ -16,6 +16,7 @@ header
             = render 'shared/layout/total_balance'
           ul.nav.navbar-nav.navbar-right
             - if current_organization
+              = active_link_to 'Invoices', invoices_path, wrap_tag: :li, active: [['invoices']]
               = active_link_to 'Statistics', statistics_path, wrap_tag: :li, active: [['statistics']]
             li.dropdown
               = link_to '#', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
