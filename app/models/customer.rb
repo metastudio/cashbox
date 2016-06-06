@@ -26,11 +26,26 @@ class Customer < ActiveRecord::Base
   scope :ordered, -> { order('created_at DESC') }
   scope :with_name, ->(name) { where('name ilike ?', "%#{name}%") }
 
+
   # gem 'paranoia' doesn't run validation callbacks on restore
   before_restore :run_validations
 
   def to_s
     name.truncate(30)
+  end
+
+  def invoices_debt
+    str = name
+    invoices.unpaid.group(:currency).sum(:amount_cents).each do |currency, amount_cents|
+      m = Money.new(amount_cents, currency)
+      if Money.default_currency.iso_code == currency
+        str += " #{m.format}"
+      else
+        str += " #{m.format}(#{m.exchange_to(Money.default_currency).format})"
+      end
+    end
+
+    str
   end
 
   private
