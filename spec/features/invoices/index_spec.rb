@@ -175,6 +175,24 @@ describe 'invoices index page' do
   end
 
   describe 'Invoices sorting' do
+    context 'default order' do
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, ends_at: 2.days.ago }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, ends_at: 1.day.ago }
+
+      before do
+        visit invoices_path
+      end
+
+      it "sorts by date range desc" do
+        within all('#invoices_list tr.invoice').first do
+          expect(page).to have_content 'Eve'
+        end
+        within all('#invoices_list tr.invoice').last do
+          expect(page).to have_content 'Adam'
+        end
+      end
+    end
+
     context 'by customer name' do
       let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org }
       let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org }
@@ -224,10 +242,10 @@ describe 'invoices index page' do
 
       it "sorts by date range asc" do
         within all('#invoices_list tr.invoice').first do
-          expect(page).to have_content 'Adam'
+          expect(page).to have_content 'Eve'
         end
         within all('#invoices_list tr.invoice').last do
-          expect(page).to have_content 'Eve'
+          expect(page).to have_content 'Adam'
         end
       end
 
@@ -238,10 +256,10 @@ describe 'invoices index page' do
 
         it "sorts by date range desc" do
           within all('#invoices_list tr.invoice').first do
-            expect(page).to have_content 'Eve'
+            expect(page).to have_content 'Adam'
           end
           within all('#invoices_list tr.invoice').last do
-            expect(page).to have_content 'Adam'
+            expect(page).to have_content 'Eve'
           end
         end
       end
