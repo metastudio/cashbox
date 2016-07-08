@@ -11,6 +11,10 @@
   cursor: pointer;
 }
 
+@media (max-width: 350px) {
+  .transactions_list { font-size: 10px;}
+}
+
 #toggle_filter {
   text-decoration:none;
 }

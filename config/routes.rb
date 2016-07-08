@@ -37,6 +37,7 @@ Cashbox::Application.routes.draw do
     get 'autocomplete', on: :collection
   end
   resources :invoices do
+    get 'unpaid', on: :collection
     resources :invoice_items, except: :show
   end
   resources :invitations, only: [:new, :create, :destroy]

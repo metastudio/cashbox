@@ -4,8 +4,9 @@
   h1 Listing invoices
 
 ul.nav.nav-tabs
-  = nav_link 'All Invoices', invoices_path
-  = nav_link "Unpaid (#{unpaid_invoices.count})", invoices_path(q: { unpaid: true })
+  = active_link_to 'Invoices', invoices_path, wrap_tag: :li, active: [['invoices'], ['index']]
+  = active_link_to "Unpaid (#{unpaid_invoices.count})", unpaid_invoices_path(q: {unpaid: true}),
+    wrap_tag: :li, active: [['invoices'], ['unpaid']]
 - if @invoices.present?
   table.table.table-stripped.table-hover.invoices#invoices_list
     thead
@@ -24,4 +25,4 @@ ul.nav.nav-tabs
   = paginate @invoices
 
 = content_for :sidebar
-  = render 'home/sidebar'
+  = render 'debtors'
