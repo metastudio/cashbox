@@ -6,7 +6,7 @@
 - if @bank_accounts.present?
   .bank-accounts
     - @bank_accounts.grouped_by_currency(current_organization.default_currency).each do |curr_with_accounts|
-      table.table.table-stripped.table-hover
+      table.table.table-stripped.table-hover.responsive-table data-min=8 data-max=18
         thead
           tr
             th.col-sm-2 Name
