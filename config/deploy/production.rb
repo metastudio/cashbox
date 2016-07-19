@@ -2,6 +2,7 @@
 set :stage, :production
 set :rails_env, :production
 set :branch, :production
+set :tmp_dir, '/tmp/cashbox_production'
 
 set :deploy_to, '/var/www/rails/cashbox.metastudiohq.com'
 
