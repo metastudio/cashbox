@@ -1,7 +1,9 @@
 tr.invoice id=dom_id(invoice) class=colorize_invoice(invoice) data-href=invoice_path(invoice)
   td = invoice.customer.to_s
-  td = l invoice.starts_at if invoice.starts_at
-  td = l invoice.ends_at
+  td
+    => l invoice.starts_at if invoice.starts_at
+    | -
+    =< l invoice.ends_at
   td = money_with_symbol(invoice.amount)
   td = l invoice.sent_at if invoice.sent_at
   td.paid_at = l invoice.paid_at if invoice.paid_at
