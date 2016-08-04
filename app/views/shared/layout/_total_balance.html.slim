@@ -1,17 +1,21 @@
 - if current_organization
   - total_amount = Money.new(0, current_organization.default_currency)
+
+  - content_for :dropdown_menu do
+    - Dictionaries.currencies.each_with_index do |curr, i|
+      - total = current_organization.bank_accounts.total_balance(curr)
+      - total_amount = total_amount + total.exchange_to(current_organization.default_currency)
+
+      li.no-wrap class=colorize_ba_amount(total)
+        => money_with_symbol total
+        - if curr != current_organization.default_currency
+          span.no-wrap
+            =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
+            = show_amount_with_tooltip(total) + ')'
+
   li.dropdown.dropdown-total#total_balance
     a.dropdown-toggle data-target="#dropdown-total" data-toggle="dropdown" href="#"
       = "Total: #{money_with_symbol total_amount}"
       b.caret
     ul.dropdown-menu
-      - Dictionaries.currencies.each_with_index do |curr, i|
-        - total = current_organization.bank_accounts.total_balance(curr)
-        - total_amount = total_amount + total.exchange_to(current_organization.default_currency)
-
-        li.no-wrap class=colorize_ba_amount(total)
-          => money_with_symbol total
-          - if curr != current_organization.default_currency
-            span.no-wrap
-              =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
-              = show_amount_with_tooltip(total) + ')'
+      = yield :dropdown_menu
