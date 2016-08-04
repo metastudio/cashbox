@@ -1,5 +1,5 @@
 - if transactions.present?
-  table.table.table-hover.transactions.responsive-table
+  table.table.table-hover.transactions.responsive-table data-min=8 data-max=18
     thead
       tr
         td = sort_link(@q, :amount_cents, 'Amount')
