@@ -36,7 +36,7 @@
         : (@q.customer_id_eq ? current_organization.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
   - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
-    = f.input :bank_account, disabled: true 
+    = f.input :bank_account, disabled: true
   - elsif @invoice.present? || f.object.invoice_id
     = f.association :bank_account, as: :grouped_select,
       collection: current_organization.bank_accounts.by_currency(@invoice.present? ? @invoice.currency \
@@ -62,5 +62,8 @@
 
   = f.input :date, as: :string, placeholder: 'Date',
     input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date.to_date) : nil }
+
+  - if @invoice.present? || f.object.invoice_id
+    = link_to "Created from invoice", @invoice, class: 'pull-right'
 
   = f.input :invoice_id, as: :hidden
