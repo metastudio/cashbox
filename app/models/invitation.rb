@@ -25,7 +25,7 @@ class Invitation < ActiveRecord::Base
 
   validates :invited_by_id, :role, :email, presence: true
   validate :role_inclusion
-  validates :email, format: { with: Devise.email_regexp }, length: { maximum: 255 }
+  validates :email, format: { with: Devise.email_regexp }, length: { maximum: 319 }
   validate :email_uniq
 
   enumerize :role, in: [:user, :admin, :owner], default: :user, predicates: true
