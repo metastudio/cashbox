@@ -113,6 +113,7 @@ describe 'update transaction', js: true do
 
     it "view link to invoice after the fields" do
       expect(subject).to have_link("Created from invoice")
+      expect(find_link("Created from invoice")[:href]).to eq("/transactions/#{transaction.id}/edit")
     end
   end
 
