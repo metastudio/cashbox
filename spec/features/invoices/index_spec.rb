@@ -173,6 +173,14 @@ describe 'invoices index page' do
       end
     end
 
+    it "display all debtors sum" do
+      expect(page).to have_content "All customers: #{invoice1_money.format} (#{invoice1_money.exchange_to('USD').format} ); #{invoice2_money.format} (#{invoice2_money.exchange_to('USD').format} );"
+    end
+
+    it "display total debtors sum" do
+      expect(page).to have_content "Total: #{(invoice1_money.exchange_to('USD') + invoice2_money.exchange_to('USD')).format}"
+    end
+
     context 'there are no unpaid invoices' do
       let!(:invoice1) { create :invoice, :paid, organization: org, currency: 'EUR', amount_cents: 3000 }
       let!(:invoice2) { create :invoice, :paid, organization: org, currency: 'RUB', amount_cents: 10000 }

@@ -27,7 +27,11 @@ module LayoutHelper
   end
 
   def invoices_debt(debtor)
-    str = "#{debtor.name}:"
+    if debtor.is_a? Customer
+      str = "#{debtor.name}:"
+    else
+      str = "All customers:"
+    end
     cb = Money.default_bank
     def_curr = current_organization.default_currency
     debtor.invoices.unpaid.group(:currency).sum(:amount_cents).each do |currency, amount_cents|
@@ -43,6 +47,24 @@ module LayoutHelper
       end
     end
 
+    str.html_safe
+  end
+
+  def total_invoices_debt
+    str = "<strong>Total: "
+    total = 0
+    organization = current_organization
+    def_curr = organization.default_currency
+    organization.invoices.unpaid.group(:currency).sum(:amount_cents).each do |currency, amount_cents|
+      m = Money.new(amount_cents, currency)
+      if def_curr == currency
+        total += m
+      else
+        total += m.exchange_to(def_curr)
+      end
+    end
+    str += "#{total.format}"
+    str += "</strong>"
     str.html_safe
   end
 end
