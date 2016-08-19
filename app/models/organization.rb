@@ -156,43 +156,9 @@ class Organization < ActiveRecord::Base
     data.keys.size > 1 ? { data: data.values, ids: data.keys, currency_format: currency_format } : nil
   end
 
-  def data_balance
+  def data_balance(scale='months')
     period = 1.year.ago.to_date..Date.current.end_of_month
-    income_selection = transactions.unscope(:order).incomes.
-      select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date").
-      where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.receipt_id).
-      group('transactions.id, bank_accounts.id').map do |transaction|
-        {
-          date:           transaction.date,
-          total:          transaction.total,
-          currency:       transaction.curr
-        }
-      end
-    expense_selection = transactions.unscope(:order).expenses.
-      select("sum(abs(transactions.amount_cents)) as total, bank_accounts.currency as curr, transactions.date as date").
-      where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.transfer_out_id).
-      group('transactions.id, bank_accounts.id').map do |transaction|
-        {
-          date:           transaction.date,
-          total:          transaction.total,
-          currency:       transaction.curr
-        }
-      end
-
-    totals_selection = transactions.unscope(:order).
-      select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date").
-      where('DATE(date) BETWEEN ? AND ?', period.begin, period.end).
-      group('transactions.id, bank_accounts.id').map do |transaction|
-        {
-          date:           transaction.date,
-          total:          transaction.total,
-          currency:       transaction.curr
-        }
-      end
-
-    incomes = calc_to_def_currency_for_data_selection(income_selection)
-    expenses = calc_to_def_currency_for_data_selection(expense_selection)
-    totals = calc_to_def_currency_for_data_selection(totals_selection)
+    incomes, expenses, totals = balance_data_collection(period)
 
     total_sum = Money.new(0, self.default_currency)
     Dictionaries.currencies.each_with_index do |currency|
@@ -201,7 +167,7 @@ class Organization < ActiveRecord::Base
       total_sum += currency != self.default_currency ? total.exchange_to(self.default_currency) : total
     end
 
-    data = combine_by_months(period, incomes, expenses, totals, total_sum.to_f)
+    data = BalanceDataCombainer.new(period, incomes, expenses, totals, total_sum.to_f).by(scale)
     data.size > 1 ? { data: data, currency_format: currency_format } : nil
   end
 
@@ -283,9 +249,10 @@ class Organization < ActiveRecord::Base
   def calc_to_def_currency_for_data_selection(selection)
     hash = {}
     selection.each do |trans|
+      date = trans[:date].strftime('%b, %Y')
       trans[:total] = calc_to_def_currency(trans[:total], trans[:currency])
-      hash[trans[:date].strftime('%b, %Y')] = hash[trans[:date].strftime('%b, %Y')].nil? \
-        ? trans[:total] : hash[trans[:date].strftime('%b, %Y')] + trans[:total]
+      hash[date] = hash[date].nil? \
+        ? trans[:total] : hash[date] + trans[:total]
     end
     hash
   end
@@ -334,5 +301,33 @@ class Organization < ActiveRecord::Base
     currency = Money::Currency.find(default_currency)
     format = currency.symbol_first ? { prefix: currency.symbol, decimalSymbol: '.', groupingSymbol: ',' }
                                    : { suffix: currency.symbol, decimalSymbol: '.', groupingSymbol: ',' }
+  end
+
+  def balance_data_collection(period)
+    [:incomes, :expenses, :totals].map do |selection|
+      query = transactions.unscope(:order)
+      query = query.incomes if selection == :incomes
+      query = query.expenses if selection == :expenses
+      if selection == :expenses
+        query = query.select("sum(abs(transactions.amount_cents)) as total, bank_accounts.currency as curr, transactions.date as date")
+      else
+        query = query.select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date")
+      end
+      if selection == :incomes
+        query = query.where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.receipt_id)
+      elsif selection == :expenses
+        query = query.where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.transfer_out_id)
+      else
+        query = query.where('DATE(date) BETWEEN ? AND ?', period.begin, period.end)
+      end
+      query = query.group('transactions.id, bank_accounts.id').map do |transaction|
+          {
+            date:           transaction.date,
+            total:          transaction.total,
+            currency:       transaction.curr
+          }
+      end
+      calc_to_def_currency_for_data_selection(query)
+    end
   end
 end

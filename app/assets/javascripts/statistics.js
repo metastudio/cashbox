@@ -16,6 +16,9 @@ $(function () {
     drawChart($(this).data('period'), $(this).data('period') + '-totals-by-customers');
     drawBalanceChart($(this).data('period'), $(this).data('period') + '-balances-by-customers');
   });
+  $(document).on('click', '#balance_scale li a', function () {
+    drawBalanceChart($(this).data('scale'), 'main-balance');
+  })
 });
 
 var drawChart = function drawChart(period, element) {
@@ -99,20 +102,20 @@ var drawChart = function drawChart(period, element) {
   }
 };
 
-var drawBalanceChart = function drawBalanceChart(period, element) {
+var drawBalanceChart = function drawBalanceChart(scale, element) {
   element = document.getElementById(element);
   if (element) {
     $.ajax({
       url: element.getAttribute('data-url'),
       type: 'get',
-      data: { period: period }
+      data: { scale: scale }
     })
     .done(function(response) {
-      draw(response, element, period);
+      draw(response, element);
     })
   };
 
-  function draw(response, css_id, period) {
+  function draw(response, css_id) {
     if (response == null ) {
       $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
       return false;

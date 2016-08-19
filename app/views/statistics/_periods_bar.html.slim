@@ -1,6 +1,15 @@
 .row
   .col-md-12
     h4 Balance
+    .panel.with-nav-tabs
+      .panel-heading
+        ul.nav.nav-tabs#balance_scale
+          li.active
+            = link_to 'Months', '#months', data: { toggle: 'tab', scale: 'months' }
+          li
+            = link_to 'Years', '#years', data: { toggle: 'tab', scale: 'years' }
+          li
+            = link_to 'Quarters', '#quarters', data: { toggle: 'tab', scale: 'quarters' }
     .balance-chart#main-balance data-url=balance_statistics_path
     .panel.with-nav-tabs
       .panel-heading

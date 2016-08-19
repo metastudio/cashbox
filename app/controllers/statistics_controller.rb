@@ -5,7 +5,11 @@ class StatisticsController < ApplicationController
   end
 
   def balance
-    data = current_organization.data_balance
+    if params[:scale].present?
+      data = current_organization.data_balance(params[:scale])
+    else
+      data = current_organization.data_balance
+    end
     respond_to do |format|
       format.json { render json: data }
     end

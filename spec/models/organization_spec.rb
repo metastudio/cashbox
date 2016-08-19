@@ -10,6 +10,7 @@
 #
 
 require 'spec_helper'
+include DateLogic
 
 describe Organization do
   context 'association' do
@@ -100,6 +101,43 @@ describe Organization do
         end
       end
 
+      context 'current year' do
+        let!(:transfer) { create :transfer, bank_account_id: account.id, reference_id: other_account.id,
+          amount: 1000 }
+        let!(:inc_transaction) { create :transaction, :income, bank_account: account }
+        let!(:exp_transaction) { create :transaction, :expense, bank_account: account }
+        let!(:old_transaction) { create :transaction, :income, bank_account: account,
+          date: Date.current - 2.years }
+        let(:total) { org.bank_accounts.total_balance(account.currency) +
+          org.bank_accounts.total_balance(other_account.currency) }
+
+        subject { org.data_balance('years')[:data].last }
+
+        it 'has contaion current month, income, expense and total amounts for all months' do
+          expect(subject).to eq [Date.current.strftime("%Y"),
+            inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.to_f]
+        end
+      end
+
+      context 'current quarter' do
+        let!(:transfer) { create :transfer, bank_account_id: account.id, reference_id: other_account.id,
+          amount: 1000 }
+        let!(:inc_transaction) { create :transaction, :income, bank_account: account }
+        let!(:exp_transaction) { create :transaction, :expense, bank_account: account }
+        let!(:old_transaction) { create :transaction, :income, bank_account: account,
+          date: Date.current - 2.years }
+        let(:total) { org.bank_accounts.total_balance(account.currency) +
+          org.bank_accounts.total_balance(other_account.currency) }
+
+        subject { org.data_balance('quarters')[:data].last }
+
+        it 'has contaion current month, income, expense and total amounts for all months' do
+          expect(subject).to eq [get_quarter(Date.current.strftime("%b, %Y")),
+            inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.to_f]
+        end
+      end
+
+
       context 'has contaion previous month, income, expense and total amounts' do
         let!(:inc_transaction) { create :transaction, :income, bank_account: account,
           date: Date.current - 1.months }
@@ -111,6 +149,36 @@ describe Organization do
 
         it 'has contaion previous month, income, expense and total amounts for all months' do
           expect(subject).to eq [(Date.current - 1.months).strftime("%b, %Y"),
+            inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
+        end
+      end
+
+      context 'has contaion previous year, income, expense and total amounts' do
+        let!(:inc_transaction) { create :transaction, :income, bank_account: account,
+          date: Date.current - 1.years }
+        let!(:exp_transaction) { create :transaction, :expense, bank_account: account,
+          date: Date.current - 1.years }
+        let(:total) { inc_transaction.amount.to_f - exp_transaction.amount.abs.to_f }
+
+        subject { org.data_balance('years')[:data][-2] }
+
+        it 'has contaion previous year, income, expense and total amounts for all months' do
+          expect(subject).to eq [(Date.current - 1.years).strftime("%Y"),
+            inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
+        end
+      end
+
+      context 'has contaion previous quarter, income, expense and total amounts' do
+        let!(:inc_transaction) { create :transaction, :income, bank_account: account,
+          date: Date.current - 3.months }
+        let!(:exp_transaction) { create :transaction, :expense, bank_account: account,
+          date: Date.current - 3.months }
+        let(:total) { inc_transaction.amount.to_f - exp_transaction.amount.abs.to_f }
+
+        subject { org.data_balance('quarters')[:data][-2] }
+
+        it 'has contaion previous quarter, income, expense and total amounts for all months' do
+          expect(subject).to eq [get_quarter((Date.current - 3.months).strftime("%b, %Y")),
             inc_transaction.amount.to_f, exp_transaction.amount.abs.to_f, total.round(2)]
         end
       end
