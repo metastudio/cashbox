@@ -10,7 +10,7 @@ module DateLogic
     when 'Jul', 'Aug', 'Sept'
       "Third quarter of #{year}"
     when 'Oct', 'Nov', 'Dec'
-      "Fourtrh quarter of #{year}"
+      "Fourth quarter of #{year}"
     end
   end
 
