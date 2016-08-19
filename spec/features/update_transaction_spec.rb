@@ -121,6 +121,39 @@ describe 'update transaction', js: true do
     it "calculate exchange rate with four decimal places" do
       expect(find('input[name="transfer[exchange_rate]"]').value).to eq(exchange_rate)
     end
+
+  context "transaction created by invoice" do
+    let!(:invoice) { create :invoice, currency: "USD" }
+    let!(:account) { create :bank_account, currency: "USD", organization: organization }
+    let!(:transaction) { create :transaction, bank_account: account, invoice: invoice, amount: 200}
+
+    before do
+      visit root_path
+      find("##{dom_id(transaction)} .comment").click
+      page.has_css?("##{dom_id(transaction, :edit)}")
+      click_on 'Update'
+    end
+
+    it "view link to invoice after the fields" do
+      expect(subject).to have_link("Created from invoice")
+      expect(find_link("Created from invoice")[:href]).to eq("/transactions/#{transaction.id}/edit")
+    end
+  end
+
+  context "transaction created without invoice" do
+    let!(:account) { create :bank_account, currency: "USD", organization: organization }
+    let!(:transaction) { create :transaction, bank_account: account, amount: 200}
+
+    before do
+      visit root_path
+      find("##{dom_id(transaction)} .comment").click
+      page.has_css?("##{dom_id(transaction, :edit)}")
+      click_on 'Update'
+    end
+
+    it "not view link to invoice after the fields" do
+      expect(subject).not_to have_link("Created from invoice")
+    end
   end
 
 end
