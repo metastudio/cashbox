@@ -220,6 +220,20 @@ class Organization < ActiveRecord::Base
     name.truncate(30)
   end
 
+  def total_invoice_debt
+    total = 0
+    def_curr = default_currency
+    invoices.unpaid.group(:currency).sum(:amount_cents).each do |currency, amount_cents|
+      m = Money.new(amount_cents, currency)
+      if def_curr == currency
+        total += m
+      else
+        total += m.exchange_to(def_curr)
+      end
+    end
+    total.format
+  end
+
   private
 
   def get_customers_selection_by_transactions(type, customer_ids, period)
