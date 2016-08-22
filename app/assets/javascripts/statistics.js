@@ -79,7 +79,7 @@ var drawChart = function drawChart(period, element) {
       if (selectedItem) {
         var item = pieData.getValue(selectedItem.row, 0);
         if (item.indexOf('Other') == -1) {
-          for (i = data.length - 1; i >= 0; i--) {
+          for (var i = data.length - 1; i >= 0; i--) {
             if (item == data[i][0] && css_id.classList.contains('customers')) {
               window.location.href = "/?q%5Bcustomer_id_eq%5D=" + ids[i] +
                 "&q%5Bperiod%5D=" + period;
