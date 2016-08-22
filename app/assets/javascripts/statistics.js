@@ -1,5 +1,5 @@
 $(function () {
-  drawBalanceChart(null, 'main-balance');
+  drawBalanceChart(null, 0, 'main-balance');
   if ($('.piecharts').length) {
     drawChart('current-month', 'current-month-income-by-categories');
     drawChart('current-month', 'current-month-expense-by-categories');
@@ -17,9 +17,42 @@ $(function () {
     drawBalanceChart($(this).data('period'), $(this).data('period') + '-balances-by-customers');
   });
   $(document).on('click', '#balance_scale li a', function () {
-    drawBalanceChart($(this).data('scale'), 'main-balance');
-  })
+    scale = $(this).data('scale')
+    drawBalanceChart(scale, getStep, 'main-balance');
+    setScale(scale);
+  });
+  $(document).on('click', '#balance_navigation a', function () {
+    var step = $(this).parent().parent().data('step');
+    if ($(this).hasClass('right-step')) {
+      if (step > 0) {
+        step -= 1;
+        setStep(step);
+        drawBalanceChart($(this).data('scale'), 'main-balance');
+      }
+    }
+    else if ($(this).hasClass('left-step')){
+      step += 1;
+      setStep(step);
+      drawBalanceChart($(this).data('scale'), 'main-balance');
+    };
+  });
 });
+
+var setStep = function setStep(step) {
+  $('#balance_navigation').data('step', step)
+}
+
+var getStep = function getStep(step) {
+  $('#balance_navigation').data('step')
+}
+
+var setScale = function setScale(scale) {
+  $('#balance_scale').data('scale', scale)
+}
+
+var getScale = function getScale() {
+  $('#balance_scale').data('scale')
+}
 
 var drawChart = function drawChart(period, element) {
   element = document.getElementById(element);
@@ -102,13 +135,16 @@ var drawChart = function drawChart(period, element) {
   }
 };
 
-var drawBalanceChart = function drawBalanceChart(scale, element) {
+var drawBalanceChart = function drawBalanceChart(scale, step, element) {
   element = document.getElementById(element);
   if (element) {
     $.ajax({
       url: element.getAttribute('data-url'),
       type: 'get',
-      data: { scale: scale }
+      data: {
+        scale: scale,
+        step: step
+      }
     })
     .done(function(response) {
       draw(response, element);
