@@ -1,12 +1,12 @@
 $(function () {
-  drawBalanceChart(null, null, 'main-balance');
+  drawBalanceChart(null, null, null, 'main-balance');
   if ($('.piecharts').length) {
     drawChart('current-month', 'current-month-income-by-categories');
     drawChart('current-month', 'current-month-expense-by-categories');
     drawChart('current-month', 'current-month-income-by-customers');
     drawChart('current-month', 'current-month-expense-by-customers');
     drawChart('current-month', 'current-month-totals-by-customers');
-    drawBalanceChart('current-month', null, 'current-month-balances-by-customers');
+    drawBalanceChart('current-month', null, null, 'current-month-balances-by-customers');
   }
   $(document).on('click', '#periods_bar li a', function () {
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-categories');
@@ -14,38 +14,40 @@ $(function () {
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-customers');
     drawChart($(this).data('period'), $(this).data('period') + '-expense-by-customers');
     drawChart($(this).data('period'), $(this).data('period') + '-totals-by-customers');
-    drawBalanceChart($(this).data('period'), null, $(this).data('period') + '-balances-by-customers');
+    drawBalanceChart($(this).data('period'), null, null, $(this).data('period') + '-balances-by-customers');
   });
   $(document).on('click', '#balance_scale li a', function () {
     scale = $(this).data('scale')
-    drawBalanceChart(scale, getStep, 'main-balance');
+    setStep(0)
+    drawBalanceChart(null, scale, getStep, 'main-balance');
     setScale(scale);
   });
-  $(document).on('click', '#balance_navigation a', function () {
-    var step = $(this).parent().parent().data('step');
+  $(document).on('click', '#balance_navigation a', function (e) {
+    e.preventDefault();
+    var step = getStep();
+    var scale = getScale();
     if ($(this).hasClass('right-step')) {
       if (step > 0) {
         step -= 1;
         setStep(step);
-        drawBalanceChart($(this).data('scale'), 'main-balance');
+        drawBalanceChart(null, scale, step, 'main-balance');
       }
     }
     else if ($(this).hasClass('left-step')){
       step += 1;
       setStep(step);
-      drawBalanceChart(null, $(this).data('scale'), 'main-balance');
+      drawBalanceChart(null, scale, step, 'main-balance');
     };
   });
-    drawBalanceChart(null, $(this).data('scale'), 'main-balance');
-  })
 });
 
 var setStep = function setStep(step) {
   $('#balance_navigation').data('step', step)
 }
 
-var getStep = function getStep(step) {
-  $('#balance_navigation').data('step')
+var getStep = function getStep() {
+  var step = $('#balance_navigation').data('step')
+  return step
 }
 
 var setScale = function setScale(scale) {
@@ -53,7 +55,8 @@ var setScale = function setScale(scale) {
 }
 
 var getScale = function getScale() {
-  $('#balance_scale').data('scale')
+  var scale = $('#balance_scale').data('scale')
+  return scale
 }
 
 var drawChart = function drawChart(period, element) {
@@ -144,7 +147,7 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
       url: element.getAttribute('data-url'),
       type: 'get',
       data: {
-        step: step
+        step: step,
         period: period,
         scale: scale
       }

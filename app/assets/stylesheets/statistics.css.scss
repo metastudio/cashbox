@@ -1,3 +1,10 @@
 #balance_navigation {
   font-size: 24px;
+
+  a:active,
+  a:hover,
+  a:focus,
+  a:visited {
+    text-decoration: none;
+  }
 }
