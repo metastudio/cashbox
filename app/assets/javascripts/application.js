@@ -30,6 +30,7 @@
 //= require jquery.inputmask.customization
 //= require select2
 //= require cocoon
+//= require notifications
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);
@@ -90,3 +91,4 @@ function addCustomerSelect2(fields) {
     }
   });
 }
+

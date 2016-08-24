@@ -20,6 +20,7 @@
 require "./lib/time_range.rb"
 
 class Transaction < ActiveRecord::Base
+  include Notification
   include MoneyRails::ActionViewExtension
   include TimeRange
   TRANSACTION_TYPES = %w(Residue)
@@ -79,6 +80,7 @@ class Transaction < ActiveRecord::Base
   before_save :calculate_amount, if: :comission
   after_restore :recalculate_amount
   after_save :update_invoice_paid_at, if: :invoice
+  after_create :send_notification
 
   class << self
     def flow_ordered(def_currency)
@@ -133,6 +135,12 @@ class Transaction < ActiveRecord::Base
   end
 
   private
+
+  def send_notification
+    unless transfer? || transfer_out?
+      notify(organization.id, "Transaction was added", "Transaction was added to organization #{organization.name}")
+    end
+  end
 
   def find_customer
     self.customer = Customer.find_or_initialize_by(name: customer_name, organization_id: organization.id)

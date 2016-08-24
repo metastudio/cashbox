@@ -30,4 +30,6 @@ Cashbox::Application.configure do
   config.action_mailer.default_url_options = { host: 'cashbox.dev' }
   config.action_mailer.smtp_settings = { :address => "localhost", :port => 1025 }
   config.action_mailer.default_options = { :from => 'no-reply@cashbox.dev' }
+  config.preload_frameworks = true
+  config.allow_concurrency = true
 end

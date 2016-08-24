@@ -43,4 +43,5 @@ Cashbox::Application.routes.draw do
   resources :invitations, only: [:new, :create, :destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
   get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation
+  get '/events-stream' => 'notifications#stream'
 end

@@ -17,6 +17,8 @@
 #
 
 class BankAccount < ActiveRecord::Base
+  include Notification
+
   acts_as_list
   acts_as_paranoid
 
@@ -64,6 +66,9 @@ class BankAccount < ActiveRecord::Base
 
   def recalculate_amount!
     update_attributes(balance: Money.new(transactions.sum(:amount_cents), currency))
+    if balance < 0
+      notify(organization.id, "Balance became negative", "Balance became negative in #{name} bank account")
+    end
   end
 
   def set_initial_residue

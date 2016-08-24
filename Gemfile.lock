@@ -217,6 +217,7 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
+    puma (3.6.0)
     pundit (0.3.0)
       activesupport (>= 3.0.0)
     rack (1.6.4)
@@ -258,6 +259,7 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     recursive-open-struct (0.6.1)
+    redis (3.3.1)
     request_store (1.1.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
@@ -350,6 +352,9 @@ GEM
     timecop (0.7.3)
     timers (4.0.1)
       hitimes
+    tubesock (0.2.7)
+      rack (>= 1.5.0)
+      websocket (>= 1.1.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (2.7.1)
@@ -368,6 +373,7 @@ GEM
     wasabi (3.5.0)
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
+    websocket (1.2.3)
     whenever (0.9.4)
       chronic (>= 0.6.3)
     wicked_pdf (0.11.0)
@@ -415,10 +421,12 @@ DEPENDENCIES
   paranoia (~> 2.0)
   pg
   pry-rails
+  puma
   pundit
   rails (= 4.2.1)
   ransack (= 1.6.4)
   recursive-open-struct
+  redis
   rollbar (~> 1.4.2)
   rspec-collection_matchers
   rspec-rails
@@ -431,9 +439,13 @@ DEPENDENCIES
   slim-rails
   thin
   timecop
+  tubesock
   uglifier (>= 1.3.0)
   unicorn
   validates_overlap
   whenever
   wicked_pdf
   wkhtmltopdf-binary
+
+BUNDLED WITH
+   1.12.5

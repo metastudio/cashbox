@@ -49,6 +49,9 @@ gem 'validates_overlap'
 gem 'date_validator'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem 'puma'
+gem 'tubesock'
+gem 'redis'
 
 group :development, :test do
   gem 'rspec-rails'

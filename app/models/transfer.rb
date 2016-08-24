@@ -2,6 +2,7 @@ class Transfer
   include ActiveModel::Validations
   include ActiveModel::Validations::Callbacks
   include MoneyRails::ActionViewExtension
+  include Notification
 
   attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
     :bank_account, :bank_account_id, :reference_id, :date,
@@ -56,6 +57,10 @@ class Transfer
         @out_transaction.save
         @inc_transaction.transfer_out_id = @out_transaction.id
         @inc_transaction.save
+        notify(
+          bank_account.organization.id,
+          "Transfer was created",
+          "Transfer was created in #{bank_account.name} bank account")
         return true
       end
     else
