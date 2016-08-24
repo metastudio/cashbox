@@ -99,6 +99,29 @@ describe 'update transaction', js: true do
     end
   end
 
+  context "when transfer from usd to rub" do
+    let!(:usd_account) { create :bank_account, organization: organization, currency: 'USD' }
+    let!(:rub_account) { create :bank_account, organization: organization, currency: 'RUB' }
+    let(:amount) { 999 }
+    let(:calculate_sum) { 76619.2 }
+    let(:exchange_rate) { "76.6959" }
+
+    before do
+      visit root_path
+      click_on 'Add...'
+      click_on 'Transfer'
+      select usd_account, from: 'transfer[bank_account_id]'
+      select rub_account, from: 'transfer[reference_id]'
+      fill_in 'transfer[amount]', with: amount
+      fill_in 'transfer[calculate_sum]', with: calculate_sum
+      find('input[name="transfer[exchange_rate]"]').trigger('focus')
+      sleep 1
+    end
+
+    it "calculate exchange rate with four decimal places" do
+      expect(find('input[name="transfer[exchange_rate]"]').value).to eq(exchange_rate)
+    end
+
   context "transaction created by invoice" do
     let!(:invoice) { create :invoice, currency: "USD" }
     let!(:account) { create :bank_account, currency: "USD", organization: organization }

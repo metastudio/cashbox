@@ -100,7 +100,7 @@ function showHideExchangeRate(fromCurr, toCurr) {
     var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
     var sum = parseFloat($('#transfer_calculate_sum').val().replace(/\,/g,''));
     if (amount && sum) {
-      var rate = (sum/amount).toFixed(2);
+      var rate = (sum/amount).toFixed(4);
       $transferRate.parents('#rate_col').find('#transfer_exchange_rate').val(rate);
     }
   }
