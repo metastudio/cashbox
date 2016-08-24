@@ -41,12 +41,12 @@ class InvitationsController < ApplicationController
 
   def accept
     if @user = User.find_by(email: @invitation.email)
-      if current_user == @user
+      if user_signed_in? && current_user.id == @user.id
         @invitation.accept!(@user)
         redirect_to root_path, notice: "You joined #{@invitation.member.organization.name}."
       else
         session['user_return_to'] = accept_invitation_path(token: @invitation.token)
-        sign_out current_user
+        sign_out current_user if user_signed_in?
         redirect_to new_user_session_path
       end
     else
