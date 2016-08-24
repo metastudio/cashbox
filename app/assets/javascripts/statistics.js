@@ -1,12 +1,12 @@
 $(function () {
-  drawBalanceChart(null, 'main-balance');
+  drawBalanceChart(null, null, 'main-balance');
   if ($('.piecharts').length) {
     drawChart('current-month', 'current-month-income-by-categories');
     drawChart('current-month', 'current-month-expense-by-categories');
     drawChart('current-month', 'current-month-income-by-customers');
     drawChart('current-month', 'current-month-expense-by-customers');
     drawChart('current-month', 'current-month-totals-by-customers');
-    drawBalanceChart('current-month', 'current-month-balances-by-customers');
+    drawBalanceChart('current-month', null, 'current-month-balances-by-customers');
   }
   $(document).on('click', '#periods_bar li a', function () {
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-categories');
@@ -14,8 +14,11 @@ $(function () {
     drawChart($(this).data('period'), $(this).data('period') + '-income-by-customers');
     drawChart($(this).data('period'), $(this).data('period') + '-expense-by-customers');
     drawChart($(this).data('period'), $(this).data('period') + '-totals-by-customers');
-    drawBalanceChart($(this).data('period'), $(this).data('period') + '-balances-by-customers');
+    drawBalanceChart($(this).data('period'), null, $(this).data('period') + '-balances-by-customers');
   });
+  $(document).on('click', '#balance_scale li a', function () {
+    drawBalanceChart(null, $(this).data('scale'), 'main-balance');
+  })
 });
 
 var drawChart = function drawChart(period, element) {
@@ -99,13 +102,16 @@ var drawChart = function drawChart(period, element) {
   }
 };
 
-var drawBalanceChart = function drawBalanceChart(period, element) {
+var drawBalanceChart = function drawBalanceChart(period, scale, element) {
   element = document.getElementById(element);
   if (element) {
     $.ajax({
       url: element.getAttribute('data-url'),
       type: 'get',
-      data: { period: period }
+      data: {
+        period: period,
+        scale: scale
+      }
     })
     .done(function(response) {
       draw(response, element, period);
