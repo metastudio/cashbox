@@ -18,4 +18,15 @@ module DateLogic
     date.split(', ').last
   end
 
+  def period_from_step(step, scale)
+    case scale
+    when 'months'
+      (1.year.ago.to_date - step.month)..(Date.current - step.month).end_of_month
+    when 'years'
+      (1.year.ago.to_date - step.year)..(Date.current - step.year).end_of_month
+    when 'quarters'
+      (1.year.ago.to_date - (3*step).month)..(Date.current - (3*step).month).end_of_month
+    end
+  end
+
 end

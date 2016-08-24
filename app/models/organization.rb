@@ -10,6 +10,9 @@
 #
 
 class Organization < ActiveRecord::Base
+
+  include DateLogic
+
   has_many :owners,
     -> { where members: { role: "owner" } }, through: :members, source: :user
   has_many :members, inverse_of: :organization, dependent: :destroy
@@ -156,8 +159,8 @@ class Organization < ActiveRecord::Base
     data.keys.size > 1 ? { data: data.values, ids: data.keys, currency_format: currency_format } : nil
   end
 
-  def data_balance(scale='months')
-    period = 1.year.ago.to_date..Date.current.end_of_month
+  def data_balance(scale='months', step=0)
+    period = period_from_step(step.to_i, scale)
     incomes, expenses, totals = balance_data_collection(period)
 
     total_sum = Money.new(0, self.default_currency)

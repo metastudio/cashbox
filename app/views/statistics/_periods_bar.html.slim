@@ -3,7 +3,7 @@
     h4 Balance
     .panel.with-nav-tabs
       .panel-heading
-        ul.nav.nav-tabs#balance_scale
+        ul.nav.nav-tabs#balance_scale data-scale='months'
           li.active
             = link_to 'Months', '#months', data: { toggle: 'tab', scale: 'months' }
           li
@@ -11,6 +11,12 @@
           li
             = link_to 'Quarters', '#quarters', data: { toggle: 'tab', scale: 'quarters' }
     .balance-chart#main-balance data-url=balance_statistics_path
+    .row#balance_navigation data-step=0
+      .col-xs-6
+        = link_to '&#8592;'.html_safe, '#left-step', class: 'pull-right left-step'
+      .col-xs-6
+        = link_to '&#8594;'.html_safe, '#right-step', class: 'right-step'
+    br
     .panel.with-nav-tabs
       .panel-heading
         ul.nav.nav-tabs#periods_bar

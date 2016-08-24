@@ -5,8 +5,12 @@ class StatisticsController < ApplicationController
   end
 
   def balance
-    if params[:scale].present?
+    if params[:scale].present? && params[:step].present?
+      data = current_organization.data_balance(params[:scale], params[:step])
+    elsif params[:scale].present?
       data = current_organization.data_balance(params[:scale])
+    elsif params[:step].present?
+      data = current_organization.data_balance('months', params[:step])
     else
       data = current_organization.data_balance
     end
