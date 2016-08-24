@@ -28,15 +28,15 @@ var drawChart = function drawChart(period, element) {
     })
     .done(function(response) {
       draw(response, element, period);
-    })
-  };
+    });
+  }
 
   function draw(response, css_id, period) {
     if (response == null ) {
       $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
       $(css_id).width('200').height(26);
       return false;
-    };
+    }
     var data = response.data;
     var ids  = response.ids;
     var pieData = google.visualization.arrayToDataTable(data);
@@ -54,8 +54,8 @@ var drawChart = function drawChart(period, element) {
       aggregation: google.visualization.data.sum
     }]);
 
-    var suffix = response.currency_format['suffix'] || ''
-    var prefix = response.currency_format['prefix'] || ''
+    var suffix = response.currency_format['suffix'] || '';
+    var prefix = response.currency_format['prefix'] || '';
 
     var options = {
       title: 'Total: ' + prefix + total.getValue(0, 1).format(2) + suffix,
@@ -109,8 +109,8 @@ var drawBalanceChart = function drawBalanceChart(period, element) {
     })
     .done(function(response) {
       draw(response, element, period);
-    })
-  };
+    });
+  }
 
   function draw(response, css_id, period) {
     if (response == null ) {
@@ -129,8 +129,8 @@ var drawBalanceChart = function drawBalanceChart(period, element) {
     formatter.format(chartData, 1);
     formatter.format(chartData, 2);
     if (css_id.id == 'main-balance') {
-      formatter.format(chartData, 3)
-    };
+      formatter.format(chartData, 3);
+    }
 
     var options = {
       chart: {
@@ -146,8 +146,49 @@ var drawBalanceChart = function drawBalanceChart(period, element) {
       tooltip: { isHtml: true }
     };
     chart.draw(chartData, options);
+
+    google.visualization.events.addListener(chart, 'select', selectHandler);
+
+    function selectHandler() {
+      var selectedItem = chart.getSelection()[0];
+      if (selectedItem != undefined && selectedItem.row != null && selectedItem.column != null) {
+        if (selectedItem) {
+          var item = chartData.getValue(selectedItem.row, selectedItem.column);
+
+            for (var i = data.length - 1; i >= 0; i--) {
+              if (item == data[i][1]) {
+                var date = new Date(data[i][0]);
+                var year = date.getFullYear();
+                var month = dateNumber(date.getMonth() + 1);
+                var lastDay = new Date(year, month + 1, 0).getDate();
+                window.location.href = "/?q%5Bcategory_type_eq%5D=Income" +
+                  "&q%5Bdate_from%5D=01%2F" + month +"%2F" + year +
+                  "&q%5Bdate_to%5D=" + lastDay + "%2F" + month + "%2F" + year;
+                break;
+              } else if (item == data[i][2]) {
+                window.location.href = "/?q%5Bcategory_type_eq%5D=Expense" +
+                  "&q%5Bdate_from%5D=01%2F" + month +"%2F" + year +
+                  "&q%5Bdate_to%5D=" + lastDay + "%2F" + month + "%2F" + year;
+                break;
+              } else {
+                continue
+              }
+            };
+        }
+      }
+    }
+
   }
 };
+
+function dateNumber(number) {
+  if (number < 10) {
+    return "0" + number;
+  }
+  else {
+    return number;
+  }
+}
 
 Number.prototype.format = function(n, x) {
   var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
