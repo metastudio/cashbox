@@ -9,7 +9,7 @@
 #  default_currency :string(255)      default("USD")
 #
 
-class Organization < ActiveRecord::Base
+class Organization < ApplicationRecord
 
   include DateLogic
 
