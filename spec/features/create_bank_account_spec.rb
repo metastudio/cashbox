@@ -34,7 +34,7 @@ describe 'Create bank account' do
   end
 
   context 'balance' do
-    subject { BankAccount.first.balance }
+    subject { BankAccount.first.balance.to_f }
 
     it { expect(subject).to eq residue }
   end
