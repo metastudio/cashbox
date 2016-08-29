@@ -49,7 +49,7 @@ class OrganizationsController < ApplicationController
       redirect_to organization_url(@organization.id)
     else
       session[:current_organization_id] = @organization.id
-      redirect_to :back
+      redirect_back(fallback_location: root_path)
     end
   end
 

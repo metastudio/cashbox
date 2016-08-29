@@ -174,6 +174,6 @@ FactoryGirl.define do
   end
 
   factory :profile do
-    user { create :user }
+    user { build :user }
   end
 end
