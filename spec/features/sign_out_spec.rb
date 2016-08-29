@@ -11,6 +11,8 @@ describe 'sign out proccess' do
     click_on("Sign out")
   end
 
+  after { Capybara.reset_sessions! }
+
   it "signs out me", js: true do
     expect(subject).to have_content("Sign in")
   end

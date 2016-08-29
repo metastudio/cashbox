@@ -13,6 +13,8 @@ describe 'delete member' do
       visit members_path
     end
 
+    after { Capybara.reset_sessions! }
+
     it 'owner can not remove yourself' do
       expect(page).to_not have_content('Remove')
     end

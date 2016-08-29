@@ -11,6 +11,8 @@ describe 'Edit invoice', js: true do
     visit invoice_path(invoice)
   end
 
+  after { Capybara.reset_sessions! }
+
   context 'Edit invoice' do
     before do
       click_on 'Edit'

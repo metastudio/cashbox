@@ -7,6 +7,8 @@ describe 'Switch organization' do
     sign_in user
   end
 
+  after { Capybara.reset_sessions! }
+
   subject { page }
 
   it "displays first organization as current initially" do

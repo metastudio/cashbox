@@ -8,6 +8,8 @@ describe 'customers page list' do
     sign_in user
   end
 
+  after { Capybara.reset_sessions! }
+
   subject{ page }
 
   include_context 'customers pagination'

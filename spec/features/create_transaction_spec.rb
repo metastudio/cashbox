@@ -38,6 +38,8 @@ describe 'create transaction', js: true do
     sign_in user
   end
 
+  after { Capybara.reset_sessions! }
+
   context 'form select' do
     context 'choose bank account' do
       before do

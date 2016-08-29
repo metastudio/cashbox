@@ -10,5 +10,7 @@ describe 'Bank accounts list' do
     visit bank_accounts_path
   end
 
+  after { Capybara.reset_sessions! }
+
   it_behaves_like "colorizable amount", '.bank-accounts'
 end

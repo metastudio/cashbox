@@ -12,6 +12,8 @@ describe 'Invite process' do
     visit new_invitation_path
   end
 
+  after { Capybara.reset_sessions! }
+
   context 'a new user' do
     before do
       fill_in 'Email', with: email

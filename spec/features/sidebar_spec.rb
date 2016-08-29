@@ -13,6 +13,8 @@ describe 'sidebar' do
     visit root_path
   end
 
+  after { Capybara.reset_sessions! }
+
   subject { page }
 
   context 'accounts' do

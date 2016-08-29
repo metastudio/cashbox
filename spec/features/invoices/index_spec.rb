@@ -8,6 +8,8 @@ describe 'invoices index page' do
     sign_in user
   end
 
+  after { Capybara.reset_sessions! }
+
   include_context 'invoices pagination'
   it_behaves_like 'paginateable' do
     let!(:list)      { create_list(:invoice, invoices_count, organization: org); org.invoices.ransack({ customer_name: :asc }).result  }

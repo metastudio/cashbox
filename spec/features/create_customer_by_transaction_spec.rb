@@ -33,6 +33,8 @@ describe 'create transaction', js: true do
     sign_in user
   end
 
+  after { Capybara.reset_sessions! }
+
   context 'with valid data' do
     it "creates a new transaction" do
       expect{ subject }.to change{ Transaction.count }.by(1)

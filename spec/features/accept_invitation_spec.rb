@@ -9,6 +9,8 @@ describe 'Accept invitation' do
 
   before { clear_emails }
 
+  after { Capybara.reset_sessions! }
+
   context 'for a new user' do
     before do
       invite_user(admin_member.user, 'admin', email)

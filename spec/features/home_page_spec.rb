@@ -9,6 +9,8 @@ describe 'Home page' do
     visit root_path
   end
 
+  after { Capybara.reset_sessions! }
+
   context 'when no transactions' do
     context 'show alert' do
       it { expect(page).to have_css('.alert.alert-warning', text: 'This is default page, you will see all transactions from your organization') }

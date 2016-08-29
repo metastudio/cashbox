@@ -8,6 +8,8 @@ describe 'categories page' do
     sign_in user
   end
 
+  after { Capybara.reset_sessions! }
+
   subject{ page }
 
   include_context 'categories pagination'

@@ -11,6 +11,8 @@ describe 'Delete invoice', js: true do
     visit invoice_path(invoice)
   end
 
+  after { Capybara.reset_sessions! }
+
   context 'Delete invoice' do
     before do
       click_on 'Destroy'
