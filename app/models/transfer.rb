@@ -56,6 +56,10 @@ class Transfer
         @out_transaction.save
         @inc_transaction.transfer_out_id = @out_transaction.id
         @inc_transaction.save
+        NotificationJob.perform_later(
+          bank_account.organization.name,
+          "Transfer was created",
+          "Transfer was created in #{bank_account.name} bank account")
         return true
       end
     else
