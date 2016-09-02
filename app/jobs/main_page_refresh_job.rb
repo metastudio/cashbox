@@ -13,6 +13,7 @@ class MainPageRefreshJob < ApplicationJob
     transaction.bank_account.touch
     {
       id: "#transaction_#{transaction.id}",
+      user_id: transaction.created_by.try(:id),
       view: render_transaction(transaction),
       sidebar: render_sidebar(organization),
       total_balance: render_total_balance(organization)

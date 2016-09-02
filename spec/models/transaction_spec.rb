@@ -25,6 +25,7 @@ describe Transaction do
     it { should belong_to(:bank_account).touch(true)  }
     it { expect(subject).to belong_to(:customer) }
     it { should have_one(:organization).through(:bank_account) }
+    it { should belong_to(:created_by) }
   end
 
   context "validation" do
