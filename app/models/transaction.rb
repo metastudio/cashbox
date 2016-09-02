@@ -137,10 +137,14 @@ class Transaction < ApplicationRecord
 
   def send_notification
     unless transfer? || transfer_out?
-      NotificationJob.perform_later(
+      NotificationJob.perform_now(
         organization.name,
         "Transaction was added",
         "Transaction was added to organization #{organization.name}")
+      MainPageRefreshJob.perform_now(
+        organization.name,
+        self
+      )
     end
   end
 
