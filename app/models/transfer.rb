@@ -62,6 +62,10 @@ class Transfer
           bank_account.organization.name,
           "Transfer was created",
           "Transfer was created in #{bank_account.name} bank account")
+        MainPageRefreshJob.perform_now(
+          bank_account.organization.name,
+          @inc_transaction
+        )
         return true
       end
     else
