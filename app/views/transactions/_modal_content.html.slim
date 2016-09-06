@@ -18,7 +18,7 @@
         .tab-pane#expense
           = render 'transactions/form', type: 'Expense', transaction: @transaction
         .tab-pane#transfer
-          = render 'transactions/transfer_form', transfer: Transfer.new
+          = render 'transactions/transfer_form', transfer: @transfer.present? ? @transfer : Transfer.new
 .modal-footer
   button type='button' class='btn btn-default' data-dismiss='modal' Cancel
   button type='button' class='btn btn-primary' id='submit_btn' data-trans-id="#{@transaction.id}"
@@ -26,4 +26,5 @@
   - if @transaction.persisted?
     = link_to 'Remove', transaction_path(@transaction), remote: true, method: :delete,
         data: { confirm: 'Are you sure?', disable_with: 'Removing...' }, class: 'btn btn-danger pull-left'
+    = link_to 'Copy', copy_transaction_path(@transaction), remote: true, class: 'btn btn-info pull-left'
 

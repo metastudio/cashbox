@@ -23,7 +23,11 @@ module LayoutHelper
   end
 
   def submit_title
-    params['action'] == 'new' ? 'Create' : 'Update'
+    if  params['action'] == 'new' || params['action'] == 'copy'
+      'Create'
+    else
+      'Update'
+    end
   end
 
   def invoices_debt(debtor)
@@ -56,5 +60,9 @@ module LayoutHelper
     str += "#{total}"
     str += "</strong>"
     str.html_safe
+  end
+
+  def transaction_type_id(transaction)
+    "##{transaction.get_type}"
   end
 end

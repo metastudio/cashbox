@@ -1,6 +1,6 @@
 class TransactionsController < ApplicationController
   before_action :require_organization
-  before_action :set_transaction,  only: [:edit, :update, :destroy]
+  before_action :set_transaction,  only: [:edit, :update, :destroy, :copy]
   before_action :set_invoice, only: [:new]
   after_action :update_last_viewed_at, only: [:create, :create_transfer]
 
@@ -40,6 +40,25 @@ class TransactionsController < ApplicationController
 
   def destroy
     @transaction.destroy
+  end
+
+  def copy
+    if @transaction.transfer?
+      @transaction = @transaction.dup
+      @transfer = Transfer.new(
+        amount: @transaction.transfer_out.amount,
+        bank_account_id: @transaction.transfer_out.bank_account_id,
+        reference_id: @transaction.bank_account_id,
+        comission: @transaction.transfer_out.comission,
+        comment: @transaction.comment,
+        date: @transaction.date,
+        calculate_sum: @transaction.amount
+      )
+    else
+      @transaction = @transaction.dup
+      @transaction.amount = @transaction.amount.abs
+      @transfer = Transfer.new
+    end
   end
 
   private
