@@ -160,4 +160,31 @@ describe 'create transaction', js: true do
     end
   end
 
+  context "with leave open checked" do
+    before do
+      visit root_path
+      click_on 'Add...'
+      within '#new_transaction' do
+        fill_in 'transaction[amount]', with: amount_str
+        select category_name, from: 'transaction[category_id]' if category_name.present?
+        select account_name, from: 'transaction[bank_account_id]' if account_name.present?
+        fill_in 'transaction[comment]', with: comment
+        find('#transaction_leave_open').set(true)
+      end
+      click_on 'Create'
+    end
+
+    it "create transaction" do
+      expect(page).to have_content("Transaction was created successfully!")
+    end
+
+    it "fill form by old transaction data" do
+      within '#new_transaction' do
+        expect(page).to have_field('Amount', with: amount_str)
+        expect(page).to have_field('Category', with: category.id)
+        expect(page).to have_field('Bank account', with: account.id)
+        expect(page).to have_field('Comment', with: comment)
+      end
+    end
+  end
 end

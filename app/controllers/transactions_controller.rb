@@ -20,6 +20,7 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.new(transaction_params)
     check_relation_to_curr_org(:transaction)
     @transaction.save
+    @transaction_dup = @transaction.dup if @transaction.leave_open == '1'
   end
 
   def create_transfer
@@ -28,6 +29,7 @@ class TransactionsController < ApplicationController
     if @transfer.save
       @inc_transaction = @transfer.inc_transaction
       @out_transaction = @transfer.out_transaction
+      @transfer_dup = @transfer.dup if @transfer.leave_open == '1'
     end
   end
 
@@ -90,13 +92,13 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
-      :comment, :comission, :reference_id, :customer_id, :customer_name, :date, :invoice_id,
-      transfer_out_attributes: [:id, :amount, :category_id, :bank_account_id,
-        :comment, :comission, :customer_id, :date])
+      :comment, :comission, :reference_id, :customer_id, :customer_name, :date,
+      :invoice_id, :leave_open, transfer_out_attributes: [:id, :amount,
+       :category_id, :bank_account_id, :comment, :comission, :customer_id, :date])
   end
 
   def transfer_params
     params.require(:transfer).permit(:amount, :bank_account_id, :reference_id,
-     :comment, :comission, :exchange_rate, :date, :calculate_sum)
+     :comment, :comission, :exchange_rate, :date, :calculate_sum, :leave_open)
   end
 end

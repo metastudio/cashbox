@@ -1,6 +1,7 @@
 = simple_form_for(transaction, remote: true, html: { class: 'form-horizontal transaction' },
     wrapper: :horizontal_form) do |f|
   = f.error_notification
+  .alert.alert-success role="alert" style='display: none;' Transaction was created successfully!
 
   = f.input :amount, input_html: { value: f.object.amount == 0 ? nil : f.object.amount, maxlength: 25 }
 
@@ -67,3 +68,5 @@
     = link_to "Created from invoice", @invoice, class: 'pull-right'
 
   = f.input :invoice_id, as: :hidden
+  - if transaction.new_record?
+    = f.input :leave_open, as: :boolean

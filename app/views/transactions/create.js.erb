@@ -10,8 +10,22 @@
     $("#<%= dom_id(@transaction) %>").animate({
       backgroundColor: c,
     }, 1000 );
-    $('#transaction_modal').modal('hide');
-    scrollTo($("#<%= dom_id(@transaction) %>"));
+    <% if @transaction.leave_open == '1' %>
+      if ($(".tab-pane.active").attr('id') == 'income') {
+        $(".tab-pane.active #new_transaction").replaceWith("<%=j render('transactions/form', type: 'Income', transaction: @transaction_dup) %>");
+      }
+      else {
+        $(".tab-pane.active #new_transaction").replaceWith("<%=j render('transactions/form', type: 'Expense', transaction: @transaction_dup) %>");
+      }
+      function toggleAlert () {
+        $('.tab-pane.active #new_transaction .alert-success').toggle(300);
+      };
+      toggleAlert();
+      setTimeout(toggleAlert, 3000);
+    <% else %>
+      $('#transaction_modal').modal('hide');
+      scrollTo($("#<%= dom_id(@transaction) %>"));
+    <% end %>
     $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
     $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
   }
