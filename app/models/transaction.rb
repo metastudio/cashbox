@@ -19,7 +19,7 @@
 
 require "./lib/time_range.rb"
 
-class Transaction < ActiveRecord::Base
+class Transaction < ApplicationRecord
   include MoneyRails::ActionViewExtension
   include TimeRange
   TRANSACTION_TYPES = %w(Residue)
@@ -93,11 +93,11 @@ class Transaction < ActiveRecord::Base
         where('category_id != ? AND category_id != ?', Category.receipt_id, Category.transfer_out_id).
         group("bank_accounts.currency")
 
+      amount_flow = amount_flow.to_a
       if amount_flow.empty?
         amount_flow << AmountFlow.new(
           Money.empty(def_currency), Money.empty(def_currency), def_currency)
       else
-        amount_flow = amount_flow.to_a
         amount_flow.sort_by! do |flow|
           currencies.index(flow["currency"])
         end

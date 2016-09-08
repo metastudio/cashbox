@@ -21,7 +21,7 @@
 #  full_name              :string(255)      not null
 #
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_one :profile, inverse_of: :user, dependent: :destroy
   has_many :own_organizations,
     -> { where members: { role: "owner" } },

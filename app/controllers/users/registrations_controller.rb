@@ -1,5 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy,
+  prepend_before_action :authenticate_scope!, only: [:edit, :update, :destroy,
     :update_profile]
 
   def create_user_from_invitation

@@ -121,7 +121,7 @@ describe 'update transaction', js: true do
     it "calculate exchange rate with four decimal places" do
       expect(find('input[name="transfer[exchange_rate]"]').value).to eq(exchange_rate)
     end
-
+  end
   context "transaction created by invoice" do
     let!(:invoice) { create :invoice, currency: "USD" }
     let!(:account) { create :bank_account, currency: "USD", organization: organization }

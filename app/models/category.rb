@@ -12,7 +12,7 @@
 #  deleted_at      :datetime
 #
 
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
   CATEGORY_INCOME  = 'Income'
   CATEGORY_EXPENSE = 'Expense'
   CATEGORY_TRANSFERS = 'Transfers'

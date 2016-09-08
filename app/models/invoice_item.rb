@@ -14,7 +14,7 @@
 #  date         :date
 #
 
-class InvoiceItem < ActiveRecord::Base
+class InvoiceItem < ApplicationRecord
   include CustomerConcern
   customer_concern_callbacks
 
