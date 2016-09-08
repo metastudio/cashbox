@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :require_organization
+  before_action :require_organization
   after_action :update_last_viewed_at
 
   def show

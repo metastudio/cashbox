@@ -9,7 +9,7 @@
 #  updated_at           :datetime
 #
 
-class ExchangeRate < ActiveRecord::Base
+class ExchangeRate < ApplicationRecord
   validates :rates, presence: true
   validates :updated_from_bank_at, presence: true
 
