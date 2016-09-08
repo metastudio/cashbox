@@ -11,7 +11,7 @@
 #  last_visited_at :datetime
 #
 
-class Member < ActiveRecord::Base
+class Member < ApplicationRecord
   extend Enumerize
 
   belongs_to :user

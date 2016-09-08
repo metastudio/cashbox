@@ -12,7 +12,7 @@
 #  updated_at    :datetime
 #
 
-class Invitation < ActiveRecord::Base
+class Invitation < ApplicationRecord
   extend Enumerize
 
   has_secure_token :token
