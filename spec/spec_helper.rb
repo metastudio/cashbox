@@ -5,7 +5,6 @@ require 'rspec/rails'
 require 'pundit/rspec'
 require 'capybara-screenshot/rspec'
 require 'rspec/collection_matchers'
-require 'shoulda/matchers'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -38,11 +37,4 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
-end
-
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :rspec
-    with.library :rails
-  end
 end

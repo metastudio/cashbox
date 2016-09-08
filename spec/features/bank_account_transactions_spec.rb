@@ -15,8 +15,6 @@ describe 'Bank account transactions' do
     visit root_path
   end
 
-  after { Capybara.reset_sessions! }
-
   subject { page }
 
   it "has links to bank accounts in sidebar" do

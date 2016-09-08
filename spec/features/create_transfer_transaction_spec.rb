@@ -43,8 +43,6 @@ describe 'create transfer transaction', js: true do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   context "with valid data" do
     it "creates two new transactions" do
       expect{ subject }.to change{ transactions.count }.by(2)

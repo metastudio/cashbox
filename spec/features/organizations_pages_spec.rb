@@ -11,8 +11,6 @@ describe 'organizations pages' do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   subject{ page }
 
   context 'show' do

@@ -18,8 +18,6 @@ describe 'Transactions list' do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   subject { page }
 
   it "root page displays current organization's transactions" do

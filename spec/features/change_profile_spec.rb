@@ -12,8 +12,6 @@ describe 'Change profile' do
   context 'when user is signed in' do
     before { sign_in user }
 
-    after { Capybara.reset_sessions! }
-
     subject { page }
 
     it { expect(subject).to have_link('Edit Profile') }

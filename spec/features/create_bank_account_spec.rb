@@ -18,8 +18,6 @@ describe 'Create bank account' do
     click_on 'Create Bank account'
   end
 
-  after { Capybara.reset_sessions! }
-
   it 'shows created bank account' do
     expect(page).to have_content 'Bank account was successfully created'
     expect(page).to have_content account_name
