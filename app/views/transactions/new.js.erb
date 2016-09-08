@@ -8,7 +8,7 @@ $('#content').html("<%= j render('transactions/modal_content') %>");
 <% else %>
   var lastTab = localStorage.getItem('lastTransactionTab');
   if (lastTab) {
-    $('#transaction_type a[href=' + lastTab + ']').tab('show');
+    $('#transaction_type a[href="' + lastTab + '"]').tab('show');
   } else {
     $('#transaction_type a[data-toggle="tab"]:first').tab('show');
   }
