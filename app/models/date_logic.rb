@@ -7,7 +7,7 @@ module DateLogic
       "First quarter of #{year}"
     when 'Apr', 'May', 'Jun'
       "Second quarter of #{year}"
-    when 'Jul', 'Aug', 'Sept'
+    when 'Jul', 'Aug', 'Sep'
       "Third quarter of #{year}"
     when 'Oct', 'Nov', 'Dec'
       "Fourth quarter of #{year}"

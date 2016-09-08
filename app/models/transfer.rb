@@ -8,8 +8,8 @@ class Transfer
     :inc_transaction, :out_transaction, :exchange_rate,
     :from_currency, :to_currency, :calculate_sum
 
-  validates :amount, presence: true,
-    numericality: { less_than_or_equal_to: Dictionaries.money_max }
+  validates :amount, presence: true, numericality:
+    { less_than_or_equal_to: Dictionaries.money_max, other_than: 0 }
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
     length: { maximum: 10 }, allow_blank: true
   validates :calculate_sum, numericality: { greater_than_or_equal_to: 0 },
