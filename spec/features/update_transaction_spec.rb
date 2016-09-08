@@ -156,5 +156,4 @@ describe 'update transaction', js: true do
       expect(subject).not_to have_link("Created from invoice")
     end
   end
-
 end

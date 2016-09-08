@@ -16,7 +16,7 @@
 #  number          :string
 #
 
-class Invoice < ActiveRecord::Base
+class Invoice < ApplicationRecord
   include CustomerConcern
   customer_concern_callbacks
 
