@@ -8,9 +8,9 @@ $('#transaction_modal').on('hidden.bs.modal', function () {
     $('li.transfer').remove();
   <% else %>
     var transaction_type_selector = [
-      '#transaction_type a[href=',
+      '#transaction_type a[href="',
       "<%= transaction_type_id(@transaction) %>",
-      ']'
+      '"]'
     ].join('');
     $(transaction_type_selector).tab('show');
   <% end %>
