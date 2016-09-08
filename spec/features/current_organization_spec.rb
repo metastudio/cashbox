@@ -9,8 +9,6 @@ describe "current orgranization" do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   context "for user who is not in any organization" do
     it "shows a message to create a new organization" do
       expect(subject).to have_flash_message("You don't have any organization. Create a new one.")

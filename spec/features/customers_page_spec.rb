@@ -13,8 +13,6 @@ describe 'customers page' do
     visit customers_path
   end
 
-  after { Capybara.reset_sessions! }
-
   subject{ page }
 
   it "customer index page displays current organization's customers" do

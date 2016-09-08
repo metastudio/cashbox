@@ -13,8 +13,6 @@ describe 'password recovery' do
     click_on 'Send me reset password instructions'
   end
 
-  after { Capybara.reset_sessions! }
-
   context "with right email" do
     it "shows notice" do
       expect(subject).to have_content('You will receive an email with instructions on how to reset your password in a few minutes')

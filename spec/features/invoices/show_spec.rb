@@ -11,8 +11,6 @@ describe 'Invoice show page' do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   subject{ page }
 
   context 'Download as PDF' do

@@ -19,8 +19,6 @@ describe 'Transactions sort' do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   subject { page }
 
   context "by amount" do

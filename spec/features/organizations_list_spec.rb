@@ -9,8 +9,6 @@ describe 'Organizations list' do
     visit organizations_path
   end
 
-  after { Capybara.reset_sessions! }
-
   subject { page }
 
   it "has create organization btn" do
