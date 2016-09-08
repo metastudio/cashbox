@@ -9,8 +9,6 @@ describe 'delete transaction', js: true do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   subject{ page }
 
   context "within pagination" do

@@ -10,8 +10,6 @@ describe 'categories page' do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   subject{ page }
 
   describe 'when opened via transactions table column' do

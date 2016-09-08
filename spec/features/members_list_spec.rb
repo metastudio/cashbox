@@ -10,8 +10,6 @@ describe 'Members list' do
     visit members_path
   end
 
-  after { Capybara.reset_sessions! }
-
   subject { page }
 
   it "has New Invitation button" do

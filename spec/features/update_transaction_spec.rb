@@ -8,8 +8,6 @@ describe 'update transaction', js: true do
 
   before { sign_in user }
 
-  after { Capybara.reset_sessions! }
-
   subject{ page }
 
   context "pagination" do

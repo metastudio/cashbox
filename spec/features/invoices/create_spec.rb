@@ -13,8 +13,6 @@ describe 'Create invoice', js: true do
     visit invoices_path
   end
 
-  after { Capybara.reset_sessions! }
-
   context 'Create invoice without items' do
     before do
       click_on 'New Invoice'

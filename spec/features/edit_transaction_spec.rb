@@ -15,8 +15,6 @@ describe 'edit transaction', js: true do
     page.has_css?("#edit_row_transaction_#{transaction.id}")
   end
 
-  after { Capybara.reset_sessions! }
-
   subject{ page }
 
   context 'when bank_account is hidden' do

@@ -11,8 +11,6 @@ describe 'sign in proccess' do
     visit root_path
   end
 
-  after { Capybara.reset_sessions! }
-
   context "with wrong password" do
     before :each do
       fill_in 'Email', with: email

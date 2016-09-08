@@ -12,8 +12,6 @@ describe 'bank account hiding' do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   subject { page }
 
   context "when account is shown" do

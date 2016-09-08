@@ -7,8 +7,6 @@ describe 'Statistics' do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   subject { page }
 
   it "root page have settings link" do

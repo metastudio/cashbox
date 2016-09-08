@@ -15,8 +15,6 @@ describe 'Update invoice', js: true do
     sign_in user
   end
 
-  after { Capybara.reset_sessions! }
-
   context 'Update invoice without invoice items' do
     before do
       visit invoice_path(invoice)

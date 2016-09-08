@@ -21,8 +21,6 @@ describe 'Bank accounts after drag&drop' do
       visit bank_accounts_path
     end
 
-    after { Capybara.reset_sessions! }
-
     subject { page }
 
     it { expect(subject).to have_selector("tr:nth-of-type(1)", text: account1.name) }
