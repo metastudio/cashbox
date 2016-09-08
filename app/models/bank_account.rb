@@ -16,7 +16,7 @@
 #  invoice_details :text
 #
 
-class BankAccount < ActiveRecord::Base
+class BankAccount < ApplicationRecord
   acts_as_list
   acts_as_paranoid
 
