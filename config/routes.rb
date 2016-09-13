@@ -23,6 +23,7 @@ Cashbox::Application.routes.draw do
     get :totals_by_customers, on: :collection, as: :totals_by_customers
     get :balances_by_customers, on: :collection, as: :balances_by_customers
     get :balance, on: :collection, as: :balance
+    get :customers_chart, on: :collection, as: :customers_chart
   end
   resources :bank_accounts, except: :show do
     put :hide, on: :member
