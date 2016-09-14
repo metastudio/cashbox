@@ -1,15 +1,11 @@
 <% unless @transfer.errors.any? %>
-  $("<%=j render('transactions/transaction', transaction: @inc_transaction) %>").hide().prependTo(".transactions").fadeIn(1000);
-  var c_inc = $("#<%= dom_id(@inc_transaction) %>").css('backgroundColor');
-  $("#<%= dom_id(@inc_transaction) %>").addClass('new-transaction');
-  $("#<%= dom_id(@inc_transaction) %>").animate({
-    backgroundColor: c_inc,
-  }, 1000 );
+  var element_id = "#<%= dom_id(@inc_transaction) %>";
+  var element = "<%=j render('transactions/transaction', transaction: @inc_transaction) %>";
+  var sidebar = "<%= j render('home/sidebar') %>";
+  var total_balance = "<%= j render('shared/layout/total_balance') %>";
+  addTransactionToList(element_id, element, sidebar, total_balance);
   $('#transaction_modal').modal('hide');
   scrollTo($("#<%= dom_id(@inc_transaction) %>"));
-
-  $("#sidebar").replaceWith("<%= j render('home/sidebar') %>");
-  $("#total_balance").replaceWith("<%= j render('shared/layout/total_balance') %>");
 <% else %>
   $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: @transfer) %>");
   <% if @transfer.currency_mismatch? %>
