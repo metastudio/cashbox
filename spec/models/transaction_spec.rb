@@ -226,4 +226,18 @@ describe Transaction do
         Transaction::AmountFlow.new(slave_inc, slave_exp, slave_curr)]
     end
   end
+
+  describe '#send_notification' do
+    ActiveJob::Base.queue_adapter = :test
+    before { ActiveJob::Base.queue_adapter.enqueued_jobs = [] }
+    let!(:transaction) { create :transaction }
+
+    it 'send notification after creation' do
+      expect(NotificationJob).to have_been_enqueued.with(
+        transaction.organization.name,
+        "Transaction was added",
+        "Transaction was added to organization #{transaction.organization.name}"
+      )
+    end
+  end
 end
