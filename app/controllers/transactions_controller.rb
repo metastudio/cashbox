@@ -1,18 +1,38 @@
 class TransactionsController < ApplicationController
   before_action :require_organization
-  before_action :set_transaction,  only: [:edit, :update, :destroy, :copy]
+  before_action :set_transaction,  only: [:edit, :update, :destroy]
   before_action :set_invoice, only: [:new]
   after_action :update_last_viewed_at, only: [:create, :create_transfer]
 
   def new
-    @q = current_organization.transactions.ransack(session[:filter])
-    if @invoice.present?
-      @transaction = Transaction.new(customer_id: @invoice.customer_id,
-        customer_name: current_organization.find_customer_name_by_id(@invoice.customer_id),
-        amount: @invoice.amount.to_d, invoice: @invoice)
+    if params[:copy_transaction_id].present?
+      @transaction = current_organization.transactions.find(params[:copy_transaction_id])
+      if @transaction.transfer?
+        @transaction = @transaction.dup
+        @transfer = Transfer.new(
+          amount: @transaction.transfer_out.amount,
+          bank_account_id: @transaction.transfer_out.bank_account_id,
+          reference_id: @transaction.bank_account_id,
+          comission: @transaction.transfer_out.comission,
+          comment: @transaction.comment,
+          date: @transaction.date,
+          calculate_sum: @transaction.amount
+        )
+      else
+        @transaction = @transaction.dup
+        @transaction.amount = @transaction.amount.abs
+        @transfer = Transfer.new
+      end
     else
-      @transaction = Transaction.new
-      @transfer = Transfer.new
+      @q = current_organization.transactions.ransack(session[:filter])
+      if @invoice.present?
+        @transaction = Transaction.new(customer_id: @invoice.customer_id,
+          customer_name: current_organization.find_customer_name_by_id(@invoice.customer_id),
+          amount: @invoice.amount.to_d, invoice: @invoice)
+      else
+        @transaction = Transaction.new
+        @transfer = Transfer.new
+      end
     end
   end
 
@@ -40,25 +60,6 @@ class TransactionsController < ApplicationController
 
   def destroy
     @transaction.destroy
-  end
-
-  def copy
-    if @transaction.transfer?
-      @transaction = @transaction.dup
-      @transfer = Transfer.new(
-        amount: @transaction.transfer_out.amount,
-        bank_account_id: @transaction.transfer_out.bank_account_id,
-        reference_id: @transaction.bank_account_id,
-        comission: @transaction.transfer_out.comission,
-        comment: @transaction.comment,
-        date: @transaction.date,
-        calculate_sum: @transaction.amount
-      )
-    else
-      @transaction = @transaction.dup
-      @transaction.amount = @transaction.amount.abs
-      @transfer = Transfer.new
-    end
   end
 
   private
