@@ -23,7 +23,7 @@ module LayoutHelper
   end
 
   def submit_title
-    if  params['action'] == 'new' || params['action'] == 'copy'
+    if  params['action'] == 'new'
       'Create'
     else
       'Update'

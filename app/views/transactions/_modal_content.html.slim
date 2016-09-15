@@ -26,5 +26,5 @@
   - if @transaction.persisted?
     = link_to 'Remove', transaction_path(@transaction), remote: true, method: :delete,
         data: { confirm: 'Are you sure?', disable_with: 'Removing...' }, class: 'btn btn-danger pull-left'
-    = link_to 'Copy', copy_transaction_path(@transaction), remote: true, class: 'btn btn-info pull-left'
+    = link_to 'Copy', new_transaction_path(copy_transaction_id: @transaction.id), remote: true, class: 'btn btn-info pull-left'
 
