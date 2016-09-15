@@ -55,6 +55,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
+  gem 'parallel_tests'
 end
 
 group :development do
