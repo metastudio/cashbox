@@ -25,6 +25,7 @@ describe Transaction do
     it { should belong_to(:bank_account).touch(true)  }
     it { expect(subject).to belong_to(:customer) }
     it { should have_one(:organization).through(:bank_account) }
+    it { should belong_to(:created_by) }
   end
 
   context "validation" do
@@ -237,6 +238,20 @@ describe Transaction do
       expect(subject).to eq [
         Transaction::AmountFlow.new(def_inc, def_exp, def_curr),
         Transaction::AmountFlow.new(slave_inc, slave_exp, slave_curr)]
+    end
+  end
+
+  describe '#send_notification' do
+    ActiveJob::Base.queue_adapter = :test
+    before { ActiveJob::Base.queue_adapter.enqueued_jobs = [] }
+    let!(:transaction) { create :transaction }
+
+    it 'send notification after creation' do
+      expect(NotificationJob).to have_been_enqueued.with(
+        transaction.organization.name,
+        "Transaction was added",
+        "Transaction was added to organization #{transaction.organization.name}"
+      )
     end
   end
 end

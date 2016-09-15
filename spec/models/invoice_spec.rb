@@ -66,4 +66,18 @@ describe Invoice do
       end
     end
   end
+
+  describe '#send_notification' do
+    ActiveJob::Base.queue_adapter = :test
+    before { ActiveJob::Base.queue_adapter.enqueued_jobs = [] }
+    let!(:invoice) { create :invoice }
+
+    it 'send notification after creation' do
+      expect(NotificationJob).to have_been_enqueued.with(
+        invoice.organization.name,
+        "Invoice was added",
+        "Invoice was added to organization #{invoice.organization.name}"
+      )
+    end
+  end
 end

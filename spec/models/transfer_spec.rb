@@ -149,4 +149,19 @@ describe Transfer do
       end
     end
   end
+
+  describe '#send_notification' do
+    ActiveJob::Base.queue_adapter = :test
+    before { ActiveJob::Base.queue_adapter.enqueued_jobs = [] }
+    let!(:account) { create :bank_account }
+    let!(:transfer) { create :transfer, bank_account_id: account.id }
+
+    it 'send notification after creation' do
+      expect(NotificationJob).to have_been_enqueued.with(
+        account.organization.name,
+        "Transfer was created",
+        "Transfer was created in #{account.name} bank account"
+      )
+    end
+  end
 end

@@ -39,6 +39,7 @@ class Transaction < ApplicationRecord
   belongs_to :customer, inverse_of: :transactions
   belongs_to :invoice
   belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
+  belongs_to :created_by, class_name: 'User', inverse_of: :transactions, foreign_key: 'created_by_id'
   has_one :transfer_in, class_name: 'Transaction', foreign_key: 'transfer_out_id'
   accepts_nested_attributes_for :transfer_out
   has_one :organization, through: :bank_account, inverse_of: :transactions
@@ -79,6 +80,7 @@ class Transaction < ApplicationRecord
   before_save :calculate_amount, if: :comission
   after_restore :recalculate_amount
   after_save :update_invoice_paid_at, if: :invoice
+  after_create :send_notification
 
   class << self
     def flow_ordered(def_currency)
@@ -143,6 +145,19 @@ class Transaction < ApplicationRecord
   end
 
   private
+
+  def send_notification
+    unless transfer? || transfer_out?
+      NotificationJob.perform_later(
+        organization.name,
+        "Transaction was added",
+        "Transaction was added to organization #{organization.name}")
+      MainPageRefreshJob.perform_later(
+        organization.name,
+        self
+      )
+    end
+  end
 
   def find_customer
     self.customer = Customer.find_or_initialize_by(name: customer_name, organization_id: organization.id)

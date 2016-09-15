@@ -11,7 +11,7 @@
         - if curr != current_organization.default_currency
           span.no-wrap
             =<> "(#{money_with_symbol total.exchange_to(current_organization.default_currency)}"
-            = show_amount_with_tooltip(total) + ')'
+            = show_amount_with_tooltip(total, current_organization.default_currency) + ')'
 
   li.dropdown.dropdown-total#total_balance
     a.dropdown-toggle data-target="#dropdown-total" data-toggle="dropdown" href="#"
