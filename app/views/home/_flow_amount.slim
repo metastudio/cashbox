@@ -2,4 +2,4 @@ td class="#{total ? total_colorize_amount(flow_amount) : colorize_amount(flow_am
   = money_with_symbol(flow_amount)
   - if flow_amount.currency != def_curr
     =<> "(#{money_with_symbol(flow_amount.exchange_to(def_curr))}"
-    = show_amount_with_tooltip(flow_amount) + ')'
+    = show_amount_with_tooltip(flow_amount, current_organization.default_currency) + ')'

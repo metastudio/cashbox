@@ -19,6 +19,13 @@ class StatisticsController < ApplicationController
     end
   end
 
+  def customers_chart
+    data = current_organization.customers_by_months(params[:type])
+    respond_to do |format|
+      format.json { render json: data }
+    end
+  end
+
   def income_by_customers
     incomes = current_organization.by_customers(:incomes, params[:period])
     respond_to do |format|

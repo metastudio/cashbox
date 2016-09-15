@@ -49,12 +49,19 @@ class Invoice < ApplicationRecord
   before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
   after_save :set_currency
+  after_create :send_notification
 
   def pdf_filename
     "#{self.customer.to_s}_#{self.ends_at.month}_#{self.ends_at.year}"
   end
 
   private
+
+  def send_notification
+    NotificationJob.perform_later(organization.name,
+      "Invoice was added",
+      "Invoice was added to organization #{organization.name}")
+  end
 
   def self.period(period)
     case period

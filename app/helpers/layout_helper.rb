@@ -11,9 +11,9 @@ module LayoutHelper
     css_class
   end
 
-  def show_amount_with_tooltip(amount)
+  def show_amount_with_tooltip(amount, default_currency)
     cb = Money.default_bank
-    def_curr = current_organization.default_currency
+    def_curr = default_currency
     show_tooltip_with_text("#{amount.currency}/#{def_curr}, rate: #{cb.get_rate(amount.currency, def_curr).round(4)}, by #{l cb.rates_updated_at}")
   end
 
@@ -23,7 +23,7 @@ module LayoutHelper
   end
 
   def submit_title
-    if  params['action'] == 'new' || params['action'] == 'copy'
+    if  params['action'] == 'new'
       'Create'
     else
       'Update'

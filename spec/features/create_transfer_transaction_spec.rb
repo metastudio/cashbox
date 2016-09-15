@@ -293,6 +293,34 @@ describe 'create transfer transaction', js: true do
         expect(page).to have_content("\nRate: #{(sum.to_d/amount.to_d).round(2)}")
       end
     end
+  end
 
+  context "with leave open checked" do
+    before do
+      visit root_path
+      click_on 'Add...'
+      click_on 'Transfer'
+      within '#new_transfer_form' do
+        fill_in 'transfer[amount]', with: amount_str
+        select ba1.name, from: 'transfer[bank_account_id]' if ba1_name.present?
+        select ba2.name, from: 'transfer[reference_id]' if ba2_name.present?
+        fill_in 'transfer[comission]', with: comission_str
+        fill_in 'transfer[comment]',   with: comment
+        find('#transfer_leave_open').set(true)
+      end
+      click_on 'Create'
+    end
+
+    it "create transfer" do
+      expect(page).to have_content("Transfer was created successfully!")
+    end
+
+    it "fill form by old transfer data" do
+      within '#new_transfer_form' do
+        expect(page).to have_field('From', with: ba1.id)
+        expect(page).to have_field('To', with: ba2.id)
+        expect(page).to have_field('Amount', with: amount_str)
+      end
+    end
   end
 end
