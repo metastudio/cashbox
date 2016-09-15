@@ -133,6 +133,16 @@ class Transaction < ApplicationRecord
     category_id == Category.transfer_out_id
   end
 
+  def get_type
+    if transfer? || transfer_out?
+      'transfer'
+    elsif income?
+      'income'
+    elsif expense?
+      'expense'
+    end
+  end
+
   private
 
   def send_notification
