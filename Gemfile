@@ -50,6 +50,7 @@ gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem 'puma', '~> 3.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'redis'
 
 group :development, :test do
   gem 'rspec-rails'

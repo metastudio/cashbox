@@ -1,5 +1,6 @@
 $(function () {
   drawBalanceChart(null, null, null, 'main-balance');
+  drawCustomersChart('income');
   if ($('.piecharts').length) {
     drawChart('current-month', 'current-month-income-by-categories');
     drawChart('current-month', 'current-month-expense-by-categories');
@@ -21,6 +22,10 @@ $(function () {
     setStep(0)
     drawBalanceChart(null, scale, getStep, 'main-balance');
     setScale(scale);
+  });
+  $(document).on('click', '#customers_chart li a', function () {
+    type = $(this).data('type');
+    drawCustomersChart(type);
   });
   $(document).on('click', '#balance_navigation a', function (e) {
     e.preventDefault();
@@ -225,6 +230,55 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
 
   }
 };
+
+var drawCustomersChart = function drawCustomersChart (type) {
+  element = document.getElementById('customers-chart')
+
+  if (element) {
+    $.ajax({
+      url: element.getAttribute('data-url'),
+      type: 'get',
+      data: {
+        type: type
+      }
+    })
+    .done(function(response) {
+      draw(response, element);
+    });
+  }
+
+  function draw(response, css_id) {
+    console.log(response.currency_format)
+    if (response == null ) {
+      $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
+      return false;
+    };
+    var data = response.data;
+    var chartData = google.visualization.arrayToDataTable(data);
+    var chart = new google.visualization.ColumnChart(element);
+    var formatter = new google.visualization.NumberFormat(response.currency_format);
+
+    var columns_count = response.data[0].length - 2
+
+    for (var i = 0; i <= columns_count; i++) {
+      formatter.format(chartData, i);
+    }
+
+    var options = {
+      chartArea: {
+        top:  30,
+        width: '90%',
+        height: '76%',
+        bottom: 50
+      },
+      legend: { position: 'top', maxLines: 3 },
+      bar: { groupWidth: '75%' },
+      isStacked: true,
+    };
+
+    chart.draw(chartData, options);
+  }
+}
 
 function dateNumber(number) {
   if (number < 10) {

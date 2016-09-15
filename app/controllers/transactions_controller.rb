@@ -5,29 +5,53 @@ class TransactionsController < ApplicationController
   after_action :update_last_viewed_at, only: [:create, :create_transfer]
 
   def new
-    @q = current_organization.transactions.ransack(session[:filter])
-    if @invoice.present?
-      @transaction = Transaction.new(customer_id: @invoice.customer_id,
-        customer_name: current_organization.find_customer_name_by_id(@invoice.customer_id),
-        amount: @invoice.amount.to_d, invoice: @invoice)
+    if params[:copy_transaction_id].present?
+      @transaction = current_organization.transactions.find(params[:copy_transaction_id])
+      if @transaction.transfer?
+        @transaction = @transaction.dup
+        @transfer = Transfer.new(
+          amount: @transaction.transfer_out.amount,
+          bank_account_id: @transaction.transfer_out.bank_account_id,
+          reference_id: @transaction.bank_account_id,
+          comission: @transaction.transfer_out.comission,
+          comment: @transaction.comment,
+          date: @transaction.date,
+          calculate_sum: @transaction.amount
+        )
+      else
+        @transaction = @transaction.dup
+        @transaction.amount = @transaction.amount.abs
+        @transfer = Transfer.new
+      end
     else
-      @transaction = Transaction.new
-      @transfer = Transfer.new
+      @q = current_organization.transactions.ransack(session[:filter])
+      if @invoice.present?
+        @transaction = Transaction.new(customer_id: @invoice.customer_id,
+          customer_name: current_organization.find_customer_name_by_id(@invoice.customer_id),
+          amount: @invoice.amount.to_d, invoice: @invoice)
+      else
+        @transaction = Transaction.new
+        @transfer = Transfer.new
+      end
     end
   end
 
   def create
     @transaction = Transaction.new(transaction_params)
     check_relation_to_curr_org(:transaction)
+    @transaction.created_by = current_user
     @transaction.save
+    @transaction_dup = @transaction.dup if @transaction.leave_open == '1'
   end
 
   def create_transfer
     @transfer = Transfer.new(transfer_params)
     check_relation_to_curr_org(:transfer)
+    @transfer.created_by = current_user
     if @transfer.save
       @inc_transaction = @transfer.inc_transaction
       @out_transaction = @transfer.out_transaction
+      @transfer_dup = @transfer.dup if @transfer.leave_open == '1'
     end
   end
 
@@ -71,13 +95,13 @@ class TransactionsController < ApplicationController
 
   def transaction_params
     params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
-      :comment, :comission, :reference_id, :customer_id, :customer_name, :date, :invoice_id,
-      transfer_out_attributes: [:id, :amount, :category_id, :bank_account_id,
-        :comment, :comission, :customer_id, :date])
+      :comment, :comission, :reference_id, :customer_id, :customer_name, :date,
+      :invoice_id, :leave_open, transfer_out_attributes: [:id, :amount,
+       :category_id, :bank_account_id, :comment, :comission, :customer_id, :date])
   end
 
   def transfer_params
     params.require(:transfer).permit(:amount, :bank_account_id, :reference_id,
-     :comment, :comission, :exchange_rate, :date, :calculate_sum)
+     :comment, :comission, :exchange_rate, :date, :calculate_sum, :leave_open)
   end
 end

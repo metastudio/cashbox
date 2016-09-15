@@ -183,3 +183,15 @@ function addTranferFormMasks() {
   $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
   datepickerInit($form.find('#transfer_date.datepicker'));
 }
+
+function addTransactionToList (element_id, element, sidebar, total_balance) {
+  $(element).prependTo('.transactions').hide().fadeIn(1000);
+  var bgc = $(element_id).css('backgroundColor');
+  $(element_id).addClass('new-transaction');
+  $(element_id).animate({
+    backgroundColor: bgc,
+  }, 1000 );
+  $("#sidebar").replaceWith(sidebar);
+  $("#total_balance").replaceWith(total_balance);
+}
+

@@ -17,6 +17,17 @@
       .col-xs-6
         = link_to '&#8594;'.html_safe, '#right-step', class: 'right-step'
     br
+    h4 Customers income/expense chart
+    .panel.with-nav-tabs
+      .panel-heading
+        ul.nav.nav-tabs#customers_chart data-type='income'
+          li.active
+            = link_to 'Income', '#months', data: { toggle: 'tab', type: 'income' }
+          li
+            = link_to 'Expense', '#years', data: { toggle: 'tab', type: 'expense' }
+    br
+    .customers-chart#customers-chart data-url=customers_chart_statistics_path
+    br
     .panel.with-nav-tabs
       .panel-heading
         ul.nav.nav-tabs#periods_bar

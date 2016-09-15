@@ -203,6 +203,45 @@ class Organization < ApplicationRecord
     total.format
   end
 
+  def customers_by_months(type='income')
+    category_type = type
+    period = 1.year.ago.to_date .. Date.current
+    months = period.map { |date| get_month(date.beginning_of_month) }.uniq
+    result = {}
+    customers = []
+    months.each do |month|
+      result[month] = {}
+    end
+
+    transacts = transactions.unscope(:order).period(period).includes(:customer)
+    if category_type == 'income'
+      transacts = transacts.incomes
+    else
+      transacts = transacts.expenses
+    end
+    transacts = transacts.where.not(customer: nil)
+
+    transacts.each do |transact|
+      date = get_month(transact.date)
+      customer_name = "#{transact.customer.name}"
+      customers << customer_name
+      transact_amount = transact.amount
+        .exchange_to(default_currency)
+        .cents
+        .abs
+      transact_amount = (transact_amount/100).round(2)
+      if result[date][customer_name].present?
+        result[date][customer_name] += transact_amount
+      else
+        result[date][customer_name] = transact_amount
+      end
+    end
+    {
+      data: customers_transactions_data(customers.uniq.sort, result),
+      currency_format: currency_format
+    }
+  end
+
   private
 
   def get_customers_selection_by_transactions(type, customer_ids, period)
@@ -346,5 +385,24 @@ class Organization < ApplicationRecord
       end
       calc_to_def_currency_for_data_selection(query)
     end
+  end
+
+  def customers_transactions_data(customers, data)
+    result = []
+    data.each do |month, mont_data|
+      month_string = ["#{month}"]
+      customers.each do |customer|
+        if mont_data[customer].present?
+          month_string << mont_data[customer]
+        else
+          month_string << 0
+        end
+      end
+      month_string << ''
+      result << month_string
+    end
+    header = customers.unshift('Customer').append({ role: 'annotation' })
+    result.unshift(header)
+    result
   end
 end

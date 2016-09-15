@@ -21,6 +21,7 @@
 # Ignore config files
 /config/database.yml
 /config/config.yml
+/config/cable.yml
 
 # Ignore file uploads
 public/uploads

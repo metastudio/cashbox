@@ -77,3 +77,10 @@ body {
 #invitation_link_area {
   margin-right: 8px;
 }
+
+label.required {
+  &:before {
+    content: '*';
+    margin-right: 2px;
+  }
+}
