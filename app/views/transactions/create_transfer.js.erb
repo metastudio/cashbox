@@ -4,8 +4,18 @@
   var sidebar = "<%= j render('home/sidebar') %>";
   var total_balance = "<%= j render('shared/layout/total_balance') %>";
   addTransactionToList(element_id, element, sidebar, total_balance);
-  $('#transaction_modal').modal('hide');
-  scrollTo($("#<%= dom_id(@inc_transaction) %>"));
+  <% if @transfer.leave_open == '1' %>
+    $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: @transfer_dup) %>");
+    prepRateAndHints(exchange_rate = true);
+    function toggleAlert () {
+      $('.tab-pane.active #new_transfer_form .alert-success').toggle(300);
+    };
+    toggleAlert();
+    setTimeout(toggleAlert, 3000);
+  <% else %>
+    $('#transaction_modal').modal('hide');
+    scrollTo($("#<%= dom_id(@inc_transaction) %>"));
+  <% end %>
 <% else %>
   $("#new_transfer_form").replaceWith("<%=j render('transactions/transfer_form', transfer: @transfer) %>");
   <% if @transfer.currency_mismatch? %>
