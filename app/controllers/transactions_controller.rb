@@ -39,6 +39,7 @@ class TransactionsController < ApplicationController
   def create
     @transaction = Transaction.new(transaction_params)
     check_relation_to_curr_org(:transaction)
+    @transaction.created_by = current_user
     @transaction.save
     @transaction_dup = @transaction.dup if @transaction.leave_open == '1'
   end
@@ -46,6 +47,7 @@ class TransactionsController < ApplicationController
   def create_transfer
     @transfer = Transfer.new(transfer_params)
     check_relation_to_curr_org(:transfer)
+    @transfer.created_by = current_user
     if @transfer.save
       @inc_transaction = @transfer.inc_transaction
       @out_transaction = @transfer.out_transaction

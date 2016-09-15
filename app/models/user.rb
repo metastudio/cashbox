@@ -29,6 +29,7 @@ class User < ApplicationRecord
   has_many :members, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :members
   has_many :invitations, foreign_key: :email, primary_key: :email, inverse_of: :user
+  has_many :transactions, foreign_key: :created_by_id, dependent: :nullify
 
   accepts_nested_attributes_for :profile, update_only: true
 
