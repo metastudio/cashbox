@@ -7,7 +7,7 @@ $(function () {
       channel: "NotificationChannel"
     }, {
       received: function(data) {
-        var icon = $('.notification_icon').data('url')
+        var icon = $('.notification_icon').data('url');
         new Notification(data.title, { body: data.body, icon: icon });
       }
     });

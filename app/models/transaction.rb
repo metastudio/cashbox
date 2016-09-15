@@ -39,6 +39,7 @@ class Transaction < ApplicationRecord
   belongs_to :customer, inverse_of: :transactions
   belongs_to :invoice
   belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
+  belongs_to :created_by, class_name: 'User', inverse_of: :transactions, foreign_key: 'created_by_id'
   has_one :transfer_in, class_name: 'Transaction', foreign_key: 'transfer_out_id'
   accepts_nested_attributes_for :transfer_out
   has_one :organization, through: :bank_account, inverse_of: :transactions
@@ -151,6 +152,10 @@ class Transaction < ApplicationRecord
         organization.name,
         "Transaction was added",
         "Transaction was added to organization #{organization.name}")
+      MainPageRefreshJob.perform_later(
+        organization.name,
+        self
+      )
     end
   end
 
