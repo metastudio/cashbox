@@ -62,7 +62,7 @@ class Transfer
           bank_account.organization.name,
           "Transfer was created",
           "Transfer was created in #{bank_account.name} bank account")
-        MainPageRefreshJob.perform_now(
+        MainPageRefreshJob.perform_later(
           bank_account.organization.name,
           @inc_transaction
         )
