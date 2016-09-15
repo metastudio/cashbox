@@ -12,12 +12,14 @@
       collection: current_organization.categories.where(type: type),
       prompt: 'Category', value_method: :id,
       selected: @q.nil? ? f.object.category_id \
-        : (@q.category_id_in ? @q.category_id_in : nil)
+        : (@q.category_id_in ? @q.category_id_in : nil),
+      required: true
   - else
     = f.association :category, as: :grouped_select,
       collection: current_organization.categories.grouped_by_type,
       group_method: :last, prompt: 'Category', value_method: :id,
-      selected: f.object.category_id
+      selected: f.object.category_id,
+      required: true
 
   - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
     = f.simple_fields_for :transfer_out, transaction.transfer_out do |t|
