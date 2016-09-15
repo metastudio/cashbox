@@ -6,7 +6,7 @@ class Transfer
   attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
     :bank_account, :bank_account_id, :reference_id, :date,
     :inc_transaction, :out_transaction, :exchange_rate,
-    :from_currency, :to_currency, :calculate_sum, :created_by
+    :from_currency, :to_currency, :calculate_sum, :created_by, :leave_open
 
   validates :amount, presence: true, numericality:
     { less_than_or_equal_to: Dictionaries.money_max, other_than: 0 }

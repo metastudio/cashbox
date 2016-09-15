@@ -7,6 +7,6 @@ tr.nested-fields
     = f.input :date, as: :string, placeholder: 'Date',
       input_html: { class: 'nested-date datepicker', value: f.object.date.present? ? l(f.object.date) : nil }
   td
-    = f.input :hours, input_html: { class: 'nested-hours' }
+    = f.input :hours, input_html: { class: 'nested-hours', min: '0', step: 'any' }
     = f.input :description, input_html: { class: 'nested-description' }
   td = link_to_remove_association 'delete', f

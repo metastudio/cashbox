@@ -1,6 +1,7 @@
 = simple_form_for(transfer, url: transfer_transactions_path, remote: true,
     html: { id: 'new_transfer_form', class: 'form-horizontal transfer' }, wrapper: :horizontal_form) do |f|
   = f.error_notification
+  .alert.alert-success role="alert" style='display: none;' Transfer was created successfully!
   - bank_accounts = current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency)
   = f.input :bank_account_id, as: :grouped_select, include_blank: 'From',
       collection: bank_accounts, group_method: :last, label: 'From'
@@ -17,4 +18,6 @@
   = f.input :comment
   = f.input :date, as: :string, placeholder: 'Date',
       input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date.to_date) : nil }
+  - unless transfer.persisted?
+    = f.input :leave_open, as: :boolean
 

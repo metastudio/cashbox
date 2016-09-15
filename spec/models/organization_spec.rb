@@ -588,4 +588,81 @@ describe Organization do
     end
   end
 
+  describe "#customers_by_months" do
+    let!(:org) { create :organization, default_currency: 'RUB' }
+    let!(:customer1) { create :customer, organization: org }
+    let!(:customer2) { create :customer, organization: org }
+    let!(:category) { create :category, :income, organization: org }
+    let!(:transaction1) do
+      create :transaction, :income, organization: org,
+        customer: customer1, category: category
+    end
+    let!(:transaction2) do
+      create :transaction, :income, organization: org,
+        customer: customer2, category: category
+    end
+
+    context 'current month' do
+      subject { org.customers_by_months[:data].last }
+
+      it 'have data about transactions in current month' do
+        expect(subject).to eq([Date.current.strftime("%b, %Y"),
+         (transaction1.amount.cents/100).round(2),
+         (transaction2.amount.cents/100).round(2), ""])
+      end
+    end
+
+    context 'previous month' do
+      let!(:transaction3) do
+        create :transaction, :income, organization: org,
+          customer: customer1, category: category,
+          date: DateTime.now - 1.months
+      end
+      let!(:transaction4) do
+        create :transaction, :income, organization: org,
+          customer: customer2, category: category,
+          date: DateTime.now - 1.months
+      end
+      subject { org.customers_by_months[:data][-2] }
+
+      it 'have data about transactions in previous month' do
+        expect(subject).to eq([(Date.current - 1.months).strftime("%b, %Y"),
+         (transaction3.amount.cents/100).round(2),
+         (transaction4.amount.cents/100).round(2), ""])
+      end
+    end
+
+    context 'organization have transaction with different currency' do
+      let!(:account) { create :bank_account, organization: org, currency: 'USD'}
+      let!(:customer3) { create :customer, organization: org }
+      let!(:transaction3) do
+        create :transaction, :income, organization: org,
+          customer: customer3, category: category, bank_account: account
+      end
+
+      subject { org.customers_by_months[:data].last }
+
+      it 'convert amounts to organization currency' do
+        expect(subject).to eq([Date.current.strftime("%b, %Y"),
+         (transaction1.amount.cents/100).round(2),
+         (transaction2.amount.cents/100).round(2),
+         (transaction3.amount.exchange_to('RUB').cents/100).round(2),""])
+      end
+    end
+
+    context 'transaction without customer' do
+      let!(:transaction3) do
+        create :transaction, :income, organization: org,
+          customer: nil, category: category
+      end
+
+      subject { org.customers_by_months[:data].last }
+
+      it 'have data about transactions in current month' do
+        expect(subject).to eq([Date.current.strftime("%b, %Y"),
+         (transaction1.amount.cents/100).round(2),
+         (transaction2.amount.cents/100).round(2), ""])
+      end
+    end
+  end
 end

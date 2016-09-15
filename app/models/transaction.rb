@@ -32,7 +32,7 @@ class Transaction < ApplicationRecord
     end
   end
 
-  attr_accessor :customer_name, :comission
+  attr_accessor :customer_name, :comission, :leave_open
 
   belongs_to :category, inverse_of: :transactions
   belongs_to :bank_account, inverse_of: :transactions, touch: true
