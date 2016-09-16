@@ -61,7 +61,7 @@ class Transaction < ApplicationRecord
       OR bank_account_id IN (?)', Category.transfer_out_id, bank_accounts) }
 
   validates :amount, presence: true, numericality: {
-    less_than_or_equal_to: Dictionaries.money_max }
+    less_than_or_equal_to: Dictionaries.money_max, other_than: 0 }
   validate  :amount_balance, if: :bank_account
   validates :category, presence: true, unless: :residue?
   validates :bank_account, presence: true
