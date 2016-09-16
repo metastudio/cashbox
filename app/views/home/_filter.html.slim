@@ -1,7 +1,7 @@
 h2
-  = link_to '#', id: 'toggle_filter' do
-    |Filters
-    b.caret
+  | Transactions
+  = link_to '#', id: 'toggle_filter', title: 'Filters'
+    span.glyphicon.glyphicon-filter
 
 = search_form_for @q, url: root_path, html: { class: "filter #{'init-hidden' unless params[:q]}" } do |f|
   .row
