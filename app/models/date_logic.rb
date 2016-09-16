@@ -29,4 +29,8 @@ module DateLogic
     end
   end
 
+  def get_month(date)
+    date.strftime('%b, %Y')
+  end
+
 end

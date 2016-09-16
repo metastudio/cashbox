@@ -23,6 +23,7 @@ Cashbox::Application.routes.draw do
     get :totals_by_customers, on: :collection, as: :totals_by_customers
     get :balances_by_customers, on: :collection, as: :balances_by_customers
     get :balance, on: :collection, as: :balance
+    get :customers_chart, on: :collection, as: :customers_chart
   end
   resources :bank_accounts, except: :show do
     put :hide, on: :member
@@ -43,4 +44,5 @@ Cashbox::Application.routes.draw do
   resources :invitations, only: [:new, :create, :destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
   get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation
+  mount ActionCable.server => "/cable"
 end

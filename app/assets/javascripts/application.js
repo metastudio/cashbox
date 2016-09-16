@@ -22,6 +22,7 @@
 //= require jquery.inputmask.numeric.extensions
 //= require jquery.responsiveText
 //= require jquery-responsiveTables
+//= require cable
 
 //= require transactions
 //= require bank_accounts
