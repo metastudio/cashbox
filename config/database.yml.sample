@@ -46,7 +46,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: cashbox_test
+  database: cashbox_test<%= ENV['TEST_ENV_NUMBER'] %>
   pool: 5
   username: cashbox
   password:
