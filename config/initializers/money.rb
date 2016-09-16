@@ -58,7 +58,7 @@ MoneyRails.configure do |config|
     :priority            => 2,
     :iso_code            => "RUB",
     :name                => "Russian Ruble",
-    :symbol              => "р.",
+    :symbol              => "₽",
     :symbol_first        => false,
     :subunit             => "Kopek",
     :subunit_to_unit     => 100,
