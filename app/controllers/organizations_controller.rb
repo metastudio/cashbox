@@ -1,6 +1,8 @@
 class OrganizationsController < ApplicationController
   layout 'settings'
-  before_action :find_organization, only: [:show, :edit, :update, :destroy, :switch]
+  before_action :find_organization, only: [:show, :edit, :update,
+    :destroy, :switch, :default_account, :default_category, :new_category,
+    :new_account]
   before_action :authorize_organization, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -16,6 +18,42 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new
   end
 
+  def new_account
+
+  end
+
+  def new_category
+
+  end
+
+  def default_account
+    BankAccount.create(
+      organization: @organization,
+      name: 'Checking'
+    )
+    redirect_to :new_category
+  end
+
+  def default_category
+    Category.create(
+      organization: @organization,
+      type: Category::CATEGORY_INCOME,
+      name: 'Payments from customers'
+    )
+    Category.create(
+      organization: @organization,
+      type: Category::CATEGORY_EXPENSE,
+      name: 'Salary'
+    )
+    Category.create(
+      organization: @organization,
+      type: Category::CATEGORY_EXPENSE,
+      name: 'Taxes'
+    )
+    session[:new_organization] = true
+    redirect_to root_path
+  end
+
   def edit
   end
 
@@ -24,7 +62,8 @@ class OrganizationsController < ApplicationController
 
     if @organization.save
       Member.create(user: current_user, organization: @organization, role: 'owner')
-      redirect_to @organization, notice: 'Organization was successfully created.'
+      redirect_to new_account_organization_path(@organization),
+        notice: 'Organization was successfully created.'
     else
       render action: 'new'
     end

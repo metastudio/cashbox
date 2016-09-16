@@ -8,6 +8,10 @@ class BankAccountsController < ApplicationController
 
   def new
     @bank_account = current_organization.bank_accounts.build
+    if request.xhr?
+      @ajax = true
+      render partial: 'bank_accounts/form'
+    end
   end
 
   def index

@@ -1,0 +1,30 @@
+.page-header
+  h2 New organization bank account
+
+
+.row.previous_buttons
+  .col-sm-6
+    p
+      ' Bank account will be created by default (with default currency)
+      br
+      br
+      = link_to 'Create default Bank account', default_account_organization_path(@organization.id), class: 'btn btn-primary'
+  .col-sm-6
+    p
+      ' But you can create it manually
+      br
+      br
+      = link_to 'Create manually', new_bank_account_path, class: 'btn btn-primary new_account', remote: true
+
+.row.new_account_form
+
+.row.hidden
+  .col-sm-2
+    = link_to 'Create another', new_bank_account_path, class: 'btn btn-primary', remote: true
+  .col-sm-10
+    = link_to 'Next step', new_category_organization_path(@organization), class: 'btn btn-success'
+
+
+
+= content_for :sidebar
+  = render 'home/settings'

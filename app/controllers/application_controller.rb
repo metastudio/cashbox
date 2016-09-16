@@ -29,6 +29,13 @@ class ApplicationController < ActionController::Base
       flash.keep
       redirect_to new_organization_path, alert: "You don't have any organization. Create a new one."
     end
+    organization = OrganizationWizzard.new(current_organization)
+    unless organization.ready?
+      flash.keep
+      step = organization.step
+      current_id = current_organization.id
+      redirect_to send("#{step}_organization_path", current_id)
+    end
   end
 
   def update_last_viewed_at

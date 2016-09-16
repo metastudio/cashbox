@@ -1,0 +1,13 @@
+.page-header
+  h2 New organization categories.
+
+p
+  ' Categories will be created by default 
+  = link_to 'Create default Categories', default_category_organization_path(@organization.id), class: 'btn btn-primary'
+
+p
+  ' But you can create it manually 
+  = link_to 'Create manually', root_path, class: 'btn btn-primary', remote: true
+
+= content_for :sidebar
+  = render 'home/settings'

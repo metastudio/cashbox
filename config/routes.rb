@@ -11,6 +11,10 @@ Cashbox::Application.routes.draw do
   root 'home#show'
 
   resources :organizations do
+    get :new_account, on: :member
+    get :new_category, on: :member
+    get :default_account, on: :member
+    get :default_category, on: :member
     member do
       put :switch
     end

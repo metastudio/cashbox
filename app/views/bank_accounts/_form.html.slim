@@ -12,4 +12,7 @@
         = f.input :currency, collection: Currency.ordered, include_blank: false
 
       .form-actions
-        = f.button :submit, class: 'btn-primary'
+        - if @ajax
+          = f.button :submit, class: 'btn-primary', remote: true
+        - else
+          = f.button :submit, class: 'btn-primary'
