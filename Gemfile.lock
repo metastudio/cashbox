@@ -432,7 +432,7 @@ DEPENDENCIES
   rspec-collection_matchers
   rspec-rails
   russian_central_bank
-  sass-rails (~> 5.0.0)
+  sass-rails (~> 5.0.6)
   select2-rails (~> 3.5.9.3)
   shoulda-matchers
   simple_form
