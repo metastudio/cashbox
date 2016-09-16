@@ -6,7 +6,7 @@
     = f.input :number, input_html: { maxlength: 16 }
     = f.input :customer_name, input_html: { class: 'customer-select2', data: { url: autocomplete_customers_path,
       placeholder: 'Customer',
-      value: current_organization.find_customer_name_by_id(f.object.customer_id) } }
+      value: current_organization.find_customer_name_by_id(f.object.customer_id) } }, required: true
     = f.input :starts_at, as: :string, placeholder: 'Start date',
       input_html: { class: 'datepicker', value: f.object.starts_at.present? ? l(f.object.starts_at) : nil }
     = f.input :ends_at, as: :string, placeholder: 'End date',
