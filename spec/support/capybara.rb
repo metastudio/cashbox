@@ -4,7 +4,7 @@ require 'capybara/email/rspec'
 Capybara.javascript_driver = :webkit
 
 RSpec.configure do |config|
-  config.after(:each, type: :feature) do
+  config.append_after(:each, type: :feature) do
     Capybara.reset_sessions!
   end
 end
