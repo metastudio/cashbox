@@ -12,10 +12,12 @@
             = link_to 'Quarters', '#quarters', data: { toggle: 'tab', scale: 'quarters' }
     .balance-chart#main-balance data-url=balance_statistics_path
     .row#balance_navigation data-step=0
-      .col-xs-6
+      .col-xs-6.left_step_wrapper
         = link_to '&#8592;'.html_safe, '#left-step', class: 'pull-right left-step'
-      .col-xs-6
-        = link_to '&#8594;'.html_safe, '#right-step', class: 'right-step'
+        span.pull-right.hide = '&#8592;'.html_safe
+      .col-xs-6.right_step_wrapper
+        = link_to '&#8594;'.html_safe, '#right-step', class: 'right-step hide'
+        span = '&#8594;'.html_safe
     br
     h4 Customers income/expense by months
     .panel.with-nav-tabs
