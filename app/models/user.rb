@@ -55,4 +55,16 @@ class User < ApplicationRecord
   def locked?
     self.locked_at.present?
   end
+
+  def current_organization
+    self.organizations.find(self.current_organization_id)
+  rescue
+    self.organizations.first
+  end
+
+  def current_member
+    self.members.find_by(organization: self.current_organization)
+  rescue
+    nil
+  end
 end
