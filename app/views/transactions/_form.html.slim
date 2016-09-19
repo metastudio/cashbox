@@ -66,8 +66,8 @@
   = f.input :date, as: :string, placeholder: 'Date',
     input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date.to_date) : nil }, required: false
 
-  - if transaction.invoice.present?
-    = link_to "Created from invoice", @invoice, class: 'pull-right'
+  - if transaction.invoice.present? && f.object.persisted?
+    = link_to "Created from invoice", invoice_path(transaction.invoice), class: 'pull-right'
 
   = f.input :invoice_id, as: :hidden
   - if transaction.new_record?
