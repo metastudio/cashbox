@@ -1,3 +1,5 @@
+require 'api_constraints'
+
 Cashbox::Application.routes.draw do
   devise_for :users, controllers: { registrations: 'user/registrations' }
   as :user do
@@ -45,4 +47,13 @@ Cashbox::Application.routes.draw do
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
   get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation
   mount ActionCable.server => "/cable"
+
+  # API
+  namespace :api, defaults: {format: 'json'} do
+    scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
+      post :auth_token, to: 'auth_token#create'
+
+      get :user_info, to: 'users#show'
+    end
+  end
 end

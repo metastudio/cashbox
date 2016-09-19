@@ -51,6 +51,8 @@ gem 'wkhtmltopdf-binary'
 gem 'puma', '~> 3.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
+gem 'knock', '~> 1.4.2'
+gem 'active_model_serializers'
 
 group :development, :test do
   gem 'rspec-rails'
