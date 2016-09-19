@@ -23,6 +23,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def edit
+    session[:profile_back] = request.referer
+    render :edit
+  end
+
   protected
 
   def after_update_path_for(resource)
