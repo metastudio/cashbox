@@ -53,7 +53,7 @@ Cashbox::Application.routes.draw do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
       post :auth_token, to: 'auth_token#create'
 
-      get :user_info, to: 'users#show'
+      get :user_info, to: 'users#current'
     end
   end
 end
