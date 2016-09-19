@@ -47,4 +47,12 @@ class User < ApplicationRecord
   def to_s
     full_name.truncate(30)
   end
+
+  def authenticate(password)
+    self.valid_password? password
+  end
+
+  def locked?
+    self.locked_at.present?
+  end
 end
