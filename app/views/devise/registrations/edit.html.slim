@@ -10,7 +10,7 @@ h2
   p
     | Unhappy?
     =< link_to "Cancel my account", update_user_profile_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete
-  = link_to "Back", :back
+  = link_to "Back", (session[:profile_back] || root_path)
 
 .col-sm-6
   = render 'password'
