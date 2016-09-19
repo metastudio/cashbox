@@ -26,10 +26,6 @@ GEM
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
     active_link_to (1.0.3)
       actionpack
-    active_model_serializers (0.10.0)
-      actionpack (>= 4.0)
-      activemodel (>= 4.0)
-      railties (>= 4.0)
     activejob (5.0.0.1)
       activesupport (= 5.0.0.1)
       globalid (>= 0.3.6)
@@ -400,7 +396,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
-  active_model_serializers
   acts_as_list
   annotate
   bootstrap-datepicker-rails

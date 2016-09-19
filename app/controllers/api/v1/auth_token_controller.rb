@@ -17,7 +17,7 @@ module Api::V1
           render json: { error: I18n.t("devise.failure.locked") }, status: :unauthorized
         end
       else
-        raise Api::BaseController::AuthorizationError
+        raise Api::V1::BaseController::AuthorizationError
       end
     end
 

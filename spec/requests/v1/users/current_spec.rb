@@ -4,7 +4,6 @@ describe 'GET /api/user_info' do
   let(:path) { "/api/user_info" }
 
   let!(:user) { create :user, password: 'password' }
-  let!(:other_user) { create :user }
 
   context 'unauthenticated' do
     it { get(path) && expect(response).to(be_unauthorized) }

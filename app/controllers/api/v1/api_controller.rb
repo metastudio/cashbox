@@ -1,5 +1,5 @@
 module Api::V1
-  class ApiController < Api::BaseController
+  class ApiController < Api::V1::BaseController
 
     def current_member
       @current_member ||= current_user.current_member
