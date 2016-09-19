@@ -1,5 +1,4 @@
-= simple_form_for(transaction, remote: true, html: { class: 'form-horizontal transaction' },
-    wrapper: :horizontal_form) do |f|
+= simple_form_for(transaction, remote: true, html: { class: 'form-horizontal transaction' }, wrapper: :horizontal_form, wrapper_mappings: { boolean: :checkbox }) do |f|
   = f.error_notification
   .alert.alert-success role="alert" style='display: none;' Transaction was created successfully!
 
@@ -15,9 +14,9 @@
         : (@q.category_id_in ? @q.category_id_in : nil),
       required: true
   - else
-    = f.association :category, as: :grouped_select,
-      collection: current_organization.categories.grouped_by_type,
-      group_method: :last, prompt: 'Category', value_method: :id,
+    = f.association :category, as: :select,
+      collection: current_organization.categories.where(type: f.object.category.type),
+      prompt: 'Category', value_method: :id,
       selected: f.object.category_id,
       required: true
 
@@ -70,5 +69,5 @@
     = link_to "Created from invoice", @invoice, class: 'pull-right'
 
   = f.input :invoice_id, as: :hidden
-  - if transaction.new_record?
-    = f.input :leave_open, as: :boolean
+  - unless transaction.persisted? || @invoice.present? || f.object.invoice_id
+    = f.input :leave_open, as: :boolean, wrapper_html: { class: 'col-sm-6 pull-left' }
