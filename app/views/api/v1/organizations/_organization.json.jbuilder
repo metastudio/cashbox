@@ -1,1 +1,1 @@
-json.organization organization, :id, :name, :default_currency
+json.extract! organization, :id, :name, :default_currency

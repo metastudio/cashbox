@@ -1,7 +1,7 @@
 module Api::V1
   class OrganizationsController < ApiController
     before_action :set_organization, only: [:show, :update, :destroy]
-    before_action :authorize_organization, only: [:show, :update, :destroy]
+    before_action :authorize_organization, only: [:update, :destroy]
 
     def index
       @organizations = current_user.organizations
@@ -15,7 +15,6 @@ module Api::V1
 
       if @organization.save
         Member.create(user: current_user, organization: @organization, role: 'owner')
-        render @organization, status: :created, location: @organization
       else
         render json: { error: @organization.errors }, status: :unprocessable_entity
       end
@@ -23,7 +22,6 @@ module Api::V1
 
     def update
       if @organization.update(organization_params)
-        render @organization
       else
         render json: { error: @organization.errors }, status: :unprocessable_entity
       end

@@ -1,1 +1,1 @@
-json.organizations @organizations, :id, :name, :default_currency
+json.organizations @organizations, partial: 'organization', as: :organization
