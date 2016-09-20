@@ -11,7 +11,7 @@
 #  last_visited_at :datetime
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Member do
   context 'association' do

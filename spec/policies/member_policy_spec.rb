@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe MemberPolicy do
   include_context 'organization with roles'

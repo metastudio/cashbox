@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 describe 'update transaction', js: true do
   include MoneyHelper
 
@@ -136,13 +136,13 @@ describe 'update transaction', js: true do
     end
 
     it "view link to invoice after the fields" do
-      expect(subject).to have_link("Created from invoice")
-      expect(find_link("Created from invoice")[:href]).to eq("/invoices/#{invoice.id}")
+      expect(subject).to have_link "Created from invoice", href: invoice_path(invoice)
     end
   end
 
   context "transaction created without invoice" do
     let!(:account) { create :bank_account, currency: "USD", organization: organization }
+    let!(:category) { create :category, :income, organization: organization }
     let!(:transaction) { create :transaction, bank_account: account, amount: 200}
 
     before do
