@@ -37,7 +37,7 @@ There are predefined rules in `.eslintrc.yml`.
 To install eslint you need npm installed. Usually you may install it with node package.
 
 ```
-npm install eslint
+npm install eslint -g
 ```
 
 ## Sublime Editor
