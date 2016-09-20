@@ -4,35 +4,33 @@ module Api::V1
     before_action :authorize_organization, only: [:show, :update, :destroy]
 
     def index
-      render json: current_user.organizations
+      @organizations = current_user.organizations
     end
 
     def show
-      render json: @organization
     end
 
     def create
-      @organization = current_account.organizations.build organization_params
+      @organization = current_user.organizations.build organization_params
 
       if @organization.save
         Member.create(user: current_user, organization: @organization, role: 'owner')
-        render json: @organization, status: :created, location: @organization
+        render @organization, status: :created, location: @organization
       else
-        render json: @organization.errors, status: :unprocessable_entity
+        render json: { error: @organization.errors }, status: :unprocessable_entity
       end
     end
 
     def update
       if @organization.update(organization_params)
-        render json: @organization
+        render @organization
       else
-        render json: @organization.errors, status: :unprocessable_entity
+        render json: { error: @organization.errors }, status: :unprocessable_entity
       end
     end
 
     def destroy
       @organization.destroy
-      render nothing: true, status: :no_content
     end
 
     private

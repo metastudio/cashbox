@@ -9,7 +9,7 @@ describe 'GET /api/organizations' do
     it { get(path) && expect(response).to(be_unauthorized) }
   end
 
-  context 'authenticated as owner' do
+  context 'authenticated' do
     before { get path, headers: auth_header(user) }
 
     it 'returns organizations' do
