@@ -51,6 +51,8 @@ gem 'wkhtmltopdf-binary'
 gem 'puma', '~> 3.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
+# https://github.com/nsarno/knock/issues/104
+gem 'knock', '~> 1.4.2'
 
 group :development, :test do
   gem 'rspec-rails'

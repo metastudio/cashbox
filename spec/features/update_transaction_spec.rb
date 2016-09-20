@@ -137,7 +137,7 @@ describe 'update transaction', js: true do
 
     it "view link to invoice after the fields" do
       expect(subject).to have_link("Created from invoice")
-      expect(find_link("Created from invoice")[:href]).to eq("/transactions/#{transaction.id}/edit")
+      expect(find_link("Created from invoice")[:href]).to eq("/invoices/#{invoice.id}")
     end
   end
 
@@ -154,6 +154,28 @@ describe 'update transaction', js: true do
 
     it "not view link to invoice after the fields" do
       expect(subject).not_to have_link("Created from invoice")
+    end
+  end
+
+  context "transaction form have categories only with transaction category type" do
+    let!(:category) { create :category, :income, organization: organization }
+    let!(:inc_category) { create :category, :income, organization: organization }
+    let!(:exp_category) { create :category, :expense, organization: organization }
+    let!(:transaction) { create :transaction, category: category, bank_account: account }
+
+    before do
+      visit root_path
+      find("##{dom_id(transaction)} .comment").click
+      page.has_css?("##{dom_id(transaction, :edit)}")
+      click_on 'Update'
+    end
+
+    subject { page.all('select#transaction_category_id option').map{ |e| e.text } }
+
+    it "have category name in category_name collection" do
+      expect(subject).to include(category.name);
+      expect(subject).to include(inc_category.name);
+      expect(subject).to_not include(exp_category.name);
     end
   end
 end

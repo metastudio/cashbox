@@ -15,6 +15,7 @@
 #  date             :datetime         not null
 #  transfer_out_id  :integer
 #  invoice_id       :integer
+#  created_by_id    :integer
 #
 
 require "./lib/time_range.rb"
