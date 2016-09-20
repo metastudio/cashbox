@@ -7,10 +7,13 @@
           li.active
             = link_to 'Months', '#months', data: { toggle: 'tab', scale: 'months' }
           li
-            = link_to 'Years', '#years', data: { toggle: 'tab', scale: 'years' }
-          li
             = link_to 'Quarters', '#quarters', data: { toggle: 'tab', scale: 'quarters' }
-    .balance-chart#main-balance data-url=balance_statistics_path
+          li
+            = link_to 'Years', '#years', data: { toggle: 'tab', scale: 'years' }
+    .balance-chart-wrapper
+      .balance-chart#main-balance data-url=balance_statistics_path
+      .balance-chart.spinner-backround.hide
+        .loader Loading...
     .row#balance_navigation data-step=0
       .col-xs-6
         = link_to '&#8592;'.html_safe, '#left-step', class: 'pull-right left-step'
