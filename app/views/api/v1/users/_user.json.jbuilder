@@ -1,5 +1,1 @@
-json.user do
-  json.id user.id
-  json.email user.email
-  json.full_name user.full_name
-end
+json.extract! user, :id, :email, :full_name

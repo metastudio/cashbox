@@ -24,11 +24,13 @@ FactoryGirl.define do
     name { generate :organization_name }
 
     transient do
+      owner nil
       with_user nil
     end
 
     after(:create) do |organization, evaluator|
       create :member, organization: organization, user: evaluator.with_user if evaluator.with_user
+      create :member, organization: organization, role: 'owner', user: evaluator.owner if evaluator.owner
     end
   end
 
