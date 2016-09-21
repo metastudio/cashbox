@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'create transfer transaction', js: true do
   include MoneyHelper
@@ -25,6 +25,7 @@ describe 'create transfer transaction', js: true do
   def create_transfer
     visit root_path
     click_on 'Add...'
+    page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
     click_on 'Transfer'
     within '#new_transfer_form' do
       fill_in 'transfer[amount]', with: amount_str
@@ -50,6 +51,8 @@ describe 'create transfer transaction', js: true do
 
     it "show only Transfer transaction in transactions list" do
       create_transfer
+      expect(page).to have_css '#new_transfer_form', visible: false
+      expect(page).to have_css '.transactions'
       within ".transactions" do
         expect(page).to have_content(amount_str)
         expect(page).to_not have_content('Transfer out')
@@ -58,6 +61,8 @@ describe 'create transfer transaction', js: true do
 
     it "appends rate and comission to the comment" do
       create_transfer
+      expect(page).to have_css '#new_transfer_form', visible: false
+      expect(page).to have_css '.transactions'
       within ".transactions" do
         expect(page).to have_content(comment + "\nComission: " + comission_str)
       end
@@ -143,6 +148,7 @@ describe 'create transfer transaction', js: true do
     before do
       visit root_path
       click_on 'Add...'
+      page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
       click_on 'Transfer'
     end
 
@@ -266,6 +272,7 @@ describe 'create transfer transaction', js: true do
     before do
       visit root_path
       click_on 'Add...'
+      page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
       click_on 'Transfer'
       within '#new_transfer_form' do
         fill_in 'transfer[amount]', with: amount_str
@@ -299,6 +306,7 @@ describe 'create transfer transaction', js: true do
     before do
       visit root_path
       click_on 'Add...'
+      page.has_content?(/(Please review the problems below)/) # wait
       click_on 'Transfer'
       within '#new_transfer_form' do
         fill_in 'transfer[amount]', with: amount_str
@@ -309,9 +317,11 @@ describe 'create transfer transaction', js: true do
         find('#transfer_leave_open').set(true)
       end
       click_on 'Create'
+      page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
     end
 
     it "create transfer" do
+      expect(page).to have_css '#new_transfer_form', visible: true
       expect(page).to have_content("Transfer was created successfully!")
     end
 

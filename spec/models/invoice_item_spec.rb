@@ -14,7 +14,7 @@
 #  date         :date
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe InvoiceItem do
   context 'association' do
