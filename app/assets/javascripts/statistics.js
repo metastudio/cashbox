@@ -155,6 +155,9 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
         step: step,
         period: period,
         scale: scale
+      },
+      beforeSend: function (xhr) {
+        toggleBalanceSpinner(false);
       }
     })
     .done(function(response) {
@@ -193,8 +196,18 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
       },
       seriesType: 'bars',
       series: {2: {type: 'line'}},
-      tooltip: { isHtml: true }
+      tooltip: { isHtml: true },
+      animation: {
+        duration: 1000,
+        easing: 'in',
+        startup: true
+      },
     };
+
+    google.visualization.events.addListener(chart, 'ready', function() {
+      toggleBalanceSpinner(true)
+    });
+
     chart.draw(chartData, options);
 
     google.visualization.events.addListener(chart, 'select', selectHandler);
@@ -293,3 +306,7 @@ Number.prototype.format = function(n, x) {
   var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
 };
+
+function toggleBalanceSpinner(state) {
+  $('.balance-chart.spinner-backround').toggleClass('hide', state);
+}
