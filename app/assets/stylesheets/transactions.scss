@@ -16,5 +16,12 @@
 }
 
 #toggle_filter {
-  text-decoration:none;
+  text-decoration: none;
+  font-size: 18px;
+  padding-left: 8px;
+}
+
+.transaction_leave_open .checkbox,
+.transfer_leave_open .checkbox {
+  padding-left: 10px;
 }

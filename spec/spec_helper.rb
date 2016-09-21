@@ -23,6 +23,8 @@ RSpec.configure do |config|
   # config.mock_with :flexmock
   # config.mock_with :rr
 
+  config.include Requests::JsonHelpers, type: :request
+
   # for dom_id and dom_class in specs
   include ActionView::RecordIdentifier
 

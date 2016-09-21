@@ -29,7 +29,7 @@ class InvoiceItem < ApplicationRecord
   validates :description, presence: true, if: 'customer_name.blank?'
   validates :amount, numericality: { greater_than: 0,
     less_than_or_equal_to: Dictionaries.money_max }
-  validates :hours, numericality: { greater_than: 0 }
+  validates :hours, numericality: { greater_than: 0 }, allow_nil: true
 
   private
 

@@ -13,6 +13,7 @@ describe Transfer do
       is_greater_than_or_equal_to(0) }
     it { should validate_length_of(:comission).is_at_most(10) }
     it { should validate_presence_of(:reference_id) }
+    it { should validate_numericality_of(:amount).is_less_than_or_equal_to(Dictionaries.money_max) }
 
     context "custom validations" do
 
@@ -75,6 +76,18 @@ describe Transfer do
               expect(subject.errors_on(:exchange_rate)).
                 to include("must be less than 10000")
             end
+          end
+        end
+
+        context 'when has commission' do
+          let(:from) { create :bank_account }
+          let(:to)   { create :bank_account }
+          let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id,
+            amount: 0, comission: 0 }
+
+          it 'is invalid' do
+            expect(subject).to be_invalid
+            expect(subject.errors_on(:amount)).to include("must be other than 0")
           end
         end
       end

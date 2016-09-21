@@ -7,7 +7,7 @@ gem 'rails', '5.0.0.1'
 gem 'pg'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0.0'
+gem 'sass-rails', '~> 5.0.6'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -51,11 +51,14 @@ gem 'wkhtmltopdf-binary'
 gem 'puma', '~> 3.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
+# https://github.com/nsarno/knock/issues/104
+gem 'knock', '~> 1.4.2'
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
+  gem 'parallel_tests'
 end
 
 group :development do

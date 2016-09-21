@@ -166,10 +166,15 @@ GEM
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
     json (2.0.2)
+    jwt (1.5.5)
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     kgio (2.10.0)
+    knock (1.4.2)
+      bcrypt (~> 3.1)
+      jwt (~> 1.5)
+      rails (>= 4.2)
     launchy (2.4.3)
       addressable (~> 2.3)
     listen (3.1.5)
@@ -213,6 +218,9 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     orm_adapter (0.5.0)
+    parallel (1.9.0)
+    parallel_tests (2.8.0)
+      parallel
     paranoia (2.2.0.pre)
       activerecord (>= 4.0, < 5.1)
     pg (0.18.4)
@@ -418,9 +426,11 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   kaminari
+  knock (~> 1.4.2)
   listen (~> 3.1.5)
   momentjs-rails
   money-rails
+  parallel_tests
   paranoia (~> 2.2.0.pre)
   pg
   pry-rails
@@ -434,7 +444,7 @@ DEPENDENCIES
   rspec-collection_matchers
   rspec-rails
   russian_central_bank
-  sass-rails (~> 5.0.0)
+  sass-rails (~> 5.0.6)
   select2-rails (~> 3.5.9.3)
   shoulda-matchers
   simple_form
@@ -453,4 +463,4 @@ DEPENDENCIES
   wkhtmltopdf-binary
 
 BUNDLED WITH
-   1.12.5
+   1.13.1
