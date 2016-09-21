@@ -55,6 +55,10 @@ Cashbox::Application.routes.draw do
 
       get :user_info, to: 'users#current'
       resources :organizations, only: [:show, :index, :create, :update, :destroy]
+
+      scope 'organizations/:organization_id' do
+        resources :transactions, only: [:show, :index, :create, :update, :destroy]
+      end
     end
   end
 end
