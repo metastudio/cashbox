@@ -3,7 +3,7 @@ module Api::V1
     before_action :set_transaction,  only: [:show, :edit, :update, :destroy]
 
     def index
-      @transactions = current_organization.transactions.page(params[:page]).per(50)
+      @transactions = current_organization.transactions.page(params[:page]).per(30)
     end
 
     def show
