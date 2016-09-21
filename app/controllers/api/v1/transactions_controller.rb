@@ -2,6 +2,10 @@ module Api::V1
   class TransactionsController < OrganizationController
     before_action :set_transaction,  only: [:show, :edit, :update, :destroy]
 
+    def index
+      @transactions = current_organization.transactions.page(params[:page]).per(50)
+    end
+
     def show
     end
 
