@@ -3,4 +3,4 @@
     = simple_form_for @invitation, url: invitations_path do |f|
       = f.input :email, input_html: { maxlength: 255 }
       = f.input :role, as: :select, collection: current_member.available_roles, include_blank: false
-      = f.submit 'Invite', class: 'btn btn-primary'
+      = f.button :submit_with_disable, 'Invite', class: 'btn btn-primary'

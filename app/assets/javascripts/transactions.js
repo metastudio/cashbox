@@ -65,6 +65,8 @@ $(function () {
   });
 
   $(document).on('click', '#submit_btn', function(e) {
+    $(this).prop('disabled', true);
+    e.preventDefault();
     if ($(".tab-pane.active").attr('id') == 'transfer') {
       $('.tab-pane.active #new_transfer_form').submit();
     } else {

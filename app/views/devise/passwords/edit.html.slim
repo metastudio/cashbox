@@ -8,5 +8,5 @@ h2
     = f.input :password, label: "New password", required: true, autofocus: true
     = f.input :password_confirmation, label: "Confirm your new password", required: true
   .form-actions
-    = f.button :submit, "Change my password"
+    = f.button :submit_with_disable, "Change my password"
 = render "devise/shared/links"
