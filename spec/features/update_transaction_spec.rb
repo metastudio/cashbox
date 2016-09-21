@@ -132,7 +132,6 @@ describe 'update transaction', js: true do
       visit root_path
       find("##{dom_id(transaction)} .comment").click
       page.has_css?("##{dom_id(transaction, :edit)}")
-      click_on 'Update'
     end
 
     it "view link to invoice after the fields" do
@@ -149,7 +148,6 @@ describe 'update transaction', js: true do
       visit root_path
       find("##{dom_id(transaction)} .comment").click
       page.has_css?("##{dom_id(transaction, :edit)}")
-      click_on 'Update'
     end
 
     it "not view link to invoice after the fields" do
