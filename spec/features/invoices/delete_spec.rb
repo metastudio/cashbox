@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Delete invoice', js: true do
   let(:user)          { create :user }

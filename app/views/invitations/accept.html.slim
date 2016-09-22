@@ -4,4 +4,4 @@
     = f.input :full_name
     = f.input :password, input_html: { maxlength: 30 }
     = f.input :password_confirmation, input_html: { maxlength: 30 }
-    = f.submit 'Submit', class: 'btn btn-primary'
+    = f.button :submit_with_disable, 'Submit', class: 'btn btn-primary'

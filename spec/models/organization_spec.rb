@@ -9,7 +9,7 @@
 #  default_currency :string(255)      default("USD")
 #
 
-require 'spec_helper'
+require 'rails_helper'
 include DateLogic
 
 describe Organization do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'create transaction', js: true do
   include MoneyHelper

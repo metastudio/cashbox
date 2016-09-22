@@ -68,6 +68,11 @@ class Transaction < ApplicationRecord
   validates :bank_account, presence: true
   validates :customer_name, :comment, length: { maximum: 255 }
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
+
+  validates :bank_account_id, inclusion: { in: lambda { |r| r.organization.bank_account_ids }, if: :organization }
+  validates :category_id, inclusion: { in: lambda { |r| r.organization.category_ids + [Category.receipt_id, Category.transfer_out_id] }, if: :organization, allow_blank: true }
+  validates :customer_id, inclusion: { in: lambda { |r| r.organization.customer_ids }, if: :organization, allow_blank: true }
+
   validates :date, presence: true
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
     length: { maximum: 10 }, allow_blank: true
