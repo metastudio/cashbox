@@ -16,7 +16,7 @@
 #  number          :string
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Invoice do
   context 'association' do

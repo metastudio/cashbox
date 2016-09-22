@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'sign in proccess' do
   let(:email)    { generate :email}

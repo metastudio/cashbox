@@ -26,7 +26,7 @@
 #  deleted_at      :datetime
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Category do
   context "association" do

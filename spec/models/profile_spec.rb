@@ -11,7 +11,7 @@
 #  updated_at   :datetime
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Profile do
   subject { build(:profile)}

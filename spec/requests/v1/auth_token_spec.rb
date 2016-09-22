@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'POST /api/auth_token' do
   let(:user) { create :user, password: 'password' }

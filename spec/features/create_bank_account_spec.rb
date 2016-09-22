@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Create bank account' do
   let(:member_owner) { create :member, :owner }

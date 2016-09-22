@@ -37,12 +37,19 @@ $(function () {
         setStep(step);
         drawBalanceChart(null, scale, step, 'main-balance');
       }
+      toggleStep('.left_step_wrapper', true);
     }
     else if ($(this).hasClass('left-step')){
       step += 1;
       setStep(step);
       drawBalanceChart(null, scale, step, 'main-balance');
     };
+    if (step === 0) {
+      toggleStep('.right_step_wrapper', false);
+    }
+    if (step === 1) {
+      toggleStep('.right_step_wrapper', true);
+    }
   });
 });
 
@@ -62,6 +69,12 @@ var setScale = function setScale(scale) {
 var getScale = function getScale() {
   var scale = $('#balance_scale').data('scale')
   return scale
+}
+
+function toggleStep(elementSelector, state) {
+  var element = $(elementSelector);
+  element.find('a').toggleClass('hide', !state);
+  element.find('span').toggleClass('hide', state);
 }
 
 var drawChart = function drawChart(period, element) {
@@ -155,6 +168,9 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
         step: step,
         period: period,
         scale: scale
+      },
+      beforeSend: function (xhr) {
+        toggleBalanceSpinner(false);
       }
     })
     .done(function(response) {
@@ -182,6 +198,10 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
       formatter.format(chartData, 3);
     }
 
+    if (response['next_step_blank']) {
+      toggleStep('.left_step_wrapper', false);
+    }
+
     var options = {
       chart: {
         title: 'Balance',
@@ -193,8 +213,18 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
       },
       seriesType: 'bars',
       series: {2: {type: 'line'}},
-      tooltip: { isHtml: true }
+      tooltip: { isHtml: true },
+      animation: {
+        duration: 1000,
+        easing: 'in',
+        startup: true
+      },
     };
+
+    google.visualization.events.addListener(chart, 'ready', function() {
+      toggleBalanceSpinner(true)
+    });
+
     chart.draw(chartData, options);
 
     google.visualization.events.addListener(chart, 'select', selectHandler);
@@ -248,7 +278,6 @@ var drawCustomersChart = function drawCustomersChart (type) {
   }
 
   function draw(response, css_id) {
-    console.log(response.currency_format)
     if (response == null ) {
       $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
       return false;
@@ -293,3 +322,7 @@ Number.prototype.format = function(n, x) {
   var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
 };
+
+function toggleBalanceSpinner(state) {
+  $('.balance-chart.spinner-backround').toggleClass('hide', state);
+}

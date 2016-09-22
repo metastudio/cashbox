@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'copy transaction', js: true do
   let!(:user)         { create :user }
@@ -53,8 +53,9 @@ describe 'copy transaction', js: true do
   it "copy income transaction" do
     id = transaction.id
     find("#transaction_#{id} .comment").click
+    page.has_content?(/(Please review the problems below)/) # wait
     click_on 'Copy'
-    expect(page).to have_css('#new_transaction')
+    expect(page).to have_css('#new_transaction', visible: true)
     within '#new_transaction' do
       expect(page).to have_field('Amount', with: beautify(transaction.amount.cents))
       expect(page).to have_field('Category', with: transaction.category_id)
@@ -68,8 +69,9 @@ describe 'copy transaction', js: true do
   it 'copy expence transaction' do
     id = exp_transaction.id
     find("#transaction_#{id} .comment").click
+    page.has_content?(/(Please review the problems below)/) # wait
     click_on 'Copy'
-    expect(page).to have_css('#new_transaction')
+    expect(page).to have_css('#new_transaction', visible: true)
     within '#new_transaction' do
       expect(page).to have_field('Amount', with: beautify(exp_transaction.amount.cents.abs))
       expect(page).to have_field('Category', with: exp_transaction.category_id)
@@ -83,8 +85,9 @@ describe 'copy transaction', js: true do
   it 'copy transfer' do
     id = transfer.inc_transaction.id
     find("#transaction_#{id} .comment").click
+    page.has_content?(/(Please review the problems below)/) # wait
     click_on 'Copy'
-    expect(page).to have_css('#new_transfer_form')
+    expect(page).to have_css('#new_transfer_form', visible: true)
     within '#new_transfer_form' do
       expect(page).to have_field('From', with: transfer.out_transaction.bank_account.id)
       expect(page).to have_field('To', with: transfer.inc_transaction.bank_account.id)

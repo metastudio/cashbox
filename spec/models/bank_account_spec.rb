@@ -16,7 +16,7 @@
 #  invoice_details :text
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe BankAccount do
   context 'association' do

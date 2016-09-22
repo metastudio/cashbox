@@ -28,10 +28,10 @@
                       class: 'btn btn-default btn-sm'
                     - if bank_account.visible?
                       = link_to 'Hide', hide_bank_account_path(bank_account),
-                        method: :put, class: 'btn btn-warning btn-sm'
+                        method: :put, class: 'btn btn-warning btn-sm', data: { disable_with: 'Hide' }
                     - else
                       = link_to 'Show', hide_bank_account_path(bank_account),
-                        method: :put, class: 'btn btn-info btn-sm'
+                        method: :put, class: 'btn btn-info btn-sm', data: { disable_with: 'Show' }
                     = link_to 'Delete', bank_account, data: {confirm: 'Are you sure?'},
                       method: :delete, class: 'btn btn-danger btn-sm'
 - else
