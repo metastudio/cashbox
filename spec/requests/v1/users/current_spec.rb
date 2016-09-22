@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'GET /api/user_info' do
   let(:path) { "/api/user_info" }

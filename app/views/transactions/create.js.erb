@@ -34,5 +34,6 @@
     $(".tab-pane.active #new_transaction").replaceWith("<%=j render('transactions/form', type: 'Expense', transaction: @transaction) %>");
   }
 <% end %>
+$('#submit_btn').prop('disabled', false);
 
 addTransactionFormMasks();

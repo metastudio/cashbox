@@ -86,9 +86,8 @@ group :test do
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'capybara-email'
-  gem 'capybara-webkit'
+  gem 'poltergeist'
   gem 'capybara-select2'
-  gem 'headless'
   gem 'capybara-screenshot'
   gem 'timecop'
 end

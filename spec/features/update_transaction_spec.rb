@@ -1,4 +1,5 @@
-require 'spec_helper'
+require 'rails_helper'
+
 describe 'update transaction', js: true do
   include MoneyHelper
 
@@ -60,16 +61,17 @@ describe 'update transaction', js: true do
         fill_in 'transaction[amount]', with: new_amount
       end
       click_on 'Update'
+      page.has_content?(/(Please review the problems below)/) # wait
     end
 
     it "updates sidebar account balance" do
-      expect(subject).
+      expect(page).
         to have_css("#bank_account_#{transaction.bank_account.id} td.amount",
           text: money_with_symbol(new_account_balance))
     end
 
     it "updates sidebar total balance" do
-       expect(subject).
+       expect(page).
         to have_css("#sidebar",
           text: money_with_symbol(new_total))
     end
@@ -89,6 +91,7 @@ describe 'update transaction', js: true do
         select new_account, from: 'transaction[bank_account_id]'
       end
       click_on 'Update'
+      page.has_content?(/(Please review the problems below)/) # wait
     end
 
     it "recalculate boths account's balances" do
@@ -109,6 +112,7 @@ describe 'update transaction', js: true do
     before do
       visit root_path
       click_on 'Add...'
+      page.has_content?(/(Please review the problems below)/) # wait
       click_on 'Transfer'
       select usd_account, from: 'transfer[bank_account_id]'
       select rub_account, from: 'transfer[reference_id]'
@@ -135,13 +139,13 @@ describe 'update transaction', js: true do
     end
 
     it "view link to invoice after the fields" do
-      expect(subject).to have_link("Created from invoice")
-      expect(find_link("Created from invoice")[:href]).to eq("/transactions/#{transaction.id}/edit")
+      expect(page).to have_link "Created from invoice", href: invoice_path(invoice)
     end
   end
 
   context "transaction created without invoice" do
     let!(:account) { create :bank_account, currency: "USD", organization: organization }
+    let!(:category) { create :category, :income, organization: organization }
     let!(:transaction) { create :transaction, bank_account: account, amount: 200}
 
     before do
@@ -151,7 +155,7 @@ describe 'update transaction', js: true do
     end
 
     it "not view link to invoice after the fields" do
-      expect(subject).not_to have_link("Created from invoice")
+      expect(page).not_to have_link("Created from invoice")
     end
   end
 

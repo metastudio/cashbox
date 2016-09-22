@@ -1,3 +1,5 @@
+require 'simple_form_button_with_disable.rb'
+
 %w[
   CollectionSelectInput
   DateTimeInput

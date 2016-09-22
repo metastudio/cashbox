@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe NotificationJob, type: :job do
   let(:org_name) { 'Organization' }

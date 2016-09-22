@@ -162,6 +162,7 @@ class Organization < ApplicationRecord
   def data_balance(scale='months', step=0)
     period = period_from_step(step.to_i, scale)
     incomes, expenses, totals = balance_data_collection(period)
+    balance_period_blank?(period_from_step(step.to_i + 1, scale))
 
     total_sum = Money.new(0, self.default_currency)
     Dictionaries.currencies.each_with_index do |currency|
@@ -171,7 +172,15 @@ class Organization < ApplicationRecord
     end
 
     data = BalanceDataCombainer.new(period, incomes, expenses, totals, total_sum.to_f).by(scale)
-    data.size > 1 ? { data: data, currency_format: currency_format } : nil
+    if data.size > 1
+      {
+        data: data,
+        currency_format: currency_format,
+        next_step_blank: balance_period_blank?(period_from_step(step.to_i + 1, scale))
+      }
+    else
+      nil
+    end
   end
 
   def find_customer_name_by_id(customer_id)
@@ -385,6 +394,20 @@ class Organization < ApplicationRecord
       end
       calc_to_def_currency_for_data_selection(query)
     end
+  end
+
+  def balance_period_blank?(period)
+    incomes_count = transactions
+      .incomes
+      .where('DATE(date) BETWEEN ? AND ? AND category_id != ?',
+        period.begin, period.end, Category.receipt_id)
+      .count
+    expenses_count = transactions
+      .expenses
+      .where('DATE(date) BETWEEN ? AND ? AND category_id != ?',
+        period.begin, period.end, Category.transfer_out_id)
+      .count
+    (incomes_count + expenses_count) == 0
   end
 
   def customers_transactions_data(customers, data)
