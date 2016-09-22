@@ -8,6 +8,10 @@ class OrganizationWizzard
     have_account? && have_categories?
   end
 
+  def not_ready?
+    not ready?
+  end
+
   def have_account?
     @organization.bank_accounts.any?
   end

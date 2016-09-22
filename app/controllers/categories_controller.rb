@@ -9,6 +9,10 @@ class CategoriesController < ApplicationController
 
   def new
     @category = current_organization.categories.build
+    if request.xhr?
+      @ajax = true
+      render partial: 'categories/form'
+    end
   end
 
   def edit
@@ -16,11 +20,18 @@ class CategoriesController < ApplicationController
 
   def create
     @category = current_organization.categories.build(category_params)
-
     if @category.save
-      redirect_to categories_path, notice: 'Category was successfully created.'
+      if request.xhr?
+        render json: { status: 'success' }
+      else
+        redirect_to categories_path, notice: 'Category was successfully created.'
+      end
     else
-      render action: 'new'
+      if request.xhr?
+        render json: { status: 'error', errors: @category.errors }
+      else
+        render action: 'new'
+      end
     end
   end
 

@@ -1,7 +1,6 @@
 .page-header
   h2 New organization bank account
 
-
 .row.previous_buttons
   .col-sm-6
     p
@@ -16,15 +15,17 @@
       br
       = link_to 'Create manually', new_bank_account_path, class: 'btn btn-primary new_account', remote: true
 
-.row.new_account_form
+.row
+  .col-sm-12.new_account_form
 
-.row.hidden
-  .col-sm-2
-    = link_to 'Create another', new_bank_account_path, class: 'btn btn-primary', remote: true
-  .col-sm-10
-    = link_to 'Next step', new_category_organization_path(@organization), class: 'btn btn-success'
-
-
+.row.hidden.next_step_wrapper
+  .col-sm-12
+    .alert.alert-success
+      ' Bank account was created successfully!
+  .col-sm-3.offset-sm-1
+      = link_to 'Create another', new_bank_account_path, class: 'btn btn-primary new_account', remote: true
+  .col-sm-8
+      = link_to 'Next step', new_category_organization_path(@organization), class: 'btn btn-success'
 
 = content_for :sidebar
   = render 'home/settings'

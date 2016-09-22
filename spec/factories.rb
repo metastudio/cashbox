@@ -29,6 +29,8 @@ FactoryGirl.define do
 
     after(:create) do |organization, evaluator|
       create :member, organization: organization, user: evaluator.with_user if evaluator.with_user
+      create :bank_account, organization: organization
+      create :category, organization: organization
     end
   end
 

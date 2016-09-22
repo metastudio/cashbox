@@ -1,6 +1,6 @@
 .row
   .col-sm-6
-    = simple_form_for(@category) do |f|
+    = simple_form_for @category, remote: @ajax ? true : false do |f|
       = f.error_notification
 
       .form-inputs

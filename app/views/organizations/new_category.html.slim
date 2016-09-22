@@ -1,13 +1,32 @@
 .page-header
   h2 New organization categories.
 
-p
-  ' Categories will be created by default 
-  = link_to 'Create default Categories', default_category_organization_path(@organization.id), class: 'btn btn-primary'
+.row.previous_buttons
+  .col-sm-6
+    p
+      ' Categories will be created by default
+      br
+      br
+      = link_to 'Create default Categories', default_category_organization_path(@organization.id), class: 'btn btn-primary'
 
-p
-  ' But you can create it manually 
-  = link_to 'Create manually', root_path, class: 'btn btn-primary', remote: true
+  .col-sm-6
+    p
+      ' But you can create it manually
+      br
+      br
+      = link_to 'Create manually', new_category_path, class: 'btn btn-primary new_category', remote: true
+
+.row
+  .col-sm-12.new_category_form
+
+.row.hidden.next_step_wrapper
+  .col-sm-12
+    .alert.alert-success
+      ' Category was created successfully!
+  .col-sm-3.offset-sm-1
+      = link_to 'Create another', new_category_path, class: 'btn btn-primary new_category', remote: true
+  .col-sm-8
+      = link_to 'Finish', organization_finish_path(@organization), class: 'btn btn-success'
 
 = content_for :sidebar
   = render 'home/settings'

@@ -26,9 +26,17 @@ class BankAccountsController < ApplicationController
     @bank_account = current_organization.bank_accounts.build(bank_account_params)
 
     if @bank_account.save
-      redirect_to bank_accounts_path, notice: 'Bank account was successfully created.'
+      if request.xhr?
+        render json: { status: 'success' }
+      else
+        redirect_to bank_accounts_path, notice: 'Bank account was successfully created.'
+      end
     else
-      render action: 'new'
+      if request.xhr?
+        render json: { status: 'error', errors: @bank_account.errors }
+      else
+        render action: 'new'
+      end
     end
   end
 

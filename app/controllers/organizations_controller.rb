@@ -19,11 +19,14 @@ class OrganizationsController < ApplicationController
   end
 
   def new_account
-
   end
 
   def new_category
+  end
 
+  def finish
+    session[:new_organization] = true
+    redirect_to root_path
   end
 
   def default_account
@@ -62,6 +65,7 @@ class OrganizationsController < ApplicationController
 
     if @organization.save
       Member.create(user: current_user, organization: @organization, role: 'owner')
+      session[:current_organization_id] = @organization.id
       redirect_to new_account_organization_path(@organization),
         notice: 'Organization was successfully created.'
     else

@@ -6,10 +6,11 @@
   .jumbotron
     h2
       ' **Congratulations**
+    br
     p
       ' You've just finished configuring of your new Organization and Cashbox is ready to create your first transaction.
     p
-      ' For doing this please click button `Add...` above and fill-in the form.
+      ' For doing this please click button <mark>Add...</mark> above and fill-in the form.
 
 = render 'filter', url: root_path
 = render partial: 'transactions/transactions', locals: { transactions: @transactions }

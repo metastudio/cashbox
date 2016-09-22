@@ -1,6 +1,6 @@
 .row
   .col-sm-6
-    = simple_form_for(@bank_account) do |f|
+    = simple_form_for @bank_account, remote: @ajax ? true : false do |f|
       = f.error_notification
 
       .form-inputs
@@ -12,7 +12,4 @@
         = f.input :currency, collection: Currency.ordered, include_blank: false
 
       .form-actions
-        - if @ajax
-          = f.button :submit, class: 'btn-primary', remote: true
-        - else
-          = f.button :submit, class: 'btn-primary'
+        = f.button :submit, class: 'btn-primary'

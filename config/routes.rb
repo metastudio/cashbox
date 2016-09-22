@@ -17,6 +17,7 @@ Cashbox::Application.routes.draw do
     get :new_category, on: :member
     get :default_account, on: :member
     get :default_category, on: :member
+    get :finish
     member do
       put :switch
     end
