@@ -26,12 +26,13 @@ FactoryGirl.define do
     transient do
       owner nil
       with_user nil
+      without_categories false
     end
 
     after(:create) do |organization, evaluator|
       create :member, organization: organization, user: evaluator.with_user if evaluator.with_user
       create :bank_account, organization: organization
-      create :category, organization: organization
+      create :category, organization: organization unless evaluator.without_categories
       create :member, organization: organization, role: 'owner', user: evaluator.owner if evaluator.owner
     end
   end
