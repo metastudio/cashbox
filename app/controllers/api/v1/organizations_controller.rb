@@ -3,15 +3,24 @@ module Api::V1
     before_action :set_organization, only: [:show, :update, :destroy]
     before_action :authorize_organization, only: [:update, :destroy]
 
-    api!
+    def_param_group :organization do
+      param :organization, Hash, required: true, action_aware: true do
+        param :name, String, 'Name of the organization', required: true
+        param :default_currency, String, 'Currency of the organization', required: true
+      end
+    end
+
+    api :GET, '/organizations', 'Return organizations'
     def index
       @organizations = current_user.organizations
     end
 
-    api!
+    api :GET, '/organizations/:id', 'Return organization'
     def show
     end
 
+    api :POST, '/organizations', 'Create organization'
+    param_group :organization, OrganizationsController
     def create
       @organization = current_user.organizations.build organization_params
 
@@ -22,6 +31,8 @@ module Api::V1
       end
     end
 
+    api :PUT, '/organizations/:id', 'Update organization'
+    param_group :organization, OrganizationsController
     def update
       if @organization.update(organization_params)
       else
@@ -29,6 +40,7 @@ module Api::V1
       end
     end
 
+    api :DELETE, '/organizations/:id', 'Destroy organization'
     def destroy
       @organization.destroy
     end
