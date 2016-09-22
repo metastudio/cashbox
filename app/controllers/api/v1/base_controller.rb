@@ -31,7 +31,6 @@ module Api::V1
       short 'Cashbox API - v1'
       formats ['json']
       error 404, 'Not Found'
-      # error 500, "Server crashed for some <%= reason %>", :meta => {:anything => "you can think of"}
       description 'Cashbox API'
     end
   end
