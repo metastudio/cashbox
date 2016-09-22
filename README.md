@@ -22,9 +22,9 @@ run rake task for prepare test databases
 
 `rake parallel:spec`
 
-## API documentation path:
+# API documentation path:
 
-`/apipie`
+To watch API documentation visit path `/apipie`
 
 # Linter
 
