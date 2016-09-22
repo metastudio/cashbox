@@ -25,5 +25,13 @@ module Api::V1
     def not_found
       render json: {}, status: :not_found
     end
+
+    resource_description do
+      api_version '1'
+      short 'Cashbox API - v1'
+      formats ['json']
+      error 404, 'Not Found'
+      description 'Cashbox API'
+    end
   end
 end
