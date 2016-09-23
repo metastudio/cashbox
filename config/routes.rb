@@ -1,6 +1,7 @@
 require 'api_constraints'
 
 Cashbox::Application.routes.draw do
+  apipie
   devise_for :users, controllers: { registrations: 'user/registrations' }
   as :user do
     get 'user/profile' => 'users/registrations#edit', as: :user_profile

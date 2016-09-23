@@ -53,6 +53,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
 # https://github.com/nsarno/knock/issues/104
 gem 'knock', '~> 1.4.2'
+gem 'apipie-rails'
+gem 'rack-cors', require: 'rack/cors'
 
 group :development, :test do
   gem 'rspec-rails'
