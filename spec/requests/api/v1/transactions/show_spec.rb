@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'GET /api/organizations/#/transactions/#' do
   let(:path) { "/api/organizations/#{organization.id}/transactions/#{transaction.id}" }
@@ -23,7 +23,7 @@ describe 'GET /api/organizations/#/transactions/#' do
 
       expect(json['transaction']).to include(
         'id' => transaction.id,
-        'amount' => transaction.amount.to_s,
+        'amount' => money_with_symbol(transaction.amount),
         'comment' => transaction.comment
       )
 
@@ -41,13 +41,24 @@ describe 'GET /api/organizations/#/transactions/#' do
 
       expect(json['transaction']).to include(
         'id' => transaction.id,
-        'amount' => transaction.amount.to_s,
+        'amount' => money_with_symbol(transaction.amount),
         'comment' => transaction.comment
       )
 
       expect(json['transaction']['category']).to     include( 'id' => transaction.category.id)
       expect(json['transaction']['bank_account']).to include( 'id' => bank_account.id)
       expect(json['transaction']['customer']).to     include( 'id' => transaction.customer.id)
+    end
+  end
+
+  context 'authenticated as wrong user' do
+    let!(:wrong_user) { create :user }
+
+    before { get path, headers: auth_header(wrong_user) }
+
+    it 'returns error' do
+      expect(response).to_not be_success
+      expect(json).to be_empty
     end
   end
 end

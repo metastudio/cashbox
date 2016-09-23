@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'DELETE /api/organizations/#/transactions/#' do
   let(:path) { "/api/organizations/#{organization.id}/transactions/#{transaction.id}" }
@@ -31,6 +31,17 @@ describe 'DELETE /api/organizations/#/transactions/#' do
       expect(response.body).to be_empty
 
       expect(Transaction.all).to eq []
+    end
+  end
+
+  context 'authenticated as wrong user' do
+    let!(:wrong_user) { create :user }
+
+    before { delete path, headers: auth_header(wrong_user) }
+
+    it 'returns error' do
+      expect(response).to_not be_success
+      expect(json).to be_empty
     end
   end
 end
