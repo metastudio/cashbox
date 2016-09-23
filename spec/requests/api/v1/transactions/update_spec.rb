@@ -35,13 +35,12 @@ describe 'PUT /api/organizations/#/transactions/#' do
 
     it 'returns updated transaction' do
       expect(response).to be_success
-
+      transaction.reload
       expect(json['transaction']).to include(
         'id' => transaction.id,
-        'amount' => '95₽',
+        'amount' => money_with_symbol(transaction.amount),
         'comment' => "Updated Test Comment\nComission: 5₽"
       )
-      transaction.reload
       expect(json['transaction']['category']).to     include( 'id' => transaction.category.id)
       expect(json['transaction']['bank_account']).to include( 'id' => bank_account.id)
       expect(json['transaction']['customer']).to     include( 'id' => transaction.customer.id)
@@ -53,13 +52,12 @@ describe 'PUT /api/organizations/#/transactions/#' do
 
     it 'returns updated transaction' do
       expect(response).to be_success
-
+      transaction.reload
       expect(json['transaction']).to include(
         'id' => transaction.id,
-        'amount' => '95₽',
+        'amount' => money_with_symbol(transaction.amount),
         'comment' => "Updated Test Comment\nComission: 5₽"
       )
-      transaction.reload
       expect(json['transaction']['category']).to     include( 'id' => transaction.category.id)
       expect(json['transaction']['bank_account']).to include( 'id' => bank_account.id)
       expect(json['transaction']['customer']).to     include( 'id' => transaction.customer.id)
