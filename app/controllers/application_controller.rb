@@ -48,4 +48,12 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:full_name, profile_attributes: [:phone_number, :avatar]])
     devise_parameter_sanitizer.permit(:sign_up, keys: [:full_name])
   end
+
+  def invitation_congratulation(invitation)
+    if invitation.type == 'OrganizationInvitation'
+      "You joined #{invitation.organization.name}."
+    else
+      "You joined CASHBOX."
+    end
+  end
 end

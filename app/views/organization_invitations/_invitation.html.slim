@@ -1,12 +1,12 @@
 tr
   td.word-break = invitation.email
   td = invitation.role.capitalize
-  td.word-break = invitation.owner
+  td.word-break = invitation.owner_name
   td = invitation.accepted? ? 'Yes' : 'No'
   td = I18n.l invitation.created_at
   td.text-right
     .btn-group
-      = link_to 'Resend', resend_invitation_path(token: invitation.token),
+      = link_to 'Resend', resend_organization_invitation_path(token: invitation.token),
         class: 'btn btn-primary responsive-text', data: { compression: 8, min: 9, max: 16 } unless invitation.accepted?
-      = link_to 'Destroy', invitation_path(invitation),
+      = link_to 'Destroy', organization_invitation_path(invitation),
         method: :delete, data: { confirm: "Are you sure?", compression: 8, min: 9, max: 16 }, class: 'btn btn-danger responsive-text'

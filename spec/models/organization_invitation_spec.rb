@@ -14,11 +14,11 @@
 
 require 'rails_helper'
 
-describe Invitation do
+describe OrganizationInvitation do
   context 'association' do
-    it { is_expected.to delegate_method(:organization).to(:member) }
+    it { is_expected.to delegate_method(:organization).to(:invited_by) }
 
-    it { is_expected.to belong_to(:member).with_foreign_key(:invited_by_id) }
+    it { is_expected.to belong_to(:invited_by).class_name('Member') }
     it { is_expected.to belong_to(:user).with_primary_key(:email).with_foreign_key(:email) }
   end
 end

@@ -115,6 +115,7 @@ GEM
       responders
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     enumerize (2.0.0)
       activesupport (>= 3.2)
     erubis (2.7.0)
@@ -334,6 +335,11 @@ GEM
     simple_form (3.3.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
+    simplecov (0.12.0)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     sixarm_ruby_unaccent (1.1.1)
     slackistrano (0.1.12)
       capistrano (>= 3.0.1)
@@ -453,6 +459,7 @@ DEPENDENCIES
   select2-rails (~> 3.5.9.3)
   shoulda-matchers
   simple_form
+  simplecov
   slackistrano (~> 0.1.0)
   slim-rails
   spring
