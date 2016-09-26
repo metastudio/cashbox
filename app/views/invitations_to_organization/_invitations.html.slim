@@ -1,7 +1,7 @@
-- if policy(:invitation).index?
+- if policy(:invitation_to_organization).index?
   .page-header
     .pull-right#invitation_link_area
-      = link_to 'New Invitation', new_invitation_path, class: 'btn btn-success'
+      = link_to 'New Invitation', new_invitations_to_organization_path, class: 'btn btn-success'
     h1 Invitations
   - if invitations.present?
     table.table.table-stripped.table-hover.responsive-table data-min=9 data-max=18
@@ -14,7 +14,7 @@
           th.col-sm-1 Date
           th.col-sm-2
       tbody.invitations
-        = render invitations
+        = render partial: 'invitations_to_organization/invitation', collection: invitations, as: :invitation
   - else
     .alert.alert-warning No invitations
 

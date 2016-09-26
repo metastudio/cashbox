@@ -1,4 +1,4 @@
-class InvitationPolicy < ApplicationPolicy
+class InvitationToOrganizationPolicy < ApplicationPolicy
   def new?
     member.owner_or_admin?
   end

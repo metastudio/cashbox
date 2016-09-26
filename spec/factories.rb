@@ -142,7 +142,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :invitation do
+  factory :invitation_to_organization do
     email   { create(:user).email }
     role    { Member.role.default_value }
     member  { create :member }

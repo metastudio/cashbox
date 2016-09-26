@@ -23,7 +23,7 @@ describe 'Accept invitation' do
     it { expect(page).to have_content "You joined #{admin_member.organization.name}" }
     it { expect(page).to have_content "Sign out" }
     it "flags invitation as accepted" do
-      expect(Invitation.last.accepted).to eq true
+      expect(InvitationToOrganization.last.accepted).to eq true
     end
 
     it 'create a User' do
@@ -69,7 +69,7 @@ describe 'Accept invitation' do
 
   context 'with invalid token' do
     let(:existing_user) { create :user, :with_organization }
-    let(:invitation) { create :invitation, email: existing_user.email, member: admin_member}
+    let(:invitation) { create :invitation_to_organization, email: existing_user.email, member: admin_member}
     before do
       sign_in existing_user
       token = SecureRandom.urlsafe_base64(nil, false)

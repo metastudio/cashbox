@@ -14,7 +14,7 @@
 
 require 'rails_helper'
 
-describe Invitation do
+describe InvitationToOrganization do
   context 'association' do
     it { is_expected.to delegate_method(:organization).to(:member) }
 
