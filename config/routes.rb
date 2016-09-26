@@ -55,7 +55,9 @@ Cashbox::Application.routes.draw do
       post :auth_token, to: 'auth_token#create'
 
       get :user_info, to: 'users#current'
-      resources :organizations, only: [:show, :index, :create, :update, :destroy]
+      resources :organizations, only: [:show, :index, :create, :update, :destroy] do
+        resources :transactions, only: [:show, :index, :create, :update, :destroy]
+      end
     end
   end
 end

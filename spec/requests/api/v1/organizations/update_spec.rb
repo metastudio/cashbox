@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'PUT /api/organizations/#' do
   let(:path) { "/api/organizations/#{organization.id}" }
@@ -33,12 +33,12 @@ describe 'PUT /api/organizations/#' do
 
     context 'with wrong params' do
       let(:params) {
-          { organization: {
-              name: '',
-              default_currency: 'RUB'
-            }
+        { organization: {
+            name: '',
+            default_currency: 'RUB'
           }
         }
+      }
 
       it 'returns error' do
         expect(response).to_not be_success
