@@ -35,16 +35,16 @@ describe 'POST /api/organizations/#/transactions' do
     it 'returns created transaction' do
       expect(response).to be_success
 
-      expect(json['transaction']).to include(
+      expect(json).to include(
         'id' => Transaction.last.id,
         'amount' => '95₽',
         'comment' => "Test Comment\nComission: 5₽",
         'comission' => '5'
       )
 
-      expect(json['transaction']['category']).to     include( 'id' => category.id)
-      expect(json['transaction']['bank_account']).to include( 'id' => bank_account.id)
-      expect(json['transaction']['customer']).to     include( 'id' => customer.id)
+      expect(json['category']).to     include( 'id' => category.id)
+      expect(json['bank_account']).to include( 'id' => bank_account.id)
+      expect(json['customer']).to     include( 'id' => customer.id)
 
       expect(organization.transactions.last.id).to eq Transaction.last.id
       expect(organization.transactions.last.created_by).to eq owner
@@ -63,9 +63,9 @@ describe 'POST /api/organizations/#/transactions' do
       it 'returns error' do
         expect(response).to_not be_success
 
-        expect(json['error']).to include "amount" => ["must be other than 0"]
-        expect(json['error']).to include "category" => ["can't be blank"]
-        expect(json['error']).to include "bank_account" => ["can't be blank"]
+        expect(json).to include "amount" => ["must be other than 0"]
+        expect(json).to include "category" => ["can't be blank"]
+        expect(json).to include "bank_account" => ["can't be blank"]
       end
     end
   end
@@ -76,16 +76,16 @@ describe 'POST /api/organizations/#/transactions' do
     it 'returns created transaction' do
       expect(response).to be_success
 
-      expect(json['transaction']).to include(
+      expect(json).to include(
         'id' => Transaction.last.id,
         'amount' => '95₽',
         'comment' => "Test Comment\nComission: 5₽",
         'comission' => '5'
       )
 
-      expect(json['transaction']['category']).to     include( 'id' => category.id)
-      expect(json['transaction']['bank_account']).to include( 'id' => bank_account.id)
-      expect(json['transaction']['customer']).to     include( 'id' => customer.id)
+      expect(json['category']).to     include( 'id' => category.id)
+      expect(json['bank_account']).to include( 'id' => bank_account.id)
+      expect(json['customer']).to     include( 'id' => customer.id)
 
       expect(organization.transactions.last.id).to eq Transaction.last.id
       expect(organization.transactions.last.created_by).to eq user

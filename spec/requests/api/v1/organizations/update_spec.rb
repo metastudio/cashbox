@@ -24,7 +24,7 @@ describe 'PUT /api/organizations/#' do
     it 'returns updated organization' do
       expect(response).to be_success
 
-      expect(json['organization']).to include(
+      expect(json).to include(
         'id' => organization.id,
         'name' => 'Updated Organization Name',
         'default_currency' => 'RUB'
@@ -43,7 +43,7 @@ describe 'PUT /api/organizations/#' do
       it 'returns error' do
         expect(response).to_not be_success
 
-        expect(json['error']).to include "name" => ["can't be blank"]
+        expect(json).to include "name" => ["can't be blank"]
       end
     end
   end

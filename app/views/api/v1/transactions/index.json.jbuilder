@@ -1,1 +1,1 @@
-json.transactions @transactions, partial: 'transaction', as: :transaction
+json.partial! 'transaction', collection: @transactions, as: :transaction
