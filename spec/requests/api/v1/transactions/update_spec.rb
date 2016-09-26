@@ -36,14 +36,14 @@ describe 'PUT /api/organizations/#/transactions/#' do
     it 'returns updated transaction' do
       expect(response).to be_success
       transaction.reload
-      expect(json['transaction']).to include(
+      expect(json).to include(
         'id' => transaction.id,
         'amount' => money_with_symbol(transaction.amount),
         'comment' => "Updated Test Comment\nComission: 5₽"
       )
-      expect(json['transaction']['category']).to     include( 'id' => transaction.category.id)
-      expect(json['transaction']['bank_account']).to include( 'id' => bank_account.id)
-      expect(json['transaction']['customer']).to     include( 'id' => transaction.customer.id)
+      expect(json['category']).to     include( 'id' => transaction.category.id)
+      expect(json['bank_account']).to include( 'id' => bank_account.id)
+      expect(json['customer']).to     include( 'id' => transaction.customer.id)
     end
   end
 
@@ -53,14 +53,14 @@ describe 'PUT /api/organizations/#/transactions/#' do
     it 'returns updated transaction' do
       expect(response).to be_success
       transaction.reload
-      expect(json['transaction']).to include(
+      expect(json).to include(
         'id' => transaction.id,
         'amount' => money_with_symbol(transaction.amount),
         'comment' => "Updated Test Comment\nComission: 5₽"
       )
-      expect(json['transaction']['category']).to     include( 'id' => transaction.category.id)
-      expect(json['transaction']['bank_account']).to include( 'id' => bank_account.id)
-      expect(json['transaction']['customer']).to     include( 'id' => transaction.customer.id)
+      expect(json['category']).to     include( 'id' => transaction.category.id)
+      expect(json['bank_account']).to include( 'id' => bank_account.id)
+      expect(json['customer']).to     include( 'id' => transaction.customer.id)
     end
 
     context 'with wrong params' do
@@ -79,7 +79,7 @@ describe 'PUT /api/organizations/#/transactions/#' do
 
       it 'returns error' do
         expect(response).to_not be_success
-        expect(json['error']).to include "bank_account_id" => ["is not associated with current organization"]
+        expect(json).to include "bank_account_id" => ["is not associated with current organization"]
       end
     end
   end

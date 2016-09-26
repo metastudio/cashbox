@@ -37,7 +37,7 @@ module Api::V1
       if @transaction.save
         render :show
       else
-        render json: { error: @transaction.errors }, status: :unprocessable_entity
+        render json: @transaction.errors, status: :unprocessable_entity
       end
     end
 
@@ -47,7 +47,7 @@ module Api::V1
       if @transaction.update(transaction_params)
         render :show
       else
-        render json: { error: @transaction.errors }, status: :unprocessable_entity
+        render json: @transaction.errors, status: :unprocessable_entity
       end
     end
 

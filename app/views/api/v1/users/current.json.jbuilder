@@ -1,1 +1,1 @@
-json.user current_user, partial: 'user', as: :user
+json.partial! 'user', user: current_user
