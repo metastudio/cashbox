@@ -21,13 +21,12 @@ describe 'GET /api/organizations/#/transactions' do
     it 'returns transactions' do
       expect(response).to be_success
 
-      expect(json['transactions'].size).to eq 2
-      expect(json['transactions'][0]).to include(
+      expect(json[0]).to include(
         'id' => transaction2.id,
         'amount' => money_with_symbol(transaction2.amount),
         'comment' => transaction2.comment
       )
-      expect(json['transactions'][1]).to include(
+      expect(json[1]).to include(
         'id' => transaction1.id,
         'amount' => money_with_symbol(transaction1.amount),
         'comment' => transaction1.comment
@@ -41,13 +40,12 @@ describe 'GET /api/organizations/#/transactions' do
     it 'returns transactions' do
       expect(response).to be_success
 
-      expect(json['transactions'].size).to eq 2
-      expect(json['transactions'][0]).to include(
+      expect(json[0]).to include(
         'id' => transaction2.id,
         'amount' => money_with_symbol(transaction2.amount),
         'comment' => transaction2.comment
       )
-      expect(json['transactions'][1]).to include(
+      expect(json[1]).to include(
         'id' => transaction1.id,
         'amount' => money_with_symbol(transaction1.amount),
         'comment' => transaction1.comment

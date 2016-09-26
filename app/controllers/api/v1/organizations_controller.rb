@@ -28,7 +28,7 @@ module Api::V1
         Member.create(user: current_user, organization: @organization, role: 'owner')
         render :show
       else
-        render json: { error: @organization.errors }, status: :unprocessable_entity
+        render json: @organization.errors, status: :unprocessable_entity
       end
     end
 
@@ -38,7 +38,7 @@ module Api::V1
       if @organization.update(organization_params)
         render :show
       else
-        render json: { error: @organization.errors }, status: :unprocessable_entity
+        render json: @organization.errors, status: :unprocessable_entity
       end
     end
 

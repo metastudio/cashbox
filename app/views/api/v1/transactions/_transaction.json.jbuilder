@@ -1,4 +1,4 @@
-json.(transaction, :id, :comission, :date, :comment)
+json.extract! transaction, :id, :comission, :date, :comment
 json.amount money_with_symbol(transaction.amount)
 
 json.category transaction.category, partial: 'api/v1/categories/short_category', as: :category

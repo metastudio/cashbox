@@ -15,7 +15,7 @@ describe 'GET /api/user_info' do
     it 'returns current user information' do
       expect(response).to be_success
 
-      expect(json['user']).to include(
+      expect(json).to include(
         'id' => user.id,
         'email' => user.email,
         'full_name' => user.full_name
