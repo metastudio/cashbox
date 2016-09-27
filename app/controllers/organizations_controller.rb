@@ -18,45 +18,6 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new
   end
 
-  def new_account
-  end
-
-  def new_category
-  end
-
-  def finish
-    session[:new_organization] = true
-    redirect_to root_path
-  end
-
-  def default_account
-    BankAccount.create(
-      organization: @organization,
-      name: 'Checking'
-    )
-    redirect_to :new_category
-  end
-
-  def default_category
-    Category.create(
-      organization: @organization,
-      type: Category::CATEGORY_INCOME,
-      name: 'Payments from customers'
-    )
-    Category.create(
-      organization: @organization,
-      type: Category::CATEGORY_EXPENSE,
-      name: 'Salary'
-    )
-    Category.create(
-      organization: @organization,
-      type: Category::CATEGORY_EXPENSE,
-      name: 'Taxes'
-    )
-    session[:new_organization] = true
-    redirect_to root_path
-  end
-
   def edit
   end
 

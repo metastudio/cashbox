@@ -2,6 +2,7 @@ class CategoriesController < ApplicationController
   layout 'settings'
   before_action :set_category, only: [:edit, :update, :destroy]
   before_action :require_organization
+  before_action :redirect_for_not_ready_organization
 
   def index
     @categories = current_organization.categories.ordered.page(params[:page]).per(10)
@@ -9,9 +10,9 @@ class CategoriesController < ApplicationController
 
   def new
     @category = current_organization.categories.build
-    if request.xhr?
-      @ajax = true
-      render partial: 'categories/form'
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 
@@ -21,16 +22,17 @@ class CategoriesController < ApplicationController
   def create
     @category = current_organization.categories.build(category_params)
     if @category.save
-      if request.xhr?
-        render json: { status: 'success' }
-      else
-        redirect_to categories_path, notice: 'Category was successfully created.'
+      respond_to do |format|
+        format.js
+        format.html do
+          redirect_to categories_path, notice: 'Category was
+            successfully created.'
+        end
       end
     else
-      if request.xhr?
-        render json: { status: 'error', errors: @category.errors }
-      else
-        render action: 'new'
+      respond_to do |format|
+        format.js { render :new }
+        format.html { render action: 'new' }
       end
     end
   end

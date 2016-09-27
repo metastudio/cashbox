@@ -7,14 +7,14 @@
       ' Categories will be created by default
       br
       br
-      = link_to 'Create default Categories', default_category_organization_path(@organization.id), class: 'btn btn-primary'
+      = button_to 'Create default Categories', default_category_organization_path(@organization.id), class: 'btn btn-primary', method: :get
 
   .col-sm-6
     p
       ' But you can create it manually
       br
       br
-      = link_to 'Create manually', new_category_path, class: 'btn btn-primary new_category', remote: true
+      = button_to 'Create manually', new_category_path, class: 'btn btn-primary new_category', remote: true, method: :get
 
 .row
   .col-sm-12.new_category_form
@@ -24,7 +24,7 @@
     .alert.alert-success
       ' Category was created successfully!
   .col-sm-3.offset-sm-1
-      = link_to 'Create another', new_category_path, class: 'btn btn-primary new_category', remote: true
+      = button_to 'Create another', new_category_path, class: 'btn btn-primary new_category', remote: true, method: :get
   .col-sm-8
       = link_to 'Finish', organization_finish_path(@organization), class: 'btn btn-success'
 

@@ -58,6 +58,16 @@ class Category < ApplicationRecord
         [CATEGORY_TRANSFERS, receipts]
       ]
     end
+
+    def create_defaults(organization)
+      [*DEFAULT_VALUES[:categories]].each do |number, category|
+        Category.find_or_create_by(
+          name: category['name'].capitalize,
+          type: category['type'].capitalize,
+          organization: organization
+        )
+      end
+    end
   end
 
   def self.receipt_id

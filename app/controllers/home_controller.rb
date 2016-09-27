@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   before_action :require_organization
+  before_action :redirect_for_not_ready_organization
   after_action :update_last_viewed_at
 
   def show

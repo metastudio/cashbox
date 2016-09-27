@@ -31,7 +31,6 @@
 //= require jquery.inputmask.customization
 //= require select2
 //= require cocoon
-//= require organizations
 
 function scrollTo($el) {
   $("html, body").animate({scrollTop: $el.offset().top}, 300);

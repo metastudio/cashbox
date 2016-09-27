@@ -13,15 +13,15 @@ Cashbox::Application.routes.draw do
   root 'home#show'
 
   resources :organizations do
-    get :new_account, on: :member
-    get :new_category, on: :member
-    get :default_account, on: :member
-    get :default_category, on: :member
-    get :finish
     member do
       put :switch
     end
   end
+  get 'organization_wizzard/:id/new_account', to: 'organization_wizzard#new_account', as: :new_account_organization
+  get 'organization_wizzard/:id/new_category', to: 'organization_wizzard#new_category', as: :new_category_organization
+  get 'organization_wizzard/:id/default_account', to: 'organization_wizzard#default_account', as: :default_account_organization
+  get 'organization_wizzard/:id/default_category', to: 'organization_wizzard#default_category', as: :default_category_organization
+  get 'organization_wizzard/:id/finish', to: 'organization_wizzard#finish', as: :organization_finish
   resources :statistics, only: :index do
     get :income_by_customers, on: :collection, as: :income_by_customers
     get :expense_by_customers, on: :collection, as: :expense_by_customers

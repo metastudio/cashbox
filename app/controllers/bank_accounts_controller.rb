@@ -3,14 +3,16 @@ class BankAccountsController < ApplicationController
   before_action :set_bank_account, only: [:edit, :update, :destroy, :hide]
   before_action :require_organization, only: [:edit, :update, :new, :create,
     :destroy, :hide]
+  before_action :redirect_for_not_ready_organization, only: [:edit, :update, :new, :create,
+    :destroy, :hide]
   before_action :find_bank_account, only: :sort
   after_action :update_last_viewed_at, only: [:create]
 
   def new
     @bank_account = current_organization.bank_accounts.build
-    if request.xhr?
-      @ajax = true
-      render partial: 'bank_accounts/form'
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 
@@ -26,23 +28,27 @@ class BankAccountsController < ApplicationController
     @bank_account = current_organization.bank_accounts.build(bank_account_params)
 
     if @bank_account.save
-      if request.xhr?
-        render json: { status: 'success' }
-      else
-        redirect_to bank_accounts_path, notice: 'Bank account was successfully created.'
+      respond_to do |format|
+        format.html do
+          redirect_to bank_accounts_path, notice: 'Bank account
+            was successfully created.'
+        end
+        format.js
       end
     else
-      if request.xhr?
-        render json: { status: 'error', errors: @bank_account.errors }
-      else
-        render action: 'new'
+      respond_to do |format|
+        format.html { render action: 'new' }
+        format.js do
+          render :new
+        end
       end
     end
   end
 
   def update
     if @bank_account.update(bank_account_params)
-      redirect_to bank_accounts_path, notice: 'Bank account was successfully updated.'
+      redirect_to bank_accounts_path, notice: 'Bank account was successfully
+        updated.'
     else
       render action: 'edit'
     end

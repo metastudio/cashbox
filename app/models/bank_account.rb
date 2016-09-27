@@ -81,5 +81,14 @@ class BankAccount < ApplicationRecord
         currencies.index(ba.first)
       end
     end
+
+    def create_defaults(organization)
+      [*DEFAULT_VALUES[:bank_accounts]].each do |account|
+        BankAccount.find_or_create_by(
+          name: account,
+          organization: organization
+        )
+      end
+    end
   end
 end

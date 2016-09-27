@@ -1,4 +1,5 @@
 class OrganizationWizzard
+  include Rails.application.routes.url_helpers
 
   def initialize(organization)
     @organization = organization
@@ -20,11 +21,11 @@ class OrganizationWizzard
     @organization.categories.any?
   end
 
-  def step
+  def step_url
     if have_account?
-      'new_category'
+      new_category_organization_path(@organization.id)
     else
-      'new_account'
+      new_account_organization_path(@organization.id)
     end
   end
 end

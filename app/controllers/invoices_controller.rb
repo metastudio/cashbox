@@ -1,6 +1,7 @@
 class InvoicesController < ApplicationController
   before_action :set_invoice, only: [:edit, :show, :update, :destroy]
   before_action :require_organization
+  before_action :redirect_for_not_ready_organization
   before_action :find_invoices, only: [:index, :unpaid]
 
   def index

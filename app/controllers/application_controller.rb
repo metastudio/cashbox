@@ -28,15 +28,15 @@ class ApplicationController < ActionController::Base
     unless current_organization
       flash.keep
       redirect_to new_organization_path, alert: "You don't have any organization. Create a new one."
-    else
-      unless request.xhr?
-        organization = OrganizationWizzard.new(current_organization)
-        if current_member.owner_or_admin? && organization.not_ready?
-          flash.keep
-          step = organization.step
-          current_id = current_organization.id
-          redirect_to send("#{step}_organization_path", current_id)
-        end
+    end
+  end
+
+  def redirect_for_not_ready_organization
+    unless request.xhr?
+      organization_wizzard = OrganizationWizzard.new(current_organization)
+      if current_member.owner_or_admin? && organization_wizzard.not_ready?
+        flash.keep
+        redirect_to organization_wizzard.step_url
       end
     end
   end

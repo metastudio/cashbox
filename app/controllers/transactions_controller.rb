@@ -1,5 +1,6 @@
 class TransactionsController < ApplicationController
   before_action :require_organization
+  before_action :redirect_for_not_ready_organization
   before_action :set_transaction,  only: [:edit, :update, :destroy]
   before_action :set_invoice, only: [:new]
   after_action :update_last_viewed_at, only: [:create, :create_transfer]
