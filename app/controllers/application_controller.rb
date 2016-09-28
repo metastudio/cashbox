@@ -31,6 +31,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def redirect_for_not_ready_organization
+    unless request.xhr?
+      organization_wizzard = OrganizationWizzard.new(current_organization)
+      if current_member.owner_or_admin? && organization_wizzard.continue?
+        flash.keep
+        redirect_to organization_wizzard.step_url
+      end
+    end
+  end
+
   def update_last_viewed_at
     current_member.update(last_visited_at: Time.current) if current_member
   end
