@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160923061149) do
+ActiveRecord::Schema.define(version: 20160928070144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -113,6 +113,17 @@ ActiveRecord::Schema.define(version: 20160923061149) do
     t.string   "role",            limit: 255, null: false
     t.datetime "last_visited_at"
     t.index ["user_id", "organization_id"], name: "index_members_on_user_id_and_organization_id", unique: true, using: :btree
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.boolean  "sended",           default: false
+    t.datetime "date"
+    t.string   "kind"
+    t.string   "notificator_type"
+    t.integer  "notificator_id"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.index ["notificator_type", "notificator_id"], name: "index_notifications_on_notificator_type_and_notificator_id", using: :btree
   end
 
   create_table "organizations", force: :cascade do |t|

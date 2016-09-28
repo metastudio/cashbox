@@ -178,4 +178,10 @@ FactoryGirl.define do
   factory :profile do
     user { build :user }
   end
+
+  factory :notification do
+    date { DateTime.now }
+    kind :resend_invitation
+    notificator { create :invitation_to_organization }
+  end
 end
