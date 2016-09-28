@@ -28,7 +28,7 @@ describe 'GET /api/organizations/#/transactions/#' do
       )
 
       expect(json['category']).to     include( 'id' => transaction.category.id)
-      expect(json['bank_account']).to include( 'id' => bank_account.id)
+      expect(json['bank_account']).to include( 'id' => transaction.bank_account.id)
       expect(json['customer']).to     include( 'id' => transaction.customer.id)
     end
   end
@@ -46,7 +46,7 @@ describe 'GET /api/organizations/#/transactions/#' do
       )
 
       expect(json['category']).to     include( 'id' => transaction.category.id)
-      expect(json['bank_account']).to include( 'id' => bank_account.id)
+      expect(json['bank_account']).to include( 'id' => transaction.bank_account.id)
       expect(json['customer']).to     include( 'id' => transaction.customer.id)
     end
   end
