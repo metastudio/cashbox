@@ -1,8 +1,7 @@
 = content_for :sidebar
   = render 'home/sidebar'
 
-- if session[:new_organization]
-  - session.delete(:new_organization)
+- if flash[:new_organization]
   .jumbotron
     h2
       ' **Congratulations**

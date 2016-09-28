@@ -7,26 +7,27 @@
       ' Categories will be created by default
       br
       br
-      = button_to 'Create default Categories', default_category_organization_path(@organization.id), class: 'btn btn-primary', method: :get
+      = button_to 'Create default Categories', default_category_organization_path(@organization.id), class: 'btn btn-primary'
 
   .col-sm-6
     p
-      ' But you can create it manually
+      ' Or
       br
       br
-      = button_to 'Create manually', new_category_path, class: 'btn btn-primary new_category', remote: true, method: :get
+      = button_tag 'Create it manually', class: 'btn btn-primary ',
+        data: { toggle: 'collapse', target: '#form_body'}, 'aria-expanded': false,
+        'aria-controls': '#form_body'
 
-.row
-  .col-sm-12.new_category_form
-
-.row.hidden.next_step_wrapper
-  .col-sm-12
-    .alert.alert-success
-      ' Category was created successfully!
-  .col-sm-3.offset-sm-1
-      = button_to 'Create another', new_category_path, class: 'btn btn-primary new_category', remote: true, method: :get
-  .col-sm-8
-      = link_to 'Finish', organization_finish_path(@organization), class: 'btn btn-success'
+.row.collapse#form_body class="#{@open_form ? 'in' : ''}"
+  br
+  .col-sm-6
+    = simple_form_for @organization, url: create_categories_organization_path do |f|
+      = f.simple_fields_for :categories do |category|
+        = render 'category_fields', f: category
+      .links
+        = link_to_add_association 'add another', f, :categories
+      br
+      = f.submit "Create categories", class: 'btn btn-primary'
 
 = content_for :sidebar
   = render 'home/settings'

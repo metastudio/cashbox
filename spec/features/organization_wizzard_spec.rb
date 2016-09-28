@@ -19,7 +19,7 @@ describe "create organization" do
   context "second step", js: true do
     before { create_organization(organization_name) }
 
-    it "create account by deffault" do
+    it "create account by default" do
       expect(page).to have_content("New organization bank account")
       click_on "Create default Bank account"
       expect(BankAccount.all.count).to eq(1)
@@ -28,14 +28,12 @@ describe "create organization" do
 
     it "create account manually" do
       expect(page).to have_content("New organization bank account")
-      click_on "Create manually"
-      expect(page).to have_css("form#new_bank_account")
-      within("form#new_bank_account") do
-        fill_in 'bank_account[name]', with: "New bank account"
-        click_on 'Create Bank account'
-      end
-      expect(page).to have_content("Bank account was created successfully")
-      click_on "Next step"
+      click_on "Create it manually"
+      fill_in 'Name', with: "New bank account"
+      click_on 'Create bank accounts'
+      expect(page).to have_content("Bank accounts was created successfully")
+      expect(BankAccount.all.count).to eq(1)
+      expect(BankAccount.last.organization.name).to eq(organization_name)
       expect(page).to have_content("New organization categories")
     end
   end
@@ -54,14 +52,11 @@ describe "create organization" do
 
     it "create category manually" do
       expect(page).to have_content("New organization categories")
-      click_on "Create manually"
-      expect(page).to have_css("form#new_category")
-      within("form#new_category") do
-        fill_in 'category[name]', with: "New category"
-        click_on 'Create Category'
-      end
-      expect(page).to have_content("Category was created successfully!")
-      click_on "Finish"
+      click_on "Create it manually"
+      fill_in 'Name', with: "New category"
+      click_on 'Create categories'
+      expect(page).to have_content("Categories was created successfully")
+      expect(Category.all.count).to eq(3)
       expect(page).to have_content("**Congratulations**")
     end
   end

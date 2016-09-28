@@ -10,10 +10,6 @@ class CategoriesController < ApplicationController
 
   def new
     @category = current_organization.categories.build
-    respond_to do |format|
-      format.html
-      format.js
-    end
   end
 
   def edit
@@ -22,18 +18,9 @@ class CategoriesController < ApplicationController
   def create
     @category = current_organization.categories.build(category_params)
     if @category.save
-      respond_to do |format|
-        format.js
-        format.html do
-          redirect_to categories_path, notice: 'Category was
-            successfully created.'
-        end
-      end
+      redirect_to categories_path, notice: 'Category was successfully created.'
     else
-      respond_to do |format|
-        format.js { render :new }
-        format.html { render action: 'new' }
-      end
+      render action: 'new'
     end
   end
 

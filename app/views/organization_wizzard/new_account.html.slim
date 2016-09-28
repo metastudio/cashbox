@@ -7,25 +7,26 @@
       ' Bank account will be created by default (with default currency)
       br
       br
-      = button_to 'Create default Bank account', default_account_organization_path(@organization.id), class: 'btn btn-primary', method: :get
+      = button_to 'Create default Bank account', default_account_organization_path(@organization.id), class: 'btn btn-primary'
   .col-sm-6
     p
-      ' But you can create it manually
+      ' Or
       br
       br
-      = button_to 'Create manually', new_bank_account_path, class: 'btn btn-primary', remote: true, method: :get
+      = button_tag 'Create it manually', class: 'btn btn-primary',
+        data: { toggle: 'collapse', target: '#form_body'}, 'aria-expanded': false,
+        'aria-controls': '#form_body'
 
-.row
-  .col-sm-12.new_account_form
-
-.row.hidden.next_step_wrapper
-  .col-sm-12
-    .alert.alert-success
-      ' Bank account was created successfully!
-  .col-sm-3.offset-sm-1
-      = button_to 'Create another', new_bank_account_path, class: 'btn btn-primary new_account', remote: true, method: :get
-  .col-sm-8
-      = link_to 'Next step', new_category_organization_path(@organization), class: 'btn btn-success'
+.row.collapse#form_body class="#{@open_form ? 'in' : ''}"
+  br
+  .col-sm-6
+    = simple_form_for @organization, url: create_accounts_organization_path do |f|
+      = f.simple_fields_for :bank_accounts do |account|
+        = render 'bank_account_fields', f: account
+      .links
+        = link_to_add_association 'add another', f, :bank_accounts
+      br
+      = f.submit 'Create bank accounts', class: 'btn btn-primary'
 
 = content_for :sidebar
   = render 'home/settings'

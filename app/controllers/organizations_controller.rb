@@ -1,8 +1,7 @@
 class OrganizationsController < ApplicationController
   layout 'settings'
   before_action :find_organization, only: [:show, :edit, :update,
-    :destroy, :switch, :default_account, :default_category, :new_category,
-    :new_account]
+    :destroy, :switch]
   before_action :authorize_organization, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -26,8 +25,10 @@ class OrganizationsController < ApplicationController
 
     if @organization.save
       Member.create(user: current_user, organization: @organization, role: 'owner')
-      session[:current_organization_id] = @organization.id
-      redirect_to new_account_organization_path(@organization),
+      if current_organization
+        session[:current_organization_id] = @organization.id
+      end
+      redirect_to new_account_organization_path,
         notice: 'Organization was successfully created.'
     else
       render action: 'new'

@@ -9,7 +9,7 @@ class OrganizationWizzard
     have_account? && have_categories?
   end
 
-  def not_ready?
+  def continue?
     not ready?
   end
 
@@ -23,9 +23,9 @@ class OrganizationWizzard
 
   def step_url
     if have_account?
-      new_category_organization_path(@organization.id)
+      new_category_organization_path
     else
-      new_account_organization_path(@organization.id)
+      new_account_organization_path
     end
   end
 end

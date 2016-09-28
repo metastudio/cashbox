@@ -10,10 +10,6 @@ class BankAccountsController < ApplicationController
 
   def new
     @bank_account = current_organization.bank_accounts.build
-    respond_to do |format|
-      format.html
-      format.js
-    end
   end
 
   def index
@@ -28,27 +24,15 @@ class BankAccountsController < ApplicationController
     @bank_account = current_organization.bank_accounts.build(bank_account_params)
 
     if @bank_account.save
-      respond_to do |format|
-        format.html do
-          redirect_to bank_accounts_path, notice: 'Bank account
-            was successfully created.'
-        end
-        format.js
-      end
+      redirect_to bank_accounts_path, notice: 'Bank account was successfully created.'
     else
-      respond_to do |format|
-        format.html { render action: 'new' }
-        format.js do
-          render :new
-        end
-      end
+      render action: 'new'
     end
   end
 
   def update
     if @bank_account.update(bank_account_params)
-      redirect_to bank_accounts_path, notice: 'Bank account was successfully
-        updated.'
+      redirect_to bank_accounts_path, notice: 'Bank account was successfully updated.'
     else
       render action: 'edit'
     end

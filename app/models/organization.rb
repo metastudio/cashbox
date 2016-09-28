@@ -26,6 +26,9 @@ class Organization < ApplicationRecord
   has_many :invoices, dependent: :destroy, inverse_of: :organization
   has_many :invoice_items, through: :invoices
 
+  accepts_nested_attributes_for :bank_accounts, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :categories, reject_if: :all_blank, allow_destroy: true
+
   validates :name, presence: true
 
   def ordered_curr

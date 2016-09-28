@@ -84,9 +84,8 @@ class BankAccount < ApplicationRecord
 
     def create_defaults(organization)
       [*DEFAULT_VALUES[:bank_accounts]].each do |account|
-        BankAccount.find_or_create_by(
-          name: account,
-          organization: organization
+        organization.bank_accounts.find_or_create_by(
+          name: account
         )
       end
     end

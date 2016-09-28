@@ -1,6 +1,6 @@
 .row
   .col-sm-6
-    = simple_form_for @bank_account, remote: @ajax do |f|
+    = simple_form_for(@bank_account) do |f|
       = f.error_notification
 
       .form-inputs
