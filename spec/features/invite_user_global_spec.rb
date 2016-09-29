@@ -21,7 +21,10 @@ describe 'Invite process' do
 
 
     describe 'sent email' do
-      before { open_email email }
+      before do
+        Notification.deliver_all
+        open_email email
+      end
 
       it { expect(current_email).to have_content("You are invited to CASHBOX")  }
       it { expect(current_email).to have_link 'Accept'}

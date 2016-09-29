@@ -22,7 +22,7 @@ every 1.day, at: '0:00 am' do
   runner "ExchangeRate.update_rates"
 end
 
-every 1.day, at: '06:00 am' do
+every 5.minutes do
   runner "Notification.deliver_all"
 end
 

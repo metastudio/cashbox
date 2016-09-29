@@ -12,6 +12,7 @@ describe 'Accept invitation' do
   context 'for a new user' do
     before do
       invite_user(admin_member.user, 'admin', email)
+      Notification.deliver_all
       open_email email
       current_email.click_link 'Accept'
       fill_in 'Full name', with: full_name
@@ -45,6 +46,7 @@ describe 'Accept invitation' do
 
     before do
       invite_user(admin_member.user, 'admin', existing_user.email)
+      Notification.deliver_all
       open_email email
       current_email.click_link 'Accept'
     end
@@ -63,6 +65,7 @@ describe 'Accept invitation' do
     end
 
     it "doesn't create a new user" do
+      Notification.deliver_all
       expect { open_email(email); current_email.click_link 'Accept' }.not_to change{ User.count }
     end
   end

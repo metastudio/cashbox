@@ -15,6 +15,7 @@ describe 'Accept invitation' do
       fill_in 'Email', with: email
       click_on 'Invite'
       sign_out
+      Notification.deliver_all
       open_email email
       current_email.click_link 'Accept'
       fill_in 'Full name', with: full_name

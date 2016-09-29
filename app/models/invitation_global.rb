@@ -4,10 +4,18 @@ class InvitationGlobal < Invitation
   validate :user_already_in_system
 
   after_create :send_invitation
-  after_create :week_notification
+  after_create :resend_notification
 
   def send_invitation
-    InvitationMailer.new_invitation_global(self).deliver_now
+    date = DateTime.now.beginning_of_day
+    kind = :send_invitation_global
+    notification(kind, date)
+  end
+
+  def resend_notification
+    date = 1.week.from_now.beginning_of_day
+    kind = :resend_invitation_global
+    notification(kind, date)
   end
 
   def congratulation
@@ -18,9 +26,6 @@ class InvitationGlobal < Invitation
     update_attribute(:accepted, true)
   end
 
-  def resend
-    InvitationMailer.resend_invitation_global(self).deliver_later
-  end
 
   private
 
@@ -29,10 +34,5 @@ class InvitationGlobal < Invitation
     if user.present?
       errors.add(:email, "User already registered in system")
     end
-  end
-
-  def week_notification
-    date = 1.week.from_now.beginning_of_day
-    notifications.create(kind: :resend_invitation, date: date)
   end
 end

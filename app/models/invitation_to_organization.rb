@@ -10,7 +10,7 @@ class InvitationToOrganization < Invitation
   delegate :organization, to: :member
 
   after_create :send_invitation
-  after_create :week_notification
+  after_create :resend_invitation
 
   enumerize :role, in: [:user, :admin, :owner], default: :user, predicates: true
 
@@ -26,16 +26,20 @@ class InvitationToOrganization < Invitation
     update_attribute(:accepted, true)
   end
 
-  def send_invitation
-    InvitationMailer.new_invitation_to_organization(self).deliver_now
-  end
-
   def congratulation
     "You joined #{member.organization.name}."
   end
 
-  def resend
-    InvitationMailer.resend_invitation_to_organization(self).deliver_later
+  def send_invitation
+    date = DateTime.now.beginning_of_day
+    kind = :send_invitation_to_organization
+    notification(kind, date)
+  end
+
+  def resend_invitation
+    date = 1.week.from_now.beginning_of_day
+    kind = :resend_invitation_to_organization
+    notification(kind, date)
   end
 
   private
@@ -52,10 +56,5 @@ class InvitationToOrganization < Invitation
     unless organization.invitations.where(email: email).empty?
       errors.add(:email, "An invitation has already been sent")
     end
-  end
-
-  def week_notification
-    date = 1.week.from_now.beginning_of_day
-    notifications.create(kind: :resend_invitation, date: date)
   end
 end

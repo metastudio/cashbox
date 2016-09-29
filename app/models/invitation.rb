@@ -25,4 +25,16 @@ class Invitation < ApplicationRecord
 
   scope :ordered, -> { order('created_at DESC') }
   scope :active,  -> { where(accepted: false) }
+
+  private
+
+  def notification(kind, date)
+    options = {
+      email: email,
+      kind: kind,
+      date: date,
+      notificator: self
+    }
+    Notification.create_if_allowed(options)
+  end
 end

@@ -181,7 +181,7 @@ FactoryGirl.define do
 
   factory :notification do
     date { DateTime.now }
-    kind :resend_invitation
+    kind :send_invitation_global
     notificator { create :invitation_to_organization }
   end
 end

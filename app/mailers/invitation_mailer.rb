@@ -1,4 +1,6 @@
 class InvitationMailer < ActionMailer::Base
+  layout 'unsubscribe'
+
   def new_invitation_to_organization(invitation)
     invitation_to_organization(invitation)
   end
@@ -19,6 +21,7 @@ class InvitationMailer < ActionMailer::Base
 
   def invitaton_global(invitation)
     @invitation = invitation
+    @unsubscribe = Unsubscribe.find_or_create_by(email: @invitation.email)
     mail(to: @invitation.email, subject: 'Invitation to CASHBOX')
   end
 
@@ -26,7 +29,7 @@ class InvitationMailer < ActionMailer::Base
     @invitation = invitation
     @member = invitation.member
     @organization = @member.organization
-
+    @unsubscribe = Unsubscribe.find_or_create_by(email: @invitation.email)
     mail(to: @invitation.email, subject: 'Invitation to organization')
   end
 

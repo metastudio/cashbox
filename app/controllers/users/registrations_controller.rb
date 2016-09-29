@@ -26,6 +26,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def edit
     session[:profile_back] = request.referer
+    current_user.link_unsubscribe
     render :edit
   end
 
@@ -38,6 +39,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def update_profile_params
-    params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number])
+    params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number],
+      unsubscribe_attributes: [:active])
   end
 end
