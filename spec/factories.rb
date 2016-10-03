@@ -26,10 +26,13 @@ FactoryGirl.define do
     transient do
       owner nil
       with_user nil
+      without_categories false
     end
 
     after(:create) do |organization, evaluator|
       create :member, organization: organization, user: evaluator.with_user if evaluator.with_user
+      create :bank_account, organization: organization
+      create :category, organization: organization unless evaluator.without_categories
       create :member, organization: organization, role: 'owner', user: evaluator.owner if evaluator.owner
     end
   end
@@ -104,21 +107,22 @@ FactoryGirl.define do
   end
 
   factory :transaction do
-    bank_account
+    organization
+    bank_account { |t| create :bank_account, organization: t.organization }
     category { |t| create(:category, organization: t.bank_account.organization) }
     amount { rand(30000.0..50000)/rand(10.0..100) }
     date { Time.current }
 
     trait :income do
-      category { |t| create(:category, :income, organization: t.organization) }
+      category { |t| create(:category, :income, organization: t.bank_account.organization) }
     end
 
     trait :expense do
-      category { |t| create(:category, :expense, organization: t.organization) }
+      category { |t| create(:category, :expense, organization: t.bank_account.organization) }
     end
 
     trait :with_customer do
-      customer { |t| create(:customer, organization: t.organization) }
+      customer { |t| create(:customer, organization: t.bank_account.organization) }
     end
   end
 

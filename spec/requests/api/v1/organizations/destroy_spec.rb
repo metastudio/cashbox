@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'DELETE /api/organizations/#' do
   let(:path) { "/api/organizations/#{organization.id}" }

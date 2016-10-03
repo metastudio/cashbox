@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'POST /api/organizations' do
   let(:path) { "/api/organizations" }
@@ -24,7 +24,7 @@ describe 'POST /api/organizations' do
     it 'returns created organization' do
       expect(response).to be_success
 
-      expect(json['organization']).to include(
+      expect(json).to include(
         'id' => Organization.last.id,
         'name' => 'Organization Name',
         'default_currency' => 'USD'

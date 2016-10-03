@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'GET /api/organizations/#' do
   let(:path) { "/api/organizations/#{organization.id}" }
@@ -17,7 +17,7 @@ describe 'GET /api/organizations/#' do
     it 'returns organization' do
       expect(response).to be_success
 
-      expect(json['organization']).to include(
+      expect(json).to include(
         'id' => organization.id,
         'name' => organization.name,
         'default_currency' => organization.default_currency
@@ -31,7 +31,7 @@ describe 'GET /api/organizations/#' do
     it 'returns organization' do
       expect(response).to be_success
 
-      expect(json['organization']).to include(
+      expect(json).to include(
         'id' => organization.id,
         'name' => organization.name,
         'default_currency' => organization.default_currency

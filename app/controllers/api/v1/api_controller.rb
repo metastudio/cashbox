@@ -5,5 +5,9 @@ module Api::V1
       current_user
     end
 
+    def current_organization
+      @current_organization ||= current_user.organizations.find(params[:organization_id])
+    end
+
   end
 end
