@@ -24,7 +24,7 @@ class InvitationMailer < ActionMailer::Base
 
   def invitation_to_organization(invitation)
     @invitation = invitation
-    @member = invitation.member
+    @member = invitation.invited_by
     @organization = @member.organization
 
     mail(to: @invitation.email, subject: 'Invitation to organization')

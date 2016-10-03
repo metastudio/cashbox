@@ -5,24 +5,47 @@
 #  id            :integer          not null, primary key
 #  token         :string(255)      not null
 #  email         :string(255)      not null
-#  role          :string(255)      not null
-#  invited_by_id :integer          not null
+#  role          :string
 #  accepted      :boolean          default(FALSE)
+#  invited_by_id :integer
 #  created_at    :datetime
 #  updated_at    :datetime
+#  type          :string
 #
 
-class Invitation < ApplicationRecord
-  extend Enumerize
+class Invitation < InvitationBase
+  belongs_to :invited_by, inverse_of: :created_invitations, class_name: 'User'
+  has_many :notifications, as: :notificator
 
-  has_secure_token :token
+  validates :invited_by, presence: true
+  validate :user_already_in_system
 
-  belongs_to :user, primary_key: :email, foreign_key: :email, inverse_of: :invitations
+  after_create :send_invitation
+  after_create :week_notification
 
-  validates :email, presence: true
-  validates :email, format: { with: Devise.email_regexp, message: "invalid format" }
-  validates :email, length: { maximum: 255, message: "too long" }
+  def send_invitation
+    InvitationMailer.new_invitation_global(self).deliver_now
+  end
 
-  scope :ordered, -> { order('created_at DESC') }
-  scope :active,  -> { where(accepted: false) }
+  def accept!(user)
+    update_attribute(:accepted, true)
+  end
+
+  def resend
+    InvitationMailer.resend_invitation_global(self).deliver_later
+  end
+
+  private
+
+  def user_already_in_system
+    user = User.where(email: email)
+    if user.present?
+      errors.add(:email, "User already registered in system")
+    end
+  end
+
+  def week_notification
+    date = 1.week.from_now.beginning_of_day
+    notifications.create(kind: :resend_invitation, date: date)
+  end
 end

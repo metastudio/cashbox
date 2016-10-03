@@ -4,14 +4,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create_user_from_invitation
     @user = User.new(sign_up_params)
-    @invitation = Invitation.active.find_by_token(params[:token])
+    @invitation = InvitationBase.active.find_by_token(params[:token])
     @user.email = @invitation.email
     if @user.save
       sign_in @user
       @invitation.accept!(@user)
-      redirect_to root_path, notice: @invitation.congratulation
+      redirect_to root_path, notice: invitation_congratulation(@invitation)
     else
-      render template: "invitations_global/accept"
+      render template: "invitations/accept"
     end
   end
 

@@ -49,8 +49,7 @@ describe 'update transaction', js: true do
     let(:new_amount)  { 5000000 }
     let!(:difference) { transaction.amount - Money.new(new_amount * 100, transaction.currency) }
     let!(:new_total)  { transaction.bank_account.balance - difference }
-    let!(:new_account_balance) { organization.bank_accounts.
-      total_balance(transaction.currency) - difference }
+    let!(:new_account_balance) { organization.bank_accounts.total_balance(transaction.currency) - difference }
 
     before do
       visit root_path
@@ -62,18 +61,15 @@ describe 'update transaction', js: true do
       end
       click_on 'Update'
       page.has_content?(/(Please review the problems below)/) # wait
+      visit root_path
     end
 
     it "updates sidebar account balance" do
-      expect(page).
-        to have_css("#bank_account_#{transaction.bank_account.id} td.amount",
-          text: money_with_symbol(new_account_balance))
+      expect(page).to have_css("#bank_account_#{transaction.bank_account.id} td.amount", text: money_with_symbol(new_account_balance))
     end
 
     it "updates sidebar total balance" do
-       expect(page).
-        to have_css("#sidebar",
-          text: money_with_symbol(new_total))
+       expect(page).to have_css("#sidebar", text: money_with_symbol(new_total))
     end
   end
 

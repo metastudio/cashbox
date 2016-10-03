@@ -9,7 +9,7 @@ describe 'Invite process' do
 
   before do
     sign_in admin_member.user
-    visit new_invitations_to_organization_path
+    visit new_organization_invitation_path
   end
 
   context 'a new user' do
@@ -20,11 +20,11 @@ describe 'Invite process' do
     end
 
     it { expect(page).to have_content('An invitation was created successfully') }
-    it { expect(current_path).to eq new_invitations_to_organization_path }
+    it { expect(current_path).to eq new_organization_invitation_path }
 
     context 'when an invitation has already been sent' do
       before do
-        visit new_invitations_to_organization_path
+        visit new_organization_invitation_path
         fill_in 'Email', with: email
         select 'Admin', from: 'Role'
         click_on 'Invite'
@@ -34,7 +34,7 @@ describe 'Invite process' do
     end
 
     context 'when created invite' do
-      subject { InvitationToOrganization.last }
+      subject { OrganizationInvitation.last }
 
       it { expect(subject.email).to eq email }
       it { expect(subject.invited_by_id).to eq admin_member.id  }

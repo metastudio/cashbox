@@ -1,5 +1,0 @@
-.row
-  .col-sm-6
-    = simple_form_for @invitation, url: invitations_global_index_path do |f|
-      = f.input :email, input_html: { maxlength: 255 }
-      = f.button :submit_with_disable, 'Invite', class: 'btn btn-primary'

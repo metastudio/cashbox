@@ -127,7 +127,7 @@ describe 'sidebar' do
 
       describe 'new invitation' do
         before do
-          visit new_invitations_to_organization_path
+          visit new_organization_invitation_path
         end
         it_behaves_like 'activatable', 'Members'
       end
