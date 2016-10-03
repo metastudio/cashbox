@@ -146,6 +146,12 @@ FactoryGirl.define do
     end
   end
 
+  factory :invitation do
+    email   { build(:user).email }
+    invited_by  { create :user }
+    accepted { false }
+  end
+
   factory :organization_invitation do
     email   { create(:user).email }
     role    { Member.role.default_value }
@@ -185,7 +191,11 @@ FactoryGirl.define do
 
   factory :notification do
     date { DateTime.now }
-    kind :send_invitation_global
-    notificator { create :organization_invitation }
+    kind :send_invitation
+    notificator do
+      OrganizationInvitation.any_instance.stub(:send_invitation)
+      OrganizationInvitation.any_instance.stub(:resend_invitation)
+      create :organization_invitation
+    end
   end
 end

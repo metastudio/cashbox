@@ -29,13 +29,13 @@ class Invitation < InvitationBase
 
   def send_invitation
     date = DateTime.now.beginning_of_day
-    kind = :send_invitation_global
+    kind = :send_invitation
     notification(kind, date)
   end
 
   def resend_notification
     date = 1.week.from_now.beginning_of_day
-    kind = :resend_invitation_global
+    kind = :resend_invitation
     notification(kind, date)
   end
   private

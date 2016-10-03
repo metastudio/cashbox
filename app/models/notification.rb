@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: notifications
+#
+#  id               :integer          not null, primary key
+#  sended           :boolean          default(FALSE)
+#  date             :datetime
+#  kind             :string
+#  notificator_type :string
+#  notificator_id   :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#
+
 class Notification < ApplicationRecord
   extend Enumerize
 
@@ -8,8 +22,8 @@ class Notification < ApplicationRecord
   enumerize :kind, in: [
     :send_invitation_to_organization,
     :resend_invitation_to_organization,
-    :send_invitation_global,
-    :resend_invitation_global
+    :send_invitation,
+    :resend_invitation
   ]
 
   scope :todays, -> {
@@ -23,9 +37,9 @@ class Notification < ApplicationRecord
       send_invitation_to_organization
     when 'resend_invitation_to_organization'
       resend_invitation_to_organization
-    when 'send_invitation_global'
+    when 'send_invitation'
       send_invitation_global
-    when 'resend_invitation_global'
+    when 'resend_invitation'
       resend_invitation_global
     end
     update_attributes(sended: true)
@@ -41,12 +55,12 @@ class Notification < ApplicationRecord
     end
   end
 
-  private
-
   def self.allowed?(email)
     unsubscribe = Unsubscribe.find_or_create_by(email: email)
     not unsubscribe.active?
   end
+
+  private
 
   def send_invitation_to_organization
     InvitationMailer.new_invitation_to_organization(notificator).deliver_now
