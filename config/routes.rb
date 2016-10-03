@@ -62,6 +62,15 @@ Cashbox::Application.routes.draw do
 
       get :user_info, to: 'users#current'
       resources :organizations, only: [:show, :index, :create, :update, :destroy] do
+        resources :bank_accounts, only: [:show, :index, :create, :update, :destroy] do
+          get :for_select, on: :collection
+        end
+        resources :categories, only: [:show, :index, :create, :update, :destroy] do
+          get :for_select, on: :collection
+        end
+        resources :customers, only: [:show, :index, :create, :update, :destroy] do
+          get :for_select, on: :collection
+        end
         resources :transactions, only: [:show, :index, :create, :update, :destroy]
       end
     end
