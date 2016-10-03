@@ -18,6 +18,12 @@ Cashbox::Application.routes.draw do
       put :switch
     end
   end
+  get 'organization_wizzard/new_account', to: 'organization_wizzard#new_account', as: :new_account_organization
+  get 'organization_wizzard/new_category', to: 'organization_wizzard#new_category', as: :new_category_organization
+  post 'organization_wizzard/default_account', to: 'organization_wizzard#create_default_accounts', as: :default_account_organization
+  post 'organization_wizzard/default_category', to: 'organization_wizzard#create_default_categories', as: :default_category_organization
+  patch 'organization_wizzard/create_accounts', to: 'organization_wizzard#create_accounts', as: :create_accounts_organization
+  patch 'organization_wizzard/create_categories', to: 'organization_wizzard#create_categories', as: :create_categories_organization
   resources :statistics, only: :index do
     get :income_by_customers, on: :collection, as: :income_by_customers
     get :expense_by_customers, on: :collection, as: :expense_by_customers
@@ -44,10 +50,10 @@ Cashbox::Application.routes.draw do
     get 'unpaid', on: :collection
     resources :invoice_items, except: :show
   end
-  resources :invitations_global, only: [:new, :create]
-  resources :invitations_to_organization, only: [:new, :create, :destroy]
-  get '/invitation/:token/accept' => 'invitations_global#accept', as: :accept_invitation
-  get '/invitation_to_organization/:token/resend' => 'invitations_to_organization#resend', as: :resend_invitation_to_organization
+  resources :invitations, only: [:new, :create]
+  resources :organization_invitations, only: [:new, :create, :destroy]
+  get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
+  get '/organization_invitation/:token/resend' => 'organization_invitations#resend', as: :resend_organization_invitation
   get '/unsubscribes/:token' => 'unsubscribes#activate', as: :activate_unsubscribe
   mount ActionCable.server => "/cable"
 
@@ -57,7 +63,9 @@ Cashbox::Application.routes.draw do
       post :auth_token, to: 'auth_token#create'
 
       get :user_info, to: 'users#current'
-      resources :organizations, only: [:show, :index, :create, :update, :destroy]
+      resources :organizations, only: [:show, :index, :create, :update, :destroy] do
+        resources :transactions, only: [:show, :index, :create, :update, :destroy]
+      end
     end
   end
 end

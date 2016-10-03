@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'categories page' do
   let(:user) { create :user }
-  let(:org)  { create :organization, with_user: user }
+  let(:org)  { create :organization, with_user: user, without_categories: true }
 
   before do
     sign_in user

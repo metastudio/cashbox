@@ -7,6 +7,9 @@ require 'rspec/rails'
 require 'pundit/rspec'
 require 'capybara-screenshot/rspec'
 require 'rspec/collection_matchers'
+require 'simplecov'
+
+SimpleCov.start 'rails'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 

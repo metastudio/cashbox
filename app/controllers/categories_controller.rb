@@ -2,6 +2,7 @@ class CategoriesController < ApplicationController
   layout 'settings'
   before_action :set_category, only: [:edit, :update, :destroy]
   before_action :require_organization
+  before_action :redirect_for_not_ready_organization
 
   def index
     @categories = current_organization.categories.ordered.page(params[:page]).per(10)
@@ -16,7 +17,6 @@ class CategoriesController < ApplicationController
 
   def create
     @category = current_organization.categories.build(category_params)
-
     if @category.save
       redirect_to categories_path, notice: 'Category was successfully created.'
     else

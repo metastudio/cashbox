@@ -4,6 +4,7 @@ class ApplicationPolicy
   def initialize(member, record)
     @member = member
     @record = record
+    @invited_by = member
   end
 
   def index?

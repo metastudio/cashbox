@@ -2,6 +2,7 @@ class CustomersController < ApplicationController
   layout 'settings'
   before_action :set_customer, only: [:edit, :update, :destroy]
   before_action :require_organization
+  before_action :redirect_for_not_ready_organization
 
   def index
     @customers = current_organization.customers.ordered.page(params[:page]).per(10)

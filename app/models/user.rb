@@ -19,6 +19,7 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  full_name              :string(255)      not null
+#  subscribed             :boolean          default(TRUE)
 #
 
 class User < ApplicationRecord
@@ -28,10 +29,12 @@ class User < ApplicationRecord
     through: :members, source: :organization, dependent: :restrict_with_error, inverse_of: :owners
   has_many :members, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :members
-  has_many :invitations, foreign_key: :email, primary_key: :email, inverse_of: :user
+  has_many :invitations, foreign_key: :email, primary_key: :email, inverse_of: :user, class_name: 'InvitationBase'
   has_many :transactions, foreign_key: :created_by_id, dependent: :nullify
   has_many :notifications, inverse_of: :user
   has_one  :unsubscribe, inverse_of: :user
+  has_many :created_invitations, class_name: 'Invitation',
+    foreign_key: :invited_by_id, dependent: :destroy
 
   accepts_nested_attributes_for :profile, update_only: true
   accepts_nested_attributes_for :unsubscribe, update_only: true

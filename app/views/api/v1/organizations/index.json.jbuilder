@@ -1,1 +1,1 @@
-json.organizations @organizations, partial: 'organization', as: :organization
+json.partial! 'organization', collection: @organizations, as: :organization

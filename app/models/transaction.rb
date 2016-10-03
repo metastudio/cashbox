@@ -68,12 +68,19 @@ class Transaction < ApplicationRecord
   validates :bank_account, presence: true
   validates :customer_name, :comment, length: { maximum: 255 }
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
+
+  validates :category_id, inclusion: { in: ->(r){ r.organization.category_ids + [Category.receipt_id, Category.transfer_out_id] },
+    if: :organization, allow_blank: true, message: 'is not associated with current organization' }
+  validates :customer_id, inclusion: { in: ->(r){ r.organization.customer_ids },
+    if: :organization, allow_blank: true, message: 'is not associated with current organization' }
+
   validates :date, presence: true
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
     length: { maximum: 10 }, allow_blank: true
   validate :check_comission, if: :comission
   validate :check_bank_accounts, on: :update, if: Proc.new{ transfer? }
 
+  before_validation :check_bank_account_inclusion, if: :bank_account_id_changed?
   before_validation :find_customer, if: Proc.new{ customer_name.present? && bank_account.present? }
   before_validation :set_date, if: Proc.new{ date.blank? }
   before_save :check_negative
@@ -166,6 +173,15 @@ class Transaction < ApplicationRecord
 
   def sync_date
     transfer_out.update(date: date)
+  end
+
+  def check_bank_account_inclusion
+    return true if bank_account_id_was.blank?
+
+    org = BankAccount.find_by(id: bank_account_id_was).try(:organization)
+    if org && !org.bank_account_ids.include?(bank_account_id)
+      errors.add(:bank_account_id, "is not associated with current organization")
+    end
   end
 
   def check_bank_accounts
