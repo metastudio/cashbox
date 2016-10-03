@@ -92,6 +92,7 @@ group :test do
   gem 'capybara-select2'
   gem 'capybara-screenshot'
   gem 'timecop'
+  gem 'simplecov', :require => false
 end
 
 group :staging do

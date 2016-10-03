@@ -17,7 +17,7 @@ class Member < ApplicationRecord
   belongs_to :user
   belongs_to :organization
 
-  has_many :created_invitations, class_name: 'Invitation',
+  has_many :created_invitations, class_name: 'OrganizationInvitation',
     foreign_key: :invited_by_id, dependent: :destroy
 
   validates :user, presence: true

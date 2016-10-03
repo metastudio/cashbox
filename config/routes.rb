@@ -50,9 +50,10 @@ Cashbox::Application.routes.draw do
     get 'unpaid', on: :collection
     resources :invoice_items, except: :show
   end
-  resources :invitations, only: [:new, :create, :destroy]
+  resources :invitations, only: [:new, :create]
+  resources :organization_invitations, only: [:new, :create, :destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
-  get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation
+  get '/organization_invitation/:token/resend' => 'organization_invitations#resend', as: :resend_organization_invitation
   mount ActionCable.server => "/cable"
 
   # API
