@@ -1,5 +1,5 @@
 $(function () {
-  drawBalanceChart(null, null, null, 'main-balance');
+  drawBalanceChart(null, getScale(), getStep(), 'main-balance');
   drawCustomersChart('income');
   if ($('.piecharts').length) {
     drawChart('current-month', 'current-month-income-by-categories');
@@ -18,13 +18,14 @@ $(function () {
     drawBalanceChart($(this).data('period'), null, null, $(this).data('period') + '-balances-by-customers');
   });
   $(document).on('click', '#balance_scale li a', function () {
-    scale = $(this).data('scale')
-    setStep(0)
+    var scale = $(this).data('scale');
+    setStep(0);
     drawBalanceChart(null, scale, getStep, 'main-balance');
+    updateUrl(scale, getStep());
     setScale(scale);
   });
   $(document).on('click', '#customers_chart li a', function () {
-    type = $(this).data('type');
+    var type = $(this).data('type');
     drawCustomersChart(type);
   });
   $(document).on('click', '#balance_navigation a', function (e) {
@@ -36,6 +37,7 @@ $(function () {
         step -= 1;
         setStep(step);
         drawBalanceChart(null, scale, step, 'main-balance');
+        updateUrl(scale, step);
       }
       toggleStep('.left_step_wrapper', true);
     }
@@ -43,7 +45,8 @@ $(function () {
       step += 1;
       setStep(step);
       drawBalanceChart(null, scale, step, 'main-balance');
-    };
+      updateUrl(scale, step);
+    }
     if (step === 0) {
       toggleStep('.right_step_wrapper', false);
     }
@@ -54,22 +57,22 @@ $(function () {
 });
 
 var setStep = function setStep(step) {
-  $('#balance_navigation').data('step', step)
-}
+  $('#balance_navigation').data('step', step);
+};
 
 var getStep = function getStep() {
-  var step = $('#balance_navigation').data('step')
-  return step
-}
+  var step = $('#balance_navigation').data('step');
+  return step;
+};
 
 var setScale = function setScale(scale) {
-  $('#balance_scale').data('scale', scale)
-}
+  $('#balance_scale').data('scale', scale);
+};
 
 var getScale = function getScale() {
-  var scale = $('#balance_scale').data('scale')
-  return scale
-}
+  var scale = $('#balance_scale').data('scale');
+  return scale;
+};
 
 function toggleStep(elementSelector, state) {
   var element = $(elementSelector);
@@ -262,7 +265,7 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
 };
 
 var drawCustomersChart = function drawCustomersChart (type) {
-  element = document.getElementById('customers-chart')
+  var element = document.getElementById('customers-chart');
 
   if (element) {
     $.ajax({
@@ -281,13 +284,13 @@ var drawCustomersChart = function drawCustomersChart (type) {
     if (response == null ) {
       $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
       return false;
-    };
+    }
     var data = response.data;
     var chartData = google.visualization.arrayToDataTable(data);
     var chart = new google.visualization.ColumnChart(element);
     var formatter = new google.visualization.NumberFormat(response.currency_format);
 
-    var columns_count = response.data[0].length - 2
+    var columns_count = response.data[0].length - 2;
 
     for (var i = 0; i <= columns_count; i++) {
       formatter.format(chartData, i);
@@ -307,7 +310,7 @@ var drawCustomersChart = function drawCustomersChart (type) {
 
     chart.draw(chartData, options);
   }
-}
+};
 
 function dateNumber(number) {
   if (number < 10) {
@@ -316,6 +319,10 @@ function dateNumber(number) {
   else {
     return number;
   }
+}
+
+function updateUrl(scale, step) {
+  window.history.pushState(null, "", "/statistics?scale="+scale+"&step="+step);
 }
 
 Number.prototype.format = function(n, x) {
