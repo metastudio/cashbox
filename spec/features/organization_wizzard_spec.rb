@@ -60,4 +60,29 @@ describe "create organization" do
       expect(page).to have_content("**Congratulations**")
     end
   end
+
+  context 'then second step complete' do
+    before do
+      create_organization(organization_name)
+      click_on "Create default Bank account"
+      visit new_account_organization_path
+    end
+
+    it 'redirect to categories path' do
+      expect(current_path).to eq(new_category_organization_path)
+    end
+  end
+
+  context 'then third step complete' do
+    before do
+      create_organization(organization_name)
+      click_on "Create default Bank account"
+      click_on "Create default Categories"
+      visit new_account_organization_path
+    end
+
+    it 'redirect to home' do
+      expect(current_path).to eq(root_path)
+    end
+  end
 end
