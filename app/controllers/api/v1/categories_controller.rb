@@ -6,10 +6,5 @@ module Api::V1
       @categories = current_organization.categories.ordered
     end
 
-    api :GET, '/organizations/:organization_id/categories/for_select', 'Return categories for current organization with select format'
-    def for_select
-      @categories = current_organization.categories.ordered
-    end
-
   end
 end
