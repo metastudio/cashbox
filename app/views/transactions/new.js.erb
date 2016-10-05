@@ -34,7 +34,7 @@ function prepareForm () {
   $('#transaction_modal').off('hidden.bs.modal');
 
   addTransactionFormMasks();
-  addTranferFormMasks();
+  addTransferFormMasks();
 
   <% if @transaction.transfer? %>
     prepRateAndHints(exchange_rate = true);
