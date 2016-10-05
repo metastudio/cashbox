@@ -5,12 +5,12 @@ class StatisticsController < ApplicationController
   end
 
   def balance
-    if params[:scale].present? && params[:step].present?
-      data = current_organization.data_balance(params[:scale], params[:step])
-    elsif params[:scale].present?
-      data = current_organization.data_balance(params[:scale])
-    elsif params[:step].present?
-      data = current_organization.data_balance('months', params[:step])
+    if params[:balance_scale].present? && params[:balance_step].present?
+      data = current_organization.data_balance(params[:balance_scale], params[:balance_step])
+    elsif params[:balance_scale].present?
+      data = current_organization.data_balance(params[:balance_scale])
+    elsif params[:balance_step].present?
+      data = current_organization.data_balance('months', params[:balance_step])
     else
       data = current_organization.data_balance
     end
@@ -20,49 +20,49 @@ class StatisticsController < ApplicationController
   end
 
   def customers_chart
-    data = current_organization.customers_by_months(params[:type])
+    data = current_organization.customers_by_months(params[:customers_type])
     respond_to do |format|
       format.json { render json: data }
     end
   end
 
   def income_by_customers
-    incomes = current_organization.by_customers(:incomes, params[:period])
+    incomes = current_organization.by_customers(:incomes, params[:customers_period])
     respond_to do |format|
       format.json { render json: incomes }
     end
   end
 
   def expense_by_customers
-    expenses = current_organization.by_customers(:expenses, params[:period])
+    expenses = current_organization.by_customers(:expenses, params[:customers_period])
     respond_to do |format|
       format.json { render json: expenses }
     end
   end
 
   def totals_by_customers
-    totals = current_organization.totals_by_customers(params[:period])
+    totals = current_organization.totals_by_customers(params[:customers_period])
     respond_to do |format|
       format.json { render json: totals }
     end
   end
 
   def balances_by_customers
-    balances = current_organization.balances_by_customers(params[:period])
+    balances = current_organization.balances_by_customers(params[:customers_period])
     respond_to do |format|
       format.json { render json: balances }
     end
   end
 
   def income_by_categories
-    incomes = current_organization.by_categories(:incomes, params[:period])
+    incomes = current_organization.by_categories(:incomes, params[:customers_period])
     respond_to do |format|
       format.json { render json: incomes }
     end
   end
 
   def expense_by_categories
-    expenses = current_organization.by_categories(:expenses, params[:period])
+    expenses = current_organization.by_categories(:expenses, params[:customers_period])
     respond_to do |format|
       format.json { render json: expenses }
     end
