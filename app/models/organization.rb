@@ -242,7 +242,7 @@ class Organization < ApplicationRecord
         .cents
         .abs
       transact_amount = (transact_amount/100).round(2)
-      if result[date][customer_name].present?
+      if result[date].present? && result[date][customer_name].present?
         result[date][customer_name] += transact_amount
       else
         result[date][customer_name] = transact_amount
