@@ -1,31 +1,26 @@
 $(function () {
-  drawBalanceChart(null, null, null, 'main-balance');
+  drawBalanceChart(null, getScale(), getStep(), 'main-balance');
   drawCustomersChart('income');
-  if ($('.piecharts').length) {
-    drawChart('current-month', 'current-month-income-by-categories');
-    drawChart('current-month', 'current-month-expense-by-categories');
-    drawChart('current-month', 'current-month-income-by-customers');
-    drawChart('current-month', 'current-month-expense-by-customers');
-    drawChart('current-month', 'current-month-totals-by-customers');
-    drawBalanceChart('current-month', null, null, 'current-month-balances-by-customers');
+  if ($(".piecharts").length) {
+    var period = $("#periods_bar li.active a").data("period");
+    drawPieCharts(period);
   }
-  $(document).on('click', '#periods_bar li a', function () {
-    drawChart($(this).data('period'), $(this).data('period') + '-income-by-categories');
-    drawChart($(this).data('period'), $(this).data('period') + '-expense-by-categories');
-    drawChart($(this).data('period'), $(this).data('period') + '-income-by-customers');
-    drawChart($(this).data('period'), $(this).data('period') + '-expense-by-customers');
-    drawChart($(this).data('period'), $(this).data('period') + '-totals-by-customers');
-    drawBalanceChart($(this).data('period'), null, null, $(this).data('period') + '-balances-by-customers');
+  $(document).on("click", "#periods_bar li a", function () {
+    var period = $(this).data("period");
+    drawPieCharts(period);
+    updateUrlParam("customers_period", period);
   });
   $(document).on('click', '#balance_scale li a', function () {
-    scale = $(this).data('scale')
-    setStep(0)
+    var scale = $(this).data('scale');
+    setStep(0);
     drawBalanceChart(null, scale, getStep, 'main-balance');
     setScale(scale);
+    updateUrlParam("balance_scale", scale);
   });
   $(document).on('click', '#customers_chart li a', function () {
-    type = $(this).data('type');
+    var type = $(this).data('type');
     drawCustomersChart(type);
+    updateUrlParam("customers_type", type);
   });
   $(document).on('click', '#balance_navigation a', function (e) {
     e.preventDefault();
@@ -36,6 +31,7 @@ $(function () {
         step -= 1;
         setStep(step);
         drawBalanceChart(null, scale, step, 'main-balance');
+        updateUrlParam("balance_step", step);
       }
       toggleStep('.left_step_wrapper', true);
     }
@@ -43,7 +39,8 @@ $(function () {
       step += 1;
       setStep(step);
       drawBalanceChart(null, scale, step, 'main-balance');
-    };
+      updateUrlParam("balance_step", step);
+    }
     if (step === 0) {
       toggleStep('.right_step_wrapper', false);
     }
@@ -54,22 +51,22 @@ $(function () {
 });
 
 var setStep = function setStep(step) {
-  $('#balance_navigation').data('step', step)
-}
+  $('#balance_navigation').data('step', step);
+};
 
 var getStep = function getStep() {
-  var step = $('#balance_navigation').data('step')
-  return step
-}
+  var step = $('#balance_navigation').data('step');
+  return step;
+};
 
 var setScale = function setScale(scale) {
-  $('#balance_scale').data('scale', scale)
-}
+  $('#balance_scale').data('scale', scale);
+};
 
 var getScale = function getScale() {
-  var scale = $('#balance_scale').data('scale')
-  return scale
-}
+  var scale = $('#balance_scale').data('scale');
+  return scale;
+};
 
 function toggleStep(elementSelector, state) {
   var element = $(elementSelector);
@@ -83,7 +80,7 @@ var drawChart = function drawChart(period, element) {
     $.ajax({
       url: element.getAttribute('data-url'),
       type: 'get',
-      data: { period: period }
+      data: { customers_period: period }
     })
     .done(function(response) {
       draw(response, element, period);
@@ -165,9 +162,9 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
       url: element.getAttribute('data-url'),
       type: 'get',
       data: {
-        step: step,
-        period: period,
-        scale: scale
+        balance_step: step,
+        customers_period: period,
+        balance_scale: scale
       },
       beforeSend: function (xhr) {
         toggleBalanceSpinner(false);
@@ -262,14 +259,14 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
 };
 
 var drawCustomersChart = function drawCustomersChart (type) {
-  element = document.getElementById('customers-chart')
+  var element = document.getElementById('customers-chart');
 
   if (element) {
     $.ajax({
       url: element.getAttribute('data-url'),
       type: 'get',
       data: {
-        type: type
+        customers_type: type
       }
     })
     .done(function(response) {
@@ -281,13 +278,13 @@ var drawCustomersChart = function drawCustomersChart (type) {
     if (response == null ) {
       $(css_id).removeAttr('id').addClass('alert alert-warning').html('No data');
       return false;
-    };
+    }
     var data = response.data;
     var chartData = google.visualization.arrayToDataTable(data);
     var chart = new google.visualization.ColumnChart(element);
     var formatter = new google.visualization.NumberFormat(response.currency_format);
 
-    var columns_count = response.data[0].length - 2
+    var columns_count = response.data[0].length - 2;
 
     for (var i = 0; i <= columns_count; i++) {
       formatter.format(chartData, i);
@@ -307,7 +304,7 @@ var drawCustomersChart = function drawCustomersChart (type) {
 
     chart.draw(chartData, options);
   }
-}
+};
 
 function dateNumber(number) {
   if (number < 10) {
@@ -318,6 +315,31 @@ function dateNumber(number) {
   }
 }
 
+function updateUrlParam (param, value) {
+  var params = initUrlParams();
+  params[param] = value;
+  updateUrl(params);
+  return params;
+}
+
+function initUrlParams () {
+  var search = window.location.search;
+  if (search.length > 0) {
+    return queryString();
+  } else {
+    return {
+      balance_scale: "months",
+      balance_step: 0,
+      customers_type: "income",
+      customers_period: "current-month"
+    };
+  }
+}
+
+function updateUrl(params) {
+  window.history.pushState(null, "", "/statistics?"+$.param(params));
+}
+
 Number.prototype.format = function(n, x) {
   var re = '(\\d)(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
   return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$1,');
@@ -325,4 +347,36 @@ Number.prototype.format = function(n, x) {
 
 function toggleBalanceSpinner(state) {
   $('.balance-chart.spinner-backround').toggleClass('hide', state);
+}
+
+function queryString() {
+  // This function is anonymous, is executed immediately and
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+        // If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]],decodeURIComponent(pair[1]) ];
+      query_string[pair[0]] = arr;
+        // If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(decodeURIComponent(pair[1]));
+    }
+  }
+  return query_string;
+}
+
+function drawPieCharts (period) {
+  drawChart(period, period + "-income-by-categories");
+  drawChart(period, period + "-expense-by-categories");
+  drawChart(period, period + "-income-by-customers");
+  drawChart(period, period + "-expense-by-customers");
+  drawChart(period, period + "-totals-by-customers");
+  drawBalanceChart(period, null, null, period + "-balances-by-customers");
 }
