@@ -166,8 +166,10 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
         customers_period: period,
         balance_scale: scale
       },
-      beforeSend: function (xhr) {
-        toggleBalanceSpinner(false);
+      beforeSend: function () {
+        if (element.id == "main-balance") {
+          toggleBalanceSpinner(false);
+        }
       }
     })
     .done(function(response) {
