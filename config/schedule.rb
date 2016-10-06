@@ -23,7 +23,7 @@ every 1.day, at: '0:00 am' do
 end
 
 every 1.day, at: '06:00 am' do
-  runner "Notification.deliver_all"
+  runner "InvitationBase.resend_unanswered"
 end
 
 # Learn more: http://github.com/javan/whenever

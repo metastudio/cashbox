@@ -16,7 +16,6 @@
 class OrganizationInvitation < InvitationBase
   belongs_to :invited_by, inverse_of: :created_invitations, class_name: 'Member'
   belongs_to :organization, inverse_of: :invitations
-  has_many :notifications, as: :notificator
 
   validates :invited_by, :role, presence: true
   validates :role, inclusion: { in: %w(user admin owner),
@@ -26,7 +25,6 @@ class OrganizationInvitation < InvitationBase
   delegate :organization, to: :invited_by
 
   after_create :send_invitation
-  after_create :week_notification
 
   enumerize :role, in: [:user, :admin, :owner], default: :user, predicates: true
 
@@ -47,7 +45,7 @@ class OrganizationInvitation < InvitationBase
   end
 
   def resend
-    InvitationMailer.resend_invitation_to_organization(self).deliver_later
+    InvitationMailer.resend_invitation_to_organization(self).deliver_now
   end
 
   private
@@ -56,10 +54,5 @@ class OrganizationInvitation < InvitationBase
     unless organization.invitations.where(email: email).empty?
       errors.add(:email, "An invitation has already been sent")
     end
-  end
-
-  def week_notification
-    date = 1.week.from_now.beginning_of_day
-    notifications.create(kind: :resend_invitation, date: date)
   end
 end
