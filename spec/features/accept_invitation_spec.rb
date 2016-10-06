@@ -23,13 +23,10 @@ describe 'Accept invitation' do
       click_on 'Submit'
     end
 
-    it { expect(page).to have_content "You joined CASHBOX" }
-    it { expect(page).to have_content "Sign out" }
-    it "flags invitation as accepted" do
-      expect(InvitationGlobal.last.accepted).to eq true
-    end
-
-    it 'create a User' do
+    it "flags invitation as accepted and create a User" do
+      expect(Invitation.last.accepted).to eq true
+      expect(page).to have_content "You joined CASHBOX"
+      expect(page).to have_content "Sign out"
       # inviter and invited
       expect(User.count).to eq 2
     end
@@ -38,8 +35,10 @@ describe 'Accept invitation' do
       let(:full_name) { nil }
       let(:password) { nil }
 
-      it { expect(page).to have_inline_error("can't be blank").for_field('Full name') }
-      it { expect(page).to have_inline_error("can't be blank").for_field('Password') }
+      it do
+        expect(page).to have_inline_error("can't be blank").for_field('Full name')
+        expect(page).to have_inline_error("can't be blank").for_field('Password')
+      end
     end
   end
 end

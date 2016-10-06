@@ -22,21 +22,11 @@ describe 'sidebar' do
   context 'total' do
     it_behaves_like 'colorizable amount', '#total_balance'
 
-    it 'display exhanged amount' do
+    it 'display exhanged amount, rate and total balance in default currency' do
       within '#total_balance' do
         expect(page).to have_content(
           money_with_symbol account.balance.exchange_to(org.default_currency))
-      end
-    end
-
-    it 'display exchange rate' do
-      within '#total_balance' do
         expect(page).to have_xpath("//span[contains(concat(' ', @class, ' '), ' exchange-helper ') and contains(@title, '#{Money.default_bank.get_rate(account.currency, org.default_currency).round(4)}')]")
-      end
-    end
-
-    it 'display total balance in default currency' do
-      within '#total_balance' do
         expect(page).to have_content money_with_symbol(account.balance.exchange_to(org.default_currency))
       end
     end

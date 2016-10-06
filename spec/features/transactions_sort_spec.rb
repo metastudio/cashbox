@@ -21,23 +21,11 @@ describe 'Transactions sort' do
 
   subject { page }
 
-  context "by amount" do
+  context "by amount, comment, date, category, customer" do
     it_behaves_like 'sortable object', 'Amount', :amount
-  end
-
-  context "by comment" do
     it_behaves_like 'sortable object', 'Comment', :comment
-  end
-
-  context "by date" do
     it_behaves_like 'sortable object', 'Date', :date
-  end
-
-  context "by category" do
     it_behaves_like 'sortable object', 'Category', :category
-  end
-
-  context 'by customer' do
     it_behaves_like 'sortable object', 'Customer', :customer
   end
 

@@ -64,12 +64,9 @@ describe 'update transaction', js: true do
       visit root_path
     end
 
-    it "updates sidebar account balance" do
+    it "updates sidebar account balance and total balance" do
       expect(page).to have_css("#bank_account_#{transaction.bank_account.id} td.amount", text: money_with_symbol(new_account_balance))
-    end
-
-    it "updates sidebar total balance" do
-       expect(page).to have_css("#sidebar", text: money_with_symbol(new_total))
+      expect(page).to have_css("#sidebar", text: money_with_symbol(new_total))
     end
   end
 

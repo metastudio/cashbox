@@ -19,8 +19,10 @@ describe 'Invite process' do
       click_on 'Invite'
     end
 
-    it { expect(page).to have_content('An invitation was created successfully') }
-    it { expect(current_path).to eq new_organization_invitation_path }
+    it do
+      expect(page).to have_content('An invitation was created successfully')
+      expect(current_path).to eq new_organization_invitation_path
+    end
 
     context 'when an invitation has already been sent' do
       before do
@@ -36,15 +38,19 @@ describe 'Invite process' do
     context 'when created invite' do
       subject { OrganizationInvitation.last }
 
-      it { expect(subject.email).to eq email }
-      it { expect(subject.invited_by_id).to eq admin_member.id  }
+      it do
+        expect(subject.email).to eq email
+        expect(subject.invited_by_id).to eq admin_member.id
+      end
     end
 
     describe 'sent email' do
       before { open_email email }
 
-      it { expect(current_email).to have_content("You are invited to #{admin_member.organization.name} as admin")  }
-      it { expect(current_email).to have_link 'Accept'}
+      it do
+        expect(current_email).to have_content("You are invited to #{admin_member.organization.name} as admin")
+        expect(current_email).to have_link 'Accept'
+      end
     end
   end
 
@@ -82,9 +88,10 @@ describe 'Invite process' do
 
     let(:invitation) { organization.invitations.last }
 
-    it { expect(invitation.email).to eq(user.email) }
-    it { expect(invitation.accepted).to eq(false) }
-
+    it do
+      expect(invitation.email).to eq(user.email)
+      expect(invitation.accepted).to eq(false)
+    end
 
     context "logged in" do
       it "redirected to organization path" do

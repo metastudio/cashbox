@@ -20,13 +20,10 @@ describe 'Accept invitation' do
       click_on 'Submit'
     end
 
-    it { expect(page).to have_content "You joined #{admin_member.organization.name}" }
-    it { expect(page).to have_content "Sign out" }
-    it "flags invitation as accepted" do
+    it "flags invitation as accepted and create a User" do
       expect(OrganizationInvitation.last.accepted).to eq true
-    end
-
-    it 'create a User' do
+      expect(page).to have_content "You joined #{admin_member.organization.name}"
+      expect(page).to have_content "Sign out"
       # inviter and invited
       expect(User.count).to eq 2
     end
@@ -35,8 +32,10 @@ describe 'Accept invitation' do
       let(:full_name) { nil }
       let(:password) { nil }
 
-      it { expect(page).to have_inline_error("can't be blank").for_field('Full name') }
-      it { expect(page).to have_inline_error("can't be blank").for_field('Password') }
+      it do
+        expect(page).to have_inline_error("can't be blank").for_field('Full name')
+        expect(page).to have_inline_error("can't be blank").for_field('Password')
+      end
     end
   end
 
@@ -58,8 +57,10 @@ describe 'Accept invitation' do
         visit accept_invitation_url(invitation, token: invitation.token)
       end
 
-      it { expect(page).to have_content "You joined #{admin_member.organization.name}" }
-      it { expect(page).to have_content "Sign out" }
+      it do
+        expect(page).to have_content "You joined #{admin_member.organization.name}"
+        expect(page).to have_content "Sign out"
+      end
     end
 
     it "doesn't create a new user" do

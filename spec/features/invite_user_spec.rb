@@ -16,15 +16,18 @@ describe 'Invite process' do
       click_on 'Invite'
     end
 
-    it { expect(page).to have_content('An invitation was created successfully') }
-    it { expect(current_path).to eq new_invitation_path }
-
+    it do
+      expect(page).to have_content('An invitation was created successfully')
+      expect(current_path).to eq new_invitation_path
+    end
 
     describe 'sent email' do
       before { open_email email }
 
-      it { expect(current_email).to have_content("You are invited to CASHBOX")  }
-      it { expect(current_email).to have_link 'Accept'}
+      it do
+        expect(current_email).to have_content("You are invited to CASHBOX")
+        expect(current_email).to have_link 'Accept'
+      end
     end
   end
 

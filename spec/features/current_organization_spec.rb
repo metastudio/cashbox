@@ -10,11 +10,8 @@ describe "current orgranization" do
   end
 
   context "for user who is not in any organization" do
-    it "shows a message to create a new organization" do
+    it "shows a message to create a new organization and redirects to new organization form" do
       expect(subject).to have_flash_message("You don't have any organization. Create a new one.")
-    end
-
-    it "redirects to new organization form" do
       expect(subject).to have_content("New organization")
     end
   end
