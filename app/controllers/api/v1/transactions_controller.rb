@@ -18,16 +18,16 @@ module Api::V1
       end
     end
 
-    api :GET, '/transactions', 'Return transactions'
+    api :GET, '/organizations/:organization_id/transactions', 'Return transactions'
     def index
       @transactions = current_organization.transactions.page(params[:page]).per(30)
     end
 
-    api :GET, '/transactions/:id', 'Return transaction'
+    api :GET, '/organizations/:organization_id/transactions/:id', 'Return transaction'
     def show
     end
 
-    api :POST, '/transactions', 'Create transaction'
+    api :POST, '/organizations/:organization_id/transactions', 'Create transaction'
     param_group :transaction, TransactionsController
     def create
       @transaction = Transaction.new transaction_params
@@ -41,7 +41,7 @@ module Api::V1
       end
     end
 
-    api :PUT, '/transactions/:id', 'Update transaction'
+    api :PUT, '/organizations/:organization_id/transactions/:id', 'Update transaction'
     param_group :transaction, TransactionsController
     def update
       if @transaction.update(transaction_params)
@@ -51,7 +51,7 @@ module Api::V1
       end
     end
 
-    api :DELETE, '/transactions/:id', 'Destroy transaction'
+    api :DELETE, '/organizations/:organization_id/transactions/:id', 'Destroy transaction'
     def destroy
       @transaction.destroy
     end
