@@ -16,6 +16,7 @@ class StatisticsController < ApplicationController
     end
     respond_to do |format|
       format.json { render json: data }
+      format.html { redirect_to statistics_path }
     end
   end
 
@@ -23,6 +24,7 @@ class StatisticsController < ApplicationController
     data = current_organization.customers_by_months(params[:customers_type])
     respond_to do |format|
       format.json { render json: data }
+      format.html { redirect_to statistics_path }
     end
   end
 
@@ -30,6 +32,7 @@ class StatisticsController < ApplicationController
     incomes = current_organization.by_customers(:incomes, params[:customers_period])
     respond_to do |format|
       format.json { render json: incomes }
+      format.html { redirect_to statistics_path }
     end
   end
 
@@ -37,6 +40,7 @@ class StatisticsController < ApplicationController
     expenses = current_organization.by_customers(:expenses, params[:customers_period])
     respond_to do |format|
       format.json { render json: expenses }
+      format.html { redirect_to statistics_path }
     end
   end
 
@@ -44,6 +48,7 @@ class StatisticsController < ApplicationController
     totals = current_organization.totals_by_customers(params[:customers_period])
     respond_to do |format|
       format.json { render json: totals }
+      format.html { redirect_to statistics_path }
     end
   end
 
@@ -51,6 +56,7 @@ class StatisticsController < ApplicationController
     balances = current_organization.balances_by_customers(params[:customers_period])
     respond_to do |format|
       format.json { render json: balances }
+      format.html { redirect_to statistics_path }
     end
   end
 
@@ -58,6 +64,7 @@ class StatisticsController < ApplicationController
     incomes = current_organization.by_categories(:incomes, params[:customers_period])
     respond_to do |format|
       format.json { render json: incomes }
+      format.html { redirect_to statistics_path }
     end
   end
 
@@ -65,6 +72,7 @@ class StatisticsController < ApplicationController
     expenses = current_organization.by_categories(:expenses, params[:customers_period])
     respond_to do |format|
       format.json { render json: expenses }
+      format.html { redirect_to statistics_path }
     end
   end
 end
