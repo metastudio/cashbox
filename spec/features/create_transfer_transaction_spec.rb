@@ -120,11 +120,8 @@ describe 'create transfer transaction', js: true do
   context "with not selected FROM" do
     let(:ba1_name) { nil }
 
-    it "doesn't create transactions" do
+    it "doesn't create transactions and shows error for FROM field" do
       expect{ subject }.to_not change{ transactions.count }
-    end
-
-    it "shows error for FROM field" do
       expect(subject).to have_inline_error("can't be blank").for_field('transfer_bank_account_id')
     end
   end
@@ -132,11 +129,8 @@ describe 'create transfer transaction', js: true do
   context "with not selected TO" do
     let(:ba2_name) { nil }
 
-    it "doesn't create transactions" do
+    it "doesn't create transactions and shows error for TO field" do
       expect{ subject }.to_not change{ transactions.count }
-    end
-
-    it "shows error for TO field" do
       expect(subject).to have_inline_error("can't be blank").for_field('transfer_reference_id')
     end
   end
@@ -167,11 +161,8 @@ describe 'create transfer transaction', js: true do
           end
         end
 
-        it 'rate' do
+        it 'rate and calculate end sum' do
           expect(page).to have_content("Default rate: #{Money.default_bank.rates["RUB_TO_USD"].round(4)}")
-        end
-
-        it 'calculate end sum' do
           expect(page).to have_field('Calculate sum',
             with: "#{number_to_currency(amount * rate, separator: '.', format: '%n')}")
         end
@@ -189,12 +180,8 @@ describe 'create transfer transaction', js: true do
           end
         end
 
-        it 'rate' do
+        it 'rate and end sum' do
           expect(page).to_not have_content("#{Money.default_bank.rates["RUB_TO_USD"].round(4)}")
-        end
-
-
-        it 'end sum' do
           expect(page).to_not have_content("#{(amount * rate).round(4)}")
         end
       end
@@ -288,14 +275,9 @@ describe 'create transfer transaction', js: true do
 
     subject{ page }
 
-    it "show transaction with calculate sum in transactions list" do
+    it "show transaction with calculate sum in transactions list and appends rate and comission to the comment" do
       within ".transactions" do
         expect(page).to have_content(money_with_symbol(sum))
-      end
-    end
-
-    it "appends rate and comission to the comment" do
-      within ".transactions" do
         expect(page).to have_content(comment + "\nComission: " + comission_str)
         expect(page).to have_content("\nRate: #{(sum.to_d/amount.to_d).round(2)}")
       end

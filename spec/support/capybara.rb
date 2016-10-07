@@ -4,11 +4,15 @@ require 'capybara/poltergeist'
 require 'capybara/email/rspec'
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, window_size: [1200, 900], js_errors: false)
+  options = {
+    port: 51674 + ENV['TEST_ENV_NUMBER'].to_i,
+    window_size: [1200, 900],
+    js_errors: false
+  }
+  Capybara::Poltergeist::Driver.new(app, options)
 end
 
 Capybara.javascript_driver = :poltergeist
-Capybara.server_port = 8082
 
 RSpec.configure do |config|
   config.append_after(:each) do
