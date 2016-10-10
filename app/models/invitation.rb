@@ -22,7 +22,7 @@ class Invitation < InvitationBase
   after_create :send_invitation
 
   def send_invitation
-    InvitationMailer.new_invitation_global(self).deliver_now
+    InvitationMailer.new_invitation(self).deliver_now
   end
 
   def accept!(user)
@@ -30,14 +30,9 @@ class Invitation < InvitationBase
   end
 
   def resend
-    InvitationMailer.resend_invitation_global(self).deliver_now
+    InvitationMailer.resend_invitation(self).deliver_now
   end
 
-  def resend_notification
-    date = 1.week.from_now.beginning_of_day
-    kind = :resend_invitation
-    notification(kind, date)
-  end
   private
 
   def user_already_in_system

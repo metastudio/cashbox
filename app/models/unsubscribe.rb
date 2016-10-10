@@ -21,7 +21,15 @@ class Unsubscribe < ApplicationRecord
 
   scope :active, -> { where(active: true) }
 
+  after_create :link_with_user
+
   def activate
     update_attributes(active: true)
+  end
+
+  private
+
+  def link_with_user
+    update_attributes(user: user)
   end
 end

@@ -26,7 +26,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def edit
     session[:profile_back] = request.referer
-    current_user.link_unsubscribe
     render :edit
   end
 

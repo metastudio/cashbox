@@ -42,7 +42,6 @@ describe 'Invite process' do
 
     describe 'sent email' do
       before do
-        Notification.deliver_all
         open_email email
       end
 

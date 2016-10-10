@@ -45,6 +45,7 @@ class User < ApplicationRecord
   validates :password, :password_confirmation, length: { maximum: 30 }
 
   before_create :build_profile, if: ->{ profile.blank? }
+  after_create :link_unsubscribe
 
   delegate :avatar, to: :profile
 

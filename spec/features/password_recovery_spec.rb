@@ -19,14 +19,12 @@ describe 'password recovery' do
     end
 
     it "sends email with reset password insturctions" do
-      Notification.deliver_all
       open_email(email)
       expect(current_email.subject).to eq 'Reset password instructions'
     end
 
     context "after open link in email" do
       before :each do
-        Notification.deliver_all
         open_email(email)
         current_email.click_link "Change my password"
       end

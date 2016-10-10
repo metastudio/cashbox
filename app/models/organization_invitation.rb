@@ -41,9 +41,7 @@ class OrganizationInvitation < InvitationBase
   end
 
   def send_invitation
-    date = DateTime.now.beginning_of_day
-    kind = :send_invitation_to_organization
-    notification(kind, date)
+    InvitationMailer.new_invitation_to_organization(self).deliver_now
   end
 
   def resend
