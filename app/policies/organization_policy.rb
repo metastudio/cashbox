@@ -19,4 +19,8 @@ class OrganizationPolicy < ApplicationPolicy
   def destroy?
     @member.owner? || @member.admin?
   end
+
+  def total_balances?
+    @member
+  end
 end
