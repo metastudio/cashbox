@@ -101,6 +101,8 @@ GEM
     chronic (0.10.2)
     cliver (0.3.2)
     cocoon (1.2.9)
+    codeclimate-test-reporter (0.6.0)
+      simplecov (>= 0.7.1, < 1.0.0)
     coderay (1.1.1)
     concurrent-ruby (1.0.2)
     database_cleaner (1.5.3)
@@ -422,6 +424,7 @@ DEPENDENCIES
   capybara-screenshot
   capybara-select2
   cocoon
+  codeclimate-test-reporter
   database_cleaner
   date_validator
   devise
@@ -459,7 +462,6 @@ DEPENDENCIES
   select2-rails (~> 3.5.9.3)
   shoulda-matchers
   simple_form
-  simplecov
   slackistrano (~> 0.1.0)
   slim-rails
   spring
