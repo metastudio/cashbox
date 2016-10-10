@@ -16,7 +16,6 @@
 class OrganizationInvitation < InvitationBase
   belongs_to :invited_by, inverse_of: :created_invitations, class_name: 'Member'
   belongs_to :organization, inverse_of: :invitations
-  has_many :notifications, as: :notificator
 
   validates :invited_by, :role, presence: true
   validates :role, inclusion: { in: %w(user admin owner),
@@ -26,7 +25,6 @@ class OrganizationInvitation < InvitationBase
   delegate :organization, to: :invited_by
 
   after_create :send_invitation
-  after_create :resend_invitation
 
   enumerize :role, in: [:user, :admin, :owner], default: :user, predicates: true
 
@@ -48,10 +46,8 @@ class OrganizationInvitation < InvitationBase
     notification(kind, date)
   end
 
-  def resend_invitation
-    date = 1.week.from_now.beginning_of_day
-    kind = :resend_invitation_to_organization
-    notification(kind, date)
+  def resend
+    InvitationMailer.resend_invitation_to_organization(self).deliver_now
   end
 
   private

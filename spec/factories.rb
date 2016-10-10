@@ -188,14 +188,4 @@ FactoryGirl.define do
   factory :profile do
     user { build :user }
   end
-
-  factory :notification do
-    date { DateTime.now }
-    kind :send_invitation
-    notificator do
-      OrganizationInvitation.any_instance.stub(:send_invitation)
-      OrganizationInvitation.any_instance.stub(:resend_invitation)
-      create :organization_invitation
-    end
-  end
 end

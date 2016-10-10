@@ -15,22 +15,22 @@
 
 class Invitation < InvitationBase
   belongs_to :invited_by, inverse_of: :created_invitations, class_name: 'User'
-  has_many :notifications, as: :notificator
 
   validates :invited_by, presence: true
   validate :user_already_in_system
 
   after_create :send_invitation
-  after_create :resend_notification
+
+  def send_invitation
+    InvitationMailer.new_invitation_global(self).deliver_now
+  end
 
   def accept!(user)
     update_attribute(:accepted, true)
   end
 
-  def send_invitation
-    date = DateTime.now.beginning_of_day
-    kind = :send_invitation
-    notification(kind, date)
+  def resend
+    InvitationMailer.resend_invitation_global(self).deliver_now
   end
 
   def resend_notification
