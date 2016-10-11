@@ -165,7 +165,6 @@ class Organization < ApplicationRecord
   def data_balance(scale='months', step=0)
     period = period_from_step(step.to_i, scale)
     incomes, expenses, totals = balance_data_collection(period)
-    balance_period_blank?(period_from_step(step.to_i + 1, scale))
 
     total_sum = Money.new(0, self.default_currency)
     Dictionaries.currencies.each_with_index do |currency|
@@ -402,13 +401,13 @@ class Organization < ApplicationRecord
   def balance_period_blank?(period)
     incomes_count = transactions
       .incomes
-      .where('DATE(date) BETWEEN ? AND ? AND category_id != ?',
-        period.begin, period.end, Category.receipt_id)
+      .where('DATE(date) < ? AND category_id != ?',
+        period.end, Category.receipt_id)
       .count
     expenses_count = transactions
       .expenses
-      .where('DATE(date) BETWEEN ? AND ? AND category_id != ?',
-        period.begin, period.end, Category.transfer_out_id)
+      .where('DATE(date) < ? AND category_id != ?',
+        period.end, Category.transfer_out_id)
       .count
     (incomes_count + expenses_count) == 0
   end

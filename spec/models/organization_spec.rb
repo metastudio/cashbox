@@ -665,4 +665,28 @@ describe Organization do
       end
     end
   end
+
+  describe '#balance_period_blank?(period)' do
+    let!(:org) { create :organization, default_currency: 'RUB' }
+
+    context 'transactions in period' do
+      let!(:inc_transaction) { create :transaction, :income, organization: org }
+      let!(:exp_transaction) { create :transaction, :expense, organization: org }
+      let!(:period) { 1.day.ago..DateTime.tomorrow }
+
+      it 'balance period not blank' do
+        expect(org.send(:balance_period_blank?, period)).to eq(false)
+      end
+    end
+
+    context 'transactions out of period' do
+      let!(:inc_transaction) { create :transaction, :income, organization: org }
+      let!(:exp_transaction) { create :transaction, :expense, organization: org }
+      let!(:period) { 1.day.ago..DateTime.now }
+
+      it 'balance period blank' do
+        expect(org.send(:balance_period_blank?, period)).to eq(true)
+      end
+    end
+  end
 end
