@@ -69,7 +69,7 @@ class OrganizationWizzardController < ApplicationController
     if @organization_wizzard.ready?
       redirect_to root_path
     elsif @organization_wizzard.have_account?
-      redirect_to redirect_to new_category_organization_path
+      redirect_to new_category_organization_path
     end
   end
 
