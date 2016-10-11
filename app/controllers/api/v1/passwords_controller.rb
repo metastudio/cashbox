@@ -1,8 +1,7 @@
 module Api::V1
   class PasswordsController < Devise::PasswordsController
 
-    api :POST, '/passwords', 'Reset password'
-
+    api :POST, '/users/password', 'Reset password'
     def create
       @user = User.find_by_email(user_params[:email])
       if @user.present?
