@@ -59,6 +59,7 @@ Cashbox::Application.routes.draw do
   # API
   namespace :api, defaults: {format: 'json'} do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
+      devise_for :users, skip: :sessions, controllers: { passwords: 'api/v1/passwords' }
       post :auth_token, to: 'auth_token#create'
 
       get :user_info, to: 'users#current'
