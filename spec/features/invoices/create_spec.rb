@@ -43,7 +43,7 @@ describe 'Create invoice', js: true do
       click_on 'Create Invoice'
     end
 
-    it do
+    it 'has congradulation, customer name, amount, edi and destroy links' do
       expect(page).to have_content 'Invoice was successfully created'
       expect(page).to have_content customer.name
       expect(page).to have_css('td', text: money_with_symbol(amount))
@@ -55,7 +55,7 @@ describe 'Create invoice', js: true do
   context 'Create invoice with items' do
     before { new_invoice_with_item('2.1') }
 
-    it do
+    it 'has anounts cilumns' do
       expect(page).to have_css('td', text: money_with_symbol(total_amount))
       expect(page).to have_css('td', text: money_with_symbol(first_item_amount))
       expect(page).to have_css('td', text: money_with_symbol(last_item_amount))

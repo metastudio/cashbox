@@ -30,7 +30,7 @@ describe 'Change profile' do
         describe 'updated profile' do
           subject { user.reload }
 
-          it do
+          it 'has full_name and phone_number' do
             expect(subject.full_name).to eq full_name
             expect(subject.profile.phone_number).to eq phone_number
           end

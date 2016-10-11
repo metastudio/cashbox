@@ -26,7 +26,7 @@ describe 'Update invoice', js: true do
       click_on 'Update Invoice'
     end
 
-    it do
+    it 'has congratulation, amount and ciustomer name' do
       expect(page).to have_content 'Invoice was successfully updated'
       expect(page).to have_content(money_with_symbol(Money.new(new_amount, invoice.currency)))
       expect(page).to have_content customer2.name

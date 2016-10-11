@@ -7,7 +7,8 @@ Capybara.register_driver :poltergeist do |app|
   options = {
     port: 51674 + ENV['TEST_ENV_NUMBER'].to_i,
     window_size: [1200, 900],
-    js_errors: false
+    js_errors: true,
+    phantomjs_logger: Logger.new(STDOUT)
   }
   Capybara::Poltergeist::Driver.new(app, options)
 end

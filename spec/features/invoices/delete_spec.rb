@@ -16,7 +16,7 @@ describe 'Delete invoice', js: true do
       click_on 'Destroy'
     end
 
-    it do
+    it 'has congradulation and has not invoice html element' do
       expect(page).to have_content 'Invoice was successfully deleted'
       expect(page).to_not have_css("##{dom_id(invoice)}")
     end

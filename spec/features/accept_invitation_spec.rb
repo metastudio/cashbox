@@ -31,11 +31,11 @@ describe 'Accept invitation' do
       expect(User.count).to eq 2
     end
 
-    context 'invalid params' do
+    context 'with invalid params' do
       let(:full_name) { nil }
       let(:password) { nil }
 
-      it do
+      it 'return error on fields' do
         expect(page).to have_inline_error("can't be blank").for_field('Full name')
         expect(page).to have_inline_error("can't be blank").for_field('Password')
       end

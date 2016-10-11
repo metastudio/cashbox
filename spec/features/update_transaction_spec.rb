@@ -112,7 +112,7 @@ describe 'update transaction', js: true do
       fill_in 'transfer[amount]', with: amount
       fill_in 'transfer[calculate_sum]', with: calculate_sum
       find('input[name="transfer[exchange_rate]"]').trigger('focus')
-      sleep 1
+      page.has_content?(/(Please review the problems below)/)
     end
 
     it "calculate exchange rate with four decimal places" do

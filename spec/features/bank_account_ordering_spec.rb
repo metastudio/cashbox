@@ -23,7 +23,7 @@ describe 'Bank accounts after drag&drop' do
 
     subject { page }
 
-    it do
+    it 'has all bank accounts rows' do
       expect(subject).to have_selector("tr:nth-of-type(1)", text: account1.name)
       expect(subject).to have_selector("tr:nth-of-type(2)", text: account2.name)
       expect(subject).to have_selector("tr:nth-of-type(3)", text: account3.name)

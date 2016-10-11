@@ -19,7 +19,7 @@ describe 'Invite process' do
       click_on 'Invite'
     end
 
-    it do
+    it 'has congratulation and current path' do
       expect(page).to have_content('An invitation was created successfully')
       expect(current_path).to eq new_organization_invitation_path
     end
@@ -38,7 +38,7 @@ describe 'Invite process' do
     context 'when created invite' do
       subject { OrganizationInvitation.last }
 
-      it do
+      it 'has email and invited by admin_member' do
         expect(subject.email).to eq email
         expect(subject.invited_by_id).to eq admin_member.id
       end
@@ -47,9 +47,11 @@ describe 'Invite process' do
     describe 'sent email' do
       before { open_email email }
 
-      it do
-        expect(current_email).to have_content("You are invited to #{admin_member.organization.name} as admin")
-        expect(current_email).to have_link 'Accept'
+      subject {current_email}
+
+      it 'has invitation and accept link' do
+        expect(subject).to have_content("You are invited to #{admin_member.organization.name} as admin")
+        expect(subject).to have_link 'Accept'
       end
     end
   end
@@ -88,7 +90,7 @@ describe 'Invite process' do
 
     let(:invitation) { organization.invitations.last }
 
-    it do
+    it 'has email and accepted false' do
       expect(invitation.email).to eq(user.email)
       expect(invitation.accepted).to eq(false)
     end
