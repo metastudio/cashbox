@@ -28,4 +28,11 @@ class InvitationBase < ApplicationRecord
 
   scope :ordered, -> { order('created_at DESC') }
   scope :active,  -> { where(accepted: false) }
+  scope :unanswered, -> { where('created_at < ?', 1.week.ago).active }
+
+  def self.resend_unanswered
+    unanswered.each do |invitation|
+      invitation.resend
+    end
+  end
 end

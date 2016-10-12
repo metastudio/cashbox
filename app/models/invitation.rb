@@ -29,6 +29,10 @@ class Invitation < InvitationBase
     update_attribute(:accepted, true)
   end
 
+  def resend
+    InvitationMailer.resend_invitation_global(self).deliver_now
+  end
+
   private
 
   def user_already_in_system
