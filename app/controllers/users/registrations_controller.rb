@@ -38,6 +38,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def update_profile_params
-    params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number])
+    params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number],
+      unsubscribe_attributes: [:active])
   end
 end

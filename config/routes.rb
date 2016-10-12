@@ -54,6 +54,7 @@ Cashbox::Application.routes.draw do
   resources :organization_invitations, only: [:new, :create, :destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
   get '/organization_invitation/:token/resend' => 'organization_invitations#resend', as: :resend_organization_invitation
+  get '/unsubscribes/:token' => 'unsubscribes#activate', as: :activate_unsubscribe
   mount ActionCable.server => "/cable"
 
   # API
