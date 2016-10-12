@@ -146,6 +146,12 @@ FactoryGirl.define do
     end
   end
 
+  factory :invitation do
+    email   { build(:user).email }
+    invited_by  { create :user }
+    accepted { false }
+  end
+
   factory :organization_invitation do
     email   { create(:user).email }
     role    { Member.role.default_value }
