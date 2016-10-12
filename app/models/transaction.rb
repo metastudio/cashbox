@@ -23,6 +23,7 @@ require "./lib/time_range.rb"
 class Transaction < ApplicationRecord
   include MoneyRails::ActionViewExtension
   include TimeRange
+  include MainPageRefresher
   TRANSACTION_TYPES = %w(Residue)
 
   acts_as_paranoid
@@ -162,7 +163,7 @@ class Transaction < ApplicationRecord
         "Transaction was added to organization #{organization.name}")
       MainPageRefreshJob.perform_later(
         organization.name,
-        self
+        prepare_data(self)
       )
     end
   end

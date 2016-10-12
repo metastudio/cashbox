@@ -2,6 +2,7 @@ class Transfer
   include ActiveModel::Validations
   include ActiveModel::Validations::Callbacks
   include MoneyRails::ActionViewExtension
+  include MainPageRefresher
 
   attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
     :bank_account, :bank_account_id, :reference_id, :date,
@@ -64,7 +65,7 @@ class Transfer
           "Transfer was created in #{bank_account.name} bank account")
         MainPageRefreshJob.perform_later(
           bank_account.organization.name,
-          @inc_transaction
+          prepare_data(@inc_transaction)
         )
         return true
       end
