@@ -20,12 +20,16 @@ describe 'GET /api/organizations/#/bank_accounts' do
       expect(json[0]).to include(
         'id' => bank_account2.id,
         'name' => bank_account2.name,
-        'currency' => bank_account2.currency
+        'currency' => bank_account2.currency,
+        'balance' => money_with_symbol(bank_account2.balance),
+        'residue' => money_with_symbol(bank_account2.residue)
       )
       expect(json[1]).to include(
         'id' => bank_account1.id,
         'name' => bank_account1.name,
-        'currency' => bank_account1.currency
+        'currency' => bank_account1.currency,
+        'balance' => money_with_symbol(bank_account1.balance),
+        'residue' => money_with_symbol(bank_account1.residue)
       )
     end
   end
@@ -39,12 +43,16 @@ describe 'GET /api/organizations/#/bank_accounts' do
       expect(json[0]).to include(
         'id' => bank_account2.id,
         'name' => bank_account2.name,
-        'currency' => bank_account2.currency
+        'currency' => bank_account2.currency,
+        'balance' => money_with_symbol(bank_account2.balance),
+        'residue' => money_with_symbol(bank_account2.residue)
       )
       expect(json[1]).to include(
         'id' => bank_account1.id,
         'name' => bank_account1.name,
-        'currency' => bank_account1.currency
+        'currency' => bank_account1.currency,
+        'balance' => money_with_symbol(bank_account1.balance),
+        'residue' => money_with_symbol(bank_account1.residue)
       )
     end
   end
