@@ -26,7 +26,7 @@ describe 'Accept invitation' do
     it { expect(page).to have_content "You joined CASHBOX" }
     it { expect(page).to have_content "Sign out" }
     it "flags invitation as accepted" do
-      expect(InvitationGlobal.last.accepted).to eq true
+      expect(Invitation.last.accepted).to eq true
     end
 
     it 'create a User' do

@@ -22,11 +22,15 @@ class Invitation < InvitationBase
   after_create :send_invitation
 
   def send_invitation
-    InvitationMailer.new_invitation_global(self).deliver_now
+    InvitationMailer.new_invitation(self).deliver_now
   end
 
   def accept!(user)
     update_attribute(:accepted, true)
+  end
+
+  def resend
+    InvitationMailer.resend_invitation(self).deliver_now
   end
 
   private
