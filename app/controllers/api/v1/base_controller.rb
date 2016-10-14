@@ -26,6 +26,10 @@ module Api::V1
       render json: {}, status: :not_found
     end
 
+    def currencies
+      render json: Dictionaries.currencies
+    end
+
     resource_description do
       api_version '1'
       short 'Cashbox API - v1'
