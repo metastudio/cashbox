@@ -1,5 +1,7 @@
 defaults: &defaults
 
+  edit_password_url: url
+
 development:
   <<: *defaults
 

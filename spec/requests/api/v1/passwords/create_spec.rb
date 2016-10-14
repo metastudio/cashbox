@@ -35,6 +35,7 @@ describe 'POST /api/users/password' do
       expect(body).to include "If you didn't request this, please ignore this email."
       expect(body).to include "Your password won't change until you access the link above and create a new one."
       expect(body).to include 'Change my password'
+      expect(body).to include '/users/password/edit?reset_password_token='
     end
   end
 
@@ -54,9 +55,7 @@ describe 'POST /api/users/password' do
 
     it 'returns error' do
       expect(response).to_not be_success
-      expect(json).to include(
-        "errors" => "Not found"
-      )
+      expect(json).to include("email" => ["not found"])
 
       expect(ActionMailer::Base.deliveries.count).to eq 0
     end
