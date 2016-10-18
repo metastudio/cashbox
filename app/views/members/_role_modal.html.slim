@@ -1,7 +1,7 @@
 #role_modal.modal.fade
   .modal-dialog
     .modal-content
-      = form_for member, remote: true do |f|
+      = simple_form_for member, remote: true do |f|
         .modal-header
           button.close type="button" data-dismiss="modal"
             span aria-hidden="true" &times;
