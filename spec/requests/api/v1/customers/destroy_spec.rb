@@ -17,8 +17,9 @@ describe 'DELETE /api/organizations/#/customers/#' do
 
     it 'delete customer' do
       expect(response).to be_success
-      expect(response.body).to be_empty
-
+      expect(json).to include(
+        'id' => customer.id
+      )
       customer.reload
       expect(customer.deleted_at).to_not eq nil
     end
@@ -29,8 +30,9 @@ describe 'DELETE /api/organizations/#/customers/#' do
 
     it 'delete customer' do
       expect(response).to be_success
-      expect(response.body).to be_empty
-
+      expect(json).to include(
+        'id' => customer.id
+      )
       customer.reload
       expect(customer.deleted_at).to_not eq nil
     end
