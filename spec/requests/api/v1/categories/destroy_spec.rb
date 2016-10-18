@@ -17,7 +17,9 @@ describe 'DELETE /api/organizations/#/categories/#' do
 
     it 'delete category' do
       expect(response).to be_success
-      expect(response.body).to be_empty
+      expect(json).to include(
+        'id' => category.id
+      )
 
       category.reload
       expect(category.deleted_at).to_not eq nil
@@ -29,7 +31,9 @@ describe 'DELETE /api/organizations/#/categories/#' do
 
     it 'delete category' do
       expect(response).to be_success
-      expect(response.body).to be_empty
+      expect(json).to include(
+        'id' => category.id
+      )
 
       category.reload
       expect(category.deleted_at).to_not eq nil

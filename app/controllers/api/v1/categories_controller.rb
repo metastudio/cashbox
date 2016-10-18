@@ -41,7 +41,8 @@ module Api::V1
 
     api :DELETE, '/organizations/:organization_id/categories/:id', 'Destroy category'
     def destroy
-      @category.destroy!
+      @category.destroy
+      render :show # acts_as_paranoid
     end
 
     private
