@@ -17,7 +17,9 @@ describe 'DELETE /api/organizations/#/bank_accounts/#' do
 
     it 'delete bank_account' do
       expect(response).to be_success
-      expect(response.body).to be_empty
+      expect(json).to include(
+        'id' => bank_account.id
+      )
 
       bank_account.reload
       expect(bank_account.deleted_at).to_not eq nil
@@ -29,7 +31,9 @@ describe 'DELETE /api/organizations/#/bank_accounts/#' do
 
     it 'delete bank_account' do
       expect(response).to be_success
-      expect(response.body).to be_empty
+      expect(json).to include(
+        'id' => bank_account.id
+      )
 
       bank_account.reload
       expect(bank_account.deleted_at).to_not eq nil
