@@ -1,6 +1,6 @@
 defaults: &defaults
 
-  edit_password_url: url
+  edit_password_url: https://staging.cashbox-frontend.metastudiohq.com
 
 development:
   <<: *defaults
