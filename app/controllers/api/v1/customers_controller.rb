@@ -42,7 +42,7 @@ module Api::V1
     api :DELETE, '/organizations/:organization_id/customers/:id', 'Destroy customer'
     def destroy
       @customer.destroy
-      render :show # acts_as_paranoid
+      render :show
     end
 
     private
