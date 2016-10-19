@@ -36,7 +36,7 @@ describe 'GET /api/organizations/#/total_balances' do
         'total' => money_with_symbol(Money.new(50000, 'RUB')),
         'currency' => 'RUB',
         'ex_total' => money_with_symbol(organization.bank_accounts.total_balance('RUB').exchange_to('USD')),
-        'rate' => 0.0135,
+        'rate' => Money.default_bank.get_rate('RUB', 'USD').round(4),
         'updated_at' => Money.default_bank.rates_updated_at.iso8601
       )
     end
@@ -63,7 +63,7 @@ describe 'GET /api/organizations/#/total_balances' do
         'total' => money_with_symbol(Money.new(50000, 'RUB')),
         'currency' => 'RUB',
         'ex_total' => money_with_symbol(organization.bank_accounts.total_balance('RUB').exchange_to('USD')),
-        'rate' => 0.0135,
+        'rate' => Money.default_bank.get_rate('RUB', 'USD').round(4),
         'updated_at' => Money.default_bank.rates_updated_at.iso8601
       )
     end
