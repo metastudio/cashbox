@@ -45,6 +45,7 @@ module Api::V1
     api :DELETE, '/organizations/:organization_id/bank_accounts/:id', 'Destroy bank account'
     def destroy
       @bank_account.destroy
+      render :show
     end
 
     private
