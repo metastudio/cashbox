@@ -23,6 +23,7 @@ require "./lib/time_range.rb"
 class Transaction < ApplicationRecord
   include MoneyRails::ActionViewExtension
   include TimeRange
+  include MainPageRefresher
   TRANSACTION_TYPES = %w(Residue)
 
   acts_as_paranoid
@@ -36,7 +37,7 @@ class Transaction < ApplicationRecord
   attr_accessor :customer_name, :comission, :leave_open
 
   belongs_to :category, inverse_of: :transactions
-  belongs_to :bank_account, inverse_of: :transactions, touch: true
+  belongs_to :bank_account, inverse_of: :transactions
   belongs_to :customer, inverse_of: :transactions
   belongs_to :invoice
   belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
@@ -88,7 +89,9 @@ class Transaction < ApplicationRecord
   before_save :calculate_amount, if: :comission
   after_restore :recalculate_amount
   after_save :update_invoice_paid_at, if: :invoice
-  after_create :send_notification
+  after_save :recalculate_amount
+  after_save :send_notification
+  after_destroy :recalculate_amount
 
   class << self
     def flow_ordered(def_currency)
@@ -162,7 +165,7 @@ class Transaction < ApplicationRecord
         "Transaction was added to organization #{organization.name}")
       MainPageRefreshJob.perform_later(
         organization.name,
-        self
+        prepare_data(self)
       )
     end
   end
