@@ -1,7 +1,7 @@
 module Api::V1
   class OrganizationsController < ApiController
-    before_action :set_organization, only: [:show, :update, :destroy]
-    before_action :authorize_organization, only: [:update, :destroy]
+    before_action :set_organization, only: [:show, :update, :destroy, :total_balances]
+    before_action :authorize_organization, only: [:update, :destroy, :total_balances]
 
     def_param_group :organization do
       param :organization, Hash, required: true, action_aware: true do
@@ -45,6 +45,10 @@ module Api::V1
     api :DELETE, '/organizations/:id', 'Destroy organization'
     def destroy
       @organization.destroy
+    end
+
+    api :GET, 'organizations/:id/total_balances', 'Return total balances'
+    def total_balances
     end
 
     private

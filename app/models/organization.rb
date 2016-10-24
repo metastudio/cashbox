@@ -54,6 +54,23 @@ class Organization < ApplicationRecord
     end
   end
 
+  def total_balances
+    bank = Money.default_bank
+    balances = []
+    total_amount = Money.new(0, self.default_currency)
+    Dictionaries.currencies.each do |currency|
+      total = self.bank_accounts.total_balance(currency)
+      total_amount = total_amount + total.exchange_to(self.default_currency)
+      if currency != self.default_currency
+        balances << { total: total, ex_total: total.exchange_to(self.default_currency), currency: currency,
+          rate: bank.get_rate(total.currency, self.default_currency).round(4), updated_at: bank.rates_updated_at }
+      else
+        balances << { total: total, ex_total: nil, currency: currency, rate: nil, updated_at: nil }
+      end
+    end
+    balances.unshift({ total_amount: total_amount, default_currency: self.default_currency })
+  end
+
   def totals_by_customers(period)
     invoice_selection = get_customers_selection_by_invoice_items(period)
     customer_ids = invoice_selection.map{ |h| h[:selection_id] }.compact.uniq
@@ -165,7 +182,6 @@ class Organization < ApplicationRecord
   def data_balance(scale='months', step=0)
     period = period_from_step(step.to_i, scale)
     incomes, expenses, totals = balance_data_collection(period)
-    balance_period_blank?(period_from_step(step.to_i + 1, scale))
 
     total_sum = Money.new(0, self.default_currency)
     Dictionaries.currencies.each_with_index do |currency|
@@ -242,7 +258,7 @@ class Organization < ApplicationRecord
         .cents
         .abs
       transact_amount = (transact_amount/100).round(2)
-      if result[date][customer_name].present?
+      if result[date].present? && result[date][customer_name].present?
         result[date][customer_name] += transact_amount
       else
         result[date][customer_name] = transact_amount
@@ -402,13 +418,13 @@ class Organization < ApplicationRecord
   def balance_period_blank?(period)
     incomes_count = transactions
       .incomes
-      .where('DATE(date) BETWEEN ? AND ? AND category_id != ?',
-        period.begin, period.end, Category.receipt_id)
+      .where('DATE(date) < ? AND category_id != ?',
+        period.end, Category.receipt_id)
       .count
     expenses_count = transactions
       .expenses
-      .where('DATE(date) BETWEEN ? AND ? AND category_id != ?',
-        period.begin, period.end, Category.transfer_out_id)
+      .where('DATE(date) < ? AND category_id != ?',
+        period.end, Category.transfer_out_id)
       .count
     (incomes_count + expenses_count) == 0
   end

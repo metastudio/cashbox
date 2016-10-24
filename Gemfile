@@ -92,7 +92,7 @@ group :test do
   gem 'capybara-select2'
   gem 'capybara-screenshot'
   gem 'timecop'
-  gem 'simplecov', :require => false
+  gem 'codeclimate-test-reporter', require: nil
 end
 
 group :staging do

@@ -45,7 +45,9 @@ describe 'Invite process' do
     end
 
     describe 'sent email' do
-      before { open_email email }
+      before do
+        open_email email
+      end
 
       subject {current_email}
 

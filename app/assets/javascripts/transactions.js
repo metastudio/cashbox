@@ -1,6 +1,6 @@
 $(function () {
   addTransactionFormMasks();
-  addTranferFormMasks();
+  addTransferFormMasks();
   showHidePeriodAdditionalInput();
 
   $('#q_amount_eq').inputmask('customized_currency');
@@ -177,7 +177,7 @@ function addTransactionFormMasks() {
   addCustomerSelect2('.customer-select2');
 }
 
-function addTranferFormMasks() {
+function addTransferFormMasks() {
   var $form = $("form.transfer");
   $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
   $form.find("input[name='transfer[comission]']").inputmask('customized_currency');

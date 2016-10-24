@@ -54,16 +54,24 @@ Cashbox::Application.routes.draw do
   resources :organization_invitations, only: [:new, :create, :destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
   get '/organization_invitation/:token/resend' => 'organization_invitations#resend', as: :resend_organization_invitation
+  get '/unsubscribes/:token' => 'unsubscribes#activate', as: :activate_unsubscribe
   mount ActionCable.server => "/cable"
 
   # API
   namespace :api, defaults: {format: 'json'} do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
+      devise_for :users, skip: :sessions, controllers: { passwords: 'api/v1/passwords' }
       post :auth_token, to: 'auth_token#create'
 
       get :user_info, to: 'users#current'
+      get :currencies, to: 'base#currencies'
       resources :organizations, only: [:show, :index, :create, :update, :destroy] do
+        resources :bank_accounts, only: [:show, :index, :create, :update, :destroy]
+        resources :categories, only: [:show, :index, :create, :update, :destroy]
+        resources :customers, only: [:show, :index, :create, :update, :destroy]
         resources :transactions, only: [:show, :index, :create, :update, :destroy]
+        resources :members, only: [:index, :update, :destroy]
+        get :total_balances, on: :member
       end
     end
   end
