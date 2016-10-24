@@ -44,6 +44,10 @@ class OrganizationInvitation < InvitationBase
     InvitationMailer.new_invitation_to_organization(self).deliver_now
   end
 
+  def resend
+    InvitationMailer.resend_invitation_to_organization(self).deliver_now
+  end
+
   private
 
   def email_uniq_in_organization

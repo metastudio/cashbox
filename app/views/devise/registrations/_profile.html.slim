@@ -6,6 +6,9 @@ h2
     = f.input :full_name, :required => true
     = f.fields_for :profile do |p|
       = p.input :phone_number
+    - if f.object.unsubscribe.active?
+      = f.fields_for :unsubscribe do |u|
+        = u.input :active, label: "Unsubscribe"
   .form-actions
     = f.button :submit_with_disable, "Update profile", class: "btn-primary"
 

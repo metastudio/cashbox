@@ -54,6 +54,23 @@ class Organization < ApplicationRecord
     end
   end
 
+  def total_balances
+    bank = Money.default_bank
+    balances = []
+    total_amount = Money.new(0, self.default_currency)
+    Dictionaries.currencies.each do |currency|
+      total = self.bank_accounts.total_balance(currency)
+      total_amount = total_amount + total.exchange_to(self.default_currency)
+      if currency != self.default_currency
+        balances << { total: total, ex_total: total.exchange_to(self.default_currency), currency: currency,
+          rate: bank.get_rate(total.currency, self.default_currency).round(4), updated_at: bank.rates_updated_at }
+      else
+        balances << { total: total, ex_total: nil, currency: currency, rate: nil, updated_at: nil }
+      end
+    end
+    balances.unshift({ total_amount: total_amount, default_currency: self.default_currency })
+  end
+
   def find_customer_name_by_id(customer_id)
     self.customers.find(customer_id).to_s
   rescue
