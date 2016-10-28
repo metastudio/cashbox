@@ -1,1 +1,1 @@
-json.partial! 'short_customer', collection: @customers, as: :customer
+json.partial! 'customer', collection: @customers, as: :customer
