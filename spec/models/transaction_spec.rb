@@ -23,7 +23,7 @@ require 'rails_helper'
 describe Transaction do
   context "association" do
     it { should belong_to(:category) }
-    it { should belong_to(:bank_account).touch(true)  }
+    it { should belong_to(:bank_account) }
     it { expect(subject).to belong_to(:customer) }
     it { should have_one(:organization).through(:bank_account) }
     it { should belong_to(:created_by) }
