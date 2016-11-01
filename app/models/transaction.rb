@@ -23,11 +23,8 @@ require "./lib/time_range.rb"
 class Transaction < ApplicationRecord
   include MoneyRails::ActionViewExtension
   include TimeRange
-<<<<<<< HEAD
   include Period
-=======
   include MainPageRefresher
->>>>>>> master
   TRANSACTION_TYPES = %w(Residue)
 
   acts_as_paranoid
