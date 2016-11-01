@@ -18,6 +18,7 @@
 
 class Invoice < ApplicationRecord
   include CustomerConcern
+  include Period
   customer_concern_callbacks
 
   belongs_to :organization, inverse_of: :invoices
@@ -61,25 +62,6 @@ class Invoice < ApplicationRecord
     NotificationJob.perform_later(organization.name,
       "Invoice was added",
       "Invoice was added to organization #{organization.name}")
-  end
-
-  def self.period(period)
-    case period
-    when 'current-month'
-      where('DATE(invoices.ends_at) between ? AND ?', Date.current.beginning_of_month, Date.current.end_of_month)
-    when 'last-3-months'
-      where('DATE(invoices.ends_at) between ? AND ?', (Date.current - 3.months).beginning_of_day, Date.current.end_of_month)
-    when 'prev-month'
-      prev_month_begins = Date.current.beginning_of_month - 1.months
-      where('DATE(invoices.ends_at) between ? AND ?', prev_month_begins,
-        prev_month_begins.end_of_month)
-    when 'this-year'
-      where('DATE(invoices.ends_at) between ? AND ?', Date.current.beginning_of_year, Date.current.end_of_year)
-    when 'quarter'
-      where('DATE(invoices.ends_at) between ? AND ?', Date.current.beginning_of_quarter, Date.current.end_of_quarter)
-    else
-      all
-    end
   end
 
   def self.ransackable_scopes(auth_object=nil)
