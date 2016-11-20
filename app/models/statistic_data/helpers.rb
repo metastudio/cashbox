@@ -30,7 +30,7 @@ module StatisticData
     end
 
     def find_customer_name_by_id(customer_id)
-      self.customers.find(customer_id).to_s
+      @organization.customers.find(customer_id).to_s
     rescue
       ''
     end
@@ -40,7 +40,7 @@ module StatisticData
         select("sum(transactions.amount_cents) as total, customers.name as cust_name, customers.id as customer_id, bank_accounts.currency as curr").
         joins(:customer).
         where('transactions.category_id in (?) AND customers.id in (?)',
-          @organzation.categories.send(type).pluck(:id), customer_ids).
+          @organization.categories.send(type).pluck(:id), customer_ids).
         group('customers.id, bank_accounts.id').map do |transaction|
           {
             total:          transaction.total.to_f,

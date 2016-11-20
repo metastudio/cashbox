@@ -154,5 +154,13 @@ module StatisticData
       result.unshift(header)
       result
     end
+
+    def combine_by_customers(customer_ids, incomes, expenses)
+      incomes.delete(nil)
+      expenses.delete(nil)
+      array = customer_ids.map{ |k| [find_customer_name_by_id(k), incomes[k] ? incomes[k].last : 0,
+        expenses[k] ? expenses[k].last.abs : 0] }
+      data = array.unshift(['Customer', 'Incomes', 'Expenses'])
+    end
   end
 end
