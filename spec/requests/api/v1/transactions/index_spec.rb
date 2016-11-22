@@ -26,11 +26,18 @@ describe 'GET /api/organizations/#/transactions' do
         'amount' => money_with_symbol(transaction2.amount),
         'comment' => transaction2.comment
       )
+      expect(json[0]['category']).to     include( 'id' => transaction2.category.id)
+      expect(json[0]['bank_account']).to include( 'id' => transaction2.bank_account.id)
+      expect(json[0]['customer']).to     include( 'id' => transaction2.customer.id)
+
       expect(json[1]).to include(
         'id' => transaction1.id,
         'amount' => money_with_symbol(transaction1.amount),
         'comment' => transaction1.comment
       )
+      expect(json[1]['category']).to     include( 'id' => transaction1.category.id)
+      expect(json[1]['bank_account']).to include( 'id' => transaction1.bank_account.id)
+      expect(json[1]['customer']).to     include( 'id' => transaction1.customer.id)
     end
   end
 

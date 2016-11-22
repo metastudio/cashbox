@@ -70,4 +70,4 @@
 
   = f.input :invoice_id, as: :hidden
   - unless transaction.persisted? || @invoice.present? || f.object.invoice_id
-    = f.input :leave_open, as: :boolean, wrapper_html: { class: 'col-sm-6 pull-left' }
+    = f.input :leave_open, as: :boolean, wrapper_html: { class: 'col-sm-6 pull-left' }, input_html: { id: "leave_open_#{type}" }

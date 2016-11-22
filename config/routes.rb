@@ -72,6 +72,9 @@ Cashbox::Application.routes.draw do
         resources :transactions, only: [:show, :index, :create, :update, :destroy]
         resources :members, only: [:index, :update, :destroy]
         get :total_balances, on: :member
+        resources :organization_invitations, only: [:index, :show, :create, :destroy] do
+          post :resend, on: :member
+        end
       end
     end
   end

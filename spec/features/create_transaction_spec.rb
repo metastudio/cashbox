@@ -137,7 +137,7 @@ describe 'create transaction', js: true do
         select category_name, from: 'transaction[category_id]' if category_name.present?
         select account_name, from: 'transaction[bank_account_id]' if account_name.present?
         fill_in 'transaction[comment]', with: comment
-        find('#transaction_leave_open').set(true)
+        check 'Leave open'
       end
       click_on 'Create'
       page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender

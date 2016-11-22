@@ -23,6 +23,8 @@ require "./lib/time_range.rb"
 class Transaction < ApplicationRecord
   include MoneyRails::ActionViewExtension
   include TimeRange
+  include Period
+  include MainPageRefresher
   TRANSACTION_TYPES = %w(Residue)
 
   acts_as_paranoid
@@ -36,7 +38,7 @@ class Transaction < ApplicationRecord
   attr_accessor :customer_name, :comission, :leave_open
 
   belongs_to :category, inverse_of: :transactions
-  belongs_to :bank_account, inverse_of: :transactions, touch: true
+  belongs_to :bank_account, inverse_of: :transactions
   belongs_to :customer, inverse_of: :transactions
   belongs_to :invoice
   belongs_to :transfer_out, class_name: 'Transaction', foreign_key: 'transfer_out_id', dependent: :destroy
@@ -88,7 +90,9 @@ class Transaction < ApplicationRecord
   before_save :calculate_amount, if: :comission
   after_restore :recalculate_amount
   after_save :update_invoice_paid_at, if: :invoice
-  after_create :send_notification
+  after_save :recalculate_amount
+  after_save :send_notification
+  after_destroy :recalculate_amount
 
   class << self
     def flow_ordered(def_currency)
@@ -162,7 +166,7 @@ class Transaction < ApplicationRecord
         "Transaction was added to organization #{organization.name}")
       MainPageRefreshJob.perform_later(
         organization.name,
-        self
+        prepare_data(self)
       )
     end
   end
@@ -226,25 +230,6 @@ class Transaction < ApplicationRecord
 
   def update_invoice_paid_at
     self.organization.invoices.where(id: self.invoice_id).first.try(:update, {paid_at: self.date})
-  end
-
-  def self.period(period)
-    case period
-    when 'current-month'
-      where('DATE(transactions.date) between ? AND ?', Date.current.beginning_of_month, Date.current.end_of_month)
-    when 'last-3-months'
-      where('DATE(transactions.date) between ? AND ?', (Date.current - 3.months).beginning_of_day, Date.current.end_of_month)
-    when 'prev-month'
-      prev_month_begins = Date.current.beginning_of_month - 1.months
-      where('DATE(transactions.date) between ? AND ?', prev_month_begins,
-        prev_month_begins.end_of_month)
-    when 'this-year'
-      where('DATE(transactions.date) between ? AND ?', Date.current.beginning_of_year, Date.current.end_of_year)
-    when 'quarter'
-      where('DATE(transactions.date) between ? AND ?', Date.current.beginning_of_quarter, Date.current.end_of_quarter)
-    else
-      all
-    end
   end
 
   def self.date_from(from)
