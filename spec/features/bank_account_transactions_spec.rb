@@ -31,7 +31,7 @@ describe 'Bank account transactions' do
       end
     end
 
-    it "displays selected account's transactions and not display not own transactions" do
+    it "displays selected account's transactions" do
       within ".transactions" do
         expect(subject).to have_css("#transaction_#{transaction1.id}")
         expect(subject).to have_css("#transaction_#{transaction2.id}")

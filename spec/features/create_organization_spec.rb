@@ -11,19 +11,12 @@ describe "create organization" do
   end
 
   context "with valid data" do
-    it "creates organization and shows success message" do
+    it "creates organization and member" do
       create_organization(organization_name)
       expect(Organization).to be_exists(name: organization_name)
       expect(page).to have_flash_message("Organization was successfully created.")
-    end
-
-    describe "creates member" do
-      it { expect{subject}.to change{Member.count}.by(1) }
-
-      it "sets member role to 'owner'" do
-        create_organization(organization_name)
-        expect(Member.last.role).to eq 'owner'
-      end
+      expect(Member.count).to eq(1)
+      expect(Member.last.role).to eq 'owner'
     end
   end
 
