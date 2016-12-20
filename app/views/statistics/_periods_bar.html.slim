@@ -11,7 +11,7 @@
           li class="#{(params[:balance_scale].present? && params[:balance_scale] == 'years') ? 'active' : ''}"
             = link_to 'Years', '#years', data: { toggle: 'tab', scale: 'years' }
     .balance-chart-wrapper
-      .balance-chart#main-balance data-url=balance_statistics_path
+      .balance-chart#main-balance data-url=balance_statistics_path(format: :json)
       .balance-chart.spinner-backround.hide
         .loader Loading...
     .row#balance_navigation data-step="#{ params[:balance_step] || 0 }"
@@ -31,7 +31,7 @@
           li class="#{(params[:customers_type].present? && params[:customers_type] == 'expense') ? 'active' : ''}"
             = link_to 'Expense', '#years', data: { toggle: 'tab', type: 'expense' }
     br
-    .customers-chart#customers-chart data-url=customers_chart_statistics_path
+    .customers-chart#customers-chart data-url=customers_chart_statistics_path(format: :json)
     br
     .panel.with-nav-tabs
       .panel-heading
