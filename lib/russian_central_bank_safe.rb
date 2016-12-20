@@ -18,6 +18,7 @@ class RussianCentralBankSafe < Money::Bank::RussianCentralBank
       @rates_updated_at = date.beginning_of_day
       @rates_updated_on = date
       update_expired_at
+      raise 'Blank rates' if @rates.blank?
       logger.info('Updated rates from Bank')
       @rates
     rescue Exception => e
