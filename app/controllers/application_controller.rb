@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_organization
   helper_method :current_member
+  helper_method :params_unsafe_hash
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -65,5 +66,9 @@ class ApplicationController < ActionController::Base
     else
       "You joined CASHBOX."
     end
+  end
+
+  def params_unsafe_hash
+    params.to_unsafe_h
   end
 end
