@@ -108,6 +108,14 @@ describe 'Transactions filter' do
       end
 
       it_behaves_like 'filterable object'
+
+      it "generates valid links" do
+        within "#transaction_#{transaction.id}" do
+          click_link cat_exp.name
+        end
+
+        expect(current_path).to eq root_path
+      end
     end
   end
 
