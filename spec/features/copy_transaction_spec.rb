@@ -5,6 +5,7 @@ describe 'copy transaction', js: true do
   let!(:organization) { create :organization, with_user: user }
   let!(:category)     { create :category, :income, organization: organization }
   let!(:exp_category) { create :category, :expense, organization: organization }
+  let(:current_time)  { 1.day.since }
   let!(:account) do
     create :bank_account,
       residue: 99999999,
@@ -51,34 +52,38 @@ describe 'copy transaction', js: true do
   end
 
   it "copy income transaction" do
-    id = transaction.id
-    find("#transaction_#{id} .comment").click
-    page.has_content?(/(Please review the problems below)/) # wait
-    click_on 'Copy'
-    expect(page).to have_css('#new_transaction', visible: true)
-    within '#new_transaction' do
-      expect(page).to have_field('Amount', with: beautify(transaction.amount.cents))
-      expect(page).to have_field('Category', with: transaction.category_id)
-      expect(page).to have_field('Customer name', with: transaction.customer_id)
-      expect(page).to have_field('Bank account', with: transaction.bank_account_id)
-      expect(page).to have_field('Comment', with: transaction.comment)
-      expect(page).to have_field('Date', with: transaction.date.strftime('%d/%m/%Y'))
+    Timecop.travel(current_time) do
+      id = transaction.id
+      find("#transaction_#{id} .comment").click
+      page.has_content?(/(Please review the problems below)/) # wait
+      click_on 'Copy'
+      expect(page).to have_css('#new_transaction', visible: true)
+      within '#new_transaction' do
+        expect(page).to have_field('Amount', with: beautify(transaction.amount.cents))
+        expect(page).to have_field('Category', with: transaction.category_id)
+        expect(page).to have_field('Customer name', with: transaction.customer_id)
+        expect(page).to have_field('Bank account', with: transaction.bank_account_id)
+        expect(page).to have_field('Comment', with: transaction.comment)
+        expect(page).to have_field('Date', with: current_time.strftime('%d/%m/%Y'))
+      end
     end
   end
 
   it 'copy expence transaction' do
-    id = exp_transaction.id
-    find("#transaction_#{id} .comment").click
-    page.has_content?(/(Please review the problems below)/) # wait
-    click_on 'Copy'
-    expect(page).to have_css('#new_transaction', visible: true)
-    within '#new_transaction' do
-      expect(page).to have_field('Amount', with: beautify(exp_transaction.amount.cents.abs))
-      expect(page).to have_field('Category', with: exp_transaction.category_id)
-      expect(page).to have_field('Customer name', with: exp_transaction.customer_id)
-      expect(page).to have_field('Bank account', with: exp_transaction.bank_account_id)
-      expect(page).to have_field('Comment', with: exp_transaction.comment)
-      expect(page).to have_field('Date', with: exp_transaction.date.strftime('%d/%m/%Y'))
+    Timecop.travel(current_time) do
+      id = exp_transaction.id
+      find("#transaction_#{id} .comment").click
+      page.has_content?(/(Please review the problems below)/) # wait
+      click_on 'Copy'
+      expect(page).to have_css('#new_transaction', visible: true)
+      within '#new_transaction' do
+        expect(page).to have_field('Amount', with: beautify(exp_transaction.amount.cents.abs))
+        expect(page).to have_field('Category', with: exp_transaction.category_id)
+        expect(page).to have_field('Customer name', with: exp_transaction.customer_id)
+        expect(page).to have_field('Bank account', with: exp_transaction.bank_account_id)
+        expect(page).to have_field('Comment', with: exp_transaction.comment)
+        expect(page).to have_field('Date', with: current_time.strftime('%d/%m/%Y'))
+      end
     end
   end
 
