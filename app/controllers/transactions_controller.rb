@@ -22,7 +22,7 @@ class TransactionsController < ApplicationController
       else
         @transaction = @transaction.dup
         @transaction.amount = @transaction.amount.abs
-        @transaction.date = DateTime.now
+        @transaction.date = Time.current
         @transfer = Transfer.new
       end
     else
