@@ -188,5 +188,19 @@ describe StatisticData::ColumnsChart do
          (transaction2.amount.cents/100).round(2), ""])
       end
     end
+
+    context 'organization has transaction in 2014' do
+      let!(:transaction3) do
+        create :transaction, :income, organization: org,
+          customer: customer1, category: category,
+          date: DateTime.parse('02.02.2014')
+      end
+
+      subject { StatisticData::ColumnsChart.new(org).customers_by_months[:data].last }
+
+      it 'not rised error' do
+        expect(subject).to_not raise_error
+      end
+    end
   end
 end
