@@ -61,6 +61,8 @@ group :development, :test do
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
+  gem 'faker'
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -84,7 +86,6 @@ end
 
 group :test do
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
   gem 'shoulda-matchers'
   gem 'capybara'
   gem 'capybara-email'
