@@ -63,7 +63,9 @@ module StatisticData
         result[month] = {}
       end
 
-      transacts = @organization.transactions.unscope(:order).period(period).includes(:customer)
+      transacts = @organization.transactions.unscope(:order)
+        .where('DATE(date) BETWEEN ? AND ?', period.begin, period.end)
+        .includes(:customer)
       if category_type == 'income'
         transacts = transacts.incomes
       else
