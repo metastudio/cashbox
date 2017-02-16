@@ -199,7 +199,9 @@ describe StatisticData::ColumnsChart do
       subject { StatisticData::ColumnsChart.new(org).customers_by_months[:data].last }
 
       it 'not rised error' do
-        expect(subject).to_not raise_error
+        expect(subject).to eq([Date.current.strftime("%b, %Y"),
+         (transaction1.amount.cents/100).round(2),
+         (transaction2.amount.cents/100).round(2), ""])
       end
     end
   end
