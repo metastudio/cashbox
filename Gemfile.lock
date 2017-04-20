@@ -110,7 +110,7 @@ GEM
       activemodel
       activesupport
     debug_inspector (0.0.2)
-    devise (4.2.0)
+    devise (4.2.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 4.1.0, < 5.1)
@@ -383,7 +383,7 @@ GEM
       raindrops (~> 0.7)
     validates_overlap (0.6.0)
       rails (>= 3.0.0)
-    warden (1.2.6)
+    warden (1.2.7)
       rack (>= 1.0)
     wasabi (3.5.0)
       httpi (~> 2.0)

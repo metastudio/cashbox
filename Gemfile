@@ -28,7 +28,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'slim-rails'
 gem 'recursive-open-struct'
-gem 'devise'
+gem 'devise', '~> 4.2.1'
 gem 'simple_form'
 gem 'money-rails'
 gem 'kaminari'
