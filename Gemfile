@@ -46,7 +46,7 @@ gem 'whenever', require: false
 gem 'cocoon'
 gem 'validates_overlap'
 gem 'date_validator'
-gem 'wicked_pdf'
+gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary'
 gem 'puma', '~> 3.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
