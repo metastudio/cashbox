@@ -51,8 +51,8 @@ GEM
     annotate (2.7.1)
       activerecord (>= 3.2, < 6.0)
       rake (>= 10.4, < 12.0)
-    apipie-rails (0.3.6)
-      json
+    apipie-rails (0.5.0)
+      rails (>= 4.1)
     arel (7.1.4)
     autoprefixer-rails (6.4.0.3)
       execjs
@@ -169,7 +169,7 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-ui-rails (5.0.5)
       railties (>= 3.2.16)
-    json (2.0.2)
+    json (2.1.0)
     jwt (1.5.5)
     kaminari (0.17.0)
       actionpack (>= 3.0.0)
@@ -474,7 +474,7 @@ DEPENDENCIES
   validates_overlap
   web-console
   whenever
-  wicked_pdf
+  wicked_pdf (~> 1.1.0)
   wkhtmltopdf-binary
 
 BUNDLED WITH
