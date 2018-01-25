@@ -12,7 +12,6 @@ MoneyRails.configure do |config|
   # config.default_bank = EuCentralBank.new
   config.default_bank = RussianCentralBankSafe.new
   config.default_bank.ttl = 1.day # autoupdate every day
-  config.default_bank.update_rates
 
   # Add exchange rates to current money bank object.
   # (The conversion rate refers to one direction only)
@@ -73,4 +72,7 @@ MoneyRails.configure do |config|
   # config.no_cents_if_whole = nil
   # config.symbol = nil
   config.sign_before_symbol = true
+  if ActiveRecord::Base.connection.table_exists? 'exchange_rates'
+    ExchangeRate.update_rates
+  end
 end
