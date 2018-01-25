@@ -15,21 +15,24 @@
 #  date             :datetime         not null
 #  transfer_out_id  :integer
 #  invoice_id       :integer
+#  created_by_id    :integer
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Transaction do
   context "association" do
     it { should belong_to(:category) }
-    it { should belong_to(:bank_account).touch(true)  }
+    it { should belong_to(:bank_account) }
     it { expect(subject).to belong_to(:customer) }
     it { should have_one(:organization).through(:bank_account) }
+    it { should belong_to(:created_by) }
   end
 
   context "validation" do
     it { should validate_presence_of(:category)     }
     it { should validate_presence_of(:bank_account) }
+    it { should validate_numericality_of(:amount).is_less_than_or_equal_to(Dictionaries.money_max) }
 
     context "custom" do
       subject { transaction }
@@ -61,6 +64,18 @@ describe Transaction do
           expect(subject).to be_invalid
           expect(subject.errors_on(:amount)).
             to include("Balance overflow")
+        end
+      end
+
+      context 'numericaly other_than' do
+        let(:account)      { create :bank_account, :full }
+        let!(:transaction) { build :transaction, :income, bank_account: account,
+          amount: 0 }
+
+        it 'is invalid' do
+          expect(subject).to be_invalid
+          expect(subject.errors_on(:amount)).
+            to include("must be other than 0")
         end
       end
     end
@@ -224,6 +239,20 @@ describe Transaction do
       expect(subject).to eq [
         Transaction::AmountFlow.new(def_inc, def_exp, def_curr),
         Transaction::AmountFlow.new(slave_inc, slave_exp, slave_curr)]
+    end
+  end
+
+  describe '#send_notification' do
+    ActiveJob::Base.queue_adapter = :test
+    before { ActiveJob::Base.queue_adapter.enqueued_jobs = [] }
+    let!(:transaction) { create :transaction }
+
+    it 'send notification after creation' do
+      expect(NotificationJob).to have_been_enqueued.with(
+        transaction.organization.name,
+        "Transaction was added",
+        "Transaction was added to organization #{transaction.organization.name}"
+      )
     end
   end
 end

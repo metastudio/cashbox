@@ -1,0 +1,32 @@
+.page-header
+  h2 New organization bank account
+
+.row.previous_buttons
+  .col-sm-6
+    p
+      ' Bank account will be created by default (with default currency)
+      br
+      br
+      = button_to 'Create default Bank account', default_account_organization_path(@organization.id), class: 'btn btn-primary'
+  .col-sm-6
+    p
+      ' Or
+      br
+      br
+      = button_tag 'Create it manually', class: 'btn btn-primary',
+        data: { toggle: 'collapse', target: '#form_body'}, 'aria-expanded': false,
+        'aria-controls': '#form_body'
+
+.row.collapse#form_body class="#{@open_form ? 'in' : ''}"
+  br
+  .col-sm-6
+    = simple_form_for @organization, url: create_accounts_organization_path do |f|
+      = f.simple_fields_for :bank_accounts do |account|
+        = render 'bank_account_fields', f: account
+      .links
+        = link_to_add_association 'add another', f, :bank_accounts
+      br
+      = f.submit 'Create bank accounts', class: 'btn btn-primary'
+
+= content_for :sidebar
+  = render 'home/settings'

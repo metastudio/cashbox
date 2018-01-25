@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Transactions list' do
   include MoneyHelper
@@ -9,10 +9,11 @@ describe 'Transactions list' do
   let(:org1_ba) { create :bank_account, organization: org1, currency: 'USD' }
   let(:org2_ba) { create :bank_account, organization: org2 }
   let(:category_org1)     { create :category, organization: org1 }
+  let(:category_org2)     { create :category, organization: org2 }
   let!(:org1_transaction) { create :transaction, bank_account: org1_ba,
     category: category_org1, amount: 100 }
   let!(:org2_transaction) { create :transaction, bank_account: org2_ba,
-    category: category_org1, amount: 500 }
+    category: category_org2, amount: 500 }
 
   before do
     sign_in user
@@ -168,7 +169,7 @@ describe 'Transactions list' do
   context "sidebar" do
     let!(:org1_ba2)        { create :bank_account, organization: org1, currency: 'RUB' }
     let!(:ba2_transaction) { create :transaction, bank_account: org2_ba,
-      category: category_org1, amount: 500 }
+      category: category_org2, amount: 500 }
 
     before do
       visit root_path

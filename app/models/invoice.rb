@@ -13,10 +13,12 @@
 #  paid_at         :datetime
 #  created_at      :datetime
 #  updated_at      :datetime
+#  number          :string
 #
 
-class Invoice < ActiveRecord::Base
+class Invoice < ApplicationRecord
   include CustomerConcern
+  include Period
   customer_concern_callbacks
 
   belongs_to :organization, inverse_of: :invoices
@@ -42,10 +44,13 @@ class Invoice < ActiveRecord::Base
   validates :ends_at, date: { after_or_equal_to: :starts_at }, if: :starts_at
 
   scope :ordered, -> { order('created_at DESC') }
+  scope :unpaid, -> { where(paid_at: nil) }
+
 
   before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
   after_save :set_currency
+  after_create :send_notification
 
   def pdf_filename
     "#{self.customer.to_s}_#{self.ends_at.month}_#{self.ends_at.year}"
@@ -53,23 +58,14 @@ class Invoice < ActiveRecord::Base
 
   private
 
-  def self.period(period)
-    case period
-    when 'current-month'
-      where('DATE(invoices.ends_at) between ? AND ?', Date.current.beginning_of_month, Date.current.end_of_month)
-    when 'last-3-months'
-      where('DATE(invoices.ends_at) between ? AND ?', (Date.current - 3.months).beginning_of_day, Date.current.end_of_month)
-    when 'prev-month'
-      prev_month_begins = Date.current.beginning_of_month - 1.months
-      where('DATE(invoices.ends_at) between ? AND ?', prev_month_begins,
-        prev_month_begins.end_of_month)
-    when 'this-year'
-      where('DATE(invoices.ends_at) between ? AND ?', Date.current.beginning_of_year, Date.current.end_of_year)
-    when 'quarter'
-      where('DATE(invoices.ends_at) between ? AND ?', Date.current.beginning_of_quarter, Date.current.end_of_quarter)
-    else
-      all
-    end
+  def send_notification
+    NotificationJob.perform_later(organization.name,
+      "Invoice was added",
+      "Invoice was added to organization #{organization.name}")
+  end
+
+  def self.ransackable_scopes(auth_object=nil)
+    %i(unpaid)
   end
 
   def strip_number

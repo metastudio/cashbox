@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Transactions filter' do
   include MoneyHelper
@@ -27,7 +27,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
-      click_on 'Filters'
+      find(:css, 'a#toggle_filter').trigger('click')
       fill_in 'q[amount_eq]', with: amount_eq
       click_on 'Search'
     end
@@ -108,6 +108,14 @@ describe 'Transactions filter' do
       end
 
       it_behaves_like 'filterable object'
+
+      it "generates valid links" do
+        within "#transaction_#{transaction.id}" do
+          click_link cat_exp.name
+        end
+
+        expect(current_path).to eq root_path
+      end
     end
   end
 
@@ -264,7 +272,7 @@ describe 'Transactions filter' do
       it_behaves_like 'filterable object'
     end
 
-    context 'when custom' do
+    context 'when custom', js: true do
       let!(:transaction)  { Timecop.travel(2013,12,12) {
         create :transaction, bank_account: ba } }
       let!(:transaction2) { Timecop.travel(2012,12,12) {
@@ -278,7 +286,7 @@ describe 'Transactions filter' do
 
       before do
         visit root_path
-        click_on 'Filters'
+        find(:css, 'a#toggle_filter').trigger('click')
         select 'Custom', from: 'q[period]'
         page.has_content?('To:')
         fill_in 'From:', with: (Time.new(2012,12,10)).strftime('%d/%m/%Y')
@@ -294,7 +302,7 @@ describe 'Transactions filter' do
 
         before do
           Timecop.travel(2012,12,12)
-          click_on 'Filters'
+          find(:css, 'a#toggle_filter').trigger('click')
           select 'Previous month', from: 'q[period]'
           click_on 'Search'
         end
@@ -306,7 +314,7 @@ describe 'Transactions filter' do
         it_behaves_like 'filterable object'
       end
 
-      context 'edge values' do
+      context 'edge values', js: true do
         let!(:transaction)  { create :transaction, bank_account: ba }
         let!(:transaction2) { Timecop.travel( Time.current + 5.days) {
           create :transaction, bank_account: ba } }
@@ -319,7 +327,7 @@ describe 'Transactions filter' do
 
         before do
           visit root_path
-          click_on 'Filters'
+          find(:css, 'a#toggle_filter').trigger('click')
           select 'Custom', from: 'q[period]'
           page.has_content?('To:')
           fill_in 'From:', with: (Time.current + 5.days).strftime('%d/%m/%Y')
@@ -383,7 +391,7 @@ describe 'Transactions filter' do
 
     before do
       visit root_path
-      click_on 'Filters'
+      find(:css, 'a#toggle_filter').trigger('click')
       fill_in 'q[amount_eq]', with: "9999"
       fill_in 'q[comment_cont]', with: 'Comment'
       select2(cat.name, css: '#s2id_q_category_id_in')

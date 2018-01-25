@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'customers page' do
   let(:user) { create :user, :with_organizations }

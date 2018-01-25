@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'sign in proccess' do
   let(:email)    { generate :email}
@@ -19,7 +19,7 @@ describe 'sign in proccess' do
     end
 
     it "doesn't sign in" do
-      expect(subject).to have_content("Invalid email or password")
+      expect(subject).to have_content("Invalid Email or password")
     end
   end
 
@@ -31,7 +31,7 @@ describe 'sign in proccess' do
     end
 
     it "doesn't sign in" do
-      expect(subject).to have_content("Invalid email or password")
+      expect(subject).to have_content("Invalid Email or password")
     end
   end
 

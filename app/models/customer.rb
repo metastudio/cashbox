@@ -11,7 +11,7 @@
 #  invoice_details :text
 #
 
-class Customer < ActiveRecord::Base
+class Customer < ApplicationRecord
   acts_as_paranoid
 
   belongs_to :organization, inverse_of: :customers
@@ -25,6 +25,7 @@ class Customer < ActiveRecord::Base
 
   scope :ordered, -> { order('created_at DESC') }
   scope :with_name, ->(name) { where('name ilike ?', "%#{name}%") }
+
 
   # gem 'paranoia' doesn't run validation callbacks on restore
   before_restore :run_validations

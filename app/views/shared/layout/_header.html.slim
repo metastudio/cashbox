@@ -2,10 +2,11 @@ header
   nav.navbar.navbar-inverse
     .container-fluid
       .navbar-header
-        button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"
-          span.icon-bar
-          span.icon-bar
-          span.icon-bar
+        - if signed_in?
+          button.navbar-toggle data-target="#collapse-btn" data-toggle="collapse" type="button"
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
         = active_link_to 'CashBox', root_path, class: 'navbar-brand', active: :exclusive
 
       - if signed_in?
@@ -15,6 +16,7 @@ header
             = render 'shared/layout/total_balance'
           ul.nav.navbar-nav.navbar-right
             - if current_organization
+              = active_link_to 'Invoices', invoices_path, wrap_tag: :li, active: [['invoices']]
               = active_link_to 'Statistics', statistics_path, wrap_tag: :li, active: [['statistics']]
             li.dropdown
               = link_to '#', class: 'dropdown-toggle', data: {toggle: 'dropdown'} do
@@ -24,4 +26,5 @@ header
               ul.dropdown-menu
                 li= link_to 'Change organization', organizations_path
                 li= link_to 'Edit Profile', user_profile_path
+                li= link_to 'Send invite', new_invitation_path
                 li= link_to 'Sign out', destroy_user_session_path, method: :delete

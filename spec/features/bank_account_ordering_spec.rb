@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Bank accounts after drag&drop' do
   context 'ordered corresponing to row_order' do

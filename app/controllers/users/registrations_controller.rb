@@ -1,14 +1,15 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy,
+  prepend_before_action :authenticate_scope!, only: [:edit, :update, :destroy,
     :update_profile]
 
   def create_user_from_invitation
     @user = User.new(sign_up_params)
-    @invitation = Invitation.active.find_by_token(params[:token])
+    @invitation = InvitationBase.active.find_by_token(params[:token])
     @user.email = @invitation.email
     if @user.save
       sign_in @user
-      redirect_to accept_invitation_path(token: @invitation.token)
+      @invitation.accept!(@user)
+      redirect_to root_path, notice: invitation_congratulation(@invitation)
     else
       render template: "invitations/accept"
     end
@@ -23,6 +24,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def edit
+    session[:profile_back] = request.referer
+    render :edit
+  end
+
   protected
 
   def after_update_path_for(resource)
@@ -32,6 +38,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   private
 
   def update_profile_params
-    params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number])
+    params.require(resource_name).permit(:full_name, profile_attributes: [:phone_number],
+      unsubscribe_attributes: [:active])
   end
 end

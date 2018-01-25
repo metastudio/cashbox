@@ -17,6 +17,10 @@ $(function () {
   $(document).on('change', '.nested-amount', function(e) {
     calculateInvoiceAmount();
   });
+
+  $(document).on('click', '.invoice[data-href]', function(e) {
+    window.location = $(this).data("href")
+  });
 });
 
 function addInvoiceFormMasks() {

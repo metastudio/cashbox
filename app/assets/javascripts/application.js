@@ -20,6 +20,9 @@
 //= require jquery.inputmask
 //= require jquery.inputmask.date.extensions
 //= require jquery.inputmask.numeric.extensions
+//= require jquery.responsiveText
+//= require jquery-responsiveTables
+//= require cable
 
 //= require transactions
 //= require bank_accounts
@@ -35,6 +38,8 @@ function scrollTo($el) {
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip();
+  $('.responsive-table').responsiveTables();
+  $('.responsive-text').responsiveText();
 })
 
 $(function () {

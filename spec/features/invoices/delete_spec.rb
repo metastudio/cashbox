@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Delete invoice', js: true do
   let(:user)          { create :user }
@@ -8,7 +8,7 @@ describe 'Delete invoice', js: true do
 
   before do
     sign_in user
-    visit invoices_path
+    visit invoice_path(invoice)
   end
 
   context 'Delete invoice' do

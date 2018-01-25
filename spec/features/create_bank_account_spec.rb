@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Create bank account' do
   let(:member_owner) { create :member, :owner }
@@ -34,7 +34,7 @@ describe 'Create bank account' do
   end
 
   context 'balance' do
-    subject { BankAccount.first.balance }
+    subject { BankAccount.second.balance.to_f }
 
     it { expect(subject).to eq residue }
   end

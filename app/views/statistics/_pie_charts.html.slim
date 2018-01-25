@@ -2,27 +2,27 @@
   .row
     .col-md-6.col-sm-12.col-xs-12
       h4 Income by categories
-      .piechart.categories id="#{period}-income-by-categories" data-url=income_by_categories_statistics_path
+      .piechart.categories id="#{period}-income-by-categories" data-url=income_by_categories_statistics_path(format: :json)
     .col-md-6.col-sm-12.col-xs-12
       h4 Expense by categories
-      .piechart.categories id="#{period}-expense-by-categories" data-url=expense_by_categories_statistics_path
+      .piechart.categories id="#{period}-expense-by-categories" data-url=expense_by_categories_statistics_path(format: :json)
   .row
     .col-md-6.col-sm-12.col-xs-12
       h4 Income by customers
-      .piechart.customers id="#{period}-income-by-customers" data-url=income_by_customers_statistics_path
+      .piechart.customers id="#{period}-income-by-customers" data-url=income_by_customers_statistics_path(format: :json)
     .col-md-6.col-sm-12.col-xs-12
       h4 Expense by customers
-      .piechart.customers id="#{period}-expense-by-customers" data-url=expense_by_customers_statistics_path
+      .piechart.customers id="#{period}-expense-by-customers" data-url=expense_by_customers_statistics_path(format: :json)
   .row
     .col-md-6.col-sm-12.col-xs-12
       h4
         | Totals by customers
         =< show_tooltip_with_text('Data based on InvoiceItems and Transactions')
-      .piechart.customers id="#{period}-totals-by-customers" data-url=totals_by_customers_statistics_path
+      .piechart.customers id="#{period}-totals-by-customers" data-url=totals_by_customers_statistics_path(format: :json)
   .row
     .col-md-12
       h4
         | Balances by customers
         =< show_tooltip_with_text('Data based on InvoiceItems and Transactions')
-      .balance-chart id="#{period}-balances-by-customers" data-url=balances_by_customers_statistics_path
+      .balance-chart id="#{period}-balances-by-customers" data-url=balances_by_customers_statistics_path(format: :json)
 

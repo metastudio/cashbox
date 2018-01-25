@@ -1,0 +1,9 @@
+bank_accounts:
+  - Current
+categories:
+  - name: 'Salary'
+    type: expense
+  - name: 'Taxes'
+    type: expense
+  - name: 'Payments from customers'
+    type: income

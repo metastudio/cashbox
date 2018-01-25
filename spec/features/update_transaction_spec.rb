@@ -1,4 +1,5 @@
-require 'spec_helper'
+require 'rails_helper'
+
 describe 'update transaction', js: true do
   include MoneyHelper
 
@@ -48,8 +49,7 @@ describe 'update transaction', js: true do
     let(:new_amount)  { 5000000 }
     let!(:difference) { transaction.amount - Money.new(new_amount * 100, transaction.currency) }
     let!(:new_total)  { transaction.bank_account.balance - difference }
-    let!(:new_account_balance) { organization.bank_accounts.
-      total_balance(transaction.currency) - difference }
+    let!(:new_account_balance) { organization.bank_accounts.total_balance(transaction.currency) - difference }
 
     before do
       visit root_path
@@ -60,18 +60,16 @@ describe 'update transaction', js: true do
         fill_in 'transaction[amount]', with: new_amount
       end
       click_on 'Update'
+      page.has_content?(/(Please review the problems below)/) # wait
+      visit root_path
     end
 
     it "updates sidebar account balance" do
-      expect(subject).
-        to have_css("#bank_account_#{transaction.bank_account.id} td.amount",
-          text: money_with_symbol(new_account_balance))
+      expect(page).to have_css("#bank_account_#{transaction.bank_account.id} td.amount", text: money_with_symbol(new_account_balance))
     end
 
     it "updates sidebar total balance" do
-       expect(subject).
-        to have_css("#sidebar",
-          text: money_with_symbol(new_total))
+       expect(page).to have_css("#sidebar", text: money_with_symbol(new_total))
     end
   end
 
@@ -89,6 +87,7 @@ describe 'update transaction', js: true do
         select new_account, from: 'transaction[bank_account_id]'
       end
       click_on 'Update'
+      page.has_content?(/(Please review the problems below)/) # wait
     end
 
     it "recalculate boths account's balances" do
@@ -99,4 +98,82 @@ describe 'update transaction', js: true do
     end
   end
 
+  context "when transfer from usd to rub" do
+    let!(:usd_account) { create :bank_account, organization: organization, currency: 'USD' }
+    let!(:rub_account) { create :bank_account, organization: organization, currency: 'RUB' }
+    let(:amount) { 999 }
+    let(:calculate_sum) { 76619.2 }
+    let(:exchange_rate) { "76.6959" }
+
+    before do
+      visit root_path
+      click_on 'Add...'
+      page.has_content?(/(Please review the problems below)/) # wait
+      click_on 'Transfer'
+      select usd_account, from: 'transfer[bank_account_id]'
+      select rub_account, from: 'transfer[reference_id]'
+      fill_in 'transfer[amount]', with: amount
+      fill_in 'transfer[calculate_sum]', with: calculate_sum
+      find('input[name="transfer[exchange_rate]"]').trigger('focus')
+      sleep 1
+    end
+
+    it "calculate exchange rate with four decimal places" do
+      expect(find('input[name="transfer[exchange_rate]"]').value).to eq(exchange_rate)
+    end
+  end
+
+  context "transaction created by invoice" do
+    let!(:invoice) { create :invoice, currency: "USD" }
+    let!(:account) { create :bank_account, currency: "USD", organization: organization }
+    let!(:transaction) { create :transaction, bank_account: account, invoice: invoice, amount: 200}
+
+    before do
+      visit root_path
+      find("##{dom_id(transaction)} .comment").click
+      page.has_css?("##{dom_id(transaction, :edit)}")
+    end
+
+    it "view link to invoice after the fields" do
+      expect(page).to have_link "Created from invoice", href: invoice_path(invoice)
+    end
+  end
+
+  context "transaction created without invoice" do
+    let!(:account) { create :bank_account, currency: "USD", organization: organization }
+    let!(:category) { create :category, :income, organization: organization }
+    let!(:transaction) { create :transaction, bank_account: account, amount: 200}
+
+    before do
+      visit root_path
+      find("##{dom_id(transaction)} .comment").click
+      page.has_css?("##{dom_id(transaction, :edit)}")
+    end
+
+    it "not view link to invoice after the fields" do
+      expect(page).not_to have_link("Created from invoice")
+    end
+  end
+
+  context "transaction form have categories only with transaction category type" do
+    let!(:category) { create :category, :income, organization: organization }
+    let!(:inc_category) { create :category, :income, organization: organization }
+    let!(:exp_category) { create :category, :expense, organization: organization }
+    let!(:transaction) { create :transaction, category: category, bank_account: account }
+
+    before do
+      visit root_path
+      find("##{dom_id(transaction)} .comment").click
+      page.has_css?("##{dom_id(transaction, :edit)}")
+      click_on 'Update'
+    end
+
+    subject { page.all('select#transaction_category_id option').map{ |e| e.text } }
+
+    it "have category name in category_name collection" do
+      expect(subject).to include(category.name);
+      expect(subject).to include(inc_category.name);
+      expect(subject).to_not include(exp_category.name);
+    end
+  end
 end

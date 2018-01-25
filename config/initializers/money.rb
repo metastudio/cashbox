@@ -19,6 +19,11 @@ MoneyRails.configure do |config|
   # Example:
   # config.add_rate "USD", "CAD", 1.24515
   # config.add_rate "CAD", "USD", 0.803115
+  config.add_rate "RUB", "USD", 0.013513
+  config.add_rate "USD", "RUB", 74
+
+  config.add_rate "EUR", "USD", 1.12
+  config.add_rate "USD", "EUR", 0.892
 
   # To handle the inclusion of validations for monetized fields
   # The default value is true
@@ -52,7 +57,7 @@ MoneyRails.configure do |config|
     :priority            => 2,
     :iso_code            => "RUB",
     :name                => "Russian Ruble",
-    :symbol              => "р.",
+    :symbol              => "₽",
     :symbol_first        => false,
     :subunit             => "Kopek",
     :subunit_to_unit     => 100,

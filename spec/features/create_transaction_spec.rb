@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'create transaction', js: true do
   include MoneyHelper
@@ -22,6 +22,7 @@ describe 'create transaction', js: true do
   def create_transaction
     visit root_path
     click_on 'Add...'
+    page.has_content?(/(Please review the problems below)/) # wait
     within '#new_transaction' do
       fill_in 'transaction[amount]', with: amount_str
       select category_name, from: 'transaction[category_id]' if category_name.present?
@@ -83,14 +84,17 @@ describe 'create transaction', js: true do
       before do
         visit root_path
         click_on 'Add...'
+        page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait
         click_on 'Expense'
       end
 
       it "not present income category" do
+        expect(page).to have_css('#new_transaction', visible: true)
         expect(page).to_not have_select('transaction[category_id]', with_options: [category_name])
       end
 
       it "and present expense category" do
+        expect(page).to have_css('#new_transaction', visible: true)
         expect(page).to have_select('transaction[category_id]', with_options: [exp_category_name])
       end
     end
@@ -160,4 +164,34 @@ describe 'create transaction', js: true do
     end
   end
 
+  context "with leave open checked" do
+    before do
+      visit root_path
+      click_on 'Add...'
+      page.has_content?(/(Please review the problems below)/) # wait
+      within '#new_transaction' do
+        fill_in 'transaction[amount]', with: amount_str
+        select category_name, from: 'transaction[category_id]' if category_name.present?
+        select account_name, from: 'transaction[bank_account_id]' if account_name.present?
+        fill_in 'transaction[comment]', with: comment
+        check 'Leave open'
+      end
+      click_on 'Create'
+      page.has_content?(/(Please review the problems below)|(#{amount_str})/) # wait after page rerender
+    end
+
+    it "create transaction" do
+      expect(page).to have_css('#new_transaction', visible: true)
+      expect(page).to have_content("Transaction was created successfully!")
+    end
+
+    it "fill form by old transaction data" do
+      within '#new_transaction' do
+        expect(page).to have_field('Amount', with: amount_str)
+        expect(page).to have_field('Category', with: category.id)
+        expect(page).to have_field('Bank account', with: account.id)
+        expect(page).to have_field('Comment', with: comment)
+      end
+    end
+  end
 end
