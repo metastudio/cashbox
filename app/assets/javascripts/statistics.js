@@ -234,25 +234,25 @@ var drawBalanceChart = function drawBalanceChart(period, scale, step, element) {
         if (selectedItem) {
           var item = chartData.getValue(selectedItem.row, selectedItem.column);
 
-            for (var i = data.length - 1; i >= 0; i--) {
-              if (item == data[i][1]) {
-                var date = new Date(data[i][0]);
-                var year = date.getFullYear();
-                var month = dateNumber(date.getMonth() + 1);
-                var lastDay = new Date(year, month + 1, 0).getDate();
-                window.location.href = "/?q%5Bcategory_type_eq%5D=Income" +
-                  "&q%5Bdate_from%5D=01%2F" + month +"%2F" + year +
-                  "&q%5Bdate_to%5D=" + lastDay + "%2F" + month + "%2F" + year;
-                break;
-              } else if (item == data[i][2]) {
-                window.location.href = "/?q%5Bcategory_type_eq%5D=Expense" +
-                  "&q%5Bdate_from%5D=01%2F" + month +"%2F" + year +
-                  "&q%5Bdate_to%5D=" + lastDay + "%2F" + month + "%2F" + year;
-                break;
-              } else {
-                continue
-              }
-            };
+          for (var i = data.length - 1; i >= 0; i--) {
+            var date = new Date(data[i][0]);
+            var year = date.getFullYear();
+            var month = dateNumber(date.getMonth() + 1);
+            var lastDay = new Date(year, month + 1, 0).getDate();
+            if (item == data[i][1]) {
+              window.location.href = "/?q%5Bcategory_type_eq%5D=Income" +
+                "&q%5Bdate_from%5D=01%2F" + month +"%2F" + year +
+                "&q%5Bdate_to%5D=" + lastDay + "%2F" + month + "%2F" + year;
+              break;
+            } else if (item == data[i][2]) {
+              window.location.href = "/?q%5Bcategory_type_eq%5D=Expense" +
+                "&q%5Bdate_from%5D=01%2F" + month +"%2F" + year +
+                "&q%5Bdate_to%5D=" + lastDay + "%2F" + month + "%2F" + year;
+              break;
+            } else {
+              continue;
+            }
+          }
         }
       }
     }
