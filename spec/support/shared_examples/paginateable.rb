@@ -9,11 +9,11 @@ shared_examples_for 'paginateable' do
         within '.pagination' do
           click_on '1'
         end
-        wait_for_ajax
       end
 
       it 'lists first page items' do
         list.first(paginated).each do |item|
+          wait_for_ajax
           within list_class do
             expect(page).to have_css("##{dom_id(item)}")
           end
@@ -22,6 +22,7 @@ shared_examples_for 'paginateable' do
 
       it 'doesnt list second page items' do
         list.last(paginated).each do |item|
+          wait_for_ajax
           within list_class do
             expect(page).to_not have_css("##{dom_id(item)}")
           end
@@ -38,6 +39,7 @@ shared_examples_for 'paginateable' do
 
       it 'doesnt list first page items' do
         list.first(paginated).each do |item|
+          wait_for_ajax
           within list_class do
             expect(page).to_not have_css("##{dom_id(item)}")
           end
@@ -46,6 +48,7 @@ shared_examples_for 'paginateable' do
 
       it 'lists last page items' do
         list.last(paginated).each do |item|
+          wait_for_ajax
           within list_class do
             expect(page).to have_css("##{dom_id(item)}")
           end
