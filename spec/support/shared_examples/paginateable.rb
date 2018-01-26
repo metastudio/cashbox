@@ -9,6 +9,7 @@ shared_examples_for 'paginateable' do
         within '.pagination' do
           click_on '1'
         end
+        wait_for_ajax
       end
 
       it 'lists first page items' do
