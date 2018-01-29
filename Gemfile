@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0.0.1'
+gem 'rails', '5.0.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -28,7 +28,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'slim-rails'
 gem 'recursive-open-struct'
-gem 'devise'
+gem 'devise', '~> 4.2.1'
 gem 'simple_form'
 gem 'money-rails'
 gem 'kaminari'
@@ -46,7 +46,7 @@ gem 'whenever', require: false
 gem 'cocoon'
 gem 'validates_overlap'
 gem 'date_validator'
-gem 'wicked_pdf'
+gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary'
 gem 'puma', '~> 3.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
