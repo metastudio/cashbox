@@ -5,13 +5,21 @@
       class: 'btn btn-danger'
     = link_to 'Edit', edit_invoice_path(@invoice),
       class: 'btn btn-default'
+    - if @invoice.income_transaction.nil? && @invoice.paid_at.blank?
+        = link_to 'Complete Invoice', new_transaction_path(invoice_id: @invoice.id),
+          remote: true, class: 'btn btn-primary btn-small'
     = link_to 'Download as PDF', invoice_path(@invoice, format: :pdf),
-      class: 'btn btn-default'
-    = link_to 'Back', invoices_path, class: 'btn btn-primary'
+      class: 'btn btn-default', target: '_blank'
 
-  h2 = "Invoice ##{@invoice.number} #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
+  h2
+    => link_to 'Invoices', invoices_path
+    | /
+    =< "Invoice #{@invoice.number.present? ? '#' + @invoice.number : ''} #{@invoice.customer.to_s} from #{invoice_date_range(@invoice)}"
 
 = render 'invoices/invoice_body', invoice: @invoice
 
 = content_for :sidebar
+  = render 'debtors'
   = render 'home/sidebar'
+
+= render 'transactions/modal_form'

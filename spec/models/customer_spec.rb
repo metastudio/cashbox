@@ -11,7 +11,7 @@
 #  invoice_details :text
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Customer do
   context 'association' do

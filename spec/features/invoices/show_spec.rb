@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Invoice show page' do
   include MoneyHelper
@@ -14,7 +14,7 @@ describe 'Invoice show page' do
   subject{ page }
 
   context 'Download as PDF' do
-    let!(:invoice) { create :invoice, :with_items, number: '1234567812345678', organization: org }
+    let(:invoice) { create :invoice, :with_items, number: '1234567812345678', organization: org }
 
     context 'with usual download mode' do
       before do
@@ -41,8 +41,21 @@ describe 'Invoice show page' do
         expect(subject).to have_content(money_with_symbol(invoice.amount))
         expect(subject).to have_content(invoice.invoice_items.last.customer.to_s)
         expect(subject).to have_content(invoice.customer.invoice_details)
-        expect(subject).to have_content(org_ba.invoice_details)
+        expect(subject).to have_content(invoice.organization.bank_accounts.first.invoice_details)
         expect(subject).to have_content("Invoice ##{invoice.number}")
+      end
+    end
+
+    context 'not show number # if number is empty' do
+      let!(:invoice) { create :invoice, :with_items, number: '', organization: org }
+
+      before do
+        visit invoice_path(invoice, format: :pdf, debug: true)
+      end
+
+      it 'show Invoice title without #' do
+        expect(subject).to have_content("Invoice")
+        expect(subject).not_to have_content("#")
       end
     end
   end

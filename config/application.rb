@@ -1,12 +1,7 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 ENV['RANSACK_FORM_BUILDER'] = '::SimpleForm::FormBuilder'
 
-# Pick the frameworks you want:
-require "active_record/railtie"
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "sprockets/railtie"
-# require "rails/test_unit/railtie"
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -36,6 +31,13 @@ module Cashbox
         routing_specs: false,
         controller_specs: false,
         request_specs: false
+    end
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :put, :patch, :delete, :options]
+      end
     end
   end
 end

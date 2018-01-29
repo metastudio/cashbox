@@ -1,0 +1,27 @@
+.exchange-helper {
+  font-size: 80%;
+}
+#total_balance {
+  .totals {
+    margin-bottom: 15px;
+  }
+}
+
+.transactions_list table.transactions tr {
+  cursor: pointer;
+}
+
+@media (max-width: 350px) {
+  .transactions_list { font-size: 10px;}
+}
+
+#toggle_filter {
+  text-decoration: none;
+  font-size: 18px;
+  padding-left: 8px;
+}
+
+.transaction_leave_open .checkbox,
+.transfer_leave_open .checkbox {
+  padding-left: 10px;
+}

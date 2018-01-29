@@ -16,7 +16,7 @@
 #  invoice_details :text
 #
 
-class BankAccount < ActiveRecord::Base
+class BankAccount < ApplicationRecord
   acts_as_list
   acts_as_paranoid
 
@@ -79,6 +79,14 @@ class BankAccount < ActiveRecord::Base
       currencies = Currency.ordered(def_currency)
       all.group_by(&:currency).sort_by do |ba|
         currencies.index(ba.first)
+      end
+    end
+
+    def create_defaults(organization)
+      [*DEFAULT_VALUES[:bank_accounts]].each do |account|
+        organization.bank_accounts.find_or_create_by(
+          name: account
+        )
       end
     end
   end

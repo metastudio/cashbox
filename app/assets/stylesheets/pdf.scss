@@ -1,0 +1,19 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "variables";
+
+.align-right {
+  text-align: right;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.word-break {
+  word-break: break-all;
+}
+
+.invoice-title {
+  color: $title-invoice-color !important;
+}

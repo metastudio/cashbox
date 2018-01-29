@@ -13,9 +13,10 @@
 #  paid_at         :datetime
 #  created_at      :datetime
 #  updated_at      :datetime
+#  number          :string
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe Invoice do
   context 'association' do
@@ -63,6 +64,20 @@ describe Invoice do
       it 'has striped invoice number' do
         expect(invoice.number).to eq 'test test'
       end
+    end
+  end
+
+  describe '#send_notification' do
+    ActiveJob::Base.queue_adapter = :test
+    before { ActiveJob::Base.queue_adapter.enqueued_jobs = [] }
+    let!(:invoice) { create :invoice }
+
+    it 'send notification after creation' do
+      expect(NotificationJob).to have_been_enqueued.with(
+        invoice.organization.name,
+        "Invoice was added",
+        "Invoice was added to organization #{invoice.organization.name}"
+      )
     end
   end
 end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'sign out proccess' do
   let(:user) { create :user }

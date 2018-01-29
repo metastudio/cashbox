@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'customers page list' do
   let(:user) { create :user }
@@ -12,7 +12,7 @@ describe 'customers page list' do
 
   include_context 'customers pagination'
   it_behaves_like 'paginateable' do
-    let!(:list)      { create_list :customer, customers_count, organization: org }
+    let!(:list)      { create_list(:customer, customers_count, organization: org); org.customers.ordered }
     let(:list_class) { '.customers' }
     let(:list_page)  { customers_path }
   end

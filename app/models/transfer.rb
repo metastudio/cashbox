@@ -2,14 +2,15 @@ class Transfer
   include ActiveModel::Validations
   include ActiveModel::Validations::Callbacks
   include MoneyRails::ActionViewExtension
+  include MainPageRefresher
 
   attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
     :bank_account, :bank_account_id, :reference_id, :date,
     :inc_transaction, :out_transaction, :exchange_rate,
-    :from_currency, :to_currency, :calculate_sum
+    :from_currency, :to_currency, :calculate_sum, :created_by, :leave_open
 
-  validates :amount, presence: true,
-    numericality: { less_than_or_equal_to: Dictionaries.money_max }
+  validates :amount, presence: true, numericality:
+    { less_than_or_equal_to: Dictionaries.money_max, other_than: 0 }
   validates :comission, numericality: { greater_than_or_equal_to: 0 },
     length: { maximum: 10 }, allow_blank: true
   validates :calculate_sum, numericality: { greater_than_or_equal_to: 0 },
@@ -37,14 +38,16 @@ class Transfer
         bank_account_id: bank_account_id, comment: form_comment(comment),
         date: date,
         category_id: Category.find_or_create_by(
-          Category::CATEGORY_BANK_EXPENSE_PARAMS).id)
+          Category::CATEGORY_BANK_EXPENSE_PARAMS).id,
+        created_by: created_by)
 
       @inc_transaction = Transaction.new(
         amount_cents: estimate_amount(out = false),
         bank_account_id: reference_id, comment: form_comment(comment),
         date: date,
         category_id: Category.find_or_create_by(
-          Category::CATEGORY_BANK_INCOME_PARAMS).id)
+          Category::CATEGORY_BANK_INCOME_PARAMS).id,
+        created_by: created_by)
 
       if @out_transaction.invalid?
         parse_errors(@out_transaction)
@@ -56,6 +59,14 @@ class Transfer
         @out_transaction.save
         @inc_transaction.transfer_out_id = @out_transaction.id
         @inc_transaction.save
+        NotificationJob.perform_later(
+          bank_account.organization.name,
+          "Transfer was created",
+          "Transfer was created in #{bank_account.name} bank account")
+        MainPageRefreshJob.perform_later(
+          bank_account.organization.name,
+          prepare_data(@inc_transaction)
+        )
         return true
       end
     else

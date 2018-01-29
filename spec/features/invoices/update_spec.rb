@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Update invoice', js: true do
   include MoneyHelper
@@ -13,14 +13,13 @@ describe 'Update invoice', js: true do
 
   before do
     sign_in user
-    visit invoices_path
   end
 
   context 'Update invoice without invoice items' do
     before do
-      within "##{dom_id(invoice)}" do
-        click_on 'Edit'
-      end
+      visit invoice_path(invoice)
+      click_on 'Edit'
+
       page.execute_script("$(\"##{dom_id(invoice, :edit)} #invoice_amount\").val('');")
       select2 customer2.name, css: '#s2id_invoice_customer_name', search: true
       fill_in 'invoice[amount]', with: new_amount
@@ -36,9 +35,9 @@ describe 'Update invoice', js: true do
     let(:new_item_amount) { Money.new(1000, invoice_with_items.currency) }
 
     before do
-      within "##{dom_id(invoice_with_items)}" do
-        click_on 'Edit'
-      end
+      visit invoice_path(invoice_with_items)
+      click_on 'Edit'
+
       page.execute_script("$('#invoice .nested-fields:first input.nested-amount').val('');")
       first('#invoice .nested-fields input.nested-amount').set(new_item_amount)
       click_on 'Update Invoice'
@@ -52,6 +51,7 @@ describe 'Update invoice', js: true do
 
     context 'invoice amount must be disabled then invoice has items' do
       before do
+        visit invoice_path(invoice_with_items)
         click_on 'Edit'
       end
 

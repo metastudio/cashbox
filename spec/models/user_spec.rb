@@ -21,7 +21,7 @@
 #  full_name              :string(255)      not null
 #
 
-require 'spec_helper'
+require 'rails_helper'
 
 describe User do
   context "association" do
@@ -29,6 +29,7 @@ describe User do
     it { should have_many(:own_organizations).class_name('Organization').through(:members).dependent(:restrict_with_error) }
     it { should have_many(:members).dependent(:destroy) }
     it { should have_many(:organizations).through(:members) }
+    it { should have_many(:transactions).dependent(:nullify) }
   end
 
   context "validations" do

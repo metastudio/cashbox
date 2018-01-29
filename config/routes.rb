@@ -1,4 +1,7 @@
+require 'api_constraints'
+
 Cashbox::Application.routes.draw do
+  apipie
   devise_for :users, controllers: { registrations: 'user/registrations' }
   as :user do
     get 'user/profile' => 'users/registrations#edit', as: :user_profile
@@ -15,6 +18,12 @@ Cashbox::Application.routes.draw do
       put :switch
     end
   end
+  get 'organization_wizzard/new_account', to: 'organization_wizzard#new_account', as: :new_account_organization
+  get 'organization_wizzard/new_category', to: 'organization_wizzard#new_category', as: :new_category_organization
+  post 'organization_wizzard/default_account', to: 'organization_wizzard#create_default_accounts', as: :default_account_organization
+  post 'organization_wizzard/default_category', to: 'organization_wizzard#create_default_categories', as: :default_category_organization
+  patch 'organization_wizzard/create_accounts', to: 'organization_wizzard#create_accounts', as: :create_accounts_organization
+  patch 'organization_wizzard/create_categories', to: 'organization_wizzard#create_categories', as: :create_categories_organization
   resources :statistics, only: :index do
     get :income_by_customers, on: :collection, as: :income_by_customers
     get :expense_by_customers, on: :collection, as: :expense_by_customers
@@ -23,6 +32,7 @@ Cashbox::Application.routes.draw do
     get :totals_by_customers, on: :collection, as: :totals_by_customers
     get :balances_by_customers, on: :collection, as: :balances_by_customers
     get :balance, on: :collection, as: :balance
+    get :customers_chart, on: :collection, as: :customers_chart
   end
   resources :bank_accounts, except: :show do
     put :hide, on: :member
@@ -37,9 +47,35 @@ Cashbox::Application.routes.draw do
     get 'autocomplete', on: :collection
   end
   resources :invoices do
+    get 'unpaid', on: :collection
     resources :invoice_items, except: :show
   end
-  resources :invitations, only: [:new, :create, :destroy]
+  resources :invitations, only: [:new, :create]
+  resources :organization_invitations, only: [:new, :create, :destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
-  get '/invitation/:token/resend' => 'invitations#resend', as: :resend_invitation
+  get '/organization_invitation/:token/resend' => 'organization_invitations#resend', as: :resend_organization_invitation
+  get '/unsubscribes/:token' => 'unsubscribes#activate', as: :activate_unsubscribe
+  mount ActionCable.server => "/cable"
+
+  # API
+  namespace :api, defaults: {format: 'json'} do
+    scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
+      devise_for :users, skip: :sessions, controllers: { passwords: 'api/v1/passwords' }
+      post :auth_token, to: 'auth_token#create'
+
+      get :user_info, to: 'users#current'
+      get :currencies, to: 'base#currencies'
+      resources :organizations, only: [:show, :index, :create, :update, :destroy] do
+        resources :bank_accounts, only: [:show, :index, :create, :update, :destroy]
+        resources :categories, only: [:show, :index, :create, :update, :destroy]
+        resources :customers, only: [:show, :index, :create, :update, :destroy]
+        resources :transactions, only: [:show, :index, :create, :update, :destroy]
+        resources :members, only: [:index, :update, :destroy]
+        get :total_balances, on: :member
+        resources :organization_invitations, only: [:index, :show, :create, :destroy] do
+          post :resend, on: :member
+        end
+      end
+    end
+  end
 end
