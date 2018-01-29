@@ -1,7 +1,7 @@
 .page-header
   h1 Listing members
 
-table.table.table-hover
+table.table.table-hover.responsive data-min=8 data-max=30
   thead
     tr
       th.col-sm-3 User
@@ -16,7 +16,7 @@ table.table.table-hover
 
 #role_modal_container
 
-= render 'invitations/invitations', invitations: @invitations
+= render 'organization_invitations/invitations', invitations: @invitations
 
 = content_for :sidebar
   = render 'home/settings'

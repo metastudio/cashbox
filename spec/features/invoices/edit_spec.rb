@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Edit invoice', js: true do
   let(:user)          { create :user }
@@ -8,7 +8,7 @@ describe 'Edit invoice', js: true do
 
   before do
     sign_in user
-    visit invoices_path
+    visit invoice_path(invoice)
   end
 
   context 'Edit invoice' do
@@ -16,7 +16,7 @@ describe 'Edit invoice', js: true do
       click_on 'Edit'
     end
 
-    it { expect(page).to have_content 'Edit invoice' }
+    it { expect(page).to have_content "Invoice #{invoice.number} #{invoice.customer} / Edit" }
     it { expect(page).to have_content 'Invoice items' }
     it { expect(page).to have_link 'Add item' }
 

@@ -1,7 +1,8 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Invite process' do
-  let(:admin_member) { create :member, :admin }
+  let(:organization) { create :organization }
+  let(:admin_member) { create :member, :admin, organization: organization }
   let(:email)        { generate :email }
 
   before do
@@ -12,36 +13,34 @@ describe 'Invite process' do
   context 'a new user' do
     before do
       fill_in 'Email', with: email
-      select 'Admin', from: 'Role'
       click_on 'Invite'
     end
 
     it { expect(page).to have_content('An invitation was created successfully') }
     it { expect(current_path).to eq new_invitation_path }
 
-    context 'when an invitation has already been sent' do
-      before do
-        visit new_invitation_path
-        fill_in 'Email', with: email
-        select 'Admin', from: 'Role'
-        click_on 'Invite'
-      end
-
-      it { expect(page).to have_content('An invitation has already been sent') }
-    end
-
-    context 'when created invite' do
-      subject { Invitation.last }
-
-      it { expect(subject.email).to eq email }
-      it { expect(subject.invited_by_id).to eq admin_member.id  }
-    end
 
     describe 'sent email' do
-      before { open_email email }
+      before do
+        open_email email
+      end
 
-      it { expect(current_email).to have_content("You are invited to #{admin_member.organization.name} as admin")  }
+      it { expect(current_email).to have_content("You are invited to CASHBOX")  }
       it { expect(current_email).to have_link 'Accept'}
+    end
+  end
+
+  context "invite already created user" do
+    let(:password) { SecureRandom.hex(10) }
+    let(:user) { create :user, password: password }
+
+    before do
+      fill_in 'Email', with: user.email
+      click_on 'Invite'
+    end
+
+    it "not invite already creted user" do
+      expect(page).to have_content("User already registered in system")
     end
   end
 end

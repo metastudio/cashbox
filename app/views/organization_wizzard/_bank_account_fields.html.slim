@@ -1,0 +1,8 @@
+.bank_account_fields
+  = f.input :name
+  = f.input :description
+  = f.input :invoice_details
+  - unless f.object.persisted?
+    = f.input :residue, input_html: { class: 'amount' }
+  = f.input :currency, collection: Currency.ordered, include_blank: false
+  hr

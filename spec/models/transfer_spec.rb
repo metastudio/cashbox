@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'transfer'
 
 describe Transfer do
@@ -13,6 +13,7 @@ describe Transfer do
       is_greater_than_or_equal_to(0) }
     it { should validate_length_of(:comission).is_at_most(10) }
     it { should validate_presence_of(:reference_id) }
+    it { should validate_numericality_of(:amount).is_less_than_or_equal_to(Dictionaries.money_max) }
 
     context "custom validations" do
 
@@ -77,6 +78,18 @@ describe Transfer do
             end
           end
         end
+
+        context 'when has commission' do
+          let(:from) { create :bank_account }
+          let(:to)   { create :bank_account }
+          let(:transfer) { build :transfer, bank_account_id: from.id, reference_id: to.id,
+            amount: 0, comission: 0 }
+
+          it 'is invalid' do
+            expect(subject).to be_invalid
+            expect(subject.errors_on(:amount)).to include("must be other than 0")
+          end
+        end
       end
     end
   end
@@ -134,6 +147,21 @@ describe Transfer do
 
         #it { expect(transfer.errors.messages[:amount]).to include('Balance overflow') }
       end
+    end
+  end
+
+  describe '#send_notification' do
+    ActiveJob::Base.queue_adapter = :test
+    before { ActiveJob::Base.queue_adapter.enqueued_jobs = [] }
+    let!(:account) { create :bank_account }
+    let!(:transfer) { create :transfer, bank_account_id: account.id }
+
+    it 'send notification after creation' do
+      expect(NotificationJob).to have_been_enqueued.with(
+        account.organization.name,
+        "Transfer was created",
+        "Transfer was created in #{account.name} bank account"
+      )
     end
   end
 end

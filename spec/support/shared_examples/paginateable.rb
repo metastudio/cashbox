@@ -12,7 +12,7 @@ shared_examples_for 'paginateable' do
       end
 
       it 'lists first page items' do
-        list.last(paginated).reverse.each do |item|
+        list.first(paginated).each do |item|
           within list_class do
             expect(page).to have_css("##{dom_id(item)}")
           end
@@ -20,7 +20,7 @@ shared_examples_for 'paginateable' do
       end
 
       it 'doesnt list second page items' do
-        list.first(paginated).each do |item|
+        list.last(paginated).each do |item|
           within list_class do
             expect(page).to_not have_css("##{dom_id(item)}")
           end
@@ -36,7 +36,7 @@ shared_examples_for 'paginateable' do
       end
 
       it 'doesnt list first page items' do
-        list.last(paginated).each do |item|
+        list.first(paginated).each do |item|
           within list_class do
             expect(page).to_not have_css("##{dom_id(item)}")
           end
@@ -44,7 +44,7 @@ shared_examples_for 'paginateable' do
       end
 
       it 'lists last page items' do
-        list.first(paginated).each do |item|
+        list.last(paginated).each do |item|
           within list_class do
             expect(page).to have_css("##{dom_id(item)}")
           end

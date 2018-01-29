@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe 'Create invoice', js: true do
   include MoneyHelper
@@ -7,6 +7,26 @@ describe 'Create invoice', js: true do
   let!(:organization) { create :organization, with_user: user }
   let!(:customer)     { create :customer, organization: organization }
   let(:amount)        { Money.new(1000) }
+  let(:first_item_amount) { Money.new(1100) }
+  let(:last_item_amount)  { Money.new(1200) }
+  let(:total_amount)      { Money.new(first_item_amount + last_item_amount) }
+
+  def new_invoice_with_item(hours)
+    click_on 'New Invoice'
+    select2 customer.name, css: '#s2id_invoice_customer_name', search: true
+    fill_in 'Ends at', with: Date.current.strftime('%d/%m/%Y')
+    click_on 'Add item'
+    first('#invoice .nested-fields input.nested-amount').set(first_item_amount)
+    first('#invoice .nested-fields input.nested-hours').set('1.1')
+    first('#invoice .nested-fields textarea.nested-description').set('First Nested Description')
+    click_on 'Add item'
+    within all('#invoice .nested-fields').last do
+      find('input.nested-amount').set(last_item_amount)
+      find('input.nested-hours').set(hours)
+      find('textarea.nested-description').set('Last Nested Description')
+    end
+    click_on 'Create Invoice'
+  end
 
   before do
     sign_in user
@@ -31,26 +51,7 @@ describe 'Create invoice', js: true do
   end
 
   context 'Create invoice with items' do
-    let(:first_item_amount) { Money.new(1100) }
-    let(:last_item_amount)  { Money.new(1200) }
-    let(:total_amount)      { Money.new(first_item_amount + last_item_amount) }
-
-    before do
-      click_on 'New Invoice'
-      select2 customer.name, css: '#s2id_invoice_customer_name', search: true
-      fill_in 'Ends at', with: Date.current.strftime('%d/%m/%Y')
-      click_on 'Add item'
-      first('#invoice .nested-fields input.nested-amount').set(first_item_amount)
-      first('#invoice .nested-fields input.nested-hours').set('1.1')
-      first('#invoice .nested-fields textarea.nested-description').set('First Nested Description')
-      click_on 'Add item'
-      within all('#invoice .nested-fields').last do
-        find('input.nested-amount').set(last_item_amount)
-        find('input.nested-hours').set('2.1')
-        find('textarea.nested-description').set('Last Nested Description')
-      end
-      click_on 'Create Invoice'
-    end
+    before { new_invoice_with_item('2.1') }
 
     it { expect(page).to have_css('td', text: money_with_symbol(total_amount)) }
     it { expect(page).to have_css('td', text: money_with_symbol(first_item_amount)) }
@@ -84,5 +85,11 @@ describe 'Create invoice', js: true do
     end
   end
 
+  context "add negative item hours" do
+    before { new_invoice_with_item('-5') }
 
+    it "return validation error of hours input" do
+      expect(page).to have_content('must be greater than 0')
+    end
+  end
 end

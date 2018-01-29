@@ -11,9 +11,9 @@ module LayoutHelper
     css_class
   end
 
-  def show_amount_with_tooltip(amount)
+  def show_amount_with_tooltip(amount, default_currency)
     cb = Money.default_bank
-    def_curr = current_organization.default_currency
+    def_curr = default_currency
     show_tooltip_with_text("#{amount.currency}/#{def_curr}, rate: #{cb.get_rate(amount.currency, def_curr).round(4)}, by #{l cb.rates_updated_at}")
   end
 
@@ -23,6 +23,46 @@ module LayoutHelper
   end
 
   def submit_title
-    params['action'] == 'new' ? 'Create' : 'Update'
+    if  params['action'] == 'new'
+      'Create'
+    else
+      'Update'
+    end
+  end
+
+  def invoices_debt(debtor)
+    if debtor.is_a? Customer
+      str = h "#{debtor.name}:"
+    else
+      str = "All customers:"
+    end
+    cb = Money.default_bank
+    def_curr = current_organization.default_currency
+    debtor.invoices.unpaid.group(:currency).sum(:amount_cents).each do |currency, amount_cents|
+      m = Money.new(amount_cents, currency)
+
+      if def_curr == currency
+        str += " #{m.format};"
+      else
+        str += " #{m.format} (#{m.exchange_to(def_curr).format} "
+        str += show_tooltip_with_text("#{currency}/#{def_curr}, \
+          rate: #{cb.get_rate(currency, def_curr).round(4)}, by #{l cb.rates_updated_at}")
+        str += ");"
+      end
+    end
+
+    str.html_safe
+  end
+
+  def total_invoices_debt
+    str = "<strong>Total: "
+    total = current_organization.total_invoice_debt
+    str += "#{total}"
+    str += "</strong>"
+    str.html_safe
+  end
+
+  def transaction_type_id(transaction)
+    "##{transaction.get_type}"
   end
 end

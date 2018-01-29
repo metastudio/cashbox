@@ -4,11 +4,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
   include Pundit
 
-  before_filter :authenticate_user!
-  before_filter :configure_permitted_parameters, if: :devise_controller?
+  before_action :authenticate_user!
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   helper_method :current_organization
   helper_method :current_member
+  helper_method :params_unsafe_hash
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -31,6 +32,16 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def redirect_for_not_ready_organization
+    unless request.xhr?
+      organization_wizzard = OrganizationWizzard.new(current_organization)
+      if current_member.owner_or_admin? && organization_wizzard.continue?
+        flash.keep
+        redirect_to organization_wizzard.step_url
+      end
+    end
+  end
+
   def update_last_viewed_at
     current_member.update(last_visited_at: Time.current) if current_member
   end
@@ -45,7 +56,19 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:account_update) << [:full_name, profile_attributes: [:phone_number, :avatar]]
-    devise_parameter_sanitizer.for(:sign_up) << [:full_name]
+    devise_parameter_sanitizer.permit(:account_update, keys: [:full_name, profile_attributes: [:phone_number, :avatar]])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:full_name])
+  end
+
+  def invitation_congratulation(invitation)
+    if invitation.type == 'OrganizationInvitation'
+      "You joined #{invitation.organization.name}."
+    else
+      "You joined CASHBOX."
+    end
+  end
+
+  def params_unsafe_hash
+    params.to_unsafe_h
   end
 end

@@ -1,6 +1,6 @@
-= simple_form_for(transaction, remote: true, html: { class: 'form-horizontal transaction' },
-    wrapper: :horizontal_form) do |f|
+= simple_form_for(transaction, remote: true, html: { class: 'form-horizontal transaction' }, wrapper: :horizontal_form, wrapper_mappings: { boolean: :checkbox }) do |f|
   = f.error_notification
+  .alert.alert-success role="alert" style='display: none;' Transaction was created successfully!
 
   = f.input :amount, input_html: { value: f.object.amount == 0 ? nil : f.object.amount, maxlength: 25 }
 
@@ -11,12 +11,14 @@
       collection: current_organization.categories.where(type: type),
       prompt: 'Category', value_method: :id,
       selected: @q.nil? ? f.object.category_id \
-        : (@q.category_id_in ? @q.category_id_in : nil)
+        : (@q.category_id_in ? @q.category_id_in : nil),
+      required: true
   - else
-    = f.association :category, as: :grouped_select,
-      collection: current_organization.categories.grouped_by_type,
-      group_method: :last, prompt: 'Category', value_method: :id,
-      selected: f.object.category_id
+    = f.association :category, as: :select,
+      collection: current_organization.categories.where(type: f.object.category.type),
+      prompt: 'Category', value_method: :id,
+      selected: f.object.category_id,
+      required: true
 
   - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
     = f.simple_fields_for :transfer_out, transaction.transfer_out do |t|
@@ -25,10 +27,7 @@
       = t.input :customer_id, as: :hidden
       = t.input :comment, as: :hidden
       = t.input :date, as: :hidden
-      = t.association :bank_account, as: :grouped_select,
-        collection: current_organization.bank_accounts.visible.positioned.grouped_by_currency(current_organization.default_currency),
-        prompt: 'Bank account', group_method: :last, label: 'From',
-        selected: t.object.bank_account_id
+      = t.input :bank_account, disabled: true
   - elsif @invoice.present? || f.object.invoice_id
     = f.input :customer_name, disabled: true,
       input_html: { value: current_organization.find_customer_name_by_id(f.object.customer_id) }
@@ -38,7 +37,9 @@
       value: @q.nil? ? current_organization.find_customer_name_by_id(f.object.customer_id) \
         : (@q.customer_id_eq ? current_organization.find_customer_name_by_id(@q.customer_id_eq) : nil) } }
 
-  - if @invoice.present? || f.object.invoice_id
+  - if transaction.transfer? && (params[:action] == 'edit' || params[:action] == 'update')
+    = f.input :bank_account, disabled: true
+  - elsif @invoice.present? || f.object.invoice_id
     = f.association :bank_account, as: :grouped_select,
       collection: current_organization.bank_accounts.by_currency(@invoice.present? ? @invoice.currency \
       : current_organization.invoices.find_by(id: f.object.invoice_id).try(:currency)).visible.positioned.grouped_by_currency(current_organization.default_currency),
@@ -62,6 +63,11 @@
   = f.input :comment
 
   = f.input :date, as: :string, placeholder: 'Date',
-    input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date.to_date) : nil }
+    input_html: { class: 'datepicker', value: f.object.date.present? ? l(f.object.date.to_date) : nil }, required: false
+
+  - if transaction.invoice.present? && f.object.persisted?
+    = link_to "Created from invoice", invoice_path(transaction.invoice), class: 'pull-right'
 
   = f.input :invoice_id, as: :hidden
+  - unless transaction.persisted? || @invoice.present? || f.object.invoice_id
+    = f.input :leave_open, as: :boolean, wrapper_html: { class: 'col-sm-6 pull-left' }, input_html: { id: "leave_open_#{type}" }

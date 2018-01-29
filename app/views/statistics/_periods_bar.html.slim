@@ -1,33 +1,65 @@
 .row
   .col-md-12
     h4 Balance
-    .balance-chart#main-balance data-url=balance_statistics_path
+    .panel.with-nav-tabs
+      .panel-heading
+        ul.nav.nav-tabs#balance_scale data-scale="#{ params[:balance_scale] || 'months' }"
+          li class="#{(params[:balance_scale].present? && params[:balance_scale] != 'months') ? '' : 'active'}"
+            = link_to 'Months', '#months', data: { toggle: 'tab', scale: 'months' }
+          li class="#{(params[:balance_scale].present? && params[:balance_scale] == 'quarters') ? 'active' : ''}"
+            = link_to 'Quarters', '#quarters', data: { toggle: 'tab', scale: 'quarters' }
+          li class="#{(params[:balance_scale].present? && params[:balance_scale] == 'years') ? 'active' : ''}"
+            = link_to 'Years', '#years', data: { toggle: 'tab', scale: 'years' }
+    .balance-chart-wrapper
+      .balance-chart#main-balance data-url=balance_statistics_path(format: :json)
+      .balance-chart.spinner-backround.hide
+        .loader Loading...
+    .row#balance_navigation data-step="#{ params[:balance_step] || 0 }"
+      .col-xs-6.left_step_wrapper
+        = link_to '&#8592;'.html_safe, '#left-step', class: 'pull-right left-step'
+        span.pull-right.hide = '&#8592;'.html_safe
+      .col-xs-6.right_step_wrapper
+        = link_to '&#8594;'.html_safe, '#right-step', class: 'right-step hide'
+        span = '&#8594;'.html_safe
+    br
+    h4 Customers income/expense by months
+    .panel.with-nav-tabs
+      .panel-heading
+        ul.nav.nav-tabs#customers_chart data-type="#{ params[:customers_type] || 'income'}"
+          li class="#{(params[:customers_type].present? && params[:customers_type] != 'income') ? '' : 'active'}"
+            = link_to 'Income', '#months', data: { toggle: 'tab', type: 'income' }
+          li class="#{(params[:customers_type].present? && params[:customers_type] == 'expense') ? 'active' : ''}"
+            = link_to 'Expense', '#years', data: { toggle: 'tab', type: 'expense' }
+    br
+    .customers-chart#customers-chart data-url=customers_chart_statistics_path(format: :json)
+    br
     .panel.with-nav-tabs
       .panel-heading
         ul.nav.nav-tabs#periods_bar
-          li.active
+          li class="#{(params[:customers_period].present? && params[:customers_period] != 'current-month') ? '' : 'active'}"
             = link_to 'Current month', '#current-month', data: { toggle: 'tab', period: 'current-month' }
-          li
+          li class="#{(params[:customers_period].present? && params[:customers_period] == 'prev-month') ? 'active' : ''}"
             = link_to 'Previous month', '#previous-month', data: { toggle: 'tab', period: 'prev-month' }
-          li
+          li class="#{(params[:customers_period].present? && params[:customers_period] == 'last-3-months') ? 'active' : ''}"
             = link_to 'Last 3 month', '#last-3-months', data: { toggle: 'tab', period: 'last-3-months' }
-          li
+          li class="#{(params[:customers_period].present? && params[:customers_period] == 'quarter') ? 'active' : ''}"
             = link_to 'Current quarter', '#current-quarter', data: { toggle: 'tab', period: 'quarter' }
-          li
+          li class="#{(params[:customers_period].present? && params[:customers_period] == 'this-year') ? 'active' : ''}"
             = link_to 'This year', '#this-year', data: { toggle: 'tab', period: 'this-year' }
-          li
+          li class="#{(params[:customers_period].present? && params[:customers_period] == 'all-time') ? 'active' : ''}"
             = link_to 'All time', '#all-time', data: { toggle: 'tab', period: 'all-time' }
       .panel-body
         .tab-content
-          .tab-pane#current-month.active
+          = params[:customers_period]
+          .tab-pane#current-month class="#{(params[:customers_period].present? && params[:customers_period] != 'current-month') ? '' : 'active'}"
             = render 'pie_charts', period: 'current-month'
-          .tab-pane#previous-month
+          .tab-pane#previous-month class="#{(params[:customers_period].present? && params[:customers_period] == 'prev-month') ? 'active' : ''}"
             = render 'pie_charts', period: 'prev-month'
-          .tab-pane#last-3-months
+          .tab-pane#last-3-months class="#{(params[:customers_period].present? && params[:customers_period] == 'last-3-months') ? 'active' : ''}"
             = render 'pie_charts', period: 'last-3-months'
-          .tab-pane#current-quarter
+          .tab-pane#current-quarter class="#{(params[:customers_period].present? && params[:customers_period] == 'quarter') ? 'active' : ''}"
             = render 'pie_charts', period: 'quarter'
-          .tab-pane#this-year
+          .tab-pane#this-year class="#{(params[:customers_period].present? && params[:customers_period] == 'this-year') ? 'active' : ''}"
             = render 'pie_charts', period: 'this-year'
-          .tab-pane#all-time
+          .tab-pane#all-time class="#{(params[:customers_period].present? && params[:customers_period] == 'all-time') ? 'active' : ''}"
             = render 'pie_charts', period: 'all-time'

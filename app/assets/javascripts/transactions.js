@@ -1,6 +1,6 @@
 $(function () {
   addTransactionFormMasks();
-  addTranferFormMasks();
+  addTransferFormMasks();
   showHidePeriodAdditionalInput();
 
   $('#q_amount_eq').inputmask('customized_currency');
@@ -65,6 +65,8 @@ $(function () {
   });
 
   $(document).on('click', '#submit_btn', function(e) {
+    $(this).prop('disabled', true);
+    e.preventDefault();
     if ($(".tab-pane.active").attr('id') == 'transfer') {
       $('.tab-pane.active #new_transfer_form').submit();
     } else {
@@ -100,7 +102,7 @@ function showHideExchangeRate(fromCurr, toCurr) {
     var amount = parseFloat($('#transfer_amount').val().replace(/\,/g,''));
     var sum = parseFloat($('#transfer_calculate_sum').val().replace(/\,/g,''));
     if (amount && sum) {
-      var rate = (sum/amount).toFixed(2);
+      var rate = (sum/amount).toFixed(4);
       $transferRate.parents('#rate_col').find('#transfer_exchange_rate').val(rate);
     }
   }
@@ -175,7 +177,7 @@ function addTransactionFormMasks() {
   addCustomerSelect2('.customer-select2');
 }
 
-function addTranferFormMasks() {
+function addTransferFormMasks() {
   var $form = $("form.transfer");
   $form.find("input[name='transfer[amount]']").inputmask('customized_currency');
   $form.find("input[name='transfer[comission]']").inputmask('customized_currency');
@@ -183,3 +185,15 @@ function addTranferFormMasks() {
   $form.find("input[name='transfer[exchange_rate]']").inputmask('rate');
   datepickerInit($form.find('#transfer_date.datepicker'));
 }
+
+function addTransactionToList (element_id, element, sidebar, total_balance) {
+  $(element).prependTo('.transactions').hide().fadeIn(1000);
+  var bgc = $(element_id).css('backgroundColor');
+  $(element_id).addClass('new-transaction');
+  $(element_id).animate({
+    backgroundColor: bgc,
+  }, 1000 );
+  $("#sidebar").replaceWith(sidebar);
+  $("#total_balance").replaceWith(total_balance);
+}
+

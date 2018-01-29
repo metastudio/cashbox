@@ -1,0 +1,11 @@
+#debtors
+  h2 Debtor customers
+  - if current_organization.invoice_debtors.count > 0
+    = render partial: 'debtor', collection: current_organization.invoice_debtors, as: :debtor
+    hr
+    p = invoices_debt(current_organization)
+    p = total_invoices_debt
+  - else
+    | No debtors at the moment.
+
+

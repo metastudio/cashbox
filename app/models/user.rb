@@ -19,18 +19,25 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  full_name              :string(255)      not null
+#  subscribed             :boolean          default(TRUE)
 #
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_one :profile, inverse_of: :user, dependent: :destroy
   has_many :own_organizations,
     -> { where members: { role: "owner" } },
     through: :members, source: :organization, dependent: :restrict_with_error, inverse_of: :owners
   has_many :members, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :members
-  has_many :invitations, foreign_key: :email, primary_key: :email, inverse_of: :user
+  has_many :invitations, foreign_key: :email, primary_key: :email, inverse_of: :user, class_name: 'InvitationBase'
+  has_many :transactions, foreign_key: :created_by_id, dependent: :nullify
+  has_many :notifications, inverse_of: :user
+  has_one  :unsubscribe, inverse_of: :user
+  has_many :created_invitations, class_name: 'Invitation',
+    foreign_key: :invited_by_id, dependent: :destroy
 
   accepts_nested_attributes_for :profile, update_only: true
+  accepts_nested_attributes_for :unsubscribe, update_only: true
 
   devise :database_authenticatable, :recoverable, :rememberable, :trackable, :validatable, :lockable
 
@@ -38,6 +45,7 @@ class User < ActiveRecord::Base
   validates :password, :password_confirmation, length: { maximum: 30 }
 
   before_create :build_profile, if: ->{ profile.blank? }
+  after_create :link_unsubscribe
 
   delegate :avatar, to: :profile
 
@@ -45,5 +53,18 @@ class User < ActiveRecord::Base
 
   def to_s
     full_name.truncate(30)
+  end
+
+  def authenticate(password)
+    self.valid_password? password
+  end
+
+  def locked?
+    self.locked_at.present?
+  end
+
+  def link_unsubscribe
+    unsubscribe = Unsubscribe.find_or_create_by(email: email)
+    update_attributes(unsubscribe: unsubscribe)
   end
 end

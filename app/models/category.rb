@@ -12,7 +12,7 @@
 #  deleted_at      :datetime
 #
 
-class Category < ActiveRecord::Base
+class Category < ApplicationRecord
   CATEGORY_INCOME  = 'Income'
   CATEGORY_EXPENSE = 'Expense'
   CATEGORY_TRANSFERS = 'Transfers'
@@ -57,6 +57,15 @@ class Category < ActiveRecord::Base
         [CATEGORY_EXPENSE, expenses - transfers],
         [CATEGORY_TRANSFERS, receipts]
       ]
+    end
+
+    def create_defaults(organization)
+      [*DEFAULT_VALUES[:categories]].each do |category|
+        organization.categories.find_or_create_by(
+          name: category['name'].capitalize,
+          type: category['type'].capitalize
+        )
+      end
     end
   end
 
