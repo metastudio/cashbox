@@ -88,8 +88,8 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'capybara'
+  gem "capybara-webkit"
   gem 'capybara-email'
-  gem 'poltergeist'
   gem 'capybara-select2'
   gem 'capybara-screenshot'
   gem 'timecop'

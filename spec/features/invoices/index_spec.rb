@@ -91,13 +91,12 @@ describe 'invoices index page', js: true do
       expect(page).to have_content("Total amount: #{invoice.amount - comission}" )
     end
 
-    subject{ create_transaction_by_invoice; wait_for_ajax; page }
+    subject{ create_transaction_by_invoice; page }
 
     context 'update invoice paid_at after create transaction' do
       before do
         create_transaction_by_invoice
         visit invoices_path
-        wait_for_ajax
       end
 
       it 'invoice paid_at must present' do
@@ -116,7 +115,6 @@ describe 'invoices index page', js: true do
         before do
           create_transaction_by_invoice
           visit root_path
-          wait_for_ajax
         end
 
         it 'shows created transaction in transactions list' do
@@ -163,7 +161,6 @@ describe 'invoices index page', js: true do
     before do
       Money.default_currency = :usd
       visit invoices_path
-      wait_for_ajax
     end
 
     it "displays debtors" do
