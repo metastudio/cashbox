@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'invoices index page' do
+describe 'invoices index page', js: true do
   let(:user) { create :user }
   let(:org)  { create :organization, with_user: user }
 
@@ -91,12 +91,13 @@ describe 'invoices index page' do
       expect(page).to have_content("Total amount: #{invoice.amount - comission}" )
     end
 
-    subject{ create_transaction_by_invoice; page }
+    subject{ create_transaction_by_invoice; wait_for_ajax; page }
 
     context 'update invoice paid_at after create transaction' do
       before do
         create_transaction_by_invoice
         visit invoices_path
+        wait_for_ajax
       end
 
       it 'invoice paid_at must present' do
@@ -115,6 +116,7 @@ describe 'invoices index page' do
         before do
           create_transaction_by_invoice
           visit root_path
+          wait_for_ajax
         end
 
         it 'shows created transaction in transactions list' do
@@ -161,6 +163,7 @@ describe 'invoices index page' do
     before do
       Money.default_currency = :usd
       visit invoices_path
+      wait_for_ajax
     end
 
     it "displays debtors" do
@@ -174,7 +177,8 @@ describe 'invoices index page' do
     end
 
     it "display all debtors sum" do
-      expect(page).to have_content "All customers: #{invoice1_money.format} (#{invoice1_money.exchange_to('USD').format} ); #{invoice2_money.format} (#{invoice2_money.exchange_to('USD').format} );"
+      expect(page).to have_content "#{invoice1_money.format} (#{invoice1_money.exchange_to('USD').format} );"
+      expect(page).to have_content "#{invoice2_money.format} (#{invoice2_money.exchange_to('USD').format} );"
     end
 
     it "display total debtors sum" do

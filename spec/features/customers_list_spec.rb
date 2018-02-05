@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'customers page list' do
+describe 'customers page list', js: true do
   let(:user) { create :user }
   let(:org)  { create :organization, with_user: user }
 

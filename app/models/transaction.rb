@@ -214,6 +214,7 @@ class Transaction < ApplicationRecord
   end
 
   def recalculate_amount
+    BankAccount.find(bank_account_id_was).recalculate_amount! if bank_account_id_changed? && bank_account_id_was.present?
     bank_account.recalculate_amount!
     nil
   end
