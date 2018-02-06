@@ -114,7 +114,7 @@ describe 'update transaction', js: true do
       select rub_account, from: 'transfer[reference_id]'
       fill_in 'transfer[amount]', with: amount
       fill_in 'transfer[calculate_sum]', with: calculate_sum
-      page.evaluate_script("$(\'input[name=\"transfer[exchange_rate]\"]\').trigger(\'focus\')")
+      page.execute_script("$(\'input[name=\"transfer[exchange_rate]\"]\').trigger(\'focus\')")
     end
 
     it "calculate exchange rate with four decimal places" do

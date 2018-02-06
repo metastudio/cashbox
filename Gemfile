@@ -20,8 +20,8 @@ gem 'jquery-rails'
 gem 'bootstrap-sass', '~> 3.3.7'
 gem 'momentjs-rails'
 gem 'jquery-ui-rails'
-gem 'bootstrap-datepicker-rails', '~> 1.7.1'
-gem 'select2-rails', '~> 4.0.3'
+gem 'bootstrap-datepicker-rails', '= 1.6.4.1'
+gem 'select2-rails', '~> 3.5.9.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
@@ -47,7 +47,7 @@ gem 'cocoon'
 gem 'validates_overlap'
 gem 'date_validator'
 gem 'wicked_pdf', '~> 1.1.0'
-gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary', '= 0.12.3.0'
 gem 'puma', '~> 3.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
@@ -55,9 +55,10 @@ gem 'redis'
 gem 'knock', '~> 1.4.2'
 gem 'apipie-rails'
 gem 'rack-cors', require: 'rack/cors'
+gem 'nokogiri', '= 1.8.2'
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '~> 3.5.2'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
@@ -88,9 +89,9 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'capybara-webkit'
-  gem 'capybara', '~> 2.17.0'
+  gem 'capybara', '~> 2.9.0'
   gem 'capybara-email'
-  gem 'capybara-select2'
+  gem 'capybara-select2', '~> 1.0.1'
   gem 'capybara-screenshot'
   gem 'timecop'
   gem 'simplecov', require: false

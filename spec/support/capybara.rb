@@ -4,9 +4,9 @@ require 'capybara/email/rspec'
 
 Capybara.javascript_driver = :webkit
 
-Capybara::Webkit.configure do |config|
-  config.skip_image_loading
-end
+# Capybara::Webkit.configure do |config|
+#   config.skip_image_loading
+# end
 
 RSpec.configure do |config|
   config.append_after(:each) do
