@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0.2'
+gem 'rails', '5.0.6'
 
 # Use postgresql as the database for Active Record
-gem 'pg'
+gem 'pg', '~> 0.18'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0.6'
+gem 'sass-rails', '~> 5.0.7'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -17,27 +17,27 @@ gem 'uglifier', '>= 1.3.0'
 
 # Asset libraries
 gem 'jquery-rails'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '~> 3.3.7'
 gem 'momentjs-rails'
 gem 'jquery-ui-rails'
-gem 'bootstrap-datepicker-rails'
-gem 'select2-rails', '~> 3.5.9.3'
+gem 'bootstrap-datepicker-rails', '~> 1.7.1'
+gem 'select2-rails', '~> 4.0.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 
 gem 'slim-rails'
 gem 'recursive-open-struct'
-gem 'devise', '~> 4.2.1'
+gem 'devise', '~> 4.4.1'
 gem 'simple_form'
-gem 'money-rails'
+gem 'money-rails', '~> 1.10.0'
 gem 'kaminari'
 gem 'pundit'
 gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
 gem "paranoia", "~> 2.2.0.pre"
 gem 'ransack'
-gem 'rollbar', '~> 2.12.0'
+gem 'rollbar', '~> 2.15.5'
 gem 'acts_as_list'
 gem 'active_link_to'
 gem 'russian_central_bank'
@@ -62,7 +62,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
   gem 'faker'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -87,13 +87,13 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  gem 'capybara'
+  gem 'capybara', '~> 2.17.0'
   gem 'capybara-email'
   gem 'poltergeist'
   gem 'capybara-select2'
   gem 'capybara-screenshot'
   gem 'timecop'
-  gem 'codeclimate-test-reporter', require: nil
+  gem 'simplecov', require: false
 end
 
 group :staging do

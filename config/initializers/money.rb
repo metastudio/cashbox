@@ -72,7 +72,7 @@ MoneyRails.configure do |config|
   # config.no_cents_if_whole = nil
   # config.symbol = nil
   config.sign_before_symbol = true
-  if ActiveRecord::Base.connection.table_exists? 'exchange_rates'
+  if ActiveRecord::Base.connection.data_source_exists? 'exchange_rates'
     ExchangeRate.update_rates
   end
 end
