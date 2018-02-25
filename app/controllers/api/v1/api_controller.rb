@@ -6,7 +6,8 @@ module Api::V1
     end
 
     def current_organization
-      @current_organization ||= current_user.organizations.find(params[:organization_id])
+      @current_organization ||= current_user.organizations.find_by_id(params[:organization_id]) if params[:organization_id].present?
+      @current_organization ||= current_user.organizations.first
     end
 
     def current_member
