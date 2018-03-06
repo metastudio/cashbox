@@ -14,6 +14,6 @@ class UserPolicy < ApplicationPolicy
   private
 
   def record_is_member?
-    @record == @member
+    @record.id == @member.id
   end
 end

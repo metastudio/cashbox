@@ -60,7 +60,7 @@ module Api
       private
 
       def update_profile_params
-        params.require(:user).permit(
+        params.fetch(:user, {}).permit(
           :full_name,
           profile_attributes: [:phone_number],
           unsubscribe_attributes: [:active]
@@ -68,7 +68,7 @@ module Api
       end
 
       def update_account_params
-        params.require(:user).permit(
+        params.fetch(:user, {}).permit(
           :email,
           :password,
           :password_confirmation,
