@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'invoices index page' do
+describe 'invoices index page', js: true do
   let(:user) { create :user }
   let(:org)  { create :organization, with_user: user }
 
@@ -174,7 +174,8 @@ describe 'invoices index page' do
     end
 
     it "display all debtors sum" do
-      expect(page).to have_content "All customers: #{invoice1_money.format} (#{invoice1_money.exchange_to('USD').format} ); #{invoice2_money.format} (#{invoice2_money.exchange_to('USD').format} );"
+      expect(page).to have_content "#{invoice1_money.format} (#{invoice1_money.exchange_to('USD').format} );"
+      expect(page).to have_content "#{invoice2_money.format} (#{invoice2_money.exchange_to('USD').format} );"
     end
 
     it "display total debtors sum" do

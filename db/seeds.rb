@@ -23,14 +23,14 @@ user = User.create(
 )
 
 puts 'Create user organization ...'
-organization = FactoryGirl.create(
+organization = FactoryBot.create(
   :organization,
   owner: user,
   name: Faker::Company.name
 )
 
 puts 'Add more bank accounts ...'
-FactoryGirl.create(
+FactoryBot.create(
   :bank_account,
   organization: organization,
   currency: 'USD'
@@ -38,7 +38,7 @@ FactoryGirl.create(
 
 puts 'Create income transactions ...'
 income_categories = 10.times.map do
-  FactoryGirl.create(
+  FactoryBot.create(
     :category,
     :income,
     organization: organization,
@@ -46,7 +46,7 @@ income_categories = 10.times.map do
 end
 
 100.times do
-  FactoryGirl.create(
+  FactoryBot.create(
     :transaction,
     :income,
     organization: organization,
@@ -58,7 +58,7 @@ end
 
 puts 'Create expense transactions ...'
 expense_categories = 4.times.map do
-  FactoryGirl.create(
+  FactoryBot.create(
     :category,
     :expense,
     organization: organization,
@@ -66,7 +66,7 @@ expense_categories = 4.times.map do
 end
 
 50.times do
-  FactoryGirl.create(
+  FactoryBot.create(
     :transaction,
     :expense,
     organization: organization,
