@@ -22,19 +22,19 @@ describe 'GET /api/organizations/#/members' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => owner_member.id,
+        'id'   => owner_member.id,
         'role' => owner_member.role,
-        'user'=>{'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name}
+        'user' => { 'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => admin_member.id,
+        'id'   => admin_member.id,
         'role' => admin_member.role,
-        'user'=>{'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name}
+        'user' => { 'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => user_member.id,
+        'id'   => user_member.id,
         'role' => user_member.role,
-        'user'=>{'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name}
+        'user' => { 'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name, 'phone_number'=>nil }
       )
     end
   end
@@ -46,19 +46,19 @@ describe 'GET /api/organizations/#/members' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => owner_member.id,
+        'id'   => owner_member.id,
         'role' => owner_member.role,
-        'user'=>{'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name}
+        'user' => { 'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => admin_member.id,
+        'id'   => admin_member.id,
         'role' => admin_member.role,
-        'user'=>{'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name}
+        'user' => { 'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => user_member.id,
+        'id'   => user_member.id,
         'role' => user_member.role,
-        'user'=>{'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name}
+        'user' => { 'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name, 'phone_number'=>nil }
       )
     end
   end
@@ -70,19 +70,19 @@ describe 'GET /api/organizations/#/members' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => owner_member.id,
+        'id'   => owner_member.id,
         'role' => owner_member.role,
-        'user'=>{'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name}
+        'user' => { 'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => admin_member.id,
+        'id'   => admin_member.id,
         'role' => admin_member.role,
-        'user'=>{'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name}
+        'user' => { 'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => user_member.id,
+        'id'   => user_member.id,
         'role' => user_member.role,
-        'user'=>{'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name}
+        'user' => { 'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name, 'phone_number'=>nil }
       )
     end
   end

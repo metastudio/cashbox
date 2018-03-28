@@ -13,7 +13,8 @@ module RequestMacros
           'user' => {
             'id' => owner.id,
             'email' => owner.email,
-            'full_name' => owner.full_name
+            'full_name' => owner.full_name,
+            'phone_number' => owner.profile.phone_number
           }
         }
       )
@@ -32,7 +33,8 @@ module RequestMacros
           'user' => {
             'id' => owner.id,
             'email' => owner.email,
-            'full_name' => owner.full_name
+            'full_name' => owner.full_name,
+            'phone_number' => owner.profile.phone_number
           }
         }
       )
