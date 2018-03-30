@@ -52,7 +52,7 @@ module Api::V1
     end
 
     def category_params
-      params.require(:category).permit(:name, :type)
+      params.fetch(:category, {}).permit(:name, :type)
     end
   end
 end
