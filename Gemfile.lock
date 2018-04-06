@@ -248,7 +248,7 @@ GEM
     pry-rails (0.3.6)
       pry (>= 0.10.4)
     public_suffix (3.0.1)
-    puma (3.11.2)
+    puma (3.11.3)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
     rack (2.0.4)
@@ -493,4 +493,4 @@ DEPENDENCIES
   wkhtmltopdf-binary (= 0.12.3.0)
 
 BUNDLED WITH
-   1.16.0
+   1.16.1
