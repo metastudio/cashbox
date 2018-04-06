@@ -7,6 +7,8 @@ Cashbox::Application.configure do
   config.cache_classes = false
 
   # Do not eager load code on boot.
+  # TODO: need to fix multithreading with puma
+  # https://github.com/puma/puma/issues/1180
   config.eager_load = true
 
   # Show full error reports and disable caching.
