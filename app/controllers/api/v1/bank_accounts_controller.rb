@@ -55,8 +55,7 @@ module Api::V1
     end
 
     def bank_account_params
-      params.require(:bank_account).permit(:name, :description, :currency, :residue, :invoice_details)
+      params.fetch(:bank_account, {}).permit(:name, :description, :currency, :residue, :invoice_details)
     end
-
   end
 end

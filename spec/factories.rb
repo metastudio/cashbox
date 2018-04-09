@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:email)     { |n| "user#{n}@cashbox.dev" }
   sequence(:password)  { SecureRandom.hex(10) }
   sequence(:full_name) { |n| "Test User#{n}" }

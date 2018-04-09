@@ -52,7 +52,7 @@ module Api::V1
     end
 
     def customer_params
-      params.require(:customer).permit(:name, :invoice_details)
+      params.fetch(:customer, {}).permit(:name, :invoice_details)
     end
   end
 end

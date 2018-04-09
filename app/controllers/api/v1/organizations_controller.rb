@@ -62,7 +62,7 @@ module Api::V1
     end
 
     def organization_params
-      params.require(:organization).permit(:name, :default_currency)
+      params.fetch(:organization, {}).permit(:name, :default_currency)
     end
   end
 end

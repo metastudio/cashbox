@@ -37,7 +37,7 @@ module Api::V1
       if @transaction.save
         render :show
       else
-        render json: @transaction.errors, status: :unprocessable_entity
+        render json: @transaction.errors.messages, status: :unprocessable_entity
       end
     end
 
@@ -63,7 +63,7 @@ module Api::V1
     end
 
     def transaction_params
-      params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
+      params.fetch(:transaction, {}).permit(:amount, :category_id, :bank_account_id,
         :comment, :comission, :reference_id, :customer_id, :customer_name, :date,
         :invoice_id, :leave_open, :transfer_out_id)
     end
