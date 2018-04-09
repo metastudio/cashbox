@@ -23,8 +23,4 @@ class OrganizationPolicy < ApplicationPolicy
   def total_balances?
     @member
   end
-
-  def access?
-    @member && @record.user_ids.include?(@member.id)
-  end
 end

@@ -52,8 +52,6 @@ class Invoice < ApplicationRecord
   after_create :send_notification
 
   class << self
-    private
-
     def ransackable_scopes(_auth_object = nil)
       %i[unpaid]
     end

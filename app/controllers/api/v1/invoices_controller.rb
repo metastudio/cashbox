@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::InvoicesController < Api::V1::ApiController
+class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
   after_action :verify_authorized
 
   before_action :set_invoice, only: %i[show destroy]

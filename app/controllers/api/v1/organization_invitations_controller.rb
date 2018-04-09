@@ -1,5 +1,5 @@
 module Api::V1
-  class OrganizationInvitationsController < ApiController
+  class OrganizationInvitationsController < BaseOrganizationController
     before_action :set_invitation, only: [:show, :destroy, :resend]
 
     api :GET, '/organizations/:organization_id/organization_invitations', 'Return organization invitations'

@@ -1,5 +1,5 @@
 module Api::V1
-  class AuthTokenController < ApiController
+  class AuthTokenController < BaseController
     skip_before_action :authenticate
     before_action :authenticate_by_credentials!
 
