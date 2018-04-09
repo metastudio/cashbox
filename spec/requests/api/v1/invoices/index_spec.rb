@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe 'GET api/invoices' do
-  let(:path) { "/api/organizations/#{org.id}/invoices" }
+describe 'GET /api/organizations/#/invoices' do
+  let(:path) { api_organization_invoices_path(org) }
 
   let(:user) { create :user }
   let(:org) { create :organization, with_user: user }
@@ -16,15 +18,19 @@ describe 'GET api/invoices' do
     before { get path, headers: auth_header(user) }
 
     it 'returns invoices of current organization' do
-      expect(json[0]).to include(
-        'id' => invoice1.id,
-        'amount' => money_with_symbol(invoice1.amount),
-        'customer_name' => invoice1.customer.to_s
-      )
-    end
+      expect(json['invoices'].size).to eq 1
+      expect(json['pagination']).not_to be_blank
 
-    it 'does not return other invoices' do
-      expect(json.size).to eq 1
+      expect(json['invoices'][0]).to include(
+        'id'            => invoice1.id,
+        'amount'        => invoice1.amount.as_json,
+        'customer_name' => invoice1.customer.to_s,
+        'starts_at'     => invoice1.starts_at.as_json,
+        'ends_at'       => invoice1.ends_at.as_json,
+        'sent_at'       => invoice1.sent_at.as_json,
+        'paid_at'       => invoice1.paid_at.as_json,
+        'number'        => invoice1.number,
+      )
     end
   end
 
@@ -34,7 +40,7 @@ describe 'GET api/invoices' do
     before { get path, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to be_forbidden
+      expect(response).to be_not_found # we can't find organization with given id for current user
     end
   end
 end

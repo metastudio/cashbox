@@ -63,6 +63,21 @@ class Invoice < ApplicationRecord
     "#{customer}_#{ends_at.month}_#{ends_at.year}"
   end
 
+  def invoice_details
+    return nil unless organization
+    return nil unless currency
+
+    organization.bank_accounts.visible.by_currency(currency).first&.invoice_details
+  end
+
+  def customer_details
+    customer&.invoice_details
+  end
+
+  def has_income_transaction?
+    income_transaction.present?
+  end
+
   private
 
   def send_notification

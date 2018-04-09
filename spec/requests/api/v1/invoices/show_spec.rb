@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe 'GET /api/invoices#' do
-  let(:path) { "/api/invoices/#{invoice.id}" }
+describe 'GET /api/organizations/#/invoices/#' do
+  let(:path) { api_organization_invoice_path(org, invoice) }
 
   let(:user) { create :user }
-  let!(:org) { create :organization, with_user: user }
+  let(:org) { create :organization, with_user: user }
+
   let(:invoice) { create :invoice, organization: org }
   let(:customer) { create :customer }
-  let!(:invoice_item) { create :invoice_item, customer: customer, invoice: invoice, date: Date.today  }
+  let!(:invoice_item) { create :invoice_item, customer: customer, invoice: invoice, date: Date.current }
 
   context 'unauthenticated' do
     it { get(path) && expect(response).to(be_unauthorized) }
@@ -16,30 +19,30 @@ describe 'GET /api/invoices#' do
   context 'authenticated' do
     before { get path, headers: auth_header(user) }
 
-    context "user belongs to invoice's organization" do
+    context 'user belongs to invoice\'s organization' do
       it 'returns invoice' do
         expect(response).to be_success
 
         expect(json).to include(
-          'id' => invoice.id,
-          'paid_at' => invoice.paid_at,
-          'ends_at' => invoice.ends_at.iso8601,
-          'income_transaction_presence' => invoice.income_transaction.present?,
-          'number' => invoice.number,
-          'currency' => invoice.currency,
-          'amount' => money_with_symbol(invoice.amount),
-          'customer_name' => invoice.customer.to_s
+          'id'                     => invoice.id,
+          'paid_at'                => invoice.paid_at.as_json,
+          'ends_at'                => invoice.ends_at.as_json,
+          'has_income_transaction' => false,
+          'number'                 => invoice.number,
+          'currency'               => invoice.currency,
+          'amount'                 => invoice.amount.as_json,
+          'customer_name'          => invoice.customer.to_s,
         )
 
+        expect(json['invoice_items'].size).to eq 1
         expect(json['invoice_items'][0]).to include(
-          'description' => invoice_item.description,
-          'hours' => invoice_item.hours.to_s,
-          'amount' => money_with_symbol(invoice_item.amount),
-          'currency' => invoice_item.currency,
-          'customer_to_s' => invoice_item.customer.to_s,
-          'date' => invoice_item.date.iso8601
+          'description'   => invoice_item.description,
+          'hours'         => invoice_item.hours.to_s,
+          'amount'        => invoice_item.amount.as_json,
+          'currency'      => invoice_item.currency,
+          'customer_name' => invoice_item.customer.to_s,
+          'date'          => invoice_item.date.as_json,
         )
-
       end
     end
 
@@ -47,7 +50,7 @@ describe 'GET /api/invoices#' do
       let!(:invoice) { create :invoice }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to be_not_found
         expect(json).to be_empty
       end
     end

@@ -1,3 +1,4 @@
-json.extract! invoice_item, :description, :hours, :currency, :date
-json.amount money_with_symbol(invoice_item.amount)
-json.customer_to_s invoice_item.customer.to_s if invoice_item.customer.present?
+# frozen_string_literal: true
+
+json.extract! invoice_item, :description, :hours, :currency, :date, :amount
+json.customer_name invoice_item.customer.to_s if invoice_item.customer.present?
