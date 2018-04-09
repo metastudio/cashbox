@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: invoices
@@ -23,7 +25,7 @@ class Invoice < ApplicationRecord
 
   belongs_to :organization, inverse_of: :invoices
   belongs_to :customer, inverse_of: :invoices
-  has_one :income_transaction, foreign_key: 'invoice_id', class_name: 'Transaction'
+  has_one :income_transaction, inverse_of: :invoice, foreign_key: 'invoice_id', class_name: 'Transaction', dependent: :nullify
   has_many :invoice_items, inverse_of: :invoice, dependent: :destroy
 
   accepts_nested_attributes_for :invoice_items,
@@ -37,39 +39,40 @@ class Invoice < ApplicationRecord
   validates :currency, presence: true
   validates :customer_name, presence: true, unless: :customer_id
   validates :number, length: { maximum: 16 }
-  validates :amount, numericality: { greater_than: 0,
-    less_than_or_equal_to: Dictionaries.money_max }
-  validates :currency, inclusion: { in: Dictionaries.currencies,
-    message: "%{value} is not a valid currency" }
+  validates :amount, numericality: { greater_than: 0, less_than_or_equal_to: Dictionaries.money_max }
+  validates :currency, inclusion: { in: Dictionaries.currencies, message: '%{value} is not a valid currency' }
   validates :ends_at, date: { after_or_equal_to: :starts_at }, if: :starts_at
 
   scope :ordered, -> { order('created_at DESC') }
   scope :unpaid, -> { where(paid_at: nil) }
 
-
-  before_validation :calculate_total_amount, if: Proc.new{ invoice_items.reject(&:marked_for_destruction?).any? }
+  before_validation :calculate_total_amount, if: proc{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
   after_save :set_currency
   after_create :send_notification
 
+  class << self
+    private
+
+    def ransackable_scopes(_auth_object = nil)
+      %i[unpaid]
+    end
+  end
+
   def pdf_filename
-    "#{self.customer.to_s}_#{self.ends_at.month}_#{self.ends_at.year}"
+    "#{customer}_#{ends_at.month}_#{ends_at.year}"
   end
 
   private
 
   def send_notification
     NotificationJob.perform_later(organization.name,
-      "Invoice was added",
+      'Invoice was added',
       "Invoice was added to organization #{organization.name}")
   end
 
-  def self.ransackable_scopes(auth_object=nil)
-    %i(unpaid)
-  end
-
   def strip_number
-    self.number.strip! if self.number.present?
+    number.strip! if number.present?
   end
 
   def calculate_total_amount
