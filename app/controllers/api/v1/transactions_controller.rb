@@ -30,9 +30,10 @@ module Api::V1
     api :POST, '/organizations/:organization_id/transactions', 'Create transaction'
     param_group :transaction, TransactionsController
     def create
-      @transaction = Transaction.new transaction_params
+      @transaction = Transaction.new transaction_params.except(:amount)
       bank_account = current_organization.bank_accounts.find_by(id: transaction_params[:bank_account_id])
       @transaction.bank_account = bank_account
+      @transaction.amount = transaction_params[:amount]&.to_d
       @transaction.created_by = current_user
       if @transaction.save
         render :show

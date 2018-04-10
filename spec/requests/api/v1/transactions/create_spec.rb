@@ -68,6 +68,25 @@ describe 'POST /api/organizations/#/transactions' do
         expect(json).to include "bank_account" => ["can't be blank"]
       end
     end
+
+    context 'with wrong params' do
+      let(:params) {
+        { transaction: {
+            amount: '23.23',
+            bank_account_id: nil,
+            category_id: nil
+          }
+        }
+      }
+
+      it 'returns error' do
+        expect(response).to_not be_success
+
+        expect(json).to_not include "amount"
+        expect(json).to include "category" => ["can't be blank"]
+        expect(json).to include "bank_account" => ["can't be blank"]
+      end
+    end
   end
 
   context 'authenticated as user' do
