@@ -159,23 +159,6 @@ FactoryBot.define do
     accepted { false }
   end
 
-  factory :invoice do
-    organization
-    customer
-    customer_name
-    ends_at { Date.current }
-    currency 'RUB'
-    amount 500
-
-    trait :with_items do
-      invoice_items { create_list :invoice_item, 3 }
-    end
-
-    trait :paid do
-      paid_at { Time.now }
-    end
-  end
-
   factory :profile do
     user { build :user }
   end
