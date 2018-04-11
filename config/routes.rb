@@ -72,7 +72,9 @@ Cashbox::Application.routes.draw do
         resources :bank_accounts, only: [:show, :index, :create, :update, :destroy]
         resources :categories, only: [:show, :index, :create, :update, :destroy]
         resources :customers, only: [:show, :index, :create, :update, :destroy]
-        resources :transactions, only: [:show, :index, :create, :update, :destroy]
+        resources :transactions, only: [:show, :index, :create, :update, :destroy] do
+          post :transfer, action: :create_transfer, on: :collection
+        end
         resources :members, only: [:index, :update, :destroy]
         resources :invoices, only: %i[index show create destroy]
         get :total_balances, on: :member

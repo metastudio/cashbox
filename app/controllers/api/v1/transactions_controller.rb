@@ -18,6 +18,17 @@ module Api::V1
       end
     end
 
+    def_param_group :transfer do
+      param :transfer, Hash, required: true, action_aware: true do
+        param :amount, Integer, 'Amount', required: true
+        param :bank_account_id, Integer, 'Bank Account ID', required: true
+        param :comment, String, 'Comment'
+        param :date, DateTime, 'DateTime of creation', required: true
+        param :reference_id, Integer, 'Reference bank account ID'
+        param :comission, Integer, 'Comission'
+      end
+    end
+
     api :GET, '/organizations/:organization_id/transactions', 'Return transactions'
     def index
       @transactions = current_organization.transactions.page(params[:page]).per(30)
@@ -40,6 +51,20 @@ module Api::V1
         render json: @transaction.errors.messages, status: :unprocessable_entity
       end
     end
+
+    api :POST, '/organizations/:organization_id/transactions/transfer', 'Create transfer'
+    param_group :transfer, TransactionsController
+    def create_transfer
+    @transfer = Transfer.new(transfer_params)
+    @transfer.created_by = current_user
+    if @transfer.save
+      @inc_transaction = @transfer.inc_transaction
+      @out_transaction = @transfer.out_transaction
+      render json: {}, status: :ok
+    else
+      render json: @transfer.errors.messages, status: :unprocessable_entity
+    end
+  end
 
     api :PUT, '/organizations/:organization_id/transactions/:id', 'Update transaction'
     param_group :transaction, TransactionsController
@@ -66,6 +91,11 @@ module Api::V1
       params.fetch(:transaction, {}).permit(:amount, :category_id, :bank_account_id,
         :comment, :comission, :reference_id, :customer_id, :customer_name, :date,
         :invoice_id, :leave_open, :transfer_out_id)
+    end
+
+    def transfer_params
+      params.require(:transfer).permit(:amount, :bank_account_id, :reference_id,
+        :comment, :comission, :exchange_rate, :date, :calculate_sum)
     end
   end
 end
