@@ -1,5 +1,5 @@
 module Api::V1
-  class BankAccountsController < ApiController
+  class BankAccountsController < BaseOrganizationController
     before_action :set_bank_account, only: [:show, :update, :destroy]
 
     def_param_group :bank_account do

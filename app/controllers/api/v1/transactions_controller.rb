@@ -1,5 +1,5 @@
 module Api::V1
-  class TransactionsController < ApiController
+  class TransactionsController < BaseOrganizationController
     before_action :set_transaction, only: [:show, :update, :destroy]
 
     def_param_group :transaction do

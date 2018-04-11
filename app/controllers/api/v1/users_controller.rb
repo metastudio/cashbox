@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class UsersController < ApiController
+    class UsersController < BaseController
       before_action :authorize_user, only: %i[update destroy update_profile]
 
       def_param_group :update_profile do
