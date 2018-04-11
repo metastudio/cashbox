@@ -24,9 +24,11 @@ class InvoicePolicy < ApplicationPolicy
     !!member
   end
 
-  alias show?    access?
-  alias create?  access?
-  alias destroy? access?
+  alias unpaid?       index?
+  alias unpaid_count? index?
+  alias show?         access?
+  alias create?       access?
+  alias destroy?      access?
 
   def permitted_attributes
     [
