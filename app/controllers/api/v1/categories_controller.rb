@@ -1,5 +1,5 @@
 module Api::V1
-  class CategoriesController < ApiController
+  class CategoriesController < BaseOrganizationController
     before_action :set_category, only: [:show, :update, :destroy]
 
     def_param_group :category do

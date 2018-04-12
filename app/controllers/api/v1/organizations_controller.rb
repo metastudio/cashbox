@@ -1,5 +1,5 @@
 module Api::V1
-  class OrganizationsController < ApiController
+  class OrganizationsController < BaseController
     before_action :set_organization, only: [:show, :update, :destroy, :total_balances]
     before_action :authorize_organization, only: [:update, :destroy, :total_balances]
 

@@ -1,5 +1,5 @@
 module Api::V1
-  class MembersController < ApiController
+  class MembersController < BaseOrganizationController
     before_action :set_member, only: [:update, :destroy]
 
     def_param_group :member do

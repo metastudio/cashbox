@@ -1,5 +1,5 @@
 module Api::V1
-  class CustomersController < ApiController
+  class CustomersController < BaseOrganizationController
     before_action :set_customer, only: [:show, :update, :destroy]
 
     def_param_group :customer do

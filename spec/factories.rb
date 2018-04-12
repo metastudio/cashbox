@@ -159,32 +159,6 @@ FactoryBot.define do
     accepted { false }
   end
 
-  factory :invoice do
-    organization
-    customer
-    customer_name
-    ends_at { Date.current }
-    currency 'RUB'
-    amount 500
-
-    trait :with_items do
-      invoice_items { create_list :invoice_item, 3 }
-    end
-
-    trait :paid do
-      paid_at { Time.now }
-    end
-  end
-
-  sequence(:task_description) { |n| "Test description #{n}" }
-  factory :invoice_item do
-    invoice
-    customer_name
-    amount 500
-    hours 0.5
-    description { generate :task_description }
-  end
-
   factory :profile do
     user { build :user }
   end
