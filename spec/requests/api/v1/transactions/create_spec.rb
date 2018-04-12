@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'POST /api/organizations/#/transactions' do
@@ -13,13 +15,13 @@ describe 'POST /api/organizations/#/transactions' do
   let(:params) {
     {
       transaction: {
-        amount: amount,
-        category_id: category.id,
+        amount:          amount,
+        category_id:     category.id,
         bank_account_id: bank_account.id,
-        comment: 'Test Comment',
-        comission: 5,
-        customer_id: customer.id,
-        date: Time.current
+        comment:         'Test Comment',
+        comission:       5,
+        customer_id:     customer.id,
+        date:            Time.current
       }
     }
   }
@@ -35,15 +37,15 @@ describe 'POST /api/organizations/#/transactions' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => Transaction.last.id,
-        'amount' => '95₽',
-        'comment' => "Test Comment\nComission: 5₽",
+        'id'        => Transaction.last.id,
+        'amount'    => Transaction.last.amount.as_json,
+        'comment'   => "Test Comment\nComission: 5₽",
         'comission' => '5'
       )
 
-      expect(json['category']).to     include( 'id' => category.id)
-      expect(json['bank_account']).to include( 'id' => bank_account.id)
-      expect(json['customer']).to     include( 'id' => customer.id)
+      expect(json['category']).to     include('id' => category.id)
+      expect(json['bank_account']).to include('id' => bank_account.id)
+      expect(json['customer']).to     include('id' => customer.id)
 
       expect(organization.transactions.last.id).to eq Transaction.last.id
       expect(organization.transactions.last.created_by).to eq user
@@ -51,10 +53,11 @@ describe 'POST /api/organizations/#/transactions' do
 
     context 'with wrong params' do
       let(:params) {
-        { transaction: {
-            amount: '0',
+        {
+          transaction: {
+            amount:          '0',
             bank_account_id: nil,
-            category_id: nil
+            category_id:     nil
           }
         }
       }
@@ -70,10 +73,11 @@ describe 'POST /api/organizations/#/transactions' do
 
     context 'with wrong params' do
       let(:params) {
-        { transaction: {
-            amount: '23.23',
+        {
+          transaction: {
+            amount:          '23.23',
             bank_account_id: nil,
-            category_id: nil
+            category_id:     nil
           }
         }
       }
