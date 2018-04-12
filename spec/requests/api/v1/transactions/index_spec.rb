@@ -5,9 +5,8 @@ describe 'GET /api/organizations/#/transactions' do
 
   let(:bank_account) { create :bank_account, organization: organization }
 
-  let!(:owner) { create :user }
   let!(:user) { create :user }
-  let!(:organization) { create :organization, owner: owner, with_user: user }
+  let!(:organization) { create :organization, with_user: user }
   let!(:transaction1) { create :transaction, :income, :with_customer, bank_account: bank_account }
   let!(:transaction2) { create :transaction, :expense, :with_customer, bank_account: bank_account }
 
@@ -15,8 +14,8 @@ describe 'GET /api/organizations/#/transactions' do
     it { get(path) && expect(response).to(be_unauthorized) }
   end
 
-  context 'authenticated as owner' do
-    before { get path, headers: auth_header(owner) }
+  context 'authenticated as user' do
+    before { get path, headers: auth_header(user) }
 
     it 'returns transactions' do
       expect(response).to be_success
@@ -38,25 +37,6 @@ describe 'GET /api/organizations/#/transactions' do
       expect(json[1]['category']).to     include( 'id' => transaction1.category.id)
       expect(json[1]['bank_account']).to include( 'id' => transaction1.bank_account.id)
       expect(json[1]['customer']).to     include( 'id' => transaction1.customer.id)
-    end
-  end
-
-  context 'authenticated as user' do
-    before { get path, headers: auth_header(user) }
-
-    it 'returns transactions' do
-      expect(response).to be_success
-
-      expect(json[0]).to include(
-        'id' => transaction2.id,
-        'amount' => money_with_symbol(transaction2.amount),
-        'comment' => transaction2.comment
-      )
-      expect(json[1]).to include(
-        'id' => transaction1.id,
-        'amount' => money_with_symbol(transaction1.amount),
-        'comment' => transaction1.comment
-      )
     end
   end
 
