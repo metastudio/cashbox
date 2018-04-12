@@ -4,7 +4,7 @@ module Api::V1
 
     def_param_group :transaction do
       param :transaction, Hash, required: true, action_aware: true do
-        param :amount, Integer, 'Amount', required: true
+        param :amount, Float, 'Amount', required: true
         param :category_id, Integer, 'Category ID', required: true
         param :bank_account_id, Integer, 'Bank Account ID', required: true
         param :customer_id, Integer, 'Customer ID'
@@ -20,7 +20,9 @@ module Api::V1
 
     def_param_group :transfer do
       param :transfer, Hash, required: true, action_aware: true do
-        param :amount, Integer, 'Amount', required: true
+        param :amount, Float, 'Amount', required: true
+        param :comission, Float, 'Comission'
+        param :exchange_rate, Float, 'Exchange Rate'
         param :bank_account_id, Integer, 'Bank Account ID', required: true
         param :comment, String, 'Comment'
         param :date, DateTime, 'DateTime of creation', required: true
@@ -31,6 +33,8 @@ module Api::V1
 
     api :GET, '/organizations/:organization_id/transactions', 'Return transactions'
     def index
+      authorize :transaction
+
       @transactions = current_organization.transactions.page(params[:page]).per(30)
     end
 
@@ -41,6 +45,8 @@ module Api::V1
     api :POST, '/organizations/:organization_id/transactions', 'Create transaction'
     param_group :transaction, TransactionsController
     def create
+      authorize :transaction
+
       @transaction = Transaction.new transaction_params
       bank_account = current_organization.bank_accounts.find_by(id: transaction_params[:bank_account_id])
       @transaction.bank_account = bank_account
@@ -55,16 +61,18 @@ module Api::V1
     api :POST, '/organizations/:organization_id/transactions/transfer', 'Create transfer'
     param_group :transfer, TransactionsController
     def create_transfer
-    @transfer = Transfer.new(transfer_params)
-    @transfer.created_by = current_user
-    if @transfer.save
-      @inc_transaction = @transfer.inc_transaction
-      @out_transaction = @transfer.out_transaction
-      render json: {}, status: :ok
-    else
-      render json: @transfer.errors.messages, status: :unprocessable_entity
+      authorize :transaction
+
+      @transfer = Transfer.new(transfer_params)
+      @transfer.created_by = current_user
+      if @transfer.save
+        @inc_transaction = @transfer.inc_transaction
+        @out_transaction = @transfer.out_transaction
+        render json: {}, status: :ok
+      else
+        render json: @transfer.errors.messages, status: :unprocessable_entity
+      end
     end
-  end
 
     api :PUT, '/organizations/:organization_id/transactions/:id', 'Update transaction'
     param_group :transaction, TransactionsController
@@ -85,6 +93,7 @@ module Api::V1
 
     def set_transaction
       @transaction = current_organization.transactions.find(params[:id])
+      authorize @transaction
     end
 
     def transaction_params
@@ -94,7 +103,7 @@ module Api::V1
     end
 
     def transfer_params
-      params.require(:transfer).permit(:amount, :bank_account_id, :reference_id,
+      params.fetch(:transfer, {}).permit(:amount, :bank_account_id, :reference_id,
         :comment, :comission, :exchange_rate, :date, :calculate_sum)
     end
   end
