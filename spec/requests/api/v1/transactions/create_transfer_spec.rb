@@ -3,16 +3,15 @@ require 'rails_helper'
 describe 'POST /api/organizations/#/transactions/transfer' do
   let(:path) { "/api/organizations/#{organization.id}/transactions/transfer" }
 
-  let(:from_bank_account) { create :bank_account, organization: organization }
-  let(:to_bank_account) { create :bank_account, organization: organization }
-  let(:amount) { Money.new(10000, from_bank_account.currency) }
-  let(:comission) { Money.new(1000, to_bank_account.currency) }
-  let(:exchange_rate) { 2.5 }
+  let(:from_bank_account) { create :bank_account, organization: organization, currency: 'USD' }
+  let(:to_bank_account) { create :bank_account, organization: organization, currency: 'RUB' }
+  let(:amount) { Money.from_amount(100, from_bank_account.currency) }
+  let(:comission) { Money.from_amount(10, to_bank_account.currency) }
+  let(:exchange_rate) { 62.5 }
   let(:comment) { 'Test comment' }
 
-  let!(:owner) { create :user }
   let!(:user) { create :user }
-  let!(:organization) { create :organization, owner: owner, with_user: user }
+  let!(:organization) { create :organization, with_user: user }
   let(:params) {
     {
       transfer: {
@@ -31,8 +30,8 @@ describe 'POST /api/organizations/#/transactions/transfer' do
     it { post(path) && expect(response).to(be_unauthorized) }
   end
 
-  context 'authenticated as owner' do
-    before { post path, params: params, headers: auth_header(owner) }
+  context 'authenticated as user' do
+    before { post path, params: params, headers: auth_header(user) }
 
     it 'returns ok and creates transfer' do
       expect(response).to be_success
@@ -41,7 +40,9 @@ describe 'POST /api/organizations/#/transactions/transfer' do
 
       expect(organization.transactions.count).to eq 2
       expect(organization.transactions.first.bank_account).to eq to_bank_account
+      expect(organization.transactions.first.amount_cents).to eq 625000
       expect(organization.transactions.last.bank_account).to eq from_bank_account
+      expect(organization.transactions.last.amount_cents).to eq -11000
     end
 
     context 'with wrong params' do
@@ -61,20 +62,6 @@ describe 'POST /api/organizations/#/transactions/transfer' do
         expect(json).to include "bank_account_id" => ["can't be blank"]
         expect(json).to include "reference_id" => ["can't be blank", "Can't transfer to same account"]
       end
-    end
-  end
-
-  context 'authenticated as user' do
-    before { post path, params: params, headers: auth_header(user) }
-
-    it 'returns ok and creates transfer' do
-      expect(response).to be_success
-
-      expect(json).to be_empty
-
-      expect(organization.transactions.count).to eq 2
-      expect(organization.transactions.first.bank_account).to eq to_bank_account
-      expect(organization.transactions.last.bank_account).to eq from_bank_account
     end
   end
 
