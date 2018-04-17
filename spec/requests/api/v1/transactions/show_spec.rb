@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'GET /api/organizations/#/transactions/#' do
@@ -21,14 +23,14 @@ describe 'GET /api/organizations/#/transactions/#' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => transaction.id,
-        'amount' => money_with_symbol(transaction.amount),
+        'id'      => transaction.id,
+        'amount'  => transaction.amount.as_json,
         'comment' => transaction.comment
       )
 
-      expect(json['category']).to     include( 'id' => transaction.category.id)
-      expect(json['bank_account']).to include( 'id' => transaction.bank_account.id)
-      expect(json['customer']).to     include( 'id' => transaction.customer.id)
+      expect(json['category']).to     include('id' => transaction.category.id)
+      expect(json['bank_account']).to include('id' => transaction.bank_account.id)
+      expect(json['customer']).to     include('id' => transaction.customer.id)
     end
   end
 

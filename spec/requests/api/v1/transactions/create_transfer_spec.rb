@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'POST /api/organizations/#/transactions/transfer' do
@@ -15,13 +17,13 @@ describe 'POST /api/organizations/#/transactions/transfer' do
   let(:params) {
     {
       transfer: {
-        amount: amount,
-        comission: comission,
+        amount:          amount,
+        comission:       comission,
         bank_account_id: from_bank_account.id,
-        reference_id: to_bank_account.id,
-        exchange_rate: exchange_rate,
-        comment: comment,
-        date: Time.current
+        reference_id:    to_bank_account.id,
+        exchange_rate:   exchange_rate,
+        comment:         comment,
+        date:            Time.current
       }
     }
   }
@@ -40,17 +42,18 @@ describe 'POST /api/organizations/#/transactions/transfer' do
 
       expect(organization.transactions.count).to eq 2
       expect(organization.transactions.first.bank_account).to eq to_bank_account
-      expect(organization.transactions.first.amount_cents).to eq 625000
+      expect(organization.transactions.first.amount_cents).to eq 625_000
       expect(organization.transactions.last.bank_account).to eq from_bank_account
-      expect(organization.transactions.last.amount_cents).to eq -11000
+      expect(organization.transactions.last.amount_cents).to eq -11_000
     end
 
     context 'with wrong params' do
       let(:params) {
-        { transfer: {
-            amount: '0',
+        {
+          transfer: {
+            amount:          '0',
             bank_account_id: nil,
-            reference_id: nil
+            reference_id:    nil
           }
         }
       }
