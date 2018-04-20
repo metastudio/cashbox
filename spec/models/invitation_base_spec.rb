@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: invitations
+#
+#  id            :integer          not null, primary key
+#  token         :string(255)      not null
+#  email         :string(255)      not null
+#  role          :string
+#  accepted      :boolean          default(FALSE)
+#  invited_by_id :integer
+#  created_at    :datetime
+#  updated_at    :datetime
+#  type          :string
+#
+
 require 'rails_helper'
 
 describe InvitationBase do

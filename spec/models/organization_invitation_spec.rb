@@ -5,11 +5,12 @@
 #  id            :integer          not null, primary key
 #  token         :string(255)      not null
 #  email         :string(255)      not null
-#  role          :string(255)      not null
-#  invited_by_id :integer          not null
+#  role          :string
 #  accepted      :boolean          default(FALSE)
+#  invited_by_id :integer
 #  created_at    :datetime
 #  updated_at    :datetime
+#  type          :string
 #
 
 require 'rails_helper'
