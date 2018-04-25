@@ -32,6 +32,7 @@ describe 'GET /api/organizations/#/invoices/#' do
           'currency'               => invoice.currency,
           'amount'                 => invoice.amount.as_json,
           'customer_name'          => invoice.customer.to_s,
+          'customer_id'            => invoice.customer.id,
         )
 
         expect(json['invoice_items'].size).to eq 1
