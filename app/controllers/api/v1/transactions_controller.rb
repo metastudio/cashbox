@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Api::V1
   class TransactionsController < BaseOrganizationController
-    before_action :set_transaction, only: [:show, :update, :destroy]
+    before_action :set_transaction, only: %i[show update destroy]
 
     def_param_group :transaction do
       param :transaction, Hash, required: true, action_aware: true do
@@ -35,7 +37,8 @@ module Api::V1
     def index
       authorize :transaction
 
-      @transactions = current_organization.transactions.page(params[:page]).per(30)
+      # TODO: need to use ransack
+      @transactions = current_organization.transactions.without_out([]).page(params[:page]).per(30)
     end
 
     api :GET, '/organizations/:organization_id/transactions/:id', 'Return transaction'
@@ -100,7 +103,10 @@ module Api::V1
     def transaction_params
       params.fetch(:transaction, {}).permit(:amount, :category_id, :bank_account_id,
         :comment, :comission, :reference_id, :customer_id, :customer_name, :date,
-        :invoice_id, :leave_open, :transfer_out_id)
+        :invoice_id, :leave_open, :transfer_out_id,
+        transfer_out_attributes: %i[
+          id amount category_id bank_account_id comment comission customer_id date
+        ])
     end
 
     def transfer_params

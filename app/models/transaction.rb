@@ -61,13 +61,15 @@ class Transaction < ApplicationRecord
   scope :incomes,     -> { joins(:category).where('categories.type' => Category::CATEGORY_INCOME)}
   scope :expenses,    -> { joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE)}
   scope :without_out, -> (bank_accounts) { where('category_id IS NULL OR category_id != ?
-      OR bank_account_id IN (?)', Category.transfer_out_id, bank_accounts) }
+    OR bank_account_id IN (?)', Category.transfer_out_id, bank_accounts) }
 
   validates :amount, presence: true, numericality: {
     less_than_or_equal_to: Dictionaries.money_max, other_than: 0 }
   validate  :amount_balance, if: :bank_account
   validates :category, presence: true, unless: :residue?
+  validates :category_id, presence: true, unless: :residue?
   validates :bank_account, presence: true
+  validates :bank_account_id, presence: true
   validates :customer_name, :comment, length: { maximum: 255 }
   validates :transaction_type, inclusion: { in: TRANSACTION_TYPES, allow_blank: true }
 

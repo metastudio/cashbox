@@ -106,46 +106,6 @@ FactoryBot.define do
     invoice_details { generate :invoice_details }
   end
 
-  factory :transaction do
-    organization
-    bank_account { |t| create :bank_account, organization: t.organization }
-    category { |t| create(:category, organization: t.bank_account.organization) }
-    amount { rand(30000.0..50000)/rand(10.0..100) }
-    date { Time.current }
-
-    trait :income do
-      category { |t| create(:category, :income, organization: t.bank_account.organization) }
-    end
-
-    trait :expense do
-      category { |t| create(:category, :expense, organization: t.bank_account.organization) }
-    end
-
-    trait :with_customer do
-      customer { |t| create(:customer, organization: t.bank_account.organization) }
-    end
-  end
-
-  factory :transfer do
-    bank_account_id { create(:bank_account, balance: 99999, currency: 'USD').id }
-    reference_id    { |t| create(:bank_account,
-      organization: BankAccount.find(t.bank_account_id).organization).id }
-    from_currency   { 'USD' }
-    to_currency     { 'USD' }
-    amount          500
-    comission       50
-    comment         "comment"
-
-    trait :with_different_currencies do
-      bank_account_id { create(:bank_account, balance: 99999, currency: 'USD').id }
-      reference_id    { |t| create(:bank_account, currency: 'RUB',
-        organization: BankAccount.find(t.bank_account_id).organization).id }
-      from_currency   { 'USD' }
-      to_currency     { 'RUB'}
-      exchange_rate   0.5
-    end
-  end
-
   factory :invitation do
     email   { build(:user).email }
     invited_by  { create :user }
