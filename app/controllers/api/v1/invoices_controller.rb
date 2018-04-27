@@ -39,6 +39,7 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
       format.pdf do
         render pdf: @invoice.pdf_filename, # Excluding ".pdf" extension.
           layout: 'pdf.html.slim',
+          template: 'invoices/show',
           print_media_type: true,
           page_size: 'A4',
           orientation: 'Landscape',
