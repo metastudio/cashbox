@@ -34,6 +34,19 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
 
   api :GET, '/organizations/:organization_id/invoices/:id', 'Return invoice'
   def show
+    respond_to do |format|
+      format.json
+      format.pdf do
+        render pdf: @invoice.pdf_filename, # Excluding ".pdf" extension.
+          layout: 'pdf.html.slim',
+          template: 'invoices/show',
+          print_media_type: true,
+          page_size: 'A4',
+          orientation: 'Landscape',
+          margin: { top: 5, bottom: 5, left: 10, right: 10 },
+          show_as_html: params[:debug].present?
+      end
+    end
   end
 
   api :POST, '/invoices', 'Create invoice'
