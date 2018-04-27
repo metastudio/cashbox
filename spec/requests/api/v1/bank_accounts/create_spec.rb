@@ -4,14 +4,13 @@ describe 'POST /api/organizations/#/bank_accounts' do
   let(:path) { "/api/organizations/#{organization.id}/bank_accounts" }
   let(:amount) { Money.new(10000, bank_account.currency) }
 
-  let!(:owner) { create :user }
   let!(:user) { create :user }
-  let!(:organization) { create :organization, owner: owner, with_user: user }
+  let!(:organization) { create :organization, with_user: user }
   let(:params) {
     {
       bank_account: {
-        name: 'Test Bank Account',
-        balance: 0,
+        name:     'Test Bank Account',
+        balance:  0,
         currency: 'RUB'
       }
     }
@@ -21,16 +20,16 @@ describe 'POST /api/organizations/#/bank_accounts' do
     it { post(path) && expect(response).to(be_unauthorized) }
   end
 
-  context 'authenticated as owner' do
-    before { post path, params: params, headers: auth_header(owner) }
+  context 'authenticated as user' do
+    before { post path, params: params, headers: auth_header(user) }
 
     it 'returns created bank account' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => BankAccount.last.id,
-        'name' => 'Test Bank Account',
-        'balance' => money_with_symbol(BankAccount.last.balance),
+        'id'       => BankAccount.last.id,
+        'name'     => 'Test Bank Account',
+        'balance'  => BankAccount.last.balance.as_json,
         'currency' => 'RUB'
       )
       expect(organization.bank_accounts.last.id).to eq BankAccount.last.id
@@ -48,25 +47,9 @@ describe 'POST /api/organizations/#/bank_accounts' do
       it 'returns error' do
         expect(response).to_not be_success
 
-        expect(json).to include "name" => ["can't be blank"]
-        expect(json).to include "currency" => ["can't be blank", " is not a valid currency"]
+        expect(json).to include "name"     => ["can't be blank"]
+        expect(json).to include "currency" => ["can't be blank", ' is not a valid currency']
       end
-    end
-  end
-
-  context 'authenticated as user' do
-    before { post path, params: params, headers: auth_header(user) }
-
-    it 'returns created bank account' do
-      expect(response).to be_success
-
-      expect(json).to include(
-        'id' => BankAccount.last.id,
-        'name' => 'Test Bank Account',
-        'balance' => money_with_symbol(BankAccount.last.balance),
-        'currency' => 'RUB'
-      )
-      expect(organization.bank_accounts.last.id).to eq BankAccount.last.id
     end
   end
 
