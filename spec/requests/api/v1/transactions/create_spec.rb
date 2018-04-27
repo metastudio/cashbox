@@ -6,7 +6,7 @@ describe 'POST /api/organizations/#/transactions' do
   let(:path) { "/api/organizations/#{organization.id}/transactions" }
 
   let(:bank_account) { create :bank_account, organization: organization }
-  let(:amount) { Money.from_amount(100, bank_account.currency) }
+  let(:amount) { '21100.11' }
   let(:category) { create :category, :income, organization: organization }
   let(:customer) { create :customer, organization: organization }
 
@@ -48,6 +48,7 @@ describe 'POST /api/organizations/#/transactions' do
       expect(json['customer']).to     include('id' => customer.id)
 
       expect(organization.transactions.last.id).to eq Transaction.last.id
+      expect(organization.transactions.last.amount).to eq Money.from_amount(21095.11, bank_account.currency)
       expect(organization.transactions.last.created_by).to eq user
     end
 
