@@ -3,14 +3,13 @@ require 'rails_helper'
 describe 'PUT /api/organizations/#/bank_accounts/#' do
   let(:path) { "/api/organizations/#{organization.id}/bank_accounts/#{bank_account.id}" }
 
-  let!(:owner) { create :user }
   let!(:user) { create :user }
-  let!(:organization) { create :organization, owner: owner, with_user: user }
+  let!(:organization) { create :organization, with_user: user }
   let!(:bank_account) { create :bank_account, organization: organization }
   let(:params) {
     {
       bank_account: {
-        name: 'New Name',
+        name:        'New Name',
         description: 'New Description'
       }
     }
@@ -20,20 +19,6 @@ describe 'PUT /api/organizations/#/bank_accounts/#' do
     it { put(path) && expect(response).to(be_unauthorized) }
   end
 
-  context 'authenticated as owner' do
-    before { put path, params: params, headers: auth_header(owner) }
-
-    it 'returns updated bank_account' do
-      expect(response).to be_success
-      bank_account.reload
-      expect(json).to include(
-        'id' => bank_account.id,
-        'name' => 'New Name',
-        'description' => 'New Description'
-      )
-    end
-  end
-
   context 'authenticated as user' do
     before { put path, params: params, headers: auth_header(user) }
 
@@ -41,8 +26,8 @@ describe 'PUT /api/organizations/#/bank_accounts/#' do
       expect(response).to be_success
       bank_account.reload
       expect(json).to include(
-        'id' => bank_account.id,
-        'name' => 'New Name',
+        'id'          => bank_account.id,
+        'name'        => 'New Name',
         'description' => 'New Description'
       )
     end
