@@ -1,6 +1,6 @@
 module Api::V1
   class MembersController < BaseOrganizationController
-    before_action :set_member, only: %i[show update destroy]
+    before_action :set_member, only: %i[show update destroy update_last_viewed_at]
 
     def_param_group :member do
       param :member, Hash, required: true, action_aware: true do
@@ -33,6 +33,20 @@ module Api::V1
     def show
     end
 
+    api :GET, '/organizations/:organization_id/member_info', 'Return current member'
+    def current
+      @member = current_member
+    end
+
+    api :PUT, '/organizations/:organization_id/members/:id/update_last_viewed_at', 'Update last viewed at'
+    def update_last_viewed_at
+      if @member.update(last_visited_at: Time.current)
+        render json: @member, status: :ok
+      else
+        render json: @member.errors, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def set_member
@@ -41,7 +55,7 @@ module Api::V1
     end
 
     def member_params
-      params.require(:member).permit(:role, :last_visited_at)
+      params.require(:member).permit(:role)
     end
 
     def pundit_user

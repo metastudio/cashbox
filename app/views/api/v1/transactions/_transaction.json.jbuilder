@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.extract! transaction, :id, :comission, :date, :comment, :amount
+json.extract! transaction, :id, :comission, :date, :comment, :amount, :created_at
 
 json.category transaction.category, partial: 'api/v1/categories/short_category', as: :category
 json.bank_account transaction.bank_account, partial: 'api/v1/bank_accounts/short_bank_account', as: :bank_account

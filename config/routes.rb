@@ -75,7 +75,11 @@ Cashbox::Application.routes.draw do
         resources :transactions, only: %i[show index create update destroy] do
           post :transfer, action: :create_transfer, on: :collection
         end
-        resources :members, only: %i[index show update destroy]
+        resources :members, only: %i[index show update destroy] do
+          get :current
+          put :update_last_viewed_at, on: :member
+        end
+        get :member_info, to: 'members#current'
         resources :invoices, only: %i[index show create destroy] do
           get :unpaid, on: :collection
           get 'unpaid/count' => :unpaid_count, on: :collection
