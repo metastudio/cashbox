@@ -6,5 +6,5 @@ json.totals @organization.total_balances.drop(1) do |balance|
   json.currency balance[:currency]
   json.ex_total balance[:ex_total]
   json.rate balance[:rate]
-  json.updated_at balance[:updated_at]&.iso8601
+  json.updated_at balance[:updated_at]
 end

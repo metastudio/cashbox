@@ -39,7 +39,7 @@ describe 'GET /api/organizations/#/total_balances' do
         'currency'   => 'RUB',
         'ex_total'   => organization.bank_accounts.total_balance('RUB').exchange_to('USD').as_json,
         'rate'       => Money.default_bank.get_rate('RUB', 'USD').round(4),
-        'updated_at' => Money.default_bank.rates_updated_at.iso8601
+        'updated_at' => Money.default_bank.rates_updated_at.as_json
       )
     end
   end
@@ -66,7 +66,7 @@ describe 'GET /api/organizations/#/total_balances' do
         'currency'   => 'RUB',
         'ex_total'   => organization.bank_accounts.total_balance('RUB').exchange_to('USD').as_json,
         'rate'       => Money.default_bank.get_rate('RUB', 'USD').round(4),
-        'updated_at' => Money.default_bank.rates_updated_at.iso8601
+        'updated_at' => Money.default_bank.rates_updated_at.as_json
       )
     end
   end
