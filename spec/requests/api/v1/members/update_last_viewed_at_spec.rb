@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'PUT /api/organizations/#/members/#/update_last_viewed_at' do
-  let(:path) { "/api/organizations/#{organization.id}/members/#{member.id}/update_last_viewed_at" }
+describe 'PUT /api/organizations/#/last_visit' do
+  let(:path) { "/api/organizations/#{organization.id}/last_visit" }
 
   let!(:user)         { create :user }
   let!(:organization) { create :organization }

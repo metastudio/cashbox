@@ -1,6 +1,6 @@
 module Api::V1
   class MembersController < BaseOrganizationController
-    before_action :set_member, only: %i[show update destroy update_last_viewed_at]
+    before_action :set_member, only: %i[show update destroy]
 
     def_param_group :member do
       param :member, Hash, required: true, action_aware: true do
@@ -38,12 +38,12 @@ module Api::V1
       @member = current_member
     end
 
-    api :PUT, '/organizations/:organization_id/members/:id/update_last_viewed_at', 'Update last viewed at'
+    api :PUT, '/organizations/:organization_id/last_visit', 'Update last viewed at for current member'
     def update_last_viewed_at
-      if @member.update(last_visited_at: Time.current)
-        render json: @member, status: :ok
+      if current_member.update(last_visited_at: Time.current)
+        render json: current_member, status: :ok
       else
-        render json: @member.errors, status: :unprocessable_entity
+        render json: current_member.errors, status: :unprocessable_entity
       end
     end
 

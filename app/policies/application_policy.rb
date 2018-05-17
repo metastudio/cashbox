@@ -53,8 +53,7 @@ class ApplicationPolicy
   end
 
   protected
-
-  def owner_or_admin_with_access?
-    (member.admin? && record.role != 'owner') || member.owner?
-  end
+    def owner_or_admin_with_access?
+      (member.admin? && record.role != 'owner') || member.owner?
+    end
 end

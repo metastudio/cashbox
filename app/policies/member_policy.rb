@@ -11,10 +11,6 @@ class MemberPolicy < ApplicationPolicy
     owner_or_admin_with_access?
   end
 
-  def update_last_viewed_at?
-    owner_or_admin_with_access? || record.id == member.id
-  end
-
   def destroy?
     owner_or_admin_with_access? && record.id != member.id
   end
