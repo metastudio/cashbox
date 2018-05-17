@@ -50,7 +50,7 @@ gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary', '= 0.12.3.0'
 gem 'puma', '~> 3.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'redis'
+gem 'redis', '~> 3' # up to v4 after upgrade rails > v5.0
 # https://github.com/nsarno/knock/issues/104
 gem 'knock', '~> 1.4.2'
 gem 'apipie-rails'

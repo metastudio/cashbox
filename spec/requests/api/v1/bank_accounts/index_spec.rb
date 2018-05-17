@@ -18,19 +18,23 @@ describe 'GET /api/organizations/#/bank_accounts' do
     it 'returns bank_accounts' do
       expect(response).to be_success
 
-      expect(json[0]).to include(
-        'id'       => bank_account2.id,
-        'name'     => bank_account2.name,
-        'currency' => bank_account2.currency,
-        'balance'  => bank_account2.balance.as_json,
-        'residue'  => bank_account2.residue.as_json,
+      expect(json).to include(
+        'id'              => bank_account2.id,
+        'name'            => bank_account2.name,
+        'currency'        => bank_account2.currency,
+        'description'     => bank_account2.description,
+        'invoice_details' => bank_account2.invoice_details,
+        'balance'         => bank_account2.balance.as_json,
+        'residue'         => bank_account2.residue.as_json,
       )
-      expect(json[1]).to include(
-        'id'       => bank_account1.id,
-        'name'     => bank_account1.name,
-        'currency' => bank_account1.currency,
-        'balance'  => bank_account1.balance.as_json,
-        'residue'  => bank_account1.residue.as_json,
+      expect(json).to include(
+        'id'              => bank_account1.id,
+        'name'            => bank_account1.name,
+        'currency'        => bank_account1.currency,
+        'description'     => bank_account1.description,
+        'invoice_details' => bank_account1.invoice_details,
+        'balance'         => bank_account1.balance.as_json,
+        'residue'         => bank_account1.residue.as_json,
       )
     end
   end
