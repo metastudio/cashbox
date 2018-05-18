@@ -26,7 +26,7 @@ describe 'GET /api/organizations/#/transactions/#' do
         'id'        => transaction.id,
         'amount'    => transaction.amount.as_json,
         'comment'   => transaction.comment,
-        'is_viewed' => false,
+        'is_viewed' => true,
       )
 
       expect(json['category']).to     include('id' => transaction.category.id)
