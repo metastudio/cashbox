@@ -23,9 +23,10 @@ describe 'GET /api/organizations/#/transactions/#' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id'      => transaction.id,
-        'amount'  => transaction.amount.as_json,
-        'comment' => transaction.comment
+        'id'        => transaction.id,
+        'amount'    => transaction.amount.as_json,
+        'comment'   => transaction.comment,
+        'is_viewed' => false,
       )
 
       expect(json['category']).to     include('id' => transaction.category.id)

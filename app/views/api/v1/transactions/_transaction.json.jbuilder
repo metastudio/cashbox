@@ -16,3 +16,5 @@ end
 if transaction.transfer_out.present?
   json.transfer_out transaction.transfer_out, partial: 'transfer_out', as: :transfer_out
 end
+
+json.is_viewed transaction.viewed_for_member?(current_member)

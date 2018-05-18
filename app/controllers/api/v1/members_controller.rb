@@ -33,14 +33,9 @@ module Api::V1
     def show
     end
 
-    api :GET, '/organizations/:organization_id/member_info', 'Return current member'
-    def current
-      @member = current_member
-    end
-
     api :PUT, '/organizations/:organization_id/last_visit', 'Update last viewed at for current member'
-    def update_last_viewed_at
-      if current_member.update(last_visited_at: Time.current)
+    def update_last_visit
+      if current_member.update(last_visited_at: params[:last_visited_at].presence || Time.current)
         render json: current_member, status: :ok
       else
         render json: current_member.errors, status: :unprocessable_entity

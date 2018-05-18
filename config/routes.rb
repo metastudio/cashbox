@@ -79,7 +79,7 @@ Cashbox::Application.routes.draw do
           get :current
         end
         get :member_info, to: 'members#current'
-        put :last_visit, to: 'members#update_last_viewed_at'
+        put :last_visit, to: 'members#update_last_visit'
         resources :invoices, only: %i[index show create destroy] do
           get :unpaid, on: :collection
           get 'unpaid/count' => :unpaid_count, on: :collection
