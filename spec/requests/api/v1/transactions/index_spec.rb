@@ -5,10 +5,11 @@ require 'rails_helper'
 describe 'GET /api/organizations/#/transactions' do
   let(:path) { "/api/organizations/#{organization.id}/transactions" }
   let!(:user) { create :user }
-  let!(:organization) { create :organization, with_user: user }
+  let!(:organization) { create :organization }
+  let!(:member) { create :member, user: user, organization: organization, last_visited_at: Time.current }
   let!(:bank_account) { create :bank_account, organization: organization }
   let!(:to_bank_account) { create :bank_account, organization: organization }
-  let!(:transaction1) { create :transaction, :income, :with_customer, bank_account: bank_account }
+  let!(:transaction1) { Timecop.travel(1.day.ago) { create :transaction, :income, :with_customer, bank_account: bank_account } }
   let!(:transaction2) { create :transaction, :expense, :with_customer, bank_account: bank_account }
   let!(:transfer)     { create :transfer, bank_account_id: bank_account.id, reference_id: to_bank_account.id }
 
@@ -26,9 +27,10 @@ describe 'GET /api/organizations/#/transactions' do
       transfer_out = Transaction.find(transfer_in.transfer_out_id)
 
       expect(json[0]).to include(
-        'id'      => transfer_in.id,
-        'amount'  => transfer_in.amount.as_json,
-        'comment' => transfer_in.comment,
+        'id'        => transfer_in.id,
+        'amount'    => transfer_in.amount.as_json,
+        'comment'   => transfer_in.comment,
+        'is_viewed' => false,
       )
       expect(json[0]['category']).to     include('id' => transfer_in.category.id)
       expect(json[0]['bank_account']).to include('id' => transfer_in.bank_account.id)
@@ -41,18 +43,20 @@ describe 'GET /api/organizations/#/transactions' do
       expect(json[0]['transfer_out']['bank_account']).to include('id' => transfer_out.bank_account.id)
 
       expect(json[1]).to include(
-        'id'      => transaction2.id,
-        'amount'  => transaction2.amount.as_json,
-        'comment' => transaction2.comment
+        'id'        => transaction2.id,
+        'amount'    => transaction2.amount.as_json,
+        'comment'   => transaction2.comment,
+        'is_viewed' => false,
       )
       expect(json[1]['category']).to     include('id' => transaction2.category.id)
       expect(json[1]['bank_account']).to include('id' => transaction2.bank_account.id)
       expect(json[1]['customer']).to     include('id' => transaction2.customer.id)
 
       expect(json[2]).to include(
-        'id'      => transaction1.id,
-        'amount'  => transaction1.amount.as_json,
-        'comment' => transaction1.comment
+        'id'        => transaction1.id,
+        'amount'    => transaction1.amount.as_json,
+        'comment'   => transaction1.comment,
+        'is_viewed' => true,
       )
       expect(json[2]['category']).to     include('id' => transaction1.category.id)
       expect(json[2]['bank_account']).to include('id' => transaction1.bank_account.id)

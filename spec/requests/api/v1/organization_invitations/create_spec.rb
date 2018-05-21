@@ -11,7 +11,7 @@ describe 'POST /api/organizations/#/organization_invitations' do
     {
       organization_invitation: {
         email: 'new@mail.ru',
-        role: 'user'
+        role:  'user'
       }
     }
   }
@@ -29,14 +29,15 @@ describe 'POST /api/organizations/#/organization_invitations' do
       expect(json).to include(
         'id' => OrganizationInvitation.last.id,
         'email' => 'new@mail.ru',
-        'role' => "user",
+        'role'  => "user",
         'invited_by' => {
-          'id' => member.id,
-          'role' => member.role,
+          'id'              => member.id,
+          'role'            => member.role,
+          'last_visited_at' => member.last_visited_at,
           'user' => {
-            'id' => owner.id,
-            'email' => owner.email,
-            'full_name' => owner.full_name,
+            'id'           => owner.id,
+            'email'        => owner.email,
+            'full_name'    => owner.full_name,
             'phone_number' => owner.profile.phone_number
           }
         }

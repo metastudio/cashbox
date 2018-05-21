@@ -1,4 +1,4 @@
-json.extract! transfer_out, :id, :amount, :comment, :comission, :date
+json.extract! transfer_out, :id, :amount, :comment, :comission, :date, :created_at
 
 json.category transfer_out.category, partial: 'api/v1/categories/short_category', as: :category
 json.bank_account transfer_out.bank_account, partial: 'api/v1/bank_accounts/short_bank_account', as: :bank_account
