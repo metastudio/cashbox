@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe 'invoices index page', js: true do
+describe 'invoices index page' do
   let(:user) { create :user }
-  let(:org)  { create :organization, with_user: user }
+  let!(:org) { create :organization, with_user: user }
 
   before do
     sign_in user
@@ -10,27 +10,22 @@ describe 'invoices index page', js: true do
 
   include_context 'invoices pagination'
   it_behaves_like 'paginateable' do
-    let!(:list)      { create_list(:invoice, invoices_count, organization: org); org.invoices.ransack({ customer_name: :asc }).result  }
+    let!(:list)  { create_list(:invoice, 20, organization: org); org.invoices }
     let(:list_class) { '.invoices' }
-    let(:list_page)  { invoices_path(q: {customer_name: :asc}) }
+    let(:list_page)  { invoices_path }
   end
 
   context "show only current organization's invoices" do
-    let(:org1) { create :organization, with_user: user }
-    let(:org2) { create :organization, with_user: user }
-    let!(:org1_invoice) { create :invoice, organization: org1 }
-    let!(:org2_invoice) { create :invoice, organization: org2 }
+    let!(:invoice) { create :invoice, organization: org }
+    let!(:other_invoice) { create :invoice, organization: create(:organization) }
 
     before do
       visit invoices_path
     end
 
     it "invoice index page displays current organization's invoices" do
-      expect(page).to have_content(org1_invoice.customer)
-    end
-
-    it "invoice index page doesn't display another invoices" do
-      expect(page).to_not have_content(org2_invoice.customer)
+      expect(page).to have_content(invoice.customer)
+      expect(page).to_not have_content(other_invoice.customer)
     end
   end
 
