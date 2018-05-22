@@ -9,7 +9,7 @@ class AuthenticateUserService < BaseService
   end
 
   def perform
-    raise Api::V1::BaseController::AuthorizationError unless user&.authenticate(password)
+    return error(I18n.t('devise.failure.invalid', authentication_keys: 'email')) unless user&.authenticate(password)
     return error(I18n.t('devise.failure.locked')) if user.locked?
 
     return ok(auth_token)
