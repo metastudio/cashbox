@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GraphqlController < ApplicationController
-  # include Knock::Authenticable
+  include Knock::Authenticable
 
   skip_before_action :verify_authenticity_token
   skip_before_action :authenticate_user!
