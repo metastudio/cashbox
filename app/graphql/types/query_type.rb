@@ -2,14 +2,12 @@
 
 Types::QueryType = GraphQL::ObjectType.define do
   name 'Query'
-  # Add root-level fields here.
-  # They will be entry points for queries on your schema.
+  description 'The query root of this schema'
 
-  # TODO: remove me
-  field :testField, types.String do
-    description 'An example field added by the generator'
-    resolve ->(obj, args, ctx) {
-      'Hello World!'
-    }
+  field :category do
+    type Types::CategoryType
+    argument :id, !types.ID
+    description 'Find a Category by ID'
+    resolve ->(_obj, args, _ctx) { Category.find(args[:id]) }
   end
 end
