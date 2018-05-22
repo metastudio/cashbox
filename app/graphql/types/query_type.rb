@@ -10,4 +10,12 @@ Types::QueryType = GraphQL::ObjectType.define do
     description 'Find a Category by ID'
     resolve ->(_obj, args, _ctx) { Category.find(args[:id]) }
   end
+  field :allCategories do
+    type ->{ !types[Types::CategoryType] }
+    resolve lambda { |_obj, args, _ctx|
+      q = Category.search(args)
+      q.sorts = 'created_at' if q.sorts.blank?
+      q.result
+    }
+  end
 end
