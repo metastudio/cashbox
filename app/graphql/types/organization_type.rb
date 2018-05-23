@@ -9,4 +9,13 @@ Types::OrganizationType = GraphQL::ObjectType.define do
   field :createdAt,       !Types::DateTimeType, property: :created_at
   field :updatedAt,       !Types::DateTimeType, property: :updated_at
   field :categories,      types[Types::CategoryType]
+
+  field :category, Types::CategoryType do
+    argument :id, !types.ID
+    description 'Find a Category by ID within organization'
+    resolve lambda{ |obj, args, _ctx|
+      return nil if obj.blank?
+      obj.categories.find(args[:id])
+    }
+  end
 end
