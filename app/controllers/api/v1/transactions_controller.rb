@@ -37,8 +37,9 @@ module Api::V1
     def index
       authorize :transaction
 
-      # TODO: need to use ransack
-      @transactions = current_organization.transactions.without_out([]).page(params[:page]).per(30)
+      @q = current_organization.transactions.without_out([]).ransack(params[:q])
+      @q.sorts = ['date desc', 'created_at desc'] if @q.sorts.blank?
+      @transactions = @q.result.page(params[:page]).per(30)
     end
 
     api :GET, '/organizations/:organization_id/transactions/:id', 'Return transaction'

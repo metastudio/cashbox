@@ -41,6 +41,7 @@ describe 'GET /api/organizations/#/invoices/#' do
           'hours'         => invoice_item.hours.to_s,
           'amount'        => invoice_item.amount.as_json,
           'currency'      => invoice_item.currency,
+          'customer_id'   => invoice_item.customer_id,
           'customer_name' => invoice_item.customer.to_s,
           'date'          => invoice_item.date.as_json,
         )

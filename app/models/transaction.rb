@@ -158,6 +158,11 @@ class Transaction < ApplicationRecord
     end
   end
 
+  def viewed_for_member?(member)
+    return true if member&.last_visited_at.blank?
+    member.last_visited_at > created_at
+  end
+
   private
 
   def send_notification
