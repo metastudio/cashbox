@@ -4,9 +4,10 @@ require 'capybara/email/rspec'
 
 Capybara.javascript_driver = :webkit
 
-# Capybara::Webkit.configure do |config|
-#   config.skip_image_loading
-# end
+Capybara::Webkit.configure do |config|
+  # Silently return an empty 200 response for any requests to unknown URLs.
+  config.block_unknown_urls
+end
 
 RSpec.configure do |config|
   config.append_after(:each) do
@@ -17,3 +18,6 @@ RSpec.configure do |config|
     # page.driver.browser.url_blacklist = ['https://google.com', 'https://facebook.com']
   end
 end
+
+# Keep only the screenshots generated from the last failing test suite
+Capybara::Screenshot.prune_strategy = :keep_last_run

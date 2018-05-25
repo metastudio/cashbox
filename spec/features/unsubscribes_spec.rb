@@ -29,6 +29,8 @@ describe 'unsubscribes' do
       sign_out
       sign_in admin_member.user
       click_on 'Change organization'
+
+      page.has_css?("##{dom_id(admin_member.user.organizations.last, :switch)}")
       within "##{dom_id(admin_member.user.organizations.last, :switch)}" do
         click_on 'Switch'
       end
