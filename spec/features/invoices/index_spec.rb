@@ -10,7 +10,7 @@ describe 'invoices index page' do
 
   include_context 'invoices pagination'
   it_behaves_like 'paginateable' do
-    let!(:list)  { create_list(:invoice, 20, organization: org); org.invoices }
+    let!(:list)      { create_list(:invoice, invoices_count, organization: org); org.invoices.order(ends_at: :desc, created_at: :desc) }
     let(:list_class) { '.invoices' }
     let(:list_page)  { invoices_path }
   end
@@ -186,8 +186,8 @@ describe 'invoices index page' do
 
   describe 'Invoices sorting' do
     context 'default order' do
-      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, ends_at: 2.days.ago }
-      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, ends_at: 1.day.ago }
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, ends_at: 2.days.ago.to_date }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, ends_at: 1.day.ago.to_date }
 
       before do
         visit invoices_path
@@ -242,8 +242,8 @@ describe 'invoices index page' do
     end
 
     context 'by date range' do
-      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, ends_at: 1.day.ago }
-      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, ends_at: 2.days.ago }
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, ends_at: 1.day.ago.to_date }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, ends_at: 2.days.ago.to_date }
 
       before do
         visit invoices_path
@@ -310,8 +310,8 @@ describe 'invoices index page' do
     end
 
     context 'by sent date' do
-      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, sent_at: 2.days.ago }
-      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, sent_at: 1.day.ago }
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, sent_at: 2.days.ago.to_date }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, sent_at: 1.day.ago.to_date }
 
       before do
         visit invoices_path
@@ -344,8 +344,8 @@ describe 'invoices index page' do
     end
 
     context 'by paid date' do
-      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, paid_at: 2.days.ago }
-      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, paid_at: 1.day.ago }
+      let!(:invoice1) { create :invoice, customer_name: 'Adam', organization: org, paid_at: 2.days.ago.to_date }
+      let!(:invoice2) { create :invoice, customer_name: 'Eve', organization: org, paid_at: 1.day.ago.to_date }
 
       before do
         visit invoices_path
