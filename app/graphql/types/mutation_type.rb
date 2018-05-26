@@ -53,4 +53,20 @@ Types::MutationType = GraphQL::ObjectType.define do
       )
     }
   end
+
+  field :deleteCategory, Types::CategoryType do
+    description 'Delete category'
+
+    argument :id, !types.ID
+
+    resolve lambda{ |_obj, args, _ctx|
+      category = Category.find(args[:id])
+      return category if category.destroy
+
+      return GraphQL::ExecutionError.new(
+        'Invalid record',
+        options: { validationErrors: category.errors }
+      )
+    }
+  end
 end
