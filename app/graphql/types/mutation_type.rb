@@ -19,6 +19,24 @@ Types::MutationType = GraphQL::ObjectType.define do
     }
   end
 
+  field :createCategory, Types::CategoryType do
+    description 'Create category'
+
+    argument :orgId,    !types.ID
+    argument :category, !Types::CategoryInputType
+
+    resolve lambda{ |_obj, args, ctx|
+      organization = ctx[:current_user].organizations.find(args[:orgId])
+      category = organization.categories.build(args[:category].to_h)
+      return category if category.save
+
+      return GraphQL::ExecutionError.new(
+        'Invalid record',
+        options: { validationErrors: category.errors }
+      )
+    }
+  end
+
   field :updateCategory, Types::CategoryType do
     description 'Update category'
 
