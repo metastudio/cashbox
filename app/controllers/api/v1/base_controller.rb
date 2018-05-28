@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api::V1
   class BaseController < ::ApplicationController
     include Knock::Authenticable
@@ -19,7 +21,7 @@ module Api::V1
     end
 
     def user_not_authorized
-      render json: { error: "You are not authorized to perform this action." }, status: :forbidden
+      render json: { error: 'You are not authorized to perform this action.' }, status: :forbidden
     end
 
     def not_found
