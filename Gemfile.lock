@@ -144,6 +144,8 @@ GEM
       railties
       sprockets-rails
     graphql (1.8.0)
+    graphql-errors (0.2.0)
+      graphql (>= 1.6.0, < 2)
     guard (2.14.2)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -452,6 +454,7 @@ DEPENDENCIES
   gon
   graphiql-rails
   graphql
+  graphql-errors
   guard
   guard-rspec
   has_secure_token (~> 0.0.2)
