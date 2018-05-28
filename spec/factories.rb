@@ -1,26 +1,12 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  sequence(:email)     { |n| "user#{n}@cashbox.dev" }
-  sequence(:password)  { SecureRandom.hex(10) }
-  sequence(:full_name) { |n| "Test User#{n}" }
   sequence(:transaction_comment) { |n| "Test transaction comment #{n}" }
   sequence(:phone_number) { |n| "12345#{n}" }
   sequence(:invoice_details) { |n| "«TestBank» Bank S.W.I.F.T. TESTRU2K #{n}" }
-  factory :user do
-    email
-    password
-    full_name
-
-    trait :with_organization do
-      after(:create) { |u| create :member, user: u }
-    end
-
-    trait :with_organizations do
-      after(:create) { |u| create_list :member, 3, user: u }
-    end
-  end
 
   sequence(:organization_name) { |n| "Organization #{n}" }
-  factory :organization do |o|
+  factory :organization do
     name { generate :organization_name }
 
     transient do
