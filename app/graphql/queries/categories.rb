@@ -9,7 +9,7 @@ class Queries::Categories < Queries::BaseQuery
 
   def resolve(args)
     scope = Category.where(organization_id: current_user.organization_ids & [args[:org_id].to_i])
-    scope.where(type: args[:type]) if args[:type].present?
+    scope = scope.where(type: args[:type]) if args[:type].present?
     scope
   end
 end
