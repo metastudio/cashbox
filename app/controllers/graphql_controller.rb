@@ -7,8 +7,6 @@ class GraphqlController < ApplicationController
   skip_before_action :authenticate_user!
   # before_action :authenticate
 
-  rescue_from StandardError, with: :handle_error
-
   def execute
     variables = ensure_hash(params[:variables])
     query = params[:query]
@@ -39,14 +37,5 @@ class GraphqlController < ApplicationController
     else
       raise ArgumentError, "Unexpected parameter: #{ambiguous_param}"
     end
-  end
-
-  def handle_error(error)
-    logger.error error.message
-    logger.error error.backtrace.join("\n")
-
-    render json: {
-      error: { message: error.message }, data: {}
-    }, status: :internal_server_error
   end
 end
