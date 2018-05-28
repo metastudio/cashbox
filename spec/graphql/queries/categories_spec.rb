@@ -59,7 +59,7 @@ describe 'query categories(orgId: ID!, type: CategoryType): [Category!]!' do
           'name'           => expense_category.name,
         },
       ])
-      end
+    end
   end
 
   context 'if organization doesn\'t exist' do

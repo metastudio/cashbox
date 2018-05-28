@@ -7,6 +7,6 @@ class Queries::UserOrganizations < Queries::BaseQuery
   def resolve
     return [] unless current_user
 
-    current_user.organizations.sort(:name)
+    current_user.organizations.order(:name)
   end
 end
