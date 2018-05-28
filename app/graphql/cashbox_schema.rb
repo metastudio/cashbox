@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 class CashboxSchema < GraphQL::Schema
-  query    Types::QueryType
-  mutation Types::MutationType
+  query    Types::Query
+  mutation Types::Mutation
 end

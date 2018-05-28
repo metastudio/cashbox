@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Queries::Organization < Queries::BaseQuery
-  type Types::OrganizationType, null: false
+  type Types::Organization, null: false
   description 'Find an Organization by ID'
 
   argument :id, ID, required: true

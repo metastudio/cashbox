@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Types::DateTimeType < GraphQL::Schema::Scalar
-  graphql_name 'DateTime'
-
+class Types::DateTime < GraphQL::Schema::Scalar
   class << self
     def coerce_input(value, _ctx)
       Time.zone.parse(value)

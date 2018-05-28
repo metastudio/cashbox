@@ -3,10 +3,10 @@
 class Mutations::UpdateCategory < Mutations::BaseMutation
   description 'Update a category'
 
-  argument :id,       ID,                       required: true
-  argument :category, Types::CategoryInputType, required: true
+  argument :id,       ID,                   required: true
+  argument :category, Types::CategoryInput, required: true
 
-  field :category, Types::CategoryType, null: false, description: 'Updated category'
+  field :category, Types::Category, null: false, description: 'Updated category'
 
   def resolve(id:, category:)
     c = Category.where(organization_id: current_user.organization_ids).find(id)

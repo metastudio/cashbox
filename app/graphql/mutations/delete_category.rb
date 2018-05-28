@@ -5,7 +5,7 @@ class Mutations::DeleteCategory < Mutations::BaseMutation
 
   argument :id, ID, required: true
 
-  field :category, Types::CategoryType, null: false, description: 'Deleted category'
+  field :category, Types::Category, null: false, description: 'Deleted category'
 
   def resolve(id:)
     c = Category.where(organization_id: current_user.organization_ids).find(id)

@@ -6,7 +6,7 @@ class Mutations::Authenticate < Mutations::BaseMutation
   argument :email,    String, required: true
   argument :password, String, required: true
 
-  field :token, Types::AuthTokenType, null: false
+  field :token, Types::AuthToken, null: false
 
   def resolve(email:, password:)
     result = AuthenticateUserService.perform(email, password)

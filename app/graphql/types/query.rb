@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class Types::QueryType < Types::BaseObjectType
-  graphql_name 'Query'
+class Types::Query < Types::BaseObject
   description 'The query root of this schema'
 
   field :organization, resolver: Queries::Organization

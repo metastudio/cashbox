@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-class Types::MutationType < Types::BaseObjectType
-  graphql_name 'Mutation'
-
+class Types::Mutation < Types::BaseObject
   field :authenticate, mutation: Mutations::Authenticate
 
   field :create_category, mutation: Mutations::CreateCategory

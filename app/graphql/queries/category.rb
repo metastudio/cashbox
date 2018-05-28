@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Queries::Category < Queries::BaseQuery
-  type Types::CategoryType, null: false
+  type Types::Category, null: false
   description 'Find a Category by ID'
 
   argument :id, ID, required: true
