@@ -8,8 +8,9 @@ class Queries::Categories < Queries::BaseQuery
   argument :type,   Types::CategoryType, required: false
 
   def resolve(args)
-    scope = Category.where(organization_id: current_user.organization_ids & [args[:org_id].to_i])
+    org = current_user.organizations.find(args[:org_id])
+    scope = org.categories
     scope = scope.where(type: args[:type]) if args[:type].present?
-    scope
+    scope.order(:name)
   end
 end
