@@ -48,8 +48,6 @@ describe 'Accept invitation' do
       current_email.click_link 'Accept'
     end
 
-    it { expect(page).to have_content "Sign in" }
-
     context 'when signed in' do
       let(:invitation) { existing_user.invitations.last }
       before do
@@ -63,7 +61,8 @@ describe 'Accept invitation' do
       end
     end
 
-    it "doesn't create a new user" do
+    it "page has sign in link and doesn't create a new user" do
+      expect(page).to have_content "Sign in"
       expect { open_email(email); current_email.click_link 'Accept' }.not_to change{ User.count }
     end
   end
