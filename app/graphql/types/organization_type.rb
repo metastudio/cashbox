@@ -1,21 +1,13 @@
 # frozen_string_literal: true
 
-Types::OrganizationType = GraphQL::ObjectType.define do
-  name 'Organization'
+class Types::OrganizationType < Types::BaseObjectType
+  graphql_name 'Organization'
 
-  field :id,              !types.ID
-  field :name,            !types.String
-  field :defaultCurrency, types.String,         property: :default_currency
-  field :createdAt,       !Types::DateTimeType, property: :created_at
-  field :updatedAt,       !Types::DateTimeType, property: :updated_at
-  field :categories,      !types[Types::CategoryType.graphql_definition]
+  field :id, ID, null: false
 
-  field :category, Types::CategoryType do
-    argument :id, !types.ID
-    description 'Find a Category by ID within organization'
-    resolve lambda{ |obj, args, _ctx|
-      return nil if obj.blank?
-      obj.categories.find(args[:id])
-    }
-  end
+  field :name,             String, null: false
+  field :default_currency, String, null: true
+
+  field :created_at, Types::DateTimeType, null: false
+  field :updated_at, Types::DateTimeType, null: false
 end

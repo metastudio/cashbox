@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-Types::CategoryInputType = GraphQL::InputObjectType.define do
-  name 'CategoryInput'
+class Types::CategoryInputType < GraphQL::Schema::InputObject
+  graphql_name 'CategoryInput'
 
-  argument :type, types.String
-  argument :name, types.String
+  argument :type, Types::CategoryTypeType, required: false
+  argument :name, String,                  required: false
 end

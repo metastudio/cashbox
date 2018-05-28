@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-Types::AuthTokenType = GraphQL::ObjectType.define do
-  name 'AuthToken'
+class Types::AuthTokenType < GraphQL::Schema::Object
+  graphql_name 'AuthToken'
 
-  field :jwt, !types.String, property: :token
+  field :jwt, String, null: false, method: :jwt
 end

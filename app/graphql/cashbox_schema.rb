@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-CashboxSchema = GraphQL::Schema.define do
-  mutation(Types::MutationType)
-  query(Types::QueryType)
+class CashboxSchema < GraphQL::Schema
+  query    Types::QueryType
+  mutation Types::MutationType
 end

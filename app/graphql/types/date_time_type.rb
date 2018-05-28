@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
-Types::DateTimeType = GraphQL::ScalarType.define do
-  name 'DateTime'
+class Types::DateTimeType < GraphQL::Schema::Scalar
+  graphql_name 'DateTime'
 
-  coerce_input ->(value, _ctx) { Time.zone.parse(value) }
-  coerce_result ->(value, _ctx) { value.utc.iso8601 }
+  class << self
+    def coerce_input(value, _ctx)
+      Time.zone.parse(value)
+    end
+
+    def coerce_result(value, _ctx)
+      value.utc.iso8601
+    end
+  end
 end
