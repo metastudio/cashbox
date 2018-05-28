@@ -47,4 +47,13 @@ describe 'query userOrganizations: [Organization!]!' do
       expect(result['data']['userOrganizations'].size).to eq 0
     end
   end
+
+  context 'if user is not authenticated' do
+    let(:context) { {} }
+
+    it 'returns error' do
+      expect(result['data']).to eq nil
+      expect(result['errors'].first['message']).to eq 'Authentication required.'
+    end
+  end
 end

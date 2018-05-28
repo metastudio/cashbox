@@ -79,4 +79,13 @@ describe 'query categories(orgId: ID!, type: CategoryType): [Category!]!' do
       expect(result['errors'].first['message']).to match(/\ACouldn't find Organization/)
     end
   end
+
+  context 'if user is not authenticated' do
+    let(:context) { {} }
+
+    it 'returns error' do
+      expect(result['data']).to eq nil
+      expect(result['errors'].first['message']).to eq 'Authentication required.'
+    end
+  end
 end

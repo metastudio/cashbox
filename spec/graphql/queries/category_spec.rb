@@ -23,10 +23,9 @@ describe 'query category(id: ID!): Category!' do
 
   let(:variables) { { categoryId: category.id } }
   let(:context)   { { current_user: user } }
+  let(:result)    { CashboxSchema.execute(query, context: context, variables: variables).to_h }
 
   it 'returns category with given id' do
-    result = CashboxSchema.execute(query, context: context, variables: variables).to_h
-
     expect(result['data']['category']).to include({
       'id'             => category.id.to_s,
       'organizationId' => org.id.to_s,
@@ -39,8 +38,6 @@ describe 'query category(id: ID!): Category!' do
     let(:variables) { { categoryId: 'wrong_id' } }
 
     it 'returns error' do
-      result = CashboxSchema.execute(query, context: context, variables: variables).to_h
-
       expect(result['data']).to eq nil
       expect(result['errors'].first['message']).to match(/\ACouldn't find Category/)
     end
@@ -50,10 +47,17 @@ describe 'query category(id: ID!): Category!' do
     let(:user) { create :user }
 
     it 'returns error' do
-      result = CashboxSchema.execute(query, context: context, variables: variables).to_h
-
       expect(result['data']).to eq nil
       expect(result['errors'].first['message']).to match(/\ACouldn't find Category/)
+    end
+  end
+
+  context 'if user is not authenticated' do
+    let(:context) { {} }
+
+    it 'returns error' do
+      expect(result['data']).to eq nil
+      expect(result['errors'].first['message']).to eq 'Authentication required.'
     end
   end
 end
