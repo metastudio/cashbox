@@ -44,6 +44,10 @@ FactoryBot.define do
       end
     end
 
+    trait :locked do
+      locked_at { 3.days.ago }
+    end
+
     trait :with_organization do
       after(:create) { |u| create :member, user: u }
     end

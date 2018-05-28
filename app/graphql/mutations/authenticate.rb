@@ -11,8 +11,10 @@ class Mutations::Authenticate < Mutations::BaseMutation
   def resolve(email:, password:)
     result = AuthenticateUserService.perform(email, password)
 
-    return GraphQL::ExecutionError.new(result.payload) unless result.success?
-
-    OpenStruct.new({ token: result.payload })
+    if result.success?
+      { token: result.payload }
+    else
+      context.add_error(GraphQL::ExecutionError.new(result.payload))
+    end
   end
 end
