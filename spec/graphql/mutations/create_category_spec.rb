@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'createCategory(orgId: ID!, category: CategoryInput!): CreateCategoryPayload' do
+describe 'mutation createCategory(orgId: ID!, category: CategoryInput!): CreateCategoryPayload' do
   let(:query) do
     %(
       mutation CreateCategory($orgId: ID!, $category: CategoryInput!) {
@@ -43,6 +43,12 @@ describe 'createCategory(orgId: ID!, category: CategoryInput!): CreateCategoryPa
       'name'           => name,
     })
     expect(result['errors']).to be_blank
+
+    category = Category.unscoped.last
+
+    expect(category.organization_id).to eq org.id
+    expect(category.name).to            eq name
+    expect(category.type).to            eq type
   end
 
   context 'if wrong organization id was provided' do

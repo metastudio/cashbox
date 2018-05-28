@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'updateCategory(id: ID!, category: CategoryInput!): UpdateCategoryPayload' do
+describe 'mutation updateCategory(id: ID!, category: CategoryInput!): UpdateCategoryPayload' do
   let(:query) do
     %(
       mutation UpdateCategory($categoryId: ID!, $category: CategoryInput!) {
@@ -45,6 +45,12 @@ describe 'updateCategory(id: ID!, category: CategoryInput!): UpdateCategoryPaylo
       'name'           => name,
     })
     expect(result['errors']).to be_blank
+
+    category.reload
+
+    expect(category.organization_id).to eq org.id
+    expect(category.name).to           eq name
+    expect(category.type).to           eq type
   end
 
   context 'if wrong category id was provided' do
@@ -75,6 +81,15 @@ describe 'updateCategory(id: ID!, category: CategoryInput!): UpdateCategoryPaylo
         type: ['can\'t be blank', ' is not a valid category type'],
         name: ['can\'t be blank'],
       })
+    end
+  end
+
+  context 'if tries to update organization id for category' do
+    let(:category_params) { { organizationId: other_org.id } }
+
+    it 'returns error' do
+      expect(result['data']).to eq nil
+      expect(result['errors'].first['message']).to eq 'Variable category of type CategoryInput! was provided invalid value'
     end
   end
 
