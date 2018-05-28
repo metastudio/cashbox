@@ -14,9 +14,9 @@ class Mutations::CreateCategory < Mutations::BaseMutation
     if c.save
       { category: c }
     else
-      raise GraphQL::ExecutionError.new(
+      context.add_error GraphQL::ExecutionError.new(
         'Invalid record',
-        options: { validationErrors: c.errors }
+        options: { 'validationErrors' => c.errors.as_json }
       )
     end
   end

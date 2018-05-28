@@ -25,6 +25,12 @@
 #
 
 class User < ApplicationRecord
+  class AuthenticationRequiredError < StandardError
+    def initialize(msg = 'Authentication required.')
+      super(msg)
+    end
+  end
+
   has_one :profile, inverse_of: :user, dependent: :destroy
   has_many :own_organizations, -> { where members: { role: 'owner' } },
     through: :members, source: :organization, dependent: :restrict_with_error, inverse_of: :owners
