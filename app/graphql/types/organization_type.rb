@@ -8,7 +8,7 @@ Types::OrganizationType = GraphQL::ObjectType.define do
   field :defaultCurrency, types.String,         property: :default_currency
   field :createdAt,       !Types::DateTimeType, property: :created_at
   field :updatedAt,       !Types::DateTimeType, property: :updated_at
-  field :categories,      !types[Types::CategoryType]
+  field :categories,      !types[Types::CategoryType.graphql_definition]
 
   field :category, Types::CategoryType do
     argument :id, !types.ID

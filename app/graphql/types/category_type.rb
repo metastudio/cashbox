@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
-Types::CategoryType = GraphQL::ObjectType.define do
-  name 'Category'
+class Types::CategoryType < GraphQL::Schema::Object
+  graphql_name 'Category'
+  description 'List of categories'
 
-  field :id,             !types.ID
-  field :organizationId, types.ID, property: :organization_id
-  field :type,           !types.String
-  field :name,           !types.String
-  field :system,         !types.Boolean
-  field :createdAt,      !Types::DateTimeType, property: :created_at
-  field :updatedAt,      !Types::DateTimeType, property: :updated_at
-  field :deletedAt,      Types::DateTimeType, property: :deleted_at
+  field :id,              ID,                  null: false
+  field :organization_id, ID,                  null: false
+  field :type,            String,              null: false
+  field :name,            String,              null: false
+  field :system,          Boolean,             null: false
+  field :created_at,      Types::DateTimeType, null: false
+  field :updated_at,      Types::DateTimeType, null: false
+  field :deleted_at,      Types::DateTimeType, null: true
 end
