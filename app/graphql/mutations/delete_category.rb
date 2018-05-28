@@ -13,9 +13,9 @@ class Mutations::DeleteCategory < Mutations::BaseMutation
     if c.destroy
       { category: c }
     else
-      raise GraphQL::ExecutionError.new(
+      context.add_error GraphQL::ExecutionError.new(
         'Invalid record',
-        options: { validationErrors: c.errors }
+        options: { 'validationErrors' => c.errors.as_json }
       )
     end
   end
