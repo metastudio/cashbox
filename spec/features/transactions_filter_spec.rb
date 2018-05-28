@@ -108,6 +108,14 @@ describe 'Transactions filter' do
       end
 
       it_behaves_like 'filterable object'
+
+      it "generates valid links" do
+        within "#transaction_#{transaction.id}" do
+          click_link cat_exp.name
+        end
+
+        expect(current_path).to eq root_path
+      end
     end
   end
 
@@ -406,7 +414,7 @@ describe 'Transactions filter' do
   end
 
   context 'flow' do
-    context 'when uncategorized transactions shown' do
+    context 'when uncategorized transactions shown', js: true do
       let!(:ba)   { create :bank_account, organization: org, residue: 100 }
       let(:amount){ money_with_symbol Money.empty(org.default_currency) }
 
@@ -427,7 +435,7 @@ describe 'Transactions filter' do
       end
     end
 
-    context 'should display without transfers amounts' do
+    context 'should display without transfers amounts', js: true do
       let!(:transaction) { create :transaction, :income, bank_account: ba, organization: org }
       let(:amount)       { money_with_symbol Money.new(transaction.amount, org.default_currency) }
       let!(:transfer)    { create :transfer, :with_different_currencies, bank_account_id: ba.id }

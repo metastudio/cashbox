@@ -19,6 +19,7 @@
 #  created_at             :datetime
 #  updated_at             :datetime
 #  full_name              :string(255)      not null
+#  subscribed             :boolean          default(TRUE)
 #
 
 require 'rails_helper'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'GET /api/organizations/#/total_balances' do
@@ -22,22 +24,22 @@ describe 'GET /api/organizations/#/total_balances' do
       expect(response).to be_success
 
       expect(json).to include(
-        'total_amount' => money_with_symbol(organization.total_balances.first[:total_amount]),
+        'total_amount'     => organization.total_balances.first[:total_amount].as_json,
         'default_currency' => organization.default_currency,
       )
       expect(json['totals']).to include(
-        'total' => money_with_symbol(organization.bank_accounts.total_balance('USD')),
-        'currency' => 'USD',
-        'ex_total' => nil,
-        'rate' => nil,
+        'total'      => organization.bank_accounts.total_balance('USD').as_json,
+        'currency'   => 'USD',
+        'ex_total'   => nil,
+        'rate'       => nil,
         'updated_at' => nil
       )
       expect(json['totals']).to include(
-        'total' => money_with_symbol(Money.new(50000, 'RUB')),
-        'currency' => 'RUB',
-        'ex_total' => money_with_symbol(organization.bank_accounts.total_balance('RUB').exchange_to('USD')),
-        'rate' => Money.default_bank.get_rate('RUB', 'USD').round(4),
-        'updated_at' => Money.default_bank.rates_updated_at.iso8601
+        'total'      => Money.from_amount(500, 'RUB').as_json,
+        'currency'   => 'RUB',
+        'ex_total'   => organization.bank_accounts.total_balance('RUB').exchange_to('USD').as_json,
+        'rate'       => Money.default_bank.get_rate('RUB', 'USD').round(4),
+        'updated_at' => Money.default_bank.rates_updated_at.as_json
       )
     end
   end
@@ -49,22 +51,22 @@ describe 'GET /api/organizations/#/total_balances' do
       expect(response).to be_success
 
       expect(json).to include(
-        'total_amount' => money_with_symbol(organization.total_balances.first[:total_amount]),
+        'total_amount'     => organization.total_balances.first[:total_amount].as_json,
         'default_currency' => organization.default_currency,
       )
       expect(json['totals']).to include(
-        'total' => money_with_symbol(organization.bank_accounts.total_balance('USD')),
-        'currency' => 'USD',
-        'ex_total' => nil,
-        'rate' => nil,
+        'total'      => organization.bank_accounts.total_balance('USD').as_json,
+        'currency'   => 'USD',
+        'ex_total'   => nil,
+        'rate'       => nil,
         'updated_at' => nil
       )
       expect(json['totals']).to include(
-        'total' => money_with_symbol(Money.new(50000, 'RUB')),
-        'currency' => 'RUB',
-        'ex_total' => money_with_symbol(organization.bank_accounts.total_balance('RUB').exchange_to('USD')),
-        'rate' => Money.default_bank.get_rate('RUB', 'USD').round(4),
-        'updated_at' => Money.default_bank.rates_updated_at.iso8601
+        'total'      => Money.from_amount(500, 'RUB').as_json,
+        'currency'   => 'RUB',
+        'ex_total'   => organization.bank_accounts.total_balance('RUB').exchange_to('USD').as_json,
+        'rate'       => Money.default_bank.get_rate('RUB', 'USD').round(4),
+        'updated_at' => Money.default_bank.rates_updated_at.as_json
       )
     end
   end

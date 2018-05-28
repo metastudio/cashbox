@@ -63,7 +63,9 @@ module StatisticData
         result[month] = {}
       end
 
-      transacts = @organization.transactions.unscope(:order).period(period).includes(:customer)
+      transacts = @organization.transactions.unscope(:order)
+        .where('DATE(date) BETWEEN ? AND ?', period.begin, period.end)
+        .includes(:customer)
       if category_type == 'income'
         transacts = transacts.incomes
       else
@@ -153,6 +155,14 @@ module StatisticData
       header = customers.unshift('Customer').append({ role: 'annotation' })
       result.unshift(header)
       result
+    end
+
+    def combine_by_customers(customer_ids, incomes, expenses)
+      incomes.delete(nil)
+      expenses.delete(nil)
+      array = customer_ids.map{ |k| [find_customer_name_by_id(k), incomes[k] ? incomes[k].last : 0,
+        expenses[k] ? expenses[k].last.abs : 0] }
+      data = array.unshift(['Customer', 'Incomes', 'Expenses'])
     end
   end
 end

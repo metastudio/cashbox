@@ -1,5 +1,5 @@
 module Api::V1
-  class OrganizationsController < ApiController
+  class OrganizationsController < BaseController
     before_action :set_organization, only: [:show, :update, :destroy, :total_balances]
     before_action :authorize_organization, only: [:update, :destroy, :total_balances]
 
@@ -62,7 +62,7 @@ module Api::V1
     end
 
     def organization_params
-      params.require(:organization).permit(:name, :default_currency)
+      params.fetch(:organization, {}).permit(:name, :default_currency)
     end
   end
 end

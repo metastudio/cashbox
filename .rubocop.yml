@@ -1,0 +1,97 @@
+AllCops:
+  Include:
+  - "**/*.rake"
+  - "**/Gemfile"
+  - "**/Rakefile"
+  Exclude:
+  - "vendor/**/*"
+  - "db/**/*"
+  - "spec/rails_helper.rb"
+  - "spec/spec_helper.rb"
+  DisplayCopNames: false
+  StyleGuideCopsOnly: false
+Rails:
+  Enabled: true
+
+Rails/HttpPositionalArguments:
+  Enabled: false # This is only for Rails >= 5
+Rails/ApplicationRecord:
+  Enabled: false # This is only for Rails >= 5
+Rails/SkipsModelValidations:
+  Exclude:
+    - "lib/tasks/migrate.rake" # migrates usually updates without validation
+
+Layout/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+Layout/IndentArray:
+  EnforcedStyle: consistent
+Layout/IndentHash:
+  EnforcedStyle: consistent
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+Layout/SpaceBeforeBlockBraces:
+  Enabled: false
+
+Lint/ParenthesesAsGroupedExpression:
+  Exclude:
+    - "spec/**/*"
+
+Naming/PredicateName:
+  NamePrefixBlacklist:
+    - 'is_'
+  Exclude:
+    - "spec/support/**/*"
+Naming/AccessorMethodName:
+  Exclude:
+    - "app/controllers/**/*" # controllers may have methods with `set_` prefix
+Naming/VariableNumber:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+Style/EmptyMethod:
+  Exclude:
+    - "app/controllers/**/*_controller.rb"
+Style/FormatString:
+  Enabled: false
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+     "%w": "[]" # https://github.com/bbatsov/rubocop/issues/4039
+     "%i": "[]"
+Style/RaiseArgs:
+  Enabled: false # looks like it works wrong
+Style/RedundantReturn:
+  Enabled: false
+Style/TrailingCommaInArguments:
+  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Performance/FixedSize:
+  Exclude:
+    - "spec/features/**/*"
+
+Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - "config/routes.rb"
+    - "spec/**/*"
+Metrics/ClassLength:
+  Max: 300
+Metrics/LineLength:
+  Enabled: false
+Metrics/MethodLength:
+  Max: 50
+
+Documentation:
+  Enabled: false

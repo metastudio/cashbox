@@ -1,5 +1,5 @@
 module Api::V1
-  class BankAccountsController < ApiController
+  class BankAccountsController < BaseOrganizationController
     before_action :set_bank_account, only: [:show, :update, :destroy]
 
     def_param_group :bank_account do
@@ -14,7 +14,7 @@ module Api::V1
 
     api :GET, '/organizations/:organization_id/bank_accounts', 'Return bank accounts for current organization'
     def index
-      @bank_accounts = current_organization.bank_accounts
+      @bank_accounts = current_organization.bank_accounts.positioned
     end
 
     api :GET, '/organizations/:organization_id/bank_accounts/:id', 'Return bank account'
@@ -55,8 +55,7 @@ module Api::V1
     end
 
     def bank_account_params
-      params.require(:bank_account).permit(:name, :description, :currency, :residue, :invoice_details)
+      params.fetch(:bank_account, {}).permit(:name, :description, :currency, :residue, :invoice_details)
     end
-
   end
 end

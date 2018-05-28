@@ -37,5 +37,23 @@ module Api::V1
       error 404, 'Not Found'
       description 'Cashbox API'
     end
+
+    private
+
+    def pundit_user
+      current_user
+    end
+
+    def pagination_info(collection)
+      {
+        current:  collection.current_page,
+        previous: collection.prev_page,
+        next:     collection.next_page,
+        per_page: collection.limit_value,
+        pages:    collection.max_pages,
+        count:    collection.total_count
+      }
+    end
+    helper_method :pagination_info
   end
 end

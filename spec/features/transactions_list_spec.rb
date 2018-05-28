@@ -68,7 +68,7 @@ describe 'Transactions list' do
 
   context "pagination" do
     include_context 'transactions pagination'
-    let!(:transactions) { FactoryGirl.create_list(:transaction,
+    let!(:transactions) { FactoryBot.create_list(:transaction,
       transactions_count, bank_account: org1_ba).reverse }
 
     before do

@@ -7,9 +7,9 @@ require 'rspec/rails'
 require 'pundit/rspec'
 require 'capybara-screenshot/rspec'
 require 'rspec/collection_matchers'
-require "codeclimate-test-reporter"
+require 'simplecov'
 
-CodeClimate::TestReporter.start
+SimpleCov.start
 
 # Add additional requires below this line. Rails is not loaded until this point!
 

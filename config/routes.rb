@@ -58,21 +58,34 @@ Cashbox::Application.routes.draw do
   mount ActionCable.server => "/cable"
 
   # API
-  namespace :api, defaults: {format: 'json'} do
+  namespace :api, defaults: { format: 'json' } do
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
       devise_for :users, skip: :sessions, controllers: { passwords: 'api/v1/passwords' }
+      resources :users, only: %i[update destroy] do
+        put :update_profile, on: :member
+      end
       post :auth_token, to: 'auth_token#create'
 
       get :user_info, to: 'users#current'
       get :currencies, to: 'base#currencies'
-      resources :organizations, only: [:show, :index, :create, :update, :destroy] do
-        resources :bank_accounts, only: [:show, :index, :create, :update, :destroy]
-        resources :categories, only: [:show, :index, :create, :update, :destroy]
-        resources :customers, only: [:show, :index, :create, :update, :destroy]
-        resources :transactions, only: [:show, :index, :create, :update, :destroy]
-        resources :members, only: [:index, :update, :destroy]
+      resources :organizations, only: %i[show index create update destroy] do
+        resources :bank_accounts, only: %i[show index create update destroy]
+        resources :categories, only: %i[show index create update destroy]
+        resources :customers, only: %i[show index create update destroy]
+        resources :transactions, only: %i[show index create update destroy] do
+          post :transfer, action: :create_transfer, on: :collection
+        end
+        resources :members, only: %i[index show update destroy] do
+          get :current
+        end
+        get :member_info, to: 'members#current'
+        put :last_visit, to: 'members#update_last_visit'
+        resources :invoices, only: %i[index show create destroy] do
+          get :unpaid, on: :collection
+          get 'unpaid/count' => :unpaid_count, on: :collection
+        end
         get :total_balances, on: :member
-        resources :organization_invitations, only: [:index, :show, :create, :destroy] do
+        resources :organization_invitations, only: %i[index show create destroy] do
           post :resend, on: :member
         end
       end

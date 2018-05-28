@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:email)     { |n| "user#{n}@cashbox.dev" }
   sequence(:password)  { SecureRandom.hex(10) }
   sequence(:full_name) { |n| "Test User#{n}" }
@@ -106,46 +106,6 @@ FactoryGirl.define do
     invoice_details { generate :invoice_details }
   end
 
-  factory :transaction do
-    organization
-    bank_account { |t| create :bank_account, organization: t.organization }
-    category { |t| create(:category, organization: t.bank_account.organization) }
-    amount { rand(30000.0..50000)/rand(10.0..100) }
-    date { Time.current }
-
-    trait :income do
-      category { |t| create(:category, :income, organization: t.bank_account.organization) }
-    end
-
-    trait :expense do
-      category { |t| create(:category, :expense, organization: t.bank_account.organization) }
-    end
-
-    trait :with_customer do
-      customer { |t| create(:customer, organization: t.bank_account.organization) }
-    end
-  end
-
-  factory :transfer do
-    bank_account_id { create(:bank_account, balance: 99999, currency: 'USD').id }
-    reference_id    { |t| create(:bank_account,
-      organization: BankAccount.find(t.bank_account_id).organization).id }
-    from_currency   { 'USD' }
-    to_currency     { 'USD' }
-    amount          500
-    comission       50
-    comment         "comment"
-
-    trait :with_different_currencies do
-      bank_account_id { create(:bank_account, balance: 99999, currency: 'USD').id }
-      reference_id    { |t| create(:bank_account, currency: 'RUB',
-        organization: BankAccount.find(t.bank_account_id).organization).id }
-      from_currency   { 'USD' }
-      to_currency     { 'RUB'}
-      exchange_rate   0.5
-    end
-  end
-
   factory :invitation do
     email   { build(:user).email }
     invited_by  { create :user }
@@ -157,32 +117,6 @@ FactoryGirl.define do
     role    { Member.role.default_value }
     invited_by  { create :member }
     accepted { false }
-  end
-
-  factory :invoice do
-    organization
-    customer
-    customer_name
-    ends_at { Date.current }
-    currency 'RUB'
-    amount 500
-
-    trait :with_items do
-      invoice_items { create_list :invoice_item, 3 }
-    end
-
-    trait :paid do
-      paid_at { Time.now }
-    end
-  end
-
-  sequence(:task_description) { |n| "Test description #{n}" }
-  factory :invoice_item do
-    invoice
-    customer_name
-    amount 500
-    hours 0.5
-    description { generate :task_description }
   end
 
   factory :profile do

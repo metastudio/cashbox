@@ -22,19 +22,22 @@ describe 'GET /api/organizations/#/members' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => owner_member.id,
-        'role' => owner_member.role,
-        'user'=>{'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name}
+        'id'              => owner_member.id,
+        'role'            => owner_member.role,
+        'last_visited_at' => owner_member.last_visited_at.as_json,
+        'user'            => { 'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => admin_member.id,
-        'role' => admin_member.role,
-        'user'=>{'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name}
+        'id'              => admin_member.id,
+        'role'            => admin_member.role,
+        'last_visited_at' => admin_member.last_visited_at.as_json,
+        'user'            => { 'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => user_member.id,
-        'role' => user_member.role,
-        'user'=>{'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name}
+        'id'              => user_member.id,
+        'role'            => user_member.role,
+        'last_visited_at' => user_member.last_visited_at.as_json,
+        'user'            => { 'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name, 'phone_number'=>nil }
       )
     end
   end
@@ -46,19 +49,22 @@ describe 'GET /api/organizations/#/members' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => owner_member.id,
-        'role' => owner_member.role,
-        'user'=>{'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name}
+        'id'              => owner_member.id,
+        'role'            => owner_member.role,
+        'last_visited_at' => owner_member.last_visited_at.as_json,
+        'user'            => { 'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => admin_member.id,
-        'role' => admin_member.role,
-        'user'=>{'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name}
+        'id'              => admin_member.id,
+        'role'            => admin_member.role,
+        'last_visited_at' => admin_member.last_visited_at.as_json,
+        'user'            => { 'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => user_member.id,
-        'role' => user_member.role,
-        'user'=>{'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name}
+        'id'              => user_member.id,
+        'role'            => user_member.role,
+        'last_visited_at' => user_member.last_visited_at.as_json,
+        'user'            => { 'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name, 'phone_number'=>nil }
       )
     end
   end
@@ -70,19 +76,22 @@ describe 'GET /api/organizations/#/members' do
       expect(response).to be_success
 
       expect(json).to include(
-        'id' => owner_member.id,
-        'role' => owner_member.role,
-        'user'=>{'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name}
+        'id'              => owner_member.id,
+        'role'            => owner_member.role,
+        'last_visited_at' => owner_member.last_visited_at.as_json,
+        'user'            => { 'id'=>owner.id, 'email'=>owner.email, 'full_name'=>owner.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => admin_member.id,
-        'role' => admin_member.role,
-        'user'=>{'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name}
+        'id'              => admin_member.id,
+        'role'            => admin_member.role,
+        'last_visited_at' => admin_member.last_visited_at.as_json,
+        'user'            => { 'id'=>admin.id, 'email'=>admin.email, 'full_name'=>admin.full_name, 'phone_number'=>nil }
       )
       expect(json).to include(
-        'id' => user_member.id,
-        'role' => user_member.role,
-        'user'=>{'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name}
+        'id'              => user_member.id,
+        'role'            => user_member.role,
+        'last_visited_at' => user_member.last_visited_at.as_json,
+        'user'            => { 'id'=>user.id, 'email'=>user.email, 'full_name'=>user.full_name, 'phone_number'=>nil }
       )
     end
   end

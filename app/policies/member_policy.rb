@@ -1,4 +1,7 @@
 class MemberPolicy < ApplicationPolicy
+  def show?
+    owner_or_admin_with_access? || record.id == member.id
+  end
 
   def update?
     if member.params[:member] && member.params[:member][:role] == 'owner'
@@ -11,5 +14,4 @@ class MemberPolicy < ApplicationPolicy
   def destroy?
     owner_or_admin_with_access? && record.id != member.id
   end
-
 end
