@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Mutations::BaseMutation < GraphQL::Schema::Mutation
+class Queries::BaseQuery < GraphQL::Schema::Resolver
   def current_user
     context[:current_user]
   end
