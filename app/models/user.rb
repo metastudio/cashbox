@@ -39,7 +39,6 @@ class User < ApplicationRecord
   has_many :invitations, foreign_key: :email, primary_key: :email,
     inverse_of: :user, class_name: 'InvitationBase', dependent: :destroy
   has_many :transactions, inverse_of: :created_by, foreign_key: :created_by_id, dependent: :nullify
-  has_many :notifications, inverse_of: :user, dependent: :destroy
   has_one  :unsubscribe, inverse_of: :user, dependent: :destroy
   has_many :created_invitations, inverse_of: :invited_by, class_name: 'Invitation',
     foreign_key: :invited_by_id, dependent: :destroy
