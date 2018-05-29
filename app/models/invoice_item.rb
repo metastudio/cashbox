@@ -32,4 +32,6 @@ class InvoiceItem < ApplicationRecord
   validates :description, presence: true, if: ->(i){ i.customer_name.blank? }
   validates :amount, numericality: { greater_than: 0, less_than_or_equal_to: Dictionaries.money_max }
   validates :hours, numericality: { greater_than: 0 }, allow_nil: true
+
+  scope :ordered, -> { order('created_at') }
 end

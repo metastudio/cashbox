@@ -164,7 +164,7 @@ GEM
       builder (>= 2.1.2)
     has_secure_token (0.0.2)
       activemodel
-    httpi (2.4.2)
+    httpi (2.4.3)
       rack
       socksify
     i18n (0.9.3)
@@ -257,7 +257,7 @@ GEM
     puma (3.11.3)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
-    rack (2.0.4)
+    rack (2.0.5)
     rack-cors (1.0.2)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -296,7 +296,7 @@ GEM
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
     recursive-open-struct (1.1.0)
-    redis (4.0.1)
+    redis (3.3.5)
     request_store (1.4.0)
       rack (>= 1.4)
     responders (2.4.0)
@@ -477,7 +477,7 @@ DEPENDENCIES
   rails (= 5.0.6)
   ransack
   recursive-open-struct
-  redis
+  redis (~> 3)
   rollbar (~> 2.15.5)
   rspec-collection_matchers
   rspec-rails (~> 3.5.2)

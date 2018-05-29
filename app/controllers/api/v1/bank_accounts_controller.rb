@@ -14,7 +14,7 @@ module Api::V1
 
     api :GET, '/organizations/:organization_id/bank_accounts', 'Return bank accounts for current organization'
     def index
-      @bank_accounts = current_organization.bank_accounts
+      @bank_accounts = current_organization.bank_accounts.positioned
     end
 
     api :GET, '/organizations/:organization_id/bank_accounts/:id', 'Return bank account'

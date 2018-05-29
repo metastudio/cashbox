@@ -17,7 +17,7 @@ describe 'POST /api/organizations/#/invoices' do
   let(:sent_at)          { Time.current }
   let(:paid_at)          { Time.current }
 
-  let(:item1_customer)    { create :customer, organization: organization}
+  let(:item1_customer)   { create :customer, organization: organization }
   let(:item1_amount)      { Money.from_amount(11.00) }
   let(:item1_description) { generate :invoice_item_description }
   let(:item1_hours)       { 3.5 }
@@ -74,14 +74,14 @@ describe 'POST /api/organizations/#/invoices' do
       expect(invoice.paid_at).to            be_within(1.second).of(paid_at)
       expect(invoice.invoice_items.size).to eq 2
 
-      item1 = invoice.invoice_items[0]
+      item1 = invoice.invoice_items.ordered[0]
       expect(item1.customer_id).to eq item1_customer.id
       expect(item1.amount).to      eq item1_amount
       expect(item1.description).to eq item1_description
       expect(item1.hours).to       eq item1_hours
       expect(item1.date).to        eq item1_date
 
-      item2 = invoice.invoice_items[1]
+      item2 = invoice.invoice_items.ordered[1]
       expect(item2.customer.name).to            eq item2_customer_name
       expect(item2.customer.organization_id).to eq organization.id
       expect(item2.amount).to                   eq item2_amount
