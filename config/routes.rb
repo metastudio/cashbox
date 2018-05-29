@@ -1,6 +1,13 @@
+# frozen_string_literal: true
+
 require 'api_constraints'
 
 Cashbox::Application.routes.draw do
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/graphql'
+  end
+  post '/graphql', to: 'graphql#execute'
+
   apipie
   devise_for :users, controllers: { registrations: 'user/registrations' }
   as :user do

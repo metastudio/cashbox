@@ -56,6 +56,8 @@ gem 'knock', '~> 1.4.2'
 gem 'apipie-rails'
 gem 'rack-cors', require: 'rack/cors'
 gem 'nokogiri', '= 1.8.2'
+gem 'graphql'
+gem 'graphql-errors'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5.2'
@@ -75,6 +77,7 @@ group :development do
   gem 'listen', '~> 3.1.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'graphiql-rails'
 
   # Deployment
   gem 'capistrano', '~> 3.6.1', require: false
