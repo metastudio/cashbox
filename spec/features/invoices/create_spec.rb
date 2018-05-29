@@ -43,23 +43,27 @@ describe 'Create invoice', js: true do
       click_on 'Create Invoice'
     end
 
-    it { expect(page).to have_content 'Invoice was successfully created' }
-    it { expect(page).to have_content customer.name }
-    it { expect(page).to have_css('td', text: money_with_symbol(amount)) }
-    it { expect(page).to have_link 'Edit' }
-    it { expect(page).to have_link 'Destroy' }
+    it 'has congradulation, customer name, amount, edi and destroy links' do
+      expect(page).to have_content 'Invoice was successfully created'
+      expect(page).to have_content customer.name
+      expect(page).to have_css('td', text: money_with_symbol(amount))
+      expect(page).to have_link 'Edit'
+      expect(page).to have_link 'Destroy'
+    end
   end
 
   context 'Create invoice with items' do
     before { new_invoice_with_item('2.1') }
 
-    it { expect(page).to have_css('td', text: money_with_symbol(total_amount)) }
-    it { expect(page).to have_css('td', text: money_with_symbol(first_item_amount)) }
-    it { expect(page).to have_css('td', text: money_with_symbol(last_item_amount)) }
-    it { expect(page).to have_content '1.1' }
-    it { expect(page).to have_content '2.1' }
-    it { expect(page).to have_content 'First Nested Description' }
-    it { expect(page).to have_content 'Last Nested Description' }
+    it 'has anounts cilumns' do
+      expect(page).to have_css('td', text: money_with_symbol(total_amount))
+      expect(page).to have_css('td', text: money_with_symbol(first_item_amount))
+      expect(page).to have_css('td', text: money_with_symbol(last_item_amount))
+      expect(page).to have_content '1.1'
+      expect(page).to have_content '2.1'
+      expect(page).to have_content 'First Nested Description'
+      expect(page).to have_content 'Last Nested Description'
+    end
   end
 
   context 'set invoice amount disabled then add invoice items' do

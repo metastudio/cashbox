@@ -16,17 +16,22 @@ describe 'Invite process' do
       click_on 'Invite'
     end
 
-    it { expect(page).to have_content('An invitation was created successfully') }
-    it { expect(current_path).to eq new_invitation_path }
-
+    it 'has congradulation and current path'do
+      expect(page).to have_content('An invitation was created successfully')
+      expect(current_path).to eq new_invitation_path
+    end
 
     describe 'sent email' do
       before do
         open_email email
       end
 
-      it { expect(current_email).to have_content("You are invited to CASHBOX")  }
-      it { expect(current_email).to have_link 'Accept'}
+      subject {current_email}
+
+      it 'has invitation and accept link' do
+        expect(subject).to have_content("You are invited to CASHBOX")
+        expect(subject).to have_link 'Accept'
+      end
     end
   end
 

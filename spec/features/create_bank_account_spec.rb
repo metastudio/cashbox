@@ -28,9 +28,11 @@ describe 'Create bank account' do
   describe 'Initial residue transaction' do
     subject { Transaction.first }
 
-    it { expect(subject.bank_account.name).to eq account_name }
-    it { expect(subject.transaction_type).to eq 'Residue' }
-    it { expect(subject.amount).to eq Money.new(10055, 'USD') }
+    it 'has account_name, type: residue and amount 10055 USD' do
+      expect(subject.bank_account.name).to eq account_name
+      expect(subject.transaction_type).to eq 'Residue'
+      expect(subject.amount).to eq Money.new(10055, 'USD')
+    end
   end
 
   context 'balance' do

@@ -23,23 +23,22 @@ describe 'Accept invitation' do
       click_on 'Submit'
     end
 
-    it { expect(page).to have_content "You joined CASHBOX" }
-    it { expect(page).to have_content "Sign out" }
-    it "flags invitation as accepted" do
+    it "flags invitation as accepted and create a User" do
       expect(Invitation.last.accepted).to eq true
-    end
-
-    it 'create a User' do
+      expect(page).to have_content "You joined CASHBOX"
+      expect(page).to have_content "Sign out"
       # inviter and invited
       expect(User.count).to eq 2
     end
 
-    context 'invalid params' do
+    context 'with invalid params' do
       let(:full_name) { nil }
       let(:password) { nil }
 
-      it { expect(page).to have_inline_error("can't be blank").for_field('Full name') }
-      it { expect(page).to have_inline_error("can't be blank").for_field('Password') }
+      it 'return error on fields' do
+        expect(page).to have_inline_error("can't be blank").for_field('Full name')
+        expect(page).to have_inline_error("can't be blank").for_field('Password')
+      end
     end
   end
 end

@@ -12,11 +12,8 @@ describe 'Members list' do
 
   subject { page }
 
-  it "has New Invitation button" do
+  it 'has New Invitation button and shows members table' do
     expect(page).to have_link('New Invitation')
-  end
-
-  it 'shows members table' do
     within 'tbody.members' do
       expect(page).to have_selector('td', text: member.user_full_name)
       expect(page).to have_selector('td', text: member.user.email)
