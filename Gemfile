@@ -58,6 +58,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'nokogiri', '= 1.8.2'
 gem 'graphql'
 gem 'graphql-errors'
+gem 'phony_rails'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.5.2'

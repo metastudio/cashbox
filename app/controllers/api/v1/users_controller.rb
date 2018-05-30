@@ -38,7 +38,7 @@ module Api
         if @user.update_without_password(update_profile_params)
           render :current
         else
-          render json: @user.errors, status: :unprocessable_entity
+          render json: flatten(@user.errors), status: :unprocessable_entity
         end
       end
 
