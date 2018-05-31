@@ -79,7 +79,7 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(
+    params.fetch(:invoice, {}).permit(
       :customer_id, :starts_at, :ends_at, :currency, :amount, :sent_at,
       :paid_at, :customer_name, :number,
       invoice_items_attributes: %i[
