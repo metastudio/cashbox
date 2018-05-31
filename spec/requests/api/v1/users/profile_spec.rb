@@ -12,7 +12,8 @@ describe 'GET /api/users/:id/update_profile' do
 
   context 'when authenticated' do
     let(:full_name) { 'Woo Cheng' }
-    let(:phone) { '666-666' }
+    let(:phone) { '+15555555555' }
+
     context 'and user_id is correct' do
       let(:user) { create :user, password: 'password' }
       let(:path) { "/api/users/#{user.id}/update_profile" }
@@ -22,7 +23,7 @@ describe 'GET /api/users/:id/update_profile' do
           headers: auth_header(user),
           params: {
             user: {
-              full_name: full_name,
+              full_name:          full_name,
               profile_attributes: { phone_number: phone }
             }
           }
@@ -45,13 +46,14 @@ describe 'GET /api/users/:id/update_profile' do
       let(:user) { create :user, password: 'password' }
       let(:user_2) { create :user, password: 'password' }
       let(:path) { "/api/users/#{user_2.id}/update_profile" }
+
       before do
         put(
           path,
           headers: auth_header(user),
           params: {
             user: {
-              full_name: full_name,
+              full_name:          full_name,
               profile_attributes: { phone_number: phone }
             }
           }
@@ -61,6 +63,33 @@ describe 'GET /api/users/:id/update_profile' do
       it 'return 403' do
         expect(response).to be_forbidden
         expect(response.code).to eq('403')
+      end
+    end
+
+    context 'and params is incorrect' do
+      let(:user) { create :user, password: 'password' }
+      let(:path) { "/api/users/#{user.id}/update_profile" }
+      let(:full_name) { nil }
+      let(:phone) { '666-666' }
+
+      before do
+        put(
+          path,
+          headers: auth_header(user),
+          params: {
+            user: {
+              full_name:          full_name,
+              profile_attributes: { phone_number: phone }
+            }
+          }
+        )
+      end
+
+      it 'returns error' do
+        expect(response).to_not be_success
+        expect(response.code).to eq('422')
+        expect(json).to include 'full_name' => "can't be blank"
+        expect(json).to include 'profile' => { 'phone_number' => 'is an invalid number' }
       end
     end
   end

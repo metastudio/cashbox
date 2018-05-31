@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
+require "./lib/nested_errors.rb"
+
 module Api::V1
   class BaseController < ::ApplicationController
     include Knock::Authenticable
+    include NestedErrors
 
     class AuthorizationError < StandardError; end
 
