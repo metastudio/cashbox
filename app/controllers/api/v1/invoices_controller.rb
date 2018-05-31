@@ -3,7 +3,7 @@
 class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
   after_action :verify_authorized
 
-  before_action :set_invoice, only: %i[show destroy]
+  before_action :set_invoice, only: %i[show update destroy]
 
   api :GET, '/organizations/:organization_id/invoices', 'Return invoices for organization'
   def index

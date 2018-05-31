@@ -6,8 +6,7 @@ describe 'PUT /api/organizations/#/invoices/#' do
   let(:path) { "/api/organizations/#{organization.id}/invoices/#{invoice.id}" }
 
   let!(:user)          { create :user }
-  let!(:bank_account1) { create :bank_account, organization: organization }
-  let!(:bank_account2) { create :bank_account, organization: organization }
+  let!(:bank_account)  { create :bank_account, organization: organization }
   let!(:customer1)     { create :customer, organization: organization }
   let!(:customer2)     { create :customer, organization: organization }
 
@@ -28,14 +27,13 @@ describe 'PUT /api/organizations/#/invoices/#' do
   let(:item2_amount)        { Money.from_amount(13.00) }
 
   let!(:organization) { create :organization, with_user: user }
-  let!(:invoice)      { create :invoice, organization: organization, customer: customer1, bank_account: bank_account1 }
-  let!(:invoice_item) { create :invoice_item, customer: customer1, invoice: invoice, date: Date.current }
+  let!(:invoice)      { create :invoice, organization: organization, customer: customer1, currency: 'USD' }
 
   let(:params) do
     {
       invoice: {
         customer_id:              customer2.id,
-        bank_account_id:          bank_account2.id,
+        currency:                 'USD',
         number:                   number,
         starts_at:                starts_at.as_json,
         ends_at:                  ends_at.as_json,
@@ -50,8 +48,8 @@ describe 'PUT /api/organizations/#/invoices/#' do
             date:        item1_date.as_json,
           },
           1 => {
-            customer_id: item2_customer_name,
-            amount:      item2_amount.to_s,
+            customer_name: item2_customer_name,
+            amount:        item2_amount.to_s,
           },
         }
       }
@@ -63,7 +61,7 @@ describe 'PUT /api/organizations/#/invoices/#' do
   end
 
   context 'authenticated as user' do
-    before { post path, params: params, headers: auth_header(user) }
+    before { put path, params: params, headers: auth_header(user) }
 
     it 'returns updated invoice' do
       expect(response).to be_success
@@ -71,8 +69,8 @@ describe 'PUT /api/organizations/#/invoices/#' do
       invoice.reload
 
       expect(invoice.organization_id).to    eq organization.id
-      expect(invoice.customer_id).to        eq invoice_customer2.id
-      expect(invoice.bank_account_id).to    eq bank_account2.id
+      expect(invoice.currency).to           eq 'USD'
+      expect(invoice.customer_id).to        eq customer2.id
       expect(invoice.number).to             eq number
       expect(invoice.amount).to             eq item1_amount + item2_amount
       expect(invoice.starts_at).to          be_within(1.second).of(starts_at)
@@ -82,6 +80,7 @@ describe 'PUT /api/organizations/#/invoices/#' do
       expect(invoice.invoice_items.size).to eq 2
 
       item1 = invoice.invoice_items.ordered[0]
+      expect(item1.currency).to    eq 'USD'
       expect(item1.customer_id).to eq item1_customer.id
       expect(item1.amount).to      eq item1_amount
       expect(item1.description).to eq item1_description
@@ -89,6 +88,7 @@ describe 'PUT /api/organizations/#/invoices/#' do
       expect(item1.date).to        eq item1_date
 
       item2 = invoice.invoice_items.ordered[1]
+      expect(item2.currency).to                 eq 'USD'
       expect(item2.customer.name).to            eq item2_customer_name
       expect(item2.customer.organization_id).to eq organization.id
       expect(item2.amount).to                   eq item2_amount
