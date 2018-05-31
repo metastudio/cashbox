@@ -59,7 +59,7 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
     if @invoice.save
       render :show
     else
-      render json: flatten(@invoice.errors), status: :unprocessable_entity
+      render json: NestedErrors.unflatten(@invoice.errors), status: :unprocessable_entity
     end
   end
 
