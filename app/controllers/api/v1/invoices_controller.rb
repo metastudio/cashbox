@@ -63,6 +63,15 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
     end
   end
 
+  api :PUT, '/organizations/:organization_id/invoices/:id', 'Update invoice'
+  def update
+    if @invoice.update(invoice_params)
+      render :show
+    else
+      render json: NestedErrors.unflatten(@invoice.errors), status: :unprocessable_entity
+    end
+  end
+
   def destroy
     if @invoice.destroy
       render :show
