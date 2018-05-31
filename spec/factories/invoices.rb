@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: invoices
@@ -16,8 +15,8 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  number          :string
+#  bank_account_id :integer
 #
-
 
 FactoryBot.define do
   factory :invoice do

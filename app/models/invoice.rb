@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: invoices
@@ -16,6 +15,7 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  number          :string
+#  bank_account_id :integer
 #
 
 class Invoice < ApplicationRecord
@@ -25,6 +25,7 @@ class Invoice < ApplicationRecord
 
   belongs_to :organization, inverse_of: :invoices
   belongs_to :customer, inverse_of: :invoices
+  belongs_to :bank_account, optional: true
   has_one :income_transaction, inverse_of: :invoice, foreign_key: 'invoice_id', class_name: 'Transaction', dependent: :nullify
   has_many :invoice_items, inverse_of: :invoice, dependent: :destroy
 
@@ -49,6 +50,7 @@ class Invoice < ApplicationRecord
 
   before_validation :calculate_total_amount, if: proc{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
+  before_validation :check_bank_account
   after_save :set_currency
   after_create :send_notification
 
@@ -95,5 +97,15 @@ class Invoice < ApplicationRecord
 
   def set_currency
     invoice_items.each{ |i| i.update(currency: currency) }
+  end
+
+  def check_bank_account
+    return true if bank_account_id.blank?
+
+    ba = BankAccount.find_by(id: bank_account_id)
+    return true if ba.blank?
+
+    errors.add(:bank_account_id, 'is not associated with current organization') if ba.organization_id != organization_id
+    errors.add(:bank_account_id, 'wrong currency') if ba.currency != currency
   end
 end

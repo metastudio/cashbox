@@ -14,6 +14,7 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  number          :string
+#  bank_account_id :integer
 #
 
 require 'rails_helper'
@@ -22,6 +23,7 @@ describe Invoice do
   context 'association' do
     it { is_expected.to belong_to(:organization) }
     it { is_expected.to belong_to(:customer) }
+    it { is_expected.to belong_to(:bank_account) }
     it { is_expected.to have_many(:invoice_items).dependent(:destroy) }
   end
 
@@ -55,6 +57,26 @@ describe Invoice do
       it 'Dont show errors' do
         invoice2.valid?
         expect(invoice2.errors[:ends_at]).to_not include("must be after or equal to")
+      end
+    end
+
+    context 'check bank account' do
+      let!(:org)          { create :organization }
+      let!(:other_org)    { create :organization }
+      let!(:bank_account) { create :bank_account, organization: org, currency: 'USD' }
+      let(:invoice1)      { build :invoice, organization: org, bank_account: bank_account, currency: 'USD' }
+      let(:invoice2)      { build :invoice, organization: other_org, bank_account: bank_account, currency: 'RUB' }
+
+      it 'has no errors' do
+        invoice1.valid?
+        expect(invoice1.errors[:bank_account_id]).to_not include('is not associated with current organization')
+        expect(invoice1.errors[:bank_account_id]).to_not include('wrong currency')
+      end
+
+      it 'has errors' do
+        invoice2.valid?
+        expect(invoice2.errors[:bank_account_id]).to include('is not associated with current organization')
+        expect(invoice2.errors[:bank_account_id]).to include('wrong currency')
       end
     end
 
