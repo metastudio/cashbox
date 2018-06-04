@@ -3,7 +3,7 @@
 class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
   after_action :verify_authorized
 
-  before_action :set_invoice, only: %i[show destroy]
+  before_action :set_invoice, only: %i[show update destroy]
 
   api :GET, '/organizations/:organization_id/invoices', 'Return invoices for organization'
   def index
@@ -57,6 +57,15 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
     @invoice.attributes = permitted_attributes(@invoice)
 
     if @invoice.save
+      render :show
+    else
+      render json: NestedErrors.unflatten(@invoice.errors), status: :unprocessable_entity
+    end
+  end
+
+  api :PUT, '/organizations/:organization_id/invoices/:id', 'Update invoice'
+  def update
+    if @invoice.update(invoice_params)
       render :show
     else
       render json: NestedErrors.unflatten(@invoice.errors), status: :unprocessable_entity

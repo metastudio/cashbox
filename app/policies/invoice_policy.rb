@@ -28,6 +28,7 @@ class InvoicePolicy < ApplicationPolicy
   alias unpaid_count? index?
   alias show?         access?
   alias create?       access?
+  alias update?       access?
   alias destroy?      access?
 
   def permitted_attributes
