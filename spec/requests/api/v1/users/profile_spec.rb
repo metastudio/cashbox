@@ -88,8 +88,8 @@ describe 'GET /api/users/:id/update_profile' do
       it 'returns error' do
         expect(response).to_not be_success
         expect(response.code).to eq('422')
-        expect(json).to include 'full_name' => "can't be blank"
-        expect(json).to include 'profile' => { 'phone_number' => 'is an invalid number' }
+        expect(json).to include 'full_name' => ["can't be blank"]
+        expect(json).to include 'profile' => { 'phone_number' => ['is an invalid number'] }
       end
     end
   end
