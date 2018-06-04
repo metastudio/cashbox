@@ -92,7 +92,7 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
       :customer_id, :starts_at, :ends_at, :currency, :amount, :sent_at,
       :paid_at, :customer_name, :number,
       invoice_items_attributes: %i[
-        idx id customer_id customer_name amount
+        id customer_id customer_name amount
         date hours description _destroy
       ]
     )
