@@ -34,7 +34,7 @@ class InvoicePolicy < ApplicationPolicy
   def permitted_attributes
     [
       :customer_id, :customer_name, :starts_at, :ends_at, :currency, :amount,
-      :sent_at, :paid_at, :number,
+      :sent_at, :paid_at, :number, :bank_account_id,
       invoice_items_attributes: %i[
         id customer_id customer_name amount date hours description _destroy
       ]

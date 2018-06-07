@@ -13,7 +13,8 @@ table.table.invoice class="#{'table-bordered' if request.format.html?}"
       td.word-break
         |Bank account for wire transfers:<br>
         = current_member.user_full_name
-        p= current_organization.bank_accounts.visible.by_currency(invoice.currency).first.try(:invoice_details)
+        p
+          = invoice.invoice_details
         |<br>correspondent account<br>
         = invoice.customer.try(:invoice_details)
         |<br>Currency:

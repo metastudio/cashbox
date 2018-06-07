@@ -22,6 +22,7 @@ class BankAccount < ApplicationRecord
 
   belongs_to :organization, inverse_of: :bank_accounts
   has_many :transactions, dependent: :destroy, inverse_of: :bank_account
+  has_many :invoices, dependent: :destroy, inverse_of: :bank_account
 
   attr_writer :residue_cents
 

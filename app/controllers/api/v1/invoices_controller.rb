@@ -90,7 +90,7 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
   def invoice_params
     params.fetch(:invoice, {}).permit(
       :customer_id, :starts_at, :ends_at, :currency, :amount, :sent_at,
-      :paid_at, :customer_name, :number,
+      :paid_at, :customer_name, :number, :bank_account_id,
       invoice_items_attributes: %i[
         id customer_id customer_name amount
         date hours description _destroy
