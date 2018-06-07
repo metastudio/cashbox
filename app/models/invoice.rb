@@ -25,7 +25,7 @@ class Invoice < ApplicationRecord
 
   belongs_to :organization, inverse_of: :invoices
   belongs_to :customer, inverse_of: :invoices
-  belongs_to :bank_account, optional: true
+  belongs_to :bank_account, optional: true, inverse_of: :invoices
   has_one :income_transaction, inverse_of: :invoice, foreign_key: 'invoice_id', class_name: 'Transaction', dependent: :nullify
   has_many :invoice_items, inverse_of: :invoice, dependent: :destroy, index_errors: true
 
@@ -44,13 +44,13 @@ class Invoice < ApplicationRecord
   validates :amount, numericality: { greater_than: 0, less_than_or_equal_to: Dictionaries.money_max }
   validates :currency, inclusion: { in: Dictionaries.currencies, message: '%{value} is not a valid currency' }
   validates :ends_at, date: { after_or_equal_to: :starts_at }, if: :starts_at
+  validate :validate_bank_account
 
   scope :ordered, -> { order('created_at DESC') }
   scope :unpaid, -> { where(paid_at: nil) }
 
   before_validation :calculate_total_amount, if: proc{ invoice_items.reject(&:marked_for_destruction?).any? }
   before_validation :strip_number
-  before_validation :check_bank_account
   after_save :set_currency
   after_create :send_notification
 
@@ -68,6 +68,7 @@ class Invoice < ApplicationRecord
     return nil unless organization
     return nil unless currency
 
+    return bank_account.invoice_details if bank_account.present?
     organization.bank_accounts.visible.by_currency(currency).first&.invoice_details
   end
 
@@ -99,13 +100,10 @@ class Invoice < ApplicationRecord
     invoice_items.each{ |i| i.update(currency: currency) }
   end
 
-  def check_bank_account
-    return true if bank_account_id.blank?
+  def validate_bank_account
+    return if bank_account.blank?
 
-    ba = BankAccount.find_by(id: bank_account_id)
-    return true if ba.blank?
-
-    errors.add(:bank_account_id, 'is not associated with current organization') if ba.organization_id != organization_id
-    errors.add(:bank_account_id, 'wrong currency') if ba.currency != currency
+    errors.add(:bank_account_id, "is not associated with invoice's organization") if bank_account.organization_id != organization_id
+    errors.add(:bank_account_id, "doesn't match invoice currency") if bank_account.currency != currency
   end
 end

@@ -69,14 +69,14 @@ describe Invoice do
 
       it 'has no errors' do
         invoice1.valid?
-        expect(invoice1.errors[:bank_account_id]).to_not include('is not associated with current organization')
-        expect(invoice1.errors[:bank_account_id]).to_not include('wrong currency')
+        expect(invoice1.errors[:bank_account_id]).to_not include("is not associated with invoice's organization")
+        expect(invoice1.errors[:bank_account_id]).to_not include("doesn't match invoice currency")
       end
 
       it 'has errors' do
         invoice2.valid?
-        expect(invoice2.errors[:bank_account_id]).to include('is not associated with current organization')
-        expect(invoice2.errors[:bank_account_id]).to include('wrong currency')
+        expect(invoice2.errors[:bank_account_id]).to include("is not associated with invoice's organization")
+        expect(invoice2.errors[:bank_account_id]).to include("doesn't match invoice currency")
       end
     end
 

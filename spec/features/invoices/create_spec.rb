@@ -6,6 +6,7 @@ describe 'Create invoice', js: true do
   let(:user)          { create :user }
   let!(:organization) { create :organization, with_user: user }
   let!(:customer)     { create :customer, organization: organization }
+  let!(:bank_account) { create :bank_account, organization: organization, currency: 'USD' }
   let(:amount)        { Money.new(1000) }
   let(:first_item_amount) { Money.new(1100) }
   let(:last_item_amount)  { Money.new(1200) }
@@ -37,6 +38,7 @@ describe 'Create invoice', js: true do
     before do
       click_on 'New Invoice'
       select2 customer.name, css: '#s2id_invoice_customer_name', search: true
+      select bank_account.name, from: 'invoice[bank_account_id]'
       fill_in 'Ends at', with: Date.current.strftime('%d/%m/%Y')
       page.execute_script("$(\"invoice[amount]\").val('');")
       fill_in 'invoice[amount]', with: amount
@@ -49,6 +51,9 @@ describe 'Create invoice', js: true do
       expect(page).to have_css('td', text: money_with_symbol(amount))
       expect(page).to have_link 'Edit'
       expect(page).to have_link 'Destroy'
+
+      invoice = Invoice.unscoped.last
+      expect(invoice.bank_account).to eq bank_account
     end
   end
 
