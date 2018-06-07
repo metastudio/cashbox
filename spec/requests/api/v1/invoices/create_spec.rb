@@ -36,14 +36,14 @@ describe 'POST /api/organizations/#/invoices' do
         sent_at:                  sent_at.as_json,
         paid_at:                  paid_at.as_json,
         invoice_items_attributes: {
-          1 => {
+          0 => {
             customer_id: item1_customer.id,
             amount:      item1_amount.to_s,
             description: item1_description,
             hours:       item1_hours.to_s,
             date:        item1_date.as_json,
           },
-          2 => {
+          1 => {
             customer_name: item2_customer_name,
             amount:        item2_amount.to_s,
           },
@@ -101,12 +101,15 @@ describe 'POST /api/organizations/#/invoices' do
     end
 
     context 'missing required params' do
-      let(:ends_at) { nil }
+      let(:ends_at) { 'test' }
+      let(:item1_amount) { nil }
+      let(:item2_customer_name) { nil }
 
       it 'returns error' do
         expect(response).not_to be_success
 
-        expect(json).to include 'ends_at'  => ['can\'t be blank', 'is not a date']
+        expect(json).to include 'ends_at' => 'is not a date'
+        expect(json).to include 'invoice_items' => { '0' => { 'amount' => 'must be greater than 0' }, '1' => { 'description' => "can't be blank" } }
       end
     end
   end

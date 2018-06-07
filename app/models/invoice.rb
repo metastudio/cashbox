@@ -27,7 +27,7 @@ class Invoice < ApplicationRecord
   belongs_to :customer, inverse_of: :invoices
   belongs_to :bank_account, optional: true
   has_one :income_transaction, inverse_of: :invoice, foreign_key: 'invoice_id', class_name: 'Transaction', dependent: :nullify
-  has_many :invoice_items, inverse_of: :invoice, dependent: :destroy
+  has_many :invoice_items, inverse_of: :invoice, dependent: :destroy, index_errors: true
 
   accepts_nested_attributes_for :invoice_items,
     reject_if: :all_blank, allow_destroy: true

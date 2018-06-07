@@ -16,4 +16,5 @@ class Profile < ApplicationRecord
 
   validates :user, presence: true
   validates :user_id, uniqueness: true
+  validates :phone_number, phony_plausible: { ignore_record_country_code: true, ignore_record_country_number: true }, allow_blank: true
 end
