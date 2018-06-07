@@ -7,7 +7,7 @@ describe 'Change profile' do
   let(:password) { generate :password }
   let(:password_confirmation) { password }
   let(:phone_number) { generate :phone_number }
-  let(:user) { create :user, password: current_password }
+  let!(:user) { create :user, password: current_password }
 
   context 'when user is signed in' do
     before { sign_in user }

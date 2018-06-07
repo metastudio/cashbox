@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   sequence(:transaction_comment) { |n| "Test transaction comment #{n}" }
-  sequence(:phone_number) { |n| "12345#{n}" }
+  sequence(:phone_number) { "+15555555#{rand(100..999)}" }
   sequence(:invoice_details) { |n| "«TestBank» Bank S.W.I.F.T. TESTRU2K #{n}" }
 
   sequence(:organization_name) { |n| "Organization #{n}" }

@@ -108,15 +108,18 @@ describe 'PUT /api/organizations/#/invoices/#' do
     end
 
     context 'missing required params' do
-      let(:ends_at) { 'test' }
+      let(:ends_at) { nil }
       let(:item1_amount) { nil }
       let(:item2_customer_name) { nil }
 
       it 'returns error' do
         expect(response).not_to be_success
 
-        expect(json).to include 'ends_at' => 'is not a date'
-        expect(json).to include 'invoice_items' => { '0' => { 'amount' => 'must be greater than 0' }, '1' => { 'description' => "can't be blank" } }
+        expect(json).to include 'ends_at' => ["can't be blank", 'is not a date']
+        expect(json).to include 'invoice_items' => {
+          '0' => { 'amount' => ['is not a number', 'must be greater than 0'] },
+          '1' => { 'description' => ["can't be blank"] }
+        }
       end
     end
   end
