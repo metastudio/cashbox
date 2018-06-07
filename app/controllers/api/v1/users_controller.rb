@@ -38,7 +38,7 @@ module Api
         if @user.update_without_password(update_profile_params)
           render :current
         else
-          render json: NestedErrors.unflatten(@user, [:profile]), status: :unprocessable_entity
+          render json: NestedErrors.unflatten(@user, :profile), status: :unprocessable_entity
         end
       end
 

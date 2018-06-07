@@ -59,7 +59,7 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
     if @invoice.save
       render :show
     else
-      render json: NestedErrors.unflatten(@invoice, [:invoice_items]), status: :unprocessable_entity
+      render json: NestedErrors.unflatten(@invoice, :invoice_items), status: :unprocessable_entity
     end
   end
 
@@ -68,7 +68,7 @@ class Api::V1::InvoicesController < Api::V1::BaseOrganizationController
     if @invoice.update(invoice_params)
       render :show
     else
-      render json: NestedErrors.unflatten(@invoice, [:invoice_items]), status: :unprocessable_entity
+      render json: NestedErrors.unflatten(@invoice, :invoice_items), status: :unprocessable_entity
     end
   end
 

@@ -5,7 +5,7 @@ module NestedErrors
     errors = object.errors.messages.to_hash
     return errors if relationships.blank?
 
-    relationships.each do |relationship|
+    [*relationships].each do |relationship|
       errors[relationship] = {}
       association = object.__send__(relationship)
       if association.respond_to?(:each_with_index)
