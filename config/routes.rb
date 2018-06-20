@@ -75,6 +75,7 @@ Cashbox::Application.routes.draw do
 
       get :user_info, to: 'users#current'
       get :currencies, to: 'base#currencies'
+      get :currency_rates, to: 'base#currency_rates'
       resources :organizations, only: %i[show index create update destroy] do
         resources :bank_accounts, only: %i[show index create update destroy]
         resources :categories, only: %i[show index create update destroy]
@@ -95,6 +96,7 @@ Cashbox::Application.routes.draw do
         resources :organization_invitations, only: %i[index show create destroy] do
           post :resend, on: :member
         end
+        resources :debtors, only: :index
       end
     end
   end

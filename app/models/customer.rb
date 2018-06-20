@@ -26,12 +26,19 @@ class Customer < ApplicationRecord
   scope :ordered, -> { order('created_at DESC') }
   scope :with_name, ->(name) { where('name ilike ?', "%#{name}%") }
 
-
   # gem 'paranoia' doesn't run validation callbacks on restore
   before_restore :run_validations
 
   def to_s
     name.truncate(30)
+  end
+
+  def indebtedness
+    result = { 'EUR': 0, 'USD': 0, 'RUB': 0 }
+    invoices.unpaid.pluck(:currency, :amount_cents).map do |i|
+      result[i.first.to_sym] += i.last
+    end
+    result.map{ |i| Money.new(i.last, i.first) }
   end
 
   private
