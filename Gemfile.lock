@@ -140,12 +140,6 @@ GEM
       actionpack (>= 3.0)
       multi_json
       request_store (>= 1.0)
-    graphiql-rails (1.4.10)
-      railties
-      sprockets-rails
-    graphql (1.8.0)
-    graphql-errors (0.2.0)
-      graphql (>= 1.6.0, < 2)
     guard (2.14.2)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
@@ -456,9 +450,6 @@ DEPENDENCIES
   factory_bot_rails
   faker
   gon
-  graphiql-rails
-  graphql
-  graphql-errors
   guard
   guard-rspec
   has_secure_token (~> 0.0.2)
