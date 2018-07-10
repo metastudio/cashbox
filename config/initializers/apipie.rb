@@ -7,4 +7,5 @@ Apipie.configure do |config|
   config.api_controllers_matcher = "#{Rails.root}/app/controllers/**/*.rb"
   config.default_version         = '1'
   config.validate                = false
+  config.translate = false
 end
