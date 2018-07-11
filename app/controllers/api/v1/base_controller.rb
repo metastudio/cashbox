@@ -71,7 +71,7 @@ module Api::V1
         previous: collection.prev_page,
         next:     collection.next_page,
         per_page: collection.limit_value,
-        pages:    collection.max_pages,
+        pages:    collection.total_pages,
         count:    collection.total_count
       }
     end
