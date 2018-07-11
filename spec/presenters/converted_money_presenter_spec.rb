@@ -23,7 +23,7 @@ describe ConvertedMoneyPresenter do
 
   describe '#updated_at' do
     it 'return updated date' do
-      expect(subject.send(:updated_at)).to eq(I18n.l(Time.zone.now))
+      expect(subject.send(:updated_at)).to eq(Date.current)
     end
   end
 
@@ -33,7 +33,8 @@ describe ConvertedMoneyPresenter do
         amount: Money.new(6300, 'RUB'),
         old_amount: money,
         rate: 63,
-        updated_at: I18n.l(Time.zone.now)
+        updated_at: Date.current,
+        total: Money.new(6300, 'RUB')
       })
     end
   end

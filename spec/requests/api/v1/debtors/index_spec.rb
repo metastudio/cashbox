@@ -31,7 +31,7 @@ describe 'GET /api/organizations/#/debtors' do
     end
 
     it 'return summs by currencies for all debtors' do
-      expect(json['summ_by_currencies'][0]).to include(
+      expect(json['totals_by_currency'][0]).to include(
         'amount' => JSON.parse(invoice1.amount.to_json)
       )
     end
