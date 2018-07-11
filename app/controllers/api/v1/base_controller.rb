@@ -35,22 +35,6 @@ module Api::V1
       render json: Dictionaries.currencies
     end
 
-    def currency_rates
-      bank = Money.default_bank
-      rates = bank.rates.inject([]) do |result, (k, v)|
-        from, to = k.split('_TO_')
-        result.push({
-          from: Money::Currency.new(from),
-          to: Money::Currency.new(to),
-          value: v
-        })
-      end
-      render json: {
-        rates: rates,
-        rates_updated_on: bank.rates_updated_on
-      }
-    end
-
     resource_description do
       api_version '1'
       short 'Cashbox API - v1'

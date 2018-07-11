@@ -34,15 +34,9 @@ class Customer < ApplicationRecord
   end
 
   def indebtedness
-    result = {}
-    invoices.unpaid.pluck(:currency, :amount_cents).map do |i|
-      currency = i.first.to_sym
-      amount = i.last
-      result[currency] += amount if result[currency].present?
-      next if result[currency].present?
-      result[currency] = amount
+    invoices.unpaid.group(:currency).sum(:amount_cents).map do |currency, amount_cents|
+      Money.new(amount_cents, currency)
     end
-    result.map{ |i| Money.new(i.last, i.first) }
   end
 
   private

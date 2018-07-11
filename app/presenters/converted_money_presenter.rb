@@ -5,34 +5,24 @@ class ConvertedMoneyPresenter
   def initialize(money, new_currency)
     @old_amount = money
     @new_currency = new_currency
+    @same_currency = same_currency?
   end
 
   def present
-    return not_converted if @old_amount.currency == @new_currency
-    converted
-  end
-
-  def converted
     {
-      amount: new_amount,
+      amount: @same_currency ? nil : new_amount ,
       old_amount: @old_amount,
-      rate: rate,
-      updated_at: updated_at,
-      total: new_amount
-    }
-  end
-
-  def not_converted
-    {
-      amount: nil,
-      old_amount: @old_amount,
-      rate: nil,
-      updated_at: nil,
-      total: @old_amount
+      rate: @same_currency ? nil : rate,
+      updated_at: @same_currency ? nil : updated_at,
+      total: @same_currency ? @old_amount : new_amount
     }
   end
 
   private
+
+  def same_currency?
+    @old_amount.currency == @new_currency
+  end
 
   def new_amount
     @old_amount.exchange_to(@new_currency)
@@ -43,6 +33,6 @@ class ConvertedMoneyPresenter
   end
 
   def updated_at
-    I18n.l Money.default_bank.rates_updated_on
+    Money.default_bank.rates_updated_on
   end
 end

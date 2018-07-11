@@ -70,7 +70,6 @@ Cashbox::Application.routes.draw do
 
       get :user_info, to: 'users#current'
       get :currencies, to: 'base#currencies'
-      get :currency_rates, to: 'base#currency_rates'
       resources :organizations, only: %i[show index create update destroy] do
         resources :bank_accounts, only: %i[show index create update destroy]
         resources :categories, only: %i[show index create update destroy]
