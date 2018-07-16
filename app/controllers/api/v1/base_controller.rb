@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "./lib/nested_errors.rb"
+require './lib/nested_errors.rb'
 
 module Api::V1
   class BaseController < ::ApplicationController
@@ -29,10 +29,6 @@ module Api::V1
 
     def not_found
       render json: {}, status: :not_found
-    end
-
-    def currencies
-      render json: Dictionaries.currencies
     end
 
     resource_description do
