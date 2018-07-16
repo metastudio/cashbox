@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module Debts
-  class Debt
+  # don't use this class directly, use OrganizationDebt or CustomerDebt
+  class BaseDebt
+    # basicaly instance can be organization or customer instance
     def initialize(instance)
       @instance = instance
     end
