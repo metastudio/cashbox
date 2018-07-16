@@ -87,16 +87,6 @@ class Organization < ApplicationRecord
   end
 
   def total_invoice_debt
-    total = 0
-    def_curr = default_currency
-    invoices.unpaid.group(:currency).sum(:amount_cents).each do |currency, amount_cents|
-      m = Money.new(amount_cents, currency)
-      if def_curr == currency
-        total += m
-      else
-        total += m.exchange_to(def_curr)
-      end
-    end
-    total.format
+    Debts::OrganizationDebt.new(self).total.format
   end
 end

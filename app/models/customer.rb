@@ -33,12 +33,6 @@ class Customer < ApplicationRecord
     name.truncate(30)
   end
 
-  def indebtedness
-    invoices.unpaid.group(:currency).sum(:amount_cents).map do |currency, amount_cents|
-      Money.new(amount_cents, currency)
-    end
-  end
-
   private
 
   def run_validations

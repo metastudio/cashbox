@@ -10,10 +10,10 @@ class ConvertedMoneyPresenter
 
   def present
     {
-      amount: @same_currency ? nil : new_amount ,
+      amount: new_amount,
       old_amount: @old_amount,
-      rate: @same_currency ? nil : rate,
-      updated_at: @same_currency ? nil : updated_at,
+      rate: rate,
+      updated_at: updated_at,
       total: @same_currency ? @old_amount : new_amount
     }
   end
@@ -25,14 +25,14 @@ class ConvertedMoneyPresenter
   end
 
   def new_amount
-    @old_amount.exchange_to(@new_currency)
+    @same_currency ? nil : @old_amount.exchange_to(@new_currency)
   end
 
   def rate
-    Money.default_bank.get_rate(@old_amount.currency, @new_currency)
+    @same_currency ? nil : Money.default_bank.get_rate(@old_amount.currency, @new_currency)
   end
 
   def updated_at
-    Money.default_bank.rates_updated_on
+    @same_currency ? nil : Money.default_bank.rates_updated_on
   end
 end
