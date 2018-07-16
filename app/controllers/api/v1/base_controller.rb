@@ -1,6 +1,11 @@
+# frozen_string_literal: true
+
+require './lib/nested_errors.rb'
+
 module Api::V1
   class BaseController < ::ApplicationController
     include Knock::Authenticable
+    include NestedErrors
 
     class AuthorizationError < StandardError; end
 
@@ -19,15 +24,11 @@ module Api::V1
     end
 
     def user_not_authorized
-      render json: { error: "You are not authorized to perform this action." }, status: :forbidden
+      render json: { error: 'You are not authorized to perform this action.' }, status: :forbidden
     end
 
     def not_found
       render json: {}, status: :not_found
-    end
-
-    def currencies
-      render json: Dictionaries.currencies
     end
 
     resource_description do
@@ -37,5 +38,23 @@ module Api::V1
       error 404, 'Not Found'
       description 'Cashbox API'
     end
+
+    private
+
+    def pundit_user
+      current_user
+    end
+
+    def pagination_info(collection)
+      {
+        current:  collection.current_page,
+        previous: collection.prev_page,
+        next:     collection.next_page,
+        per_page: collection.limit_value,
+        pages:    collection.total_pages,
+        count:    collection.total_count
+      }
+    end
+    helper_method :pagination_info
   end
 end

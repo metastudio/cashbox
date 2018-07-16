@@ -6,7 +6,7 @@ class InvoicesController < ApplicationController
 
   def index
     @q = current_organization.invoices.ransack(params[:q])
-    @q.sorts = 'ends_at desc' if @q.sorts.empty?
+    @q.sorts = ['ends_at desc', 'created_at desc'] if @q.sorts.empty?
     @invoices = @q.result.page(params[:page]).per(10)
   end
 
@@ -72,9 +72,10 @@ class InvoicesController < ApplicationController
   end
 
   def invoice_params
-    params.require(:invoice).permit(:customer_id, :starts_at, :ends_at,
-      :currency, :amount, :sent_at, :paid_at, :customer_name, :number,
-      invoice_items_attributes: [:id, :customer_id, :customer_name, :amount,
-        :date, :hours, :description, :_destroy])
+    params.require(:invoice).permit([
+      :customer_id, :starts_at, :ends_at, :currency, :amount, :sent_at, :paid_at,
+      :customer_name, :number, :bank_account_id,
+      invoice_items_attributes: %i[id customer_id customer_name amount date hours description _destroy]
+    ])
   end
 end

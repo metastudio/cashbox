@@ -11,11 +11,8 @@ describe 'Organizations list' do
 
   subject { page }
 
-  it "has create organization btn" do
+  it "has create organization btn and shows table with appropriate content" do
     expect(page).to have_link('New Organization')
-  end
-
-  it "shows table with appropriate content" do
     organizations.each do |organization|
       within "tbody" do
         expect(page).to have_selector('td', text: organization.name)

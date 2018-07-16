@@ -22,7 +22,8 @@ describe "create organization" do
     it "create account by default" do
       expect(page).to have_content("New organization bank account")
       click_on "Create default Bank account"
-      expect(BankAccount.all.count).to eq(1)
+      wait_for_ajax
+      expect(BankAccount.count).to eq(1)
       expect(BankAccount.first.organization.name).to eq(organization_name)
     end
 
@@ -31,8 +32,9 @@ describe "create organization" do
       click_on "Create it manually"
       fill_in 'Name', with: "New bank account"
       click_on 'Create bank accounts'
+      wait_for_ajax
       expect(page).to have_content("Bank accounts was created successfully")
-      expect(BankAccount.all.count).to eq(1)
+      expect(BankAccount.count).to eq(1)
       expect(BankAccount.last.organization.name).to eq(organization_name)
       expect(page).to have_content("New organization categories")
     end
@@ -47,7 +49,8 @@ describe "create organization" do
     it "create categories by default" do
       expect(page).to have_content("New organization categories")
       click_on "Create default Categories"
-      expect(Category.all.count).to eq(5)
+      wait_for_ajax
+      expect(Category.count).to eq(5)
     end
 
     it "create category manually" do

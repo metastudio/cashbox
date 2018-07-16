@@ -21,7 +21,8 @@ require 'rails_helper'
 describe BankAccount do
   context 'association' do
     it { expect(subject).to belong_to(:organization) }
-    it { expect(subject).to have_many(:transactions).dependent(:destroy)}
+    it { expect(subject).to have_many(:transactions).dependent(:destroy) }
+    it { expect(subject).to have_many(:invoices).dependent(:destroy) }
   end
 
   context 'validation' do

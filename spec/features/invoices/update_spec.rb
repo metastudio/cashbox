@@ -26,9 +26,11 @@ describe 'Update invoice', js: true do
       click_on 'Update Invoice'
     end
 
-    it { expect(page).to have_content 'Invoice was successfully updated' }
-    it { expect(page).to have_content(money_with_symbol(Money.new(new_amount, invoice.currency))) }
-    it { expect(page).to have_content customer2.name }
+    it 'has congratulation, amount and ciustomer name' do
+      expect(page).to have_content 'Invoice was successfully updated'
+      expect(page).to have_content(money_with_symbol(Money.new(new_amount, invoice.currency)))
+      expect(page).to have_content customer2.name
+    end
   end
 
   context 'Update invoice with invoice items' do
@@ -55,8 +57,8 @@ describe 'Update invoice', js: true do
         click_on 'Edit'
       end
 
-      it { expect(page).to have_css('#invoice_amount:disabled') }
       it 'amount must be enabled after delete all items' do
+        expect(page).to have_css('#invoice_amount:disabled')
         page.all('a', text: 'delete').each(&:click)
         expect(page).to_not have_css('#invoice_amount:disabled')
         expect(page).to have_css('#invoice_amount')

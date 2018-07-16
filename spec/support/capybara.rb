@@ -1,21 +1,23 @@
 require 'capybara/rspec'
 require 'capybara/rails'
-require 'capybara/poltergeist'
 require 'capybara/email/rspec'
 
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, window_size: [1200, 900], js_errors: false)
-end
+Capybara.javascript_driver = :webkit
 
-Capybara.javascript_driver = :poltergeist
-Capybara.server_port = 8082
+Capybara::Webkit.configure do |config|
+  # Silently return an empty 200 response for any requests to unknown URLs.
+  config.block_unknown_urls
+end
 
 RSpec.configure do |config|
   config.append_after(:each) do
-    Capybara.reset_sessions!    # Forget the (simulated) browser state
-    Capybara.use_default_driver # Revert Capybara.current_driver to Capybara.default_driver
+    # Capybara.reset_sessions!    # Forget the (simulated) browser state
+    # Capybara.use_default_driver # Revert Capybara.current_driver to Capybara.default_driver
   end
   config.before(:each, js: true) do
     # page.driver.browser.url_blacklist = ['https://google.com', 'https://facebook.com']
   end
 end
+
+# Keep only the screenshots generated from the last failing test suite
+Capybara::Screenshot.prune_strategy = :keep_last_run

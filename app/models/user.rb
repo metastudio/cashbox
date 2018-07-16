@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: users
@@ -23,17 +25,22 @@
 #
 
 class User < ApplicationRecord
+  class AuthenticationRequiredError < StandardError
+    def initialize(msg = 'Authentication required.')
+      super(msg)
+    end
+  end
+
   has_one :profile, inverse_of: :user, dependent: :destroy
-  has_many :own_organizations,
-    -> { where members: { role: "owner" } },
+  has_many :own_organizations, -> { where members: { role: 'owner' } },
     through: :members, source: :organization, dependent: :restrict_with_error, inverse_of: :owners
   has_many :members, inverse_of: :user, dependent: :destroy
   has_many :organizations, through: :members
-  has_many :invitations, foreign_key: :email, primary_key: :email, inverse_of: :user, class_name: 'InvitationBase'
-  has_many :transactions, foreign_key: :created_by_id, dependent: :nullify
-  has_many :notifications, inverse_of: :user
-  has_one  :unsubscribe, inverse_of: :user
-  has_many :created_invitations, class_name: 'Invitation',
+  has_many :invitations, foreign_key: :email, primary_key: :email,
+    inverse_of: :user, class_name: 'InvitationBase', dependent: :destroy
+  has_many :transactions, inverse_of: :created_by, foreign_key: :created_by_id, dependent: :nullify
+  has_one  :unsubscribe, inverse_of: :user, dependent: :destroy
+  has_many :created_invitations, inverse_of: :invited_by, class_name: 'Invitation',
     foreign_key: :invited_by_id, dependent: :destroy
 
   accepts_nested_attributes_for :profile, update_only: true
@@ -49,22 +56,22 @@ class User < ApplicationRecord
 
   delegate :avatar, to: :profile
 
-  scope :without, ->(user) { where("id <> ?", user.id) }
+  scope :without, ->(user) { where.not(id: user.id) }
 
   def to_s
     full_name.truncate(30)
   end
 
   def authenticate(password)
-    self.valid_password? password
+    valid_password?(password)
   end
 
   def locked?
-    self.locked_at.present?
+    locked_at.present?
   end
 
   def link_unsubscribe
     unsubscribe = Unsubscribe.find_or_create_by(email: email)
-    update_attributes(unsubscribe: unsubscribe)
+    update(unsubscribe: unsubscribe)
   end
 end

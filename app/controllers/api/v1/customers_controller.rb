@@ -1,5 +1,5 @@
 module Api::V1
-  class CustomersController < ApiController
+  class CustomersController < BaseOrganizationController
     before_action :set_customer, only: [:show, :update, :destroy]
 
     def_param_group :customer do
@@ -52,7 +52,7 @@ module Api::V1
     end
 
     def customer_params
-      params.require(:customer).permit(:name, :invoice_details)
+      params.fetch(:customer, {}).permit(:name, :invoice_details)
     end
   end
 end

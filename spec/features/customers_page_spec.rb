@@ -15,16 +15,10 @@ describe 'customers page' do
 
   subject{ page }
 
-  it "customer index page displays current organization's customers" do
+  it "customer index page displays current organization's customers, doesn't display another customers, doesn't display deleted customers" do
     expect(subject).to have_content(org1_customer.name)
     expect(subject).to have_content(org1_customer.invoice_details)
-  end
-
-  it "customer index page doesn't display another customers" do
     expect(subject).to_not have_content(org2_customer.name)
-  end
-
-  it "customer index page doesn't display deleted customers" do
     expect(subject).to_not have_content(org1_deleted_customer.name)
   end
 end

@@ -1,1 +1,4 @@
-json.extract! invoice, :id, :starts_at, :ends_at, :amount_cents, :sent_at, :paid_at, :number
+# frozen_string_literal: true
+
+json.extract! invoice, :id, :starts_at, :ends_at, :amount, :sent_at, :paid_at,
+  :number, :customer_name

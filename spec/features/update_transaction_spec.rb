@@ -64,12 +64,9 @@ describe 'update transaction', js: true do
       visit root_path
     end
 
-    it "updates sidebar account balance" do
+    it "updates sidebar account balance and total balance" do
       expect(page).to have_css("#bank_account_#{transaction.bank_account.id} td.amount", text: money_with_symbol(new_account_balance))
-    end
-
-    it "updates sidebar total balance" do
-       expect(page).to have_css("#sidebar", text: money_with_symbol(new_total))
+      expect(page).to have_css("#sidebar", text: money_with_symbol(new_total))
     end
   end
 
@@ -98,7 +95,7 @@ describe 'update transaction', js: true do
     end
   end
 
-  context "when transfer from usd to rub" do
+  context "when transfer from usd to rub", js: true do
     let!(:usd_account) { create :bank_account, organization: organization, currency: 'USD' }
     let!(:rub_account) { create :bank_account, organization: organization, currency: 'RUB' }
     let(:amount) { 999 }
@@ -114,8 +111,7 @@ describe 'update transaction', js: true do
       select rub_account, from: 'transfer[reference_id]'
       fill_in 'transfer[amount]', with: amount
       fill_in 'transfer[calculate_sum]', with: calculate_sum
-      find('input[name="transfer[exchange_rate]"]').trigger('focus')
-      sleep 1
+      page.execute_script("$(\'input[name=\"transfer[exchange_rate]\"]\').trigger(\'focus\')")
     end
 
     it "calculate exchange rate with four decimal places" do

@@ -130,9 +130,9 @@ describe StatisticData::ColumnsChart do
       subject { StatisticData::ColumnsChart.new(org).customers_by_months[:data].last }
 
       it 'have data about transactions in current month' do
-        expect(subject).to eq([Date.current.strftime("%b, %Y"),
-         (transaction1.amount.cents/100).round(2),
-         (transaction2.amount.cents/100).round(2), ""])
+        expect(subject).to match_array [
+          Date.current.strftime('%b, %Y'), (transaction1.amount.cents / 100).round(2), (transaction2.amount.cents / 100).round(2), ''
+        ]
       end
     end
 
@@ -150,9 +150,9 @@ describe StatisticData::ColumnsChart do
       subject { StatisticData::ColumnsChart.new(org).customers_by_months[:data][-2] }
 
       it 'have data about transactions in previous month' do
-        expect(subject).to eq([(Date.current - 1.months).strftime("%b, %Y"),
-         (transaction3.amount.cents/100).round(2),
-         (transaction4.amount.cents/100).round(2), ""])
+        expect(subject).to match_array [
+          (Date.current - 1.month).strftime('%b, %Y'), (transaction3.amount.cents / 100).round(2), (transaction4.amount.cents / 100).round(2), ''
+        ]
       end
     end
 
@@ -167,10 +167,10 @@ describe StatisticData::ColumnsChart do
       subject { StatisticData::ColumnsChart.new(org).customers_by_months[:data].last }
 
       it 'convert amounts to organization currency' do
-        expect(subject).to eq([Date.current.strftime("%b, %Y"),
-         (transaction1.amount.cents/100).round(2),
-         (transaction2.amount.cents/100).round(2),
-         (transaction3.amount.exchange_to('RUB').cents/100).round(2),""])
+        expect(subject).to match_array [
+          Date.current.strftime('%b, %Y'), (transaction1.amount.cents / 100).round(2),
+          (transaction2.amount.cents / 100).round(2), (transaction3.amount.exchange_to('RUB').cents / 100).round(2), ''
+        ]
       end
     end
 
@@ -183,9 +183,9 @@ describe StatisticData::ColumnsChart do
       subject { StatisticData::ColumnsChart.new(org).customers_by_months[:data].last }
 
       it 'have data about transactions in current month' do
-        expect(subject).to eq([Date.current.strftime("%b, %Y"),
-         (transaction1.amount.cents/100).round(2),
-         (transaction2.amount.cents/100).round(2), ""])
+        expect(subject).to match_array [
+          Date.current.strftime('%b, %Y'), (transaction1.amount.cents / 100).round(2), (transaction2.amount.cents / 100).round(2), ''
+        ]
       end
     end
 
@@ -199,9 +199,9 @@ describe StatisticData::ColumnsChart do
       subject { StatisticData::ColumnsChart.new(org).customers_by_months[:data].last }
 
       it 'not rised error' do
-        expect(subject).to eq([Date.current.strftime("%b, %Y"),
-         (transaction1.amount.cents/100).round(2),
-         (transaction2.amount.cents/100).round(2), ""])
+        expect(subject).to match_array [
+          Date.current.strftime('%b, %Y'), (transaction1.amount.cents / 100).round(2), (transaction2.amount.cents / 100).round(2), ''
+        ]
       end
     end
   end

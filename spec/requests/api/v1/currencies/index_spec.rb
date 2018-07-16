@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'GET /api/currencies' do
-  let(:path) { "/api/currencies" }
+  let(:path) { api_currencies_path }
 
   let!(:user) { create :user, password: 'password' }
 
@@ -15,7 +17,7 @@ describe 'GET /api/currencies' do
     it 'returns currencies' do
       expect(response).to be_success
 
-      expect(json).to eq ["USD", "RUB", "EUR"]
+      expect(json).to eq %w[USD RUB EUR]
     end
   end
 end

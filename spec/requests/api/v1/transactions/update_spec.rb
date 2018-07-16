@@ -1,50 +1,34 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'PUT /api/organizations/#/transactions/#' do
   let(:path) { "/api/organizations/#{organization.id}/transactions/#{transaction.id}" }
 
   let(:bank_account) { create :bank_account, organization: organization }
-  let(:amount) { Money.new(10000, bank_account.currency) }
+  let(:amount) { Money.from_amount(100, bank_account.currency) }
   let(:category) { create :category, :income, organization: organization }
   let(:customer) { create :customer, organization: organization }
 
-  let!(:owner) { create :user }
   let!(:user) { create :user }
-  let!(:organization) { create :organization, owner: owner, with_user: user }
+  let!(:organization) { create :organization, with_user: user }
   let!(:transaction) { create :transaction, :income, :with_customer, organization: organization }
   let(:params) {
     {
       transaction: {
-        amount: amount,
-        category_id: category.id,
+        amount:          amount,
+        category_id:     category.id,
         bank_account_id: bank_account.id,
-        comment: 'Updated Test Comment',
-        comission: 5,
-        customer_id: customer.id,
-        date: Time.current
+        comment:         'Updated Test Comment',
+        comission:       5,
+        customer_id:     customer.id,
+        date:            Time.current
       }
     }
   }
 
   context 'unauthenticated' do
     it { put(path) && expect(response).to(be_unauthorized) }
-  end
-
-  context 'authenticated as owner' do
-    before { put path, params: params, headers: auth_header(owner) }
-
-    it 'returns updated transaction' do
-      expect(response).to be_success
-      transaction.reload
-      expect(json).to include(
-        'id' => transaction.id,
-        'amount' => money_with_symbol(transaction.amount),
-        'comment' => "Updated Test Comment\nComission: 5₽"
-      )
-      expect(json['category']).to     include( 'id' => transaction.category.id)
-      expect(json['bank_account']).to include( 'id' => bank_account.id)
-      expect(json['customer']).to     include( 'id' => transaction.customer.id)
-    end
   end
 
   context 'authenticated as user' do
@@ -54,13 +38,13 @@ describe 'PUT /api/organizations/#/transactions/#' do
       expect(response).to be_success
       transaction.reload
       expect(json).to include(
-        'id' => transaction.id,
-        'amount' => money_with_symbol(transaction.amount),
+        'id'      => transaction.id,
+        'amount'  => transaction.amount.as_json,
         'comment' => "Updated Test Comment\nComission: 5₽"
       )
-      expect(json['category']).to     include( 'id' => transaction.category.id)
-      expect(json['bank_account']).to include( 'id' => bank_account.id)
-      expect(json['customer']).to     include( 'id' => transaction.customer.id)
+      expect(json['category']).to     include('id' => transaction.category.id)
+      expect(json['bank_account']).to include('id' => bank_account.id)
+      expect(json['customer']).to     include('id' => transaction.customer.id)
     end
 
     context 'with wrong params' do
@@ -69,10 +53,11 @@ describe 'PUT /api/organizations/#/transactions/#' do
       let!(:wrong_category) { create :category, :income, organization: wrong_organization }
       let!(:wrong_customer) { create :customer, organization: wrong_organization }
       let(:params) {
-        { transaction: {
+        {
+          transaction: {
             bank_account_id: wrong_bank_account.id,
-            category_id: wrong_category.id,
-            customer_id: wrong_customer.id
+            category_id:     wrong_category.id,
+            customer_id:     wrong_customer.id
           }
         }
       }

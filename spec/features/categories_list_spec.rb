@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'categories page' do
+describe 'categories page', js: true do
   let(:user) { create :user }
   let(:org)  { create :organization, with_user: user, without_categories: true }
 
