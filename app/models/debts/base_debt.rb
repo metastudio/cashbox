@@ -27,8 +27,7 @@ module Debts
     private
 
     def invoices_group_by_currency
-      return @invoices_group_by_currency if @invoices_group_by_currency.present?
-      @invoices_group_by_currency = @instance
+      @invoices_group_by_currency ||= @instance
         .invoices
         .unpaid
         .group(:currency)
