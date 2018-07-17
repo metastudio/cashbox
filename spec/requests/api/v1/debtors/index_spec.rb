@@ -27,7 +27,8 @@ describe 'GET /api/organizations/#/debtors' do
     end
 
     it 'return total for all debtors in default currency' do
-      expect(json['total']).not_to be_blank
+      total = invoice1.amount.exchange_to('USD')
+      expect(json['total']).to eq(JSON.parse(total.to_json))
     end
 
     it 'return summs by currencies for all debtors' do
