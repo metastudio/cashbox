@@ -91,6 +91,7 @@ Cashbox::Application.routes.draw do
         resources :organization_invitations, only: %i[index show create destroy] do
           post :resend, on: :member
         end
+        resources :debtors, only: :index
       end
     end
   end

@@ -26,7 +26,6 @@ class Customer < ApplicationRecord
   scope :ordered, -> { order('created_at DESC') }
   scope :with_name, ->(name) { where('name ilike ?', "%#{name}%") }
 
-
   # gem 'paranoia' doesn't run validation callbacks on restore
   before_restore :run_validations
 
