@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Api::V1
   class BankAccountsController < BaseOrganizationController
-    before_action :set_bank_account, only: [:show, :update, :destroy]
+    before_action :set_bank_account, only: %i[show update destroy]
 
     def_param_group :bank_account do
       param :bank_account, Hash, required: true, action_aware: true do
@@ -15,6 +17,12 @@ module Api::V1
     api :GET, '/organizations/:organization_id/bank_accounts', 'Return bank accounts for current organization'
     def index
       @bank_accounts = current_organization.bank_accounts.positioned
+    end
+
+    api :GET, '/organizations/:organization_id/bank_accounts/visible', 'Return visible bank accounts for current organization'
+    def visible
+      @bank_accounts = current_organization.bank_accounts.visible.positioned
+      render :index
     end
 
     api :GET, '/organizations/:organization_id/bank_accounts/:id', 'Return bank account'
