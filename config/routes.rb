@@ -41,10 +41,10 @@ Cashbox::Application.routes.draw do
     put :sort, on: :collection
   end
   resources :categories, except: :show
-  resources :transactions,  only: [:new, :create, :edit, :update, :destroy] do
+  resources :transactions,  only: %i[new create edit update destroy] do
     post :transfer, action: :create_transfer, on: :collection
   end
-  resources :members, only: [:index, :edit, :update, :destroy]
+  resources :members, only: %i[index edit update destroy]
   resources :customers, except: :show do
     get 'autocomplete', on: :collection
   end
@@ -52,16 +52,16 @@ Cashbox::Application.routes.draw do
     get 'unpaid', on: :collection
     resources :invoice_items, except: :show
   end
-  resources :invitations, only: [:new, :create]
-  resources :organization_invitations, only: [:new, :create, :destroy]
+  resources :invitations, only: %i[new create]
+  resources :organization_invitations, only: %i[new create destroy]
   get '/invitation/:token/accept' => 'invitations#accept', as: :accept_invitation
   get '/organization_invitation/:token/resend' => 'organization_invitations#resend', as: :resend_organization_invitation
   get '/unsubscribes/:token' => 'unsubscribes#activate', as: :activate_unsubscribe
-  mount ActionCable.server => "/cable"
+  mount ActionCable.server => '/cable'
 
   # API
   namespace :api, defaults: { format: 'json' } do
-    scope module: :v1, constraints: ApiConstraints.new(version: 1, default: :true) do
+    scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       devise_for :users, skip: :sessions, controllers: { passwords: 'api/v1/passwords' }
       resources :users, only: %i[update destroy] do
         put :update_profile, on: :member
@@ -72,7 +72,9 @@ Cashbox::Application.routes.draw do
       resources :currencies, only: %i[index]
 
       resources :organizations, only: %i[show index create update destroy] do
-        resources :bank_accounts, only: %i[show index create update destroy]
+        resources :bank_accounts, only: %i[show index create update destroy] do
+          get :visible, on: :collection
+        end
         resources :categories, only: %i[show index create update destroy]
         resources :customers, only: %i[show index create update destroy]
         resources :transactions, only: %i[show index create update destroy] do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: bank_accounts
@@ -29,19 +31,14 @@ class BankAccount < ApplicationRecord
   monetize :balance_cents, with_model_currency: :currency
   monetize :residue_cents, with_model_currency: :currency
 
-  scope :visible,     -> { where(visible: true) }
-  scope :by_currency, -> (currency) { where('bank_accounts.currency' => currency) if currency.present? }
-  scope :positioned,  -> { order(position: :asc) }
+  scope :visible,     ->{ where(visible: true) }
+  scope :by_currency, ->(currency){ where('bank_accounts.currency' => currency) if currency.present? }
+  scope :positioned,  ->{ order(position: :asc) }
 
   validates :name,     presence: true
-  validates :balance,  presence: true, numericality: {
-    less_than_or_equal_to: Dictionaries.money_max }
-  validates :residue,  presence: true, numericality: {
-    greater_than_or_equal_to: 0,
-    less_than_or_equal_to: Dictionaries.money_max }
-  validates :currency, presence: true,
-    inclusion: { in: Dictionaries.currencies,
-      message: "%{value} is not a valid currency" }
+  validates :balance,  presence: true, numericality: { less_than_or_equal_to: Dictionaries.money_max }
+  validates :residue,  presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: Dictionaries.money_max }
+  validates :currency, presence: true, inclusion: { in: Dictionaries.currencies, message: '%{value} is not a valid currency' }
 
   after_create :set_initial_residue
   after_touch :recalculate_amount!
@@ -51,12 +48,12 @@ class BankAccount < ApplicationRecord
   end
 
   def residue=(value)
-    if value
-      @residue_cents =
+    @residue_cents =
+      if value
         value.class == String ? value.delete(',').delete('.') : value
-    else
-      @residue_cents = 0
-    end
+      else
+        0
+      end
   end
 
   def self.total_balance(currency)
@@ -64,11 +61,11 @@ class BankAccount < ApplicationRecord
   end
 
   def recalculate_amount!
-    update_attributes(balance: Money.new(transactions.sum(:amount_cents), currency))
+    update(balance: Money.new(transactions.sum(:amount_cents), currency))
   end
 
   def set_initial_residue
-    transactions.create(amount_cents: residue_cents, transaction_type: 'Residue') if residue > 0
+    transactions.create(amount_cents: residue_cents, transaction_type: 'Residue') if residue.positive?
   end
 
   def to_s

@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe 'GET /api/organizations/#/bank_accounts' do
-  let(:path) { "/api/organizations/#{organization.id}/bank_accounts" }
+describe 'GET /api/organizations/#/bank_accounts/visible' do
+  let(:path) { visible_api_organization_bank_accounts_path(organization) }
 
   let!(:user) { create :user }
   let!(:organization) { create :organization, without_bank_accounts: true, with_user: user }
@@ -21,17 +21,8 @@ describe 'GET /api/organizations/#/bank_accounts' do
     it 'returns bank_accounts' do
       expect(response).to be_success
 
-      expect(json.size).to eq 3
+      expect(json.size).to eq 2
       expect(json[0]).to include(
-        'id'              => bank_account3.id,
-        'name'            => bank_account3.name,
-        'currency'        => bank_account3.currency,
-        'description'     => bank_account3.description,
-        'invoice_details' => bank_account3.invoice_details,
-        'balance'         => bank_account3.balance.as_json,
-        'residue'         => bank_account3.residue.as_json,
-      )
-      expect(json[1]).to include(
         'id'              => bank_account2.id,
         'name'            => bank_account2.name,
         'currency'        => bank_account2.currency,
@@ -40,7 +31,7 @@ describe 'GET /api/organizations/#/bank_accounts' do
         'balance'         => bank_account2.balance.as_json,
         'residue'         => bank_account2.residue.as_json,
       )
-      expect(json[2]).to include(
+      expect(json[1]).to include(
         'id'              => bank_account1.id,
         'name'            => bank_account1.name,
         'currency'        => bank_account1.currency,

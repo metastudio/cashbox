@@ -5,24 +5,6 @@ FactoryBot.define do
   sequence(:phone_number) { "+15555555#{rand(100..999)}" }
   sequence(:invoice_details) { |n| "«TestBank» Bank S.W.I.F.T. TESTRU2K #{n}" }
 
-  sequence(:organization_name) { |n| "Organization #{n}" }
-  factory :organization do
-    name { generate :organization_name }
-
-    transient do
-      owner nil
-      with_user nil
-      without_categories false
-    end
-
-    after(:create) do |organization, evaluator|
-      create :member, organization: organization, user: evaluator.with_user if evaluator.with_user
-      create :bank_account, organization: organization
-      create :category, organization: organization unless evaluator.without_categories
-      create :member, organization: organization, role: 'owner', user: evaluator.owner if evaluator.owner
-    end
-  end
-
   factory :member do
     user
     organization
@@ -49,7 +31,7 @@ FactoryBot.define do
     currency 'RUB'
 
     trait :with_transactions do
-      after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 50000 }
+      after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 50_000 }
     end
 
     trait :full do
@@ -93,16 +75,16 @@ FactoryBot.define do
   end
 
   factory :invitation do
-    email   { build(:user).email }
-    invited_by  { create :user }
-    accepted { false }
+    email      { build(:user).email }
+    invited_by { create :user }
+    accepted   { false }
   end
 
   factory :organization_invitation do
-    email   { create(:user).email }
-    role    { Member.role.default_value }
-    invited_by  { create :member }
-    accepted { false }
+    email      { create(:user).email }
+    role       { Member.role.default_value }
+    invited_by { create :member }
+    accepted   { false }
   end
 
   factory :profile do
