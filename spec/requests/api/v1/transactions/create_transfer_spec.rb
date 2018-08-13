@@ -14,7 +14,7 @@ describe 'POST /api/organizations/#/transactions/transfer' do
 
   let!(:user) { create :user }
   let!(:organization) { create :organization, with_user: user }
-  let(:params) {
+  let(:params) do
     {
       transfer: {
         amount:          amount,
@@ -23,10 +23,10 @@ describe 'POST /api/organizations/#/transactions/transfer' do
         reference_id:    to_bank_account.id,
         exchange_rate:   exchange_rate,
         comment:         comment,
-        date:            Time.current
-      }
+        date:            Time.current,
+      },
     }
-  }
+  end
 
   context 'unauthenticated' do
     it { post(path) && expect(response).to(be_unauthorized) }
@@ -38,32 +38,39 @@ describe 'POST /api/organizations/#/transactions/transfer' do
     it 'returns ok and creates transfer' do
       expect(response).to be_success
 
-      expect(json).to be_empty
-
       expect(organization.transactions.count).to eq 2
-      expect(organization.transactions.first.bank_account).to eq to_bank_account
-      expect(organization.transactions.first.amount_cents).to eq 625_000
-      expect(organization.transactions.last.bank_account).to eq from_bank_account
-      expect(organization.transactions.last.amount_cents).to eq -11_000
+
+      to_transaction = organization.transactions.first
+      expect(to_transaction.bank_account).to eq to_bank_account
+      expect(to_transaction.amount_cents).to eq 625_000
+      from_transaction = organization.transactions.last
+      expect(from_transaction.bank_account).to eq from_bank_account
+      expect(from_transaction.amount_cents).to eq(-11_000)
+
+      expect(json).to include(
+        'id'     => to_transaction.id,
+        'amount' => to_transaction.amount.as_json,
+      )
+      expect(json['bank_account']).to include('id' => to_bank_account.id)
     end
 
     context 'with wrong params' do
-      let(:params) {
+      let(:params) do
         {
           transfer: {
             amount:          '0',
             bank_account_id: nil,
-            reference_id:    nil
-          }
+            reference_id:    nil,
+          },
         }
-      }
+      end
 
       it 'returns error' do
         expect(response).to_not be_success
 
-        expect(json).to include "amount" => ["must be other than 0"]
-        expect(json).to include "bank_account_id" => ["can't be blank"]
-        expect(json).to include "reference_id" => ["can't be blank", "Can't transfer to same account"]
+        expect(json).to include 'amount' => ['must be other than 0']
+        expect(json).to include 'bank_account_id' => ['can\'t be blank']
+        expect(json).to include 'reference_id' => ['can\'t be blank', 'Can\'t transfer to same account']
       end
     end
   end

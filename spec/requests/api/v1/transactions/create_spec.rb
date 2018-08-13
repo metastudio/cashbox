@@ -12,7 +12,7 @@ describe 'POST /api/organizations/#/transactions' do
 
   let!(:user) { create :user }
   let!(:organization) { create :organization, with_user: user }
-  let(:params) {
+  let(:params) do
     {
       transaction: {
         amount:          amount,
@@ -21,10 +21,10 @@ describe 'POST /api/organizations/#/transactions' do
         comment:         'Test Comment',
         comission:       5,
         customer_id:     customer.id,
-        date:            Time.current
-      }
+        date:            Time.current,
+      },
     }
-  }
+  end
 
   context 'unauthenticated' do
     it { post(path) && expect(response).to(be_unauthorized) }
@@ -36,59 +36,59 @@ describe 'POST /api/organizations/#/transactions' do
     it 'returns created transaction' do
       expect(response).to be_success
 
+      transaction = Transaction.unscoped.last
+      expect(transaction.bank_account_id).to eq bank_account.id
+      expect(transaction.amount).to          eq Money.from_amount(21_095.11, bank_account.currency)
+      expect(transaction.created_by).to      eq user
+
       expect(json).to include(
-        'id'        => Transaction.last.id,
-        'amount'    => Transaction.last.amount.as_json,
+        'id'        => transaction.id,
+        'amount'    => transaction.amount.as_json,
         'comment'   => "Test Comment\nComission: 5₽",
         'comission' => '5'
       )
-
       expect(json['category']).to     include('id' => category.id)
       expect(json['bank_account']).to include('id' => bank_account.id)
       expect(json['customer']).to     include('id' => customer.id)
-
-      expect(organization.transactions.last.id).to eq Transaction.last.id
-      expect(organization.transactions.last.amount).to eq Money.from_amount(21095.11, bank_account.currency)
-      expect(organization.transactions.last.created_by).to eq user
     end
 
     context 'with wrong params' do
-      let(:params) {
+      let(:params) do
         {
           transaction: {
             amount:          '0',
             bank_account_id: nil,
-            category_id:     nil
-          }
+            category_id:     nil,
+          },
         }
-      }
+      end
 
       it 'returns error' do
         expect(response).to_not be_success
 
-        expect(json).to include "amount" => ["must be other than 0"]
-        expect(json).to include "category" => ["can't be blank"]
-        expect(json).to include "bank_account" => ["can't be blank"]
+        expect(json).to include 'amount' => ['must be other than 0']
+        expect(json).to include 'category' => ['can\'t be blank']
+        expect(json).to include 'bank_account' => ['can\'t be blank']
       end
     end
 
     context 'with wrong params' do
-      let(:params) {
+      let(:params) do
         {
           transaction: {
             amount:          '23.23',
             bank_account_id: nil,
-            category_id:     nil
+            category_id:     nil,
           }
         }
-      }
+      end
 
       it 'returns error' do
         expect(response).to_not be_success
 
-        expect(json).to_not include "amount"
-        expect(json).to include "category" => ["can't be blank"]
-        expect(json).to include "bank_account" => ["can't be blank"]
+        expect(json).to_not include 'amount'
+        expect(json).to include 'category' => ['can\'t be blank']
+        expect(json).to include 'bank_account' => ['can\'t be blank']
       end
     end
   end
