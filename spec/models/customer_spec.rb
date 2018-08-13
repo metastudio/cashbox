@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: customers
@@ -17,15 +19,15 @@ describe Customer do
   context 'association' do
     it { expect(subject).to belong_to(:organization) }
     it { expect(subject).to have_many(:transactions).dependent(:nullify) }
-    it { expect(subject).to have_many(:invoices) }
-    it { expect(subject).to have_many(:invoice_items).dependent(:nullify) }
+    it { expect(subject).to have_many(:invoices).dependent(:restrict_with_error) }
+    it { expect(subject).to have_many(:invoice_items).dependent(:restrict_with_error) }
   end
 
   context 'validations' do
     subject { create :customer }
     it { expect(subject).to validate_presence_of(:organization) }
     it { expect(subject).to validate_presence_of(:name) }
-    it { expect(subject).to validate_uniqueness_of(:name).scoped_to(:organization_id, :deleted_at)}
+    it { expect(subject).to validate_uniqueness_of(:name).scoped_to(:organization_id, :deleted_at) }
   end
 
   context 'when restoring' do
@@ -39,8 +41,8 @@ describe Customer do
   end
 
   context 'after destroy' do
-    let(:org)       { create :organization }
-    let!(:customer)  { create :customer, organization: org, name: 'Customer' }
+    let(:org)          { create :organization }
+    let!(:customer)    { create :customer, organization: org, name: 'Customer' }
     let!(:transaction) { create :transaction, :income, customer: customer, organization: org }
 
     subject { transaction.reload }
@@ -59,7 +61,7 @@ describe Customer do
       it 'should return names of customers insensitive with downcase' do
         c1 = create :customer, name: 'Bill'
         c2 = create :customer, name: 'bob'
-        c3 = create :customer, name: 'John'
+        c3 = create :customer, name: 'John' # rubocop:disable Lint/UselessAssignment better readability
         expect(Customer.with_name('b')).to match_array [c1, c2]
       end
 
