@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: customers
@@ -16,14 +18,14 @@ class Customer < ApplicationRecord
 
   belongs_to :organization, inverse_of: :customers
   has_many :transactions, inverse_of: :customer, dependent: :nullify
-  has_many :invoices, inverse_of: :customer
-  has_many :invoice_items, dependent: :nullify
+  has_many :invoices, inverse_of: :customer, dependent: :restrict_with_error
+  has_many :invoice_items, dependent: :restrict_with_error
 
   validates :name, presence: true
   validates :organization, presence: true
-  validates :name, uniqueness: { scope: [:organization_id, :deleted_at] }
+  validates :name, uniqueness: { scope: %i[organization_id deleted_at] }
 
-  scope :ordered, -> { order('created_at DESC') }
+  scope :ordered, -> { order(:name) }
   scope :with_name, ->(name) { where('name ilike ?', "%#{name}%") }
 
   # gem 'paranoia' doesn't run validation callbacks on restore
@@ -37,6 +39,6 @@ class Customer < ApplicationRecord
 
   def run_validations
     self.deleted_at = nil
-    self.validate!
+    validate!
   end
 end
