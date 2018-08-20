@@ -1,11 +1,26 @@
 # frozen_string_literal: true
 
 module JSONMatcherHelpers
+  def json_field(field)
+    field.is_a?(Hash) ? field.first.first : field
+  end
+
+  def obj_field(field)
+    field.is_a?(Hash) ? field.first.last : field
+  end
+
+  def json_value(json, field)
+    value = json.send(json_field(field))
+    value.is_a?(RecursiveOpenStruct) ? value.to_h : value
+  end
+
+  def obj_value(obj, field)
+    obj.send(obj_field(field)).as_json
+  end
+
   def match_all_fields?(object, json, fields)
     fields.map do |f|
-      json_value = json.send(f)
-      json_value = json_value.to_h if json_value.is_a?(RecursiveOpenStruct)
-      json_value == object.send(f).as_json
+      json_value(json, f) == obj_value(object, f)
     end.all?
   end
 
@@ -18,7 +33,7 @@ module JSONMatcherHelpers
   end
 
   def message(json, object, field)
-    %(expected field "#{field}" to be #{object.send(field).as_json.inspect} but is #{json.send(field).inspect}) if json.send(field) != object.send(field).as_json
+    %(expected field "#{json_field(field)}" to be #{obj_value(object, field).inspect} but is #{json_value(json, field).inspect}) if json_value(json, field) != obj_value(object, field)
   end
 end
 
@@ -62,7 +77,18 @@ RSpec::Matchers.define :be_short_invoice_json do |p|
   include JSONMatcherHelpers
 
   def fields
-    %i[id starts_at ends_at amount sent_at paid_at number customer_name].freeze
+    [
+      :id,
+      :starts_at,
+      :ends_at,
+      :amount,
+      :sent_at,
+      :paid_at,
+      :number,
+      :customer_name,
+      { is_completed: :completed? },
+      { is_overdue: :overdue? },
+    ].freeze
   end
 
   match{ |j| match_all_fields?(p, j, fields) }

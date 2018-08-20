@@ -11,3 +11,6 @@ json.extract!(
   :number,
   :customer_name,
 )
+
+json.is_completed invoice.completed?
+json.is_overdue   invoice.overdue?

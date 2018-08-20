@@ -23,6 +23,8 @@ class Invoice < ApplicationRecord
   include Period
   customer_concern_callbacks
 
+  OVERDUE_DAYS = 15
+
   belongs_to :organization, inverse_of: :invoices
   belongs_to :customer, inverse_of: :invoices
   belongs_to :bank_account, optional: true, inverse_of: :invoices
@@ -62,6 +64,10 @@ class Invoice < ApplicationRecord
 
   def completed?
     !!paid_at
+  end
+
+  def overdue?
+    Date.current - ends_at.to_date > OVERDUE_DAYS
   end
 
   def pdf_filename
