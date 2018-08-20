@@ -12,7 +12,7 @@ module Api::V1
         param :customer_id, Integer, 'Customer ID'
         param :invoice_id, Integer, 'Invoice ID'
         param :comment, String, 'Comment'
-        param :date, DateTime, 'DateTime of creation', required: true
+        param :date, Date, 'Date of creation', required: true
         param :reference_id, Integer, 'Reference bank account ID'
         param :comission, Integer, 'Comission'
         param :transfer_out_id, Integer, 'Transfer out ID'
@@ -27,7 +27,7 @@ module Api::V1
         param :exchange_rate, Float, 'Exchange Rate'
         param :bank_account_id, Integer, 'Bank Account ID', required: true
         param :comment, String, 'Comment'
-        param :date, DateTime, 'DateTime of creation', required: true
+        param :date, Date, 'Date of creation', required: true
         param :reference_id, Integer, 'Reference bank account ID'
         param :comission, Integer, 'Comission'
       end

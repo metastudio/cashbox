@@ -22,7 +22,7 @@ describe 'PUT /api/organizations/#/transactions/#' do
         comment:         'Updated Test Comment',
         comission:       5,
         customer_id:     customer.id,
-        date:            Time.current
+        date:            Date.current,
       }
     }
   }

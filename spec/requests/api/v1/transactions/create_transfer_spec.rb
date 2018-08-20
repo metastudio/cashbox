@@ -23,7 +23,7 @@ describe 'POST /api/organizations/#/transactions/transfer' do
         reference_id:    to_bank_account.id,
         exchange_rate:   exchange_rate,
         comment:         comment,
-        date:            Time.current,
+        date:            Date.current,
       },
     }
   end
