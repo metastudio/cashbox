@@ -21,12 +21,16 @@
 #
 
 FactoryBot.define do
+  sequence(:transaction_comment) { |i| "Test transaction #{i}" }
+  sequence(:transaction_amount)  { Money.from_amount(rand(30_000.0..50_000.0) / rand(10.0..100.0)) }
+
   factory :transaction do
     organization
     bank_account { |t| create :bank_account, organization: t.organization }
-    category { |t| create(:category, organization: t.bank_account.organization) }
-    amount { rand(30000.0..50000)/rand(10.0..100) }
-    date { Time.current }
+    category     { |t| create(:category, organization: t.bank_account.organization) }
+    amount       { generate :transaction_amount }
+    date         { Time.current }
+    comment      { generate :transaction_comment }
 
     trait :income do
       category { |t| create(:category, :income, organization: t.bank_account.organization) }

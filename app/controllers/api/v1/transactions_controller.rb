@@ -73,7 +73,8 @@ module Api::V1
       if @transfer.save
         @inc_transaction = @transfer.inc_transaction
         @out_transaction = @transfer.out_transaction
-        render json: {}, status: :ok
+        @transaction = @inc_transaction
+        render :show
       else
         render json: @transfer.errors.messages, status: :unprocessable_entity
       end

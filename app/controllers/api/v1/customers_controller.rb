@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Api::V1
   class CustomersController < BaseOrganizationController
-    before_action :set_customer, only: [:show, :update, :destroy]
+    before_action :set_customer, only: %i[show update destroy]
 
     def_param_group :customer do
       param :customer, Hash, required: true, action_aware: true do

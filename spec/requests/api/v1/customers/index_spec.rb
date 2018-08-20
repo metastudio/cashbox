@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'GET /api/organizations/#/customers' do
@@ -18,12 +20,12 @@ describe 'GET /api/organizations/#/customers' do
 
     it 'returns customers' do
       expect(json[0]).to include(
-        'id' => customer2.id,
-        'name' => customer2.name,
+        'id'   => customer1.id,
+        'name' => customer1.name,
       )
       expect(json[1]).to include(
-        'id' => customer1.id,
-        'name' => customer1.name,
+        'id'   => customer2.id,
+        'name' => customer2.name,
       )
     end
   end
@@ -35,12 +37,12 @@ describe 'GET /api/organizations/#/customers' do
       expect(response).to be_success
 
       expect(json[0]).to include(
-        'id' => customer2.id,
-        'name' => customer2.name,
+        'id'   => customer1.id,
+        'name' => customer1.name,
       )
       expect(json[1]).to include(
-        'id' => customer1.id,
-        'name' => customer1.name,
+        'id'   => customer2.id,
+        'name' => customer2.name,
       )
     end
   end

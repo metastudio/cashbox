@@ -4,9 +4,9 @@ module InvoicesHelper
   end
 
   def colorize_invoice(invoice)
-    if invoice.paid_at.present?
+    if invoice.completed?
       'paid'
-    elsif Date.current - invoice.ends_at > 15
+    elsif invoice.overdue?
       'overdue'
     end
   end
