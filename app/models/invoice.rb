@@ -60,6 +60,10 @@ class Invoice < ApplicationRecord
     end
   end
 
+  def completed?
+    !!paid_at
+  end
+
   def pdf_filename
     "#{customer}_#{ends_at.month}_#{ends_at.year}"
   end

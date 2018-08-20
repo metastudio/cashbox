@@ -62,6 +62,37 @@ describe 'POST /api/organizations/#/transactions' do
     expect(json_body.customer).to     be_short_customer_json(customer)
   end
 
+  context 'if invoice_id is provided' do
+    let(:invoice) { create :invoice, organization: organization, customer: customer, amount: amount }
+
+    let(:params) do
+      {
+        transaction: {
+          category_id:     category.id,
+          bank_account_id: bank_account.id,
+          customer_id:     customer.id,
+          invoice_id:      invoice.id,
+          date:            Time.current,
+          amount:          amount.to_s,
+          comment:         comment,
+          comission:       comission.to_s,
+        },
+      }
+    end
+
+    it 'marks invoice as completed' do
+      expect(response).to be_success
+
+      invoice.reload
+      expect(invoice).to be_completed
+
+      transaction = Transaction.unscoped.last
+      expect(transaction.invoice_id).to eq invoice.id
+
+      expect(json_body.invoice_id).to eq transaction.invoice_id
+    end
+  end
+
   context 'with wrong params' do
     let(:params) do
       {
