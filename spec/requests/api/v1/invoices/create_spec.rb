@@ -14,8 +14,8 @@ describe 'POST /api/organizations/#/invoices' do
   let(:number)           { '5' }
   let(:starts_at)        { Date.current }
   let(:ends_at)          { 5.days.since.in_time_zone.to_date }
-  let(:sent_at)          { Time.current }
-  let(:paid_at)          { Time.current }
+  let(:sent_at)          { Date.current }
+  let(:paid_at)          { Date.current }
 
   let(:item1_customer)   { create :customer, organization: organization }
   let(:item1_amount)      { Money.from_amount(11.00) }
@@ -68,10 +68,10 @@ describe 'POST /api/organizations/#/invoices' do
       expect(invoice.customer_id).to        eq invoice_customer.id
       expect(invoice.number).to             eq number
       expect(invoice.amount).to             eq item1_amount + item2_amount
-      expect(invoice.starts_at).to          be_within(1.second).of(starts_at)
-      expect(invoice.ends_at).to            be_within(1.second).of(ends_at)
-      expect(invoice.sent_at).to            be_within(1.second).of(sent_at)
-      expect(invoice.paid_at).to            be_within(1.second).of(paid_at)
+      expect(invoice.starts_at).to          eq starts_at
+      expect(invoice.ends_at).to            eq ends_at
+      expect(invoice.sent_at).to            eq sent_at
+      expect(invoice.paid_at).to            eq paid_at
       expect(invoice.invoice_items.size).to eq 2
 
       item1 = invoice.invoice_items.ordered[0]
@@ -111,7 +111,7 @@ describe 'POST /api/organizations/#/invoices' do
         expect(json).to include 'ends_at' => ["can't be blank", 'is not a date']
         expect(json).to include 'invoice_items' => {
           '0' => { 'amount' => ['is not a number', 'must be greater than 0'] },
-          '1' => { 'description' => ["can't be blank"] }
+          '1' => { 'description' => ['can\'t be blank'] },
         }
       end
     end

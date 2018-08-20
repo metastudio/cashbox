@@ -36,7 +36,7 @@ module StatisticData
 
       total_sum = Money.new(0, default_currency)
       Dictionaries.currencies.each_with_index do |currency|
-        total = Money.new(@organization.transactions.where('DATE(date) < ? AND currency = ?', period.begin, currency).
+        total = Money.new(@organization.transactions.where('date < ? AND currency = ?', period.begin, currency).
           sum(:amount_cents), currency)
         total_sum += currency != default_currency ? total.exchange_to(default_currency) : total
       end
@@ -53,9 +53,9 @@ module StatisticData
       end
     end
 
-    def customers_by_months(type='income')
+    def customers_by_months(type = 'income')
       category_type = type
-      period = 1.year.ago.to_date .. Date.current
+      period = 1.year.ago.to_date..Date.current
       months = period.map { |date| get_month(date.beginning_of_month) }.uniq
       result = {}
       customers = []
@@ -64,7 +64,7 @@ module StatisticData
       end
 
       transacts = @organization.transactions.unscope(:order)
-        .where('DATE(date) BETWEEN ? AND ?', period.begin, period.end)
+        .where('date BETWEEN ? AND ?', period.begin, period.end)
         .includes(:customer)
       if category_type == 'income'
         transacts = transacts.incomes
@@ -107,11 +107,11 @@ module StatisticData
           query = query.select("sum(transactions.amount_cents) as total, bank_accounts.currency as curr, transactions.date as date")
         end
         if selection == :incomes
-          query = query.where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.receipt_id)
+          query = query.where('date BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.receipt_id)
         elsif selection == :expenses
-          query = query.where('DATE(date) BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.transfer_out_id)
+          query = query.where('date BETWEEN ? AND ? AND category_id != ?', period.begin, period.end, Category.transfer_out_id)
         else
-          query = query.where('DATE(date) BETWEEN ? AND ?', period.begin, period.end)
+          query = query.where('date BETWEEN ? AND ?', period.begin, period.end)
         end
         query = query.group('transactions.id, bank_accounts.id').map do |transaction|
             {
@@ -127,12 +127,12 @@ module StatisticData
     def balance_period_blank?(period)
       incomes_count = @organization.transactions
         .incomes
-        .where('DATE(date) BETWEEN ? AND ? AND category_id != ?',
+        .where('date BETWEEN ? AND ? AND category_id != ?',
           period.begin, period.end, Category.receipt_id)
         .count
       expenses_count = @organization.transactions
         .expenses
-        .where('DATE(date) BETWEEN ? AND ? AND category_id != ?',
+        .where('date BETWEEN ? AND ? AND category_id != ?',
           period.begin, period.end, Category.transfer_out_id)
         .count
       (incomes_count + expenses_count) == 0

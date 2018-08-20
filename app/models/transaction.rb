@@ -14,7 +14,7 @@
 #  transaction_type :string(255)
 #  deleted_at       :datetime
 #  customer_id      :integer
-#  date             :datetime         not null
+#  date             :date             not null
 #  transfer_out_id  :integer
 #  invoice_id       :integer
 #  created_by_id    :integer
@@ -263,7 +263,7 @@ class Transaction < ApplicationRecord
   end
 
   def set_date
-    self.date = Time.current
+    self.date = Date.current
   end
 
   def check_comission
