@@ -296,6 +296,7 @@ class Transaction < ApplicationRecord
 
   def update_invoice_paid_at
     organization.invoices.find_by(id: invoice_id).try(:update, { paid_at: date })
+    invoice.reload
   end
 
   def amount_balance
