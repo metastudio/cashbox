@@ -11,13 +11,15 @@ describe 'GET /api/organizations/#/transactions/#' do
 
   let(:amount) { Money.from_amount(100, bank_account.currency) }
 
+  let(:category)     { create :category, :income, organization: organization }
   let(:bank_account) { create :bank_account, organization: organization }
-  let(:customer)     { create :customer,     organization: organization }
-  let(:invoice)      { create :invoice,      organization: organization, customer: customer, amount: amount }
+  let(:customer)     { create :customer, organization: organization }
+  let(:invoice)      { create :invoice, organization: organization, customer: customer, amount: amount }
 
   let!(:transaction) do
     create(
       :transaction, :income,
+      category:     category,
       bank_account: bank_account,
       customer:     customer,
       invoice:      invoice,
@@ -32,21 +34,21 @@ describe 'GET /api/organizations/#/transactions/#' do
   it 'returns transaction' do
     expect(response).to be_success
 
-    expect(json).to include(
-      'id'              => transaction.id,
-      'amount'          => transaction.amount.as_json,
-      'comment'         => transaction.comment,
-      'is_viewed'       => true,
-      'category_id'     => transaction.category.id,
-      'bank_account_id' => bank_account.id,
-      'customer_id'     => customer.id,
-      'invoice_id'      => invoice.id,
-    )
+    invoice.reload
 
-    expect(json['category']).to     include('id' => transaction.category.id)
-    expect(json['bank_account']).to include('id' => bank_account.id)
-    expect(json['customer']).to     include('id' => customer.id)
-    expect(json['invoice']).to      include('id' => invoice.id)
+    expect(json_body.id).to              eq transaction.id
+    expect(json_body.amount.to_h).to     eq transaction.amount.as_json
+    expect(json_body.comment).to         eq transaction.comment
+    expect(json_body.is_viewed).to       eq true
+    expect(json_body.category_id).to     eq category.id
+    expect(json_body.bank_account_id).to eq bank_account.id
+    expect(json_body.customer_id).to     eq customer.id
+    expect(json_body.invoice_id).to      eq invoice.id
+
+    expect(json_body.category).to     be_short_category_json(category)
+    expect(json_body.bank_account).to be_short_bank_account_json(bank_account)
+    expect(json_body.customer).to     be_short_customer_json(customer)
+    expect(json_body.invoice).to      be_short_invoice_json(invoice)
   end
 
   context 'unauthenticated' do
