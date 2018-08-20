@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TimeRange
   def self.format(time, period)
     case period
@@ -26,7 +28,8 @@ module TimeRange
   end
 
   private
-    def self.month_day(time)
-      time.strftime('%b ') + time.day.ordinalize
-    end
+
+  def self.month_day(time)
+    time.strftime('%b ') + time.day.ordinalize
+  end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LayoutHelper
   def active_org(org)
     (org.id == current_organization.id ? 'active' : '')
@@ -18,12 +20,16 @@ module LayoutHelper
   end
 
   def show_tooltip_with_text(text)
-    content_tag(:span, '', title: text, class: 'glyphicon glyphicon-question-sign exchange-helper',
-      data: { toggle: 'tooltip', placement: 'top' } )
+    content_tag(
+      :span, '',
+      title: text,
+      class: 'glyphicon glyphicon-question-sign exchange-helper',
+      data:  { toggle: 'tooltip', placement: 'top' }
+    )
   end
 
   def submit_title
-    if  params['action'] == 'new'
+    if params['action'] == 'new'
       'Create'
     else
       'Update'
@@ -31,11 +37,12 @@ module LayoutHelper
   end
 
   def invoices_debt(debtor)
-    if debtor.is_a? Customer
-      str = h "#{debtor.name}:"
-    else
-      str = "All customers:"
-    end
+    str =
+      if debtor.is_a?(Customer)
+        h("#{debtor.name}:")
+      else
+        'All customers:'
+      end
     cb = Money.default_bank
     def_curr = current_organization.default_currency
     debtor.invoices.unpaid.group(:currency).sum(:amount_cents).each do |currency, amount_cents|
@@ -47,19 +54,19 @@ module LayoutHelper
         str += " #{m.format} (#{m.exchange_to(def_curr).format} "
         str += show_tooltip_with_text("#{currency}/#{def_curr}, \
           rate: #{cb.get_rate(currency, def_curr).round(4)}, by #{l cb.rates_updated_at}")
-        str += ");"
+        str += ');'
       end
     end
 
-    str.html_safe
+    str.html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def total_invoices_debt
-    str = "<strong>Total: "
+    str = '<strong>Total: '
     total = current_organization.total_invoice_debt
-    str += "#{total}"
-    str += "</strong>"
-    str.html_safe
+    str += total.to_s
+    str += '</strong>'
+    str.html_safe # rubocop:disable Rails/OutputSafety
   end
 
   def transaction_type_id(transaction)
