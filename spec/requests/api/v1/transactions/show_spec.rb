@@ -48,7 +48,6 @@ describe 'GET /api/organizations/#/transactions/#' do
     expect(json_body.category).to     be_short_category_json(category)
     expect(json_body.bank_account).to be_short_bank_account_json(bank_account)
     expect(json_body.customer).to     be_short_customer_json(customer)
-    expect(json_body.invoice).to      be_short_invoice_json(invoice)
   end
 
   context 'unauthenticated' do

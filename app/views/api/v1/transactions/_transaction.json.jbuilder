@@ -22,10 +22,6 @@ if transaction.customer.present?
   json.customer transaction.customer, partial: 'api/v1/customers/short_customer', as: :customer
 end
 
-if transaction.invoice.present?
-  json.invoice transaction.invoice, partial: 'api/v1/invoices/short_invoice', as: :invoice
-end
-
 if transaction.transfer_out.present?
   json.transfer_out transaction.transfer_out, partial: 'transfer_out', as: :transfer_out
 end
