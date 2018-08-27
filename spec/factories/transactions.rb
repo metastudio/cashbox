@@ -29,7 +29,7 @@ FactoryBot.define do
     bank_account { |t| create :bank_account, organization: t.organization }
     category     { |t| create(:category, organization: t.bank_account.organization) }
     amount       { generate :transaction_amount }
-    date         { Time.current }
+    date         { Date.current }
     comment      { generate :transaction_comment }
 
     trait :income do

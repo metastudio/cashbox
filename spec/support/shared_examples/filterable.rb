@@ -1,4 +1,6 @@
-shared_examples_for "filterable object" do
+# frozen_string_literal: true
+
+shared_examples_for 'filterable object' do
   def to_css_id(item)
     "#transaction_#{item.id}"
   end
@@ -15,14 +17,15 @@ shared_examples_for "filterable object" do
     expect(page).to have_css(css_usd, text: money_with_symbol(usd))
   end
 
-  it "shows correct items" do
+  it 'shows correct items' do
     correct_items.each do |correct_item|
       expect(page).to have_css(to_css_id(correct_item))
     end
   end
 
-  it "shows total amount for correct_items" do
-    rub, usd = Money.new(0, "RUB"), Money.new(0, "USD")
+  it 'shows total amount for correct_items' do
+    rub = Money.new(0, 'RUB')
+    usd = Money.new(0, 'USD')
     correct_items.each do |correct_item|
       rub += correct_item.amount if correct_item.currency == 'RUB'
       usd += correct_item.amount if correct_item.currency == 'USD'
@@ -31,8 +34,9 @@ shared_examples_for "filterable object" do
     expect_currencies(rub, usd)
   end
 
-  it "shows total income for correct_items" do
-    rub, usd = Money.new(0, "RUB"), Money.new(0, "USD")
+  it 'shows total income for correct_items' do
+    rub = Money.new(0, 'RUB')
+    usd = Money.new(0, 'USD')
     correct_items.each do |correct_item|
       rub += correct_item.amount if correct_item.currency == 'RUB' && correct_item.income?
       usd += correct_item.amount if correct_item.currency == 'USD' && correct_item.income?
@@ -41,8 +45,9 @@ shared_examples_for "filterable object" do
     expect_currencies(rub, usd)
   end
 
-  it "shows total expense for correct_items" do
-    rub, usd = Money.new(0, "RUB"), Money.new(0, "USD")
+  it 'shows total expense for correct_items' do
+    rub = Money.new(0, 'RUB')
+    usd = Money.new(0, 'USD')
     correct_items.each do |correct_item|
       rub += correct_item.amount if correct_item.currency == 'RUB' && correct_item.expense?
       usd += correct_item.amount if correct_item.currency == 'USD' && correct_item.expense?
@@ -57,5 +62,5 @@ shared_examples_for "filterable object" do
     end
   end
 
-  it_behaves_like "has flow"
+  it_behaves_like 'has flow'
 end
