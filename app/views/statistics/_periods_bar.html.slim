@@ -36,30 +36,38 @@
     .panel.with-nav-tabs
       .panel-heading
         ul.nav.nav-tabs#periods_bar
-          li class="#{(params[:customers_period].present? && params[:customers_period] != 'current-month') ? '' : 'active'}"
+          li class=statistics_period_tab_class(params, 'current-month')
             = link_to 'Current month', '#current-month', data: { toggle: 'tab', period: 'current-month' }
-          li class="#{(params[:customers_period].present? && params[:customers_period] == 'prev-month') ? 'active' : ''}"
-            = link_to 'Previous month', '#previous-month', data: { toggle: 'tab', period: 'prev-month' }
-          li class="#{(params[:customers_period].present? && params[:customers_period] == 'last-3-months') ? 'active' : ''}"
+          li class=statistics_period_tab_class(params, 'last-month')
+            = link_to 'Last month', '#last-month', data: { toggle: 'tab', period: 'last-month' }
+          li class=statistics_period_tab_class(params, 'last-3-months')
             = link_to 'Last 3 month', '#last-3-months', data: { toggle: 'tab', period: 'last-3-months' }
-          li class="#{(params[:customers_period].present? && params[:customers_period] == 'quarter') ? 'active' : ''}"
-            = link_to 'Current quarter', '#current-quarter', data: { toggle: 'tab', period: 'quarter' }
-          li class="#{(params[:customers_period].present? && params[:customers_period] == 'this-year') ? 'active' : ''}"
-            = link_to 'This year', '#this-year', data: { toggle: 'tab', period: 'this-year' }
-          li class="#{(params[:customers_period].present? && params[:customers_period] == 'all-time') ? 'active' : ''}"
+          li class=statistics_period_tab_class(params, 'current-quarter')
+            = link_to 'Current quarter', '#current-quarter', data: { toggle: 'tab', period: 'current-quarter' }
+          li class=statistics_period_tab_class(params, 'last-quarter')
+            = link_to 'Last quarter', '#last-quarter', data: { toggle: 'tab', period: 'last-quarter' }
+          li class=statistics_period_tab_class(params, 'current-year')
+            = link_to 'Current year', '#current-year', data: { toggle: 'tab', period: 'current-year' }
+          li class=statistics_period_tab_class(params, 'last-year')
+            = link_to 'Last year', '#last-year', data: { toggle: 'tab', period: 'last-year' }
+          li class=statistics_period_tab_class(params, 'all-time')
             = link_to 'All time', '#all-time', data: { toggle: 'tab', period: 'all-time' }
       .panel-body
         .tab-content
           = params[:customers_period]
-          .tab-pane#current-month class="#{(params[:customers_period].present? && params[:customers_period] != 'current-month') ? '' : 'active'}"
+          .tab-pane#current-month class=statistics_period_tab_class(params, 'current-month')
             = render 'pie_charts', period: 'current-month'
-          .tab-pane#previous-month class="#{(params[:customers_period].present? && params[:customers_period] == 'prev-month') ? 'active' : ''}"
-            = render 'pie_charts', period: 'prev-month'
-          .tab-pane#last-3-months class="#{(params[:customers_period].present? && params[:customers_period] == 'last-3-months') ? 'active' : ''}"
+          .tab-pane#last-month class=statistics_period_tab_class(params, 'last-month')
+            = render 'pie_charts', period: 'last-month'
+          .tab-pane#last-3-months class=statistics_period_tab_class(params, 'last-3-months')
             = render 'pie_charts', period: 'last-3-months'
-          .tab-pane#current-quarter class="#{(params[:customers_period].present? && params[:customers_period] == 'quarter') ? 'active' : ''}"
-            = render 'pie_charts', period: 'quarter'
-          .tab-pane#this-year class="#{(params[:customers_period].present? && params[:customers_period] == 'this-year') ? 'active' : ''}"
-            = render 'pie_charts', period: 'this-year'
-          .tab-pane#all-time class="#{(params[:customers_period].present? && params[:customers_period] == 'all-time') ? 'active' : ''}"
+          .tab-pane#current-quarter class=statistics_period_tab_class(params, 'current-quarter')
+            = render 'pie_charts', period: 'current-quarter'
+          .tab-pane#last-quarter class=statistics_period_tab_class(params, 'last-quarter')
+            = render 'pie_charts', period: 'last-quarter'
+          .tab-pane#current-year class=statistics_period_tab_class(params, 'current-year')
+            = render 'pie_charts', period: 'current-year'
+          .tab-pane#last-year class=statistics_period_tab_class(params, 'last-year')
+            = render 'pie_charts', period: 'last-year'
+          .tab-pane#all-time class=statistics_period_tab_class(params, 'all-time')
             = render 'pie_charts', period: 'all-time'

@@ -114,7 +114,7 @@ describe StatisticData::RoundChart do
           bank_account: account }
       let!(:transaction2){ create :transaction, :expense, category: category,
           bank_account: account2 }
-      subject { StatisticData::RoundChart.new(org).by_categories(:expenses, 'current_month')[:data][1] }
+      subject { StatisticData::RoundChart.new(org).by_categories(:expenses, 'current-month')[:data][1] }
 
       it 'is estimated correctly' do
         expect(subject).to eq [transaction.category.name + ' ' +
@@ -276,7 +276,7 @@ describe StatisticData::RoundChart do
           bank_account: account }
       let!(:transaction2){ create :transaction, :expense, customer: customer,
           bank_account: account2 }
-      subject { StatisticData::RoundChart.new(org).by_customers(:expenses, 'current_month')[:data][1] }
+      subject { StatisticData::RoundChart.new(org).by_customers(:expenses, 'current-month')[:data][1] }
 
       it 'is estimated correctly' do
         expect(subject).to eq [transaction.customer.name + ' ' +

@@ -20,11 +20,8 @@
 #  created_by_id    :integer
 #
 
-require './lib/time_range.rb'
-
 class Transaction < ApplicationRecord
   include MoneyRails::ActionViewExtension
-  include TimeRange
   include Period
   include MainPageRefresher
   TRANSACTION_TYPES = %w[Residue].freeze
@@ -155,12 +152,14 @@ class Transaction < ApplicationRecord
 
     def custom_dates
       [
-        ["Current month: #{TimeRange.format(Time.current, 'current')}", 'current-month'],
-        ["Previous month: #{TimeRange.format(Time.current, 'prev_month')}", 'prev-month'],
-        ["Last 3 months: #{TimeRange.format(Time.current, 'last_3')}", 'last-3-months'],
-        ["Quarter: #{TimeRange.format(Time.current, 'quarter')}", 'quarter'],
-        ["This year: #{TimeRange.format(Time.current, 'year')}", 'this-year'],
-        ['Custom', 'custom'],
+        ["Current month: #{format_period('current-month')}",     'current-month'],
+        ["Last month: #{format_period('last-month')}",           'last-month'],
+        ["Last 3 months: #{format_period('last-3-months')}",     'last-3-months'],
+        ["Current quarter: #{format_period('current-quarter')}", 'current-quarter'],
+        ["Last quarter: #{format_period('last-quarter')}",       'last-quarter'],
+        ["Current year: #{format_period('current-year')}",       'current-year'],
+        ["Last year: #{format_period('last-year')}",             'last-year'],
+        ['Custom',                                               'custom'], # rubocop:disable Style/WordArray
       ]
     end
 
