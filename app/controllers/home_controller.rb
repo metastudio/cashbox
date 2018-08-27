@@ -7,6 +7,7 @@ class HomeController < ApplicationController
     @q = current_organization.transactions.ransack(params[:q])
     @q.sorts = ['date desc', 'created_at desc'] if @q.sorts.blank?
     @transactions = @q.result
+
     @curr_flow = @transactions.flow_ordered(current_organization.default_currency) if params[:q]
     if params[:q] && params[:q][:category_type_eq]
       @transactions = @transactions.page(params[:page]).per(50)

@@ -3,61 +3,68 @@
 require 'rails_helper'
 
 describe Period do
-  subject { Invoice }
-
   before { Timecop.travel(2012, 12, 12) }
+  after  { Timecop.return }
 
-  describe 'period_ends' do
-    it 'for current-month return 1 dec and 31 dec 2012' do
-      period = 'current-month'
-      begining, ending = subject.send(:period_ends, period)
-      expect(begining).to eq(Date.parse('Sat, 01 Dec 2012'))
-      expect(ending).to eq(Date.parse('Mon, 31 Dec 2012'))
+  describe '#period_ends' do
+    subject { Invoice.send(:date_range, period) }
+
+    context 'for current-month' do
+      let(:period) { 'current-month' }
+
+      it { is_expected.to eq Date.parse('2012-12-01')..Date.parse('2012-12-31') }
     end
 
-    it 'for last-3-months return 12 sep and 31 dec 2012' do
-      period = 'last-3-months'
-      begining, ending = subject.send(:period_ends, period)
-      expect(begining).to eq(Date.parse('Wed, 12 Sep 2012'))
-      expect(ending).to eq(Date.parse('Mon, 31 Dec 2012'))
+    context 'for last-month' do
+      let(:period) { 'last-month' }
+
+      it { is_expected.to eq Date.parse('2012-11-01')..Date.parse('2012-11-30') }
     end
 
-    it 'for prev-month return 1 nov and 30 nov 2012' do
-      period = 'prev-month'
-      begining, ending = subject.send(:period_ends, period)
-      expect(begining).to eq(Date.parse('Thu, 01 Nov 2012'))
-      expect(ending).to eq(Date.parse('Fri, 30 Nov 2012'))
+    context 'for last-3-months' do
+      let(:period) { 'last-3-months' }
+
+      it { is_expected.to eq Date.parse('2012-09-12')..Date.parse('2012-12-12') }
     end
 
-    it 'for this-year return 1 jan and 31 dec 2012' do
-      period = 'this-year'
-      begining, ending = subject.send(:period_ends, period)
-      expect(begining).to eq(Date.parse('Sun, 01 Jan 2012'))
-      expect(ending).to eq(Date.parse('Mon, 31 Dec 2012'))
+    context 'for current-quarter' do
+      let(:period) { 'current-quarter' }
+
+      it { is_expected.to eq Date.parse('2012-10-01')..Date.parse('2012-12-31') }
     end
 
-    it 'for quarter return 1 oct and 31 dec 2012' do
-      period = 'quarter'
-      begining, ending = subject.send(:period_ends, period)
-      expect(begining).to eq(Date.parse('Mon, 01 Oct 2012'))
-      expect(ending).to eq(Date.parse('Mon, 31 Dec 2012'))
+    context 'for last-quarter' do
+      let(:period) { 'last-quarter' }
+
+      it { is_expected.to eq Date.parse('2012-07-01')..Date.parse('2012-09-30') }
+    end
+
+    context 'for current-year' do
+      let(:period) { 'current-year' }
+
+      it { is_expected.to eq Date.parse('2012-01-01')..Date.parse('2012-12-31') }
+    end
+
+    context 'for last-year' do
+      let(:period) { 'last-year' }
+
+      it { is_expected.to eq Date.parse('2011-01-01')..Date.parse('2011-12-31') }
     end
   end
 
-  describe 'period' do
+  describe '#period' do
+    subject { organization.invoices.period(period) }
+
     let(:organization) { create :organization }
-    let!(:invoice) { create :invoice, ends_at: Date.new(2012, 12, 1), organization: organization }
+
+    let!(:invoice)         { create :invoice, ends_at: Date.new(2012, 12, 1), organization: organization }
     let!(:wizened_invoice) { create :invoice, ends_at: Date.new(2012, 7, 12), organization: organization }
-    let!(:transaction) { create :transaction, date: Date.new(2012, 12, 1), organization: organization }
-    let(:period) { 'quarter' }
 
-    it 'invoices period have invoice and don\'t have wizened_invoice' do
-      expect(organization.invoices.period(period)).to include(invoice)
-      expect(organization.invoices.period(period)).to_not include(wizened_invoice)
-    end
+    let(:period) { 'current-quarter' }
 
-    it 'transactions period have transaction' do
-      expect(organization.transactions.period(period)).to include(transaction)
+    it 'return data only for requested period' do
+      is_expected.to include(invoice)
+      is_expected.not_to include(wizened_invoice)
     end
   end
 end

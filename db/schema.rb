@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180531072229) do
+ActiveRecord::Schema.define(version: 20180820115240) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,8 +96,8 @@ ActiveRecord::Schema.define(version: 20180531072229) do
     t.date     "ends_at",                         null: false
     t.string   "currency",        default: "USD", null: false
     t.bigint   "amount_cents",    default: 0,     null: false
-    t.datetime "sent_at"
-    t.datetime "paid_at"
+    t.date     "sent_at"
+    t.date     "paid_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "number"
@@ -155,7 +155,7 @@ ActiveRecord::Schema.define(version: 20180531072229) do
     t.string   "transaction_type", limit: 255
     t.datetime "deleted_at"
     t.integer  "customer_id"
-    t.datetime "date",                                     null: false
+    t.date     "date",                                     null: false
     t.integer  "transfer_out_id"
     t.integer  "invoice_id"
     t.integer  "created_by_id"

@@ -24,7 +24,7 @@ describe 'POST /api/organizations/#/transactions' do
         category_id:     category.id,
         bank_account_id: bank_account.id,
         customer_id:     customer.id,
-        date:            Time.current,
+        date:            Date.current,
         amount:          amount.to_s,
         comment:         comment,
         comission:       comission.to_s,
@@ -60,6 +60,7 @@ describe 'POST /api/organizations/#/transactions' do
     expect(json_body.category).to     be_short_category_json(category)
     expect(json_body.bank_account).to be_short_bank_account_json(bank_account)
     expect(json_body.customer).to     be_short_customer_json(customer)
+    expect(json_body.invoice).to      eq nil
   end
 
   context 'if invoice_id is provided' do
@@ -72,7 +73,7 @@ describe 'POST /api/organizations/#/transactions' do
           bank_account_id: bank_account.id,
           customer_id:     customer.id,
           invoice_id:      invoice.id,
-          date:            Time.current,
+          date:            Date.current,
           amount:          amount.to_s,
           comment:         comment,
           comission:       comission.to_s,
@@ -90,6 +91,7 @@ describe 'POST /api/organizations/#/transactions' do
       expect(transaction.invoice_id).to eq invoice.id
 
       expect(json_body.invoice_id).to eq transaction.invoice_id
+      expect(json_body.invoice).to    be_short_invoice_json(invoice)
     end
   end
 

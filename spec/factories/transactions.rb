@@ -14,7 +14,7 @@
 #  transaction_type :string(255)
 #  deleted_at       :datetime
 #  customer_id      :integer
-#  date             :datetime         not null
+#  date             :date             not null
 #  transfer_out_id  :integer
 #  invoice_id       :integer
 #  created_by_id    :integer
@@ -29,7 +29,7 @@ FactoryBot.define do
     bank_account { |t| create :bank_account, organization: t.organization }
     category     { |t| create(:category, organization: t.bank_account.organization) }
     amount       { generate :transaction_amount }
-    date         { Time.current }
+    date         { Date.current }
     comment      { generate :transaction_comment }
 
     trait :income do

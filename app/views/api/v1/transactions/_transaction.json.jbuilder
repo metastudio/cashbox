@@ -26,4 +26,8 @@ if transaction.transfer_out.present?
   json.transfer_out transaction.transfer_out, partial: 'transfer_out', as: :transfer_out
 end
 
+if transaction.invoice.present?
+  json.invoice transaction.invoice, partial: 'api/v1/invoices/short_invoice', as: :invoice
+end
+
 json.is_viewed transaction.viewed_for_member?(current_member)
