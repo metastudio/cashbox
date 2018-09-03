@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+transaction = transaction.transfer_in if transaction.transfer_out? && transaction.transfer_in
+
 json.extract!(
   transaction,
   :id,

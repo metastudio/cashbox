@@ -28,6 +28,7 @@ describe 'GET /api/organizations/#/transactions' do
     expect(response).to be_success
 
     expect(json_body.transactions.size).to eq 3
+    expect(json_body.transactions.map(&:id)).to eq [transfer_in.id, transaction.id, seen_transaction.id]
 
     transfer_in_json = json_body.transactions.find{ |j| j.id == transfer_in.id }
     expect(transfer_in_json.id).to           eq transfer_in.id
@@ -61,6 +62,32 @@ describe 'GET /api/organizations/#/transactions' do
     expect(transaction_json.category).to     be_short_category_json(seen_transaction.category)
     expect(transaction_json.bank_account).to be_short_bank_account_json(seen_transaction.bank_account)
     expect(transaction_json.customer).to     be_short_customer_json(seen_transaction.customer)
+  end
+
+  context 'if filtered by bank account' do
+    let(:path) { api_organization_transactions_path(organization, q: { bank_account_id_eq: bank_account.id }) }
+
+    it 'includes out transaction for this bank account' do
+      expect(response).to be_success
+
+      expect(json_body.transactions.size).to eq 3
+      expect(json_body.transactions.map(&:id)).to eq [transfer_in.id, transaction.id, seen_transaction.id]
+
+      transfer_in_json = json_body.transactions.find{ |j| j.id == transfer_in.id }
+      expect(transfer_in_json.id).to           eq transfer_in.id
+      expect(transfer_in_json.amount.to_h).to  eq transfer_in.amount.as_json
+      expect(transfer_in_json.comment).to      eq transfer_in.comment
+      expect(transfer_in_json.is_viewed).to    eq false
+      expect(transfer_in_json.category).to     be_short_category_json(transfer_in.category)
+      expect(transfer_in_json.bank_account).to be_short_bank_account_json(transfer_in.bank_account)
+
+      transfer_out_json = transfer_in_json.transfer_out
+      expect(transfer_out_json.id).to           eq transfer_out.id
+      expect(transfer_out_json.amount.to_h).to  eq transfer_out.amount.as_json
+      expect(transfer_out_json.comment).to      eq transfer_out.comment
+      expect(transfer_out_json.category).to     be_short_category_json(transfer_out.category)
+      expect(transfer_out_json.bank_account).to be_short_bank_account_json(transfer_out.bank_account)
+    end
   end
 
   context 'when not authenticated' do
