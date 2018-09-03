@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe 'GET /api/organizations/#/transactions' do
-  let(:path) { "/api/organizations/#{organization.id}/transactions" }
+  let(:path) { api_organization_transactions_path(organization) }
   let!(:user) { create :user }
   let!(:organization) { create :organization }
   let!(:member) { create :member, user: user, organization: organization, last_visited_at: Time.current }
