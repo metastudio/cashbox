@@ -59,7 +59,7 @@ gem 'nokogiri', '~> 1.8.3'
 gem 'phony_rails'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.5.2'
+  gem 'rspec-rails'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
