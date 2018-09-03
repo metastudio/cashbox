@@ -1,28 +1,30 @@
+# frozen_string_literal: true
+
 class TransactionsController < ApplicationController
   before_action :require_organization
   before_action :redirect_for_not_ready_organization
-  before_action :set_transaction,  only: [:edit, :update, :destroy]
-  before_action :set_invoice, only: [:new]
-  after_action :update_last_viewed_at, only: [:create, :create_transfer]
+  before_action :set_transaction, only: %i[edit update destroy]
+  before_action :set_invoice, only: %i[new]
+  after_action :update_last_viewed_at, only: %i[create create_transfer]
 
   def new
     if params[:copy_transaction_id].present?
       @transaction = current_organization.transactions.find(params[:copy_transaction_id])
+      @transaction = @transaction.dup
+
       if @transaction.transfer?
-        @transaction = @transaction.dup
         @transfer = Transfer.new(
-          amount: @transaction.transfer_out.amount,
+          amount:          @transaction.transfer_out.amount,
           bank_account_id: @transaction.transfer_out.bank_account_id,
-          reference_id: @transaction.bank_account_id,
-          comission: @transaction.transfer_out.comission,
-          comment: @transaction.comment,
-          date: @transaction.date,
-          calculate_sum: @transaction.amount
+          reference_id:    @transaction.bank_account_id,
+          comission:       @transaction.transfer_out.comission,
+          comment:         @transaction.comment,
+          date:            @transaction.date,
+          calculate_sum:   @transaction.amount
         )
       else
-        @transaction = @transaction.dup
         @transaction.amount = @transaction.amount.abs
-        @transaction.date = Date.current
+        @transaction.date   = Date.current
         @transfer = Transfer.new
       end
     else
@@ -61,7 +63,7 @@ class TransactionsController < ApplicationController
   end
 
   def update
-    @success = @transaction.update_attributes(transaction_params)
+    @success = @transaction.update(transaction_params)
   end
 
   def destroy
@@ -74,16 +76,15 @@ class TransactionsController < ApplicationController
     tparams = params[trans]
     trans = @transaction || @transfer
     curr_bank_accounts = current_organization.bank_accounts
-    trans.bank_account_id = curr_bank_accounts.find_by_id(tparams[:bank_account_id]).try(:id)
-    trans.category_id =
-      current_organization.categories.find_by_id(tparams[:category_id]).try(:id) if tparams[:category_id]
-    trans.reference_id =
-      curr_bank_accounts.find_by_id(tparams[:reference_id]).try(:id) if tparams[:reference_id]
-    trans.customer_id =
-      current_organization.customers.find_by_name(tparams[:customer_name]).try(:id) if trans == @transaction
+    trans.bank_account_id = curr_bank_accounts.find_by(id: tparams[:bank_account_id]).try(:id)
+    trans.category_id = current_organization.categories.find_by(id: tparams[:category_id]).try(:id) if tparams[:category_id]
+    trans.reference_id = curr_bank_accounts.find_by(id: tparams[:reference_id]).try(:id) if tparams[:reference_id]
+    trans.customer_id = current_organization.customers.find_by(name: tparams[:customer_name]).try(:id) if trans == @transaction
+
     if trans == @transaction && trans.customer_id.nil? && tparams[:invoice_id].present?
-      trans.customer_id = current_organization.customers.find_by_id(current_organization.invoices.find_by_id(
-        tparams[:invoice_id]).try(:customer_id)).try(:id)
+      trans.customer_id = current_organization.customers.find_by(
+        id: current_organization.invoices.find_by(id: tparams[:invoice_id]).try(:customer_id)
+      ).try(:id)
     end
   end
 
@@ -96,14 +97,17 @@ class TransactionsController < ApplicationController
   end
 
   def transaction_params
-    params.require(:transaction).permit(:amount, :category_id, :bank_account_id,
-      :comment, :comission, :reference_id, :customer_id, :customer_name, :date,
-      :invoice_id, :leave_open, transfer_out_attributes: [:id, :amount,
-       :category_id, :bank_account_id, :comment, :comission, :customer_id, :date])
+    params.require(:transaction).permit(
+      :amount, :category_id, :bank_account_id, :comment, :comission,
+      :reference_id, :customer_id, :customer_name, :date, :invoice_id, :leave_open,
+      transfer_out_attributes: %i[id amount category_id bank_account_id comment comission customer_id date]
+    )
   end
 
   def transfer_params
-    params.require(:transfer).permit(:amount, :bank_account_id, :reference_id,
-     :comment, :comission, :exchange_rate, :date, :calculate_sum, :leave_open)
+    params.require(:transfer).permit(
+      :amount, :bank_account_id, :reference_id,
+      :comment, :comission, :exchange_rate, :date, :calculate_sum, :leave_open,
+    )
   end
 end

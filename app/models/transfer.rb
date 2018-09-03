@@ -1,25 +1,35 @@
+# frozen_string_literal: true
+
 class Transfer
   include ActiveModel::Validations
   include ActiveModel::Validations::Callbacks
   include MoneyRails::ActionViewExtension
   include MainPageRefresher
 
-  attr_accessor :amount_cents, :amount, :comission_cents, :comission, :comment,
-    :bank_account, :bank_account_id, :reference_id, :date,
-    :inc_transaction, :out_transaction, :exchange_rate,
+  attr_reader :amount, :comission, :exchange_rate
+  attr_writer :bank_account
+  attr_accessor :amount_cents, :comission_cents, :comment,
+    :bank_account_id, :reference_id, :date,
+    :inc_transaction, :out_transaction,
     :from_currency, :to_currency, :calculate_sum, :created_by, :leave_open
 
-  validates :amount, presence: true, numericality:
-    { less_than_or_equal_to: Dictionaries.money_max, other_than: 0 }
-  validates :comission, numericality: { greater_than_or_equal_to: 0 },
-    length: { maximum: 10 }, allow_blank: true
-  validates :calculate_sum, numericality: { greater_than_or_equal_to: 0 },
-    length: { maximum: 25 }, allow_blank: true
+  validates :amount,
+    presence:     true,
+    numericality: { less_than_or_equal_to: Dictionaries.money_max, other_than: 0 }
+  validates :comission,
+    numericality: { greater_than_or_equal_to: 0 },
+    length:       { maximum: 10 }, allow_blank: true
+  validates :calculate_sum,
+    numericality: { greater_than_or_equal_to: 0 },
+    length:       { maximum: 25 },
+    allow_blank:  true
   validates :comment, length: { maximum: 255 }
-  validates_presence_of :bank_account_id
+  validates :bank_account_id, presence: true
   validates :reference_id, presence: true
-  validates :exchange_rate, presence: true, numericality: { greater_than: 0,
-    less_than: 10_000 }, if: :currency_mismatch?
+  validates :exchange_rate,
+    presence:     true,
+    numericality: { greater_than: 0, less_than: 10_000 },
+    if:           :currency_mismatch?
   validate :transfer_account
   validate :check_comission, if: :comission
 
@@ -34,20 +44,20 @@ class Transfer
   def save
     if valid?
       @out_transaction = Transaction.new(
-        amount_cents: estimate_amount(out = true),
+        amount_cents:    estimate_amount(true),
         bank_account_id: bank_account_id, comment: form_comment(comment),
-        date: date,
-        category_id: Category.find_or_create_by(
-          Category::CATEGORY_BANK_EXPENSE_PARAMS).id,
-        created_by: created_by)
+        date:            date,
+        category_id:     Category.find_or_create_by(Category::CATEGORY_BANK_EXPENSE_PARAMS).id,
+        created_by:      created_by,
+      )
 
       @inc_transaction = Transaction.new(
-        amount_cents: estimate_amount(out = false),
+        amount_cents: estimate_amount(false),
         bank_account_id: reference_id, comment: form_comment(comment),
         date: date,
-        category_id: Category.find_or_create_by(
-          Category::CATEGORY_BANK_INCOME_PARAMS).id,
-        created_by: created_by)
+        category_id: Category.find_or_create_by(Category::CATEGORY_BANK_INCOME_PARAMS).id,
+        created_by: created_by
+      )
 
       if @out_transaction.invalid?
         parse_errors(@out_transaction)
@@ -61,8 +71,9 @@ class Transfer
         @inc_transaction.save
         NotificationJob.perform_later(
           bank_account.organization.name,
-          "Transfer was created",
-          "Transfer was created in #{bank_account.name} bank account")
+          'Transfer was created',
+          "Transfer was created in #{bank_account.name} bank account"
+        )
         MainPageRefreshJob.perform_later(
           bank_account.organization.name,
           prepare_data(@inc_transaction)
@@ -75,12 +86,11 @@ class Transfer
   end
 
   def save!
-    (raise self.inspect) unless save
+    (raise inspect) unless save
   end
 
   # needed for simple form for non db model
-  def to_key
-  end
+  def to_key; end
 
   def persisted?
     false
@@ -97,18 +107,20 @@ class Transfer
   def amount=(value)
     if value
       @amount_cents = value.to_d * 100
-      @amount = value
+      @amount       = value
     else
-      @amount, @amount_cents = nil, nil
+      @amount_cents = nil
+      @amount       = nil
     end
   end
 
   def comission=(value)
     if value
       @comission_cents = value.to_d * 100
-      @comission = value
+      @comission       = value
     else
-      @comission, @comission_cents = nil, nil
+      @comission_cents = nil
+      @comission       = nil
     end
   end
 
@@ -123,19 +135,19 @@ class Transfer
   private
 
   def check_comission
-    errors.add(:comission, "Can't be more than amount") if self.comission.to_d > self.amount.to_d
-  rescue
+    errors.add(:comission, "Can't be more than amount") if comission.to_d > amount.to_d
+  rescue StandardError
     nil
   end
 
   def transfer_account
-    if bank_account_id == reference_id
-      errors.add(:reference_id, "Can't transfer to same account")
-    end
+    return if bank_account_id != reference_id
+
+    errors.add(:reference_id, "Can't transfer to same account")
   end
 
   def bank_account
-   @bank_account ||= BankAccount.find_by(id: bank_account_id)
+    @bank_account ||= BankAccount.find_by(id: bank_account_id)
   end
 
   def form_comment(comment)
@@ -149,11 +161,12 @@ class Transfer
     if currency_mismatch?
       rate = Money.default_bank.get_rate(from_currency, to_currency)
       Money.default_bank.add_rate(from_currency, to_currency, exchange_rate.to_d)
-      estimated_amount = if out
-        Money.new(estimated_amount, from_currency).cents
-      else
-        Money.new(estimated_amount, from_currency).exchange_to(to_currency).cents
-      end
+      estimated_amount =
+        if out
+          Money.new(estimated_amount, from_currency).cents
+        else
+          Money.new(estimated_amount, from_currency).exchange_to(to_currency).cents
+        end
       Money.default_bank.add_rate(from_currency, to_currency, rate)
     end
     estimated_amount
@@ -161,7 +174,8 @@ class Transfer
 
   def parse_errors(transaction)
     transaction.errors.messages.each do |err_msg|
-      field, msg = 0, 1
+      field = 0
+      msg   = 1
       errors.add(err_msg[field], err_msg[msg].join(', '))
     end
   end
