@@ -63,10 +63,10 @@ class Transaction < ApplicationRecord
   }
   scope :incomes,     ->{ joins(:category).where('categories.type' => Category::CATEGORY_INCOME) }
   scope :expenses,    ->{ joins(:category).where('categories.type' => Category::CATEGORY_EXPENSE) }
-  scope :without_out, ->(bank_accounts){
+  scope :without_out, ->(bank_account_ids){
     where(
       'category_id IS NULL OR category_id != ? OR bank_account_id IN (?)',
-      Category.transfer_out_id, bank_accounts
+      Category.transfer_out_id, bank_account_ids
     )
   }
 

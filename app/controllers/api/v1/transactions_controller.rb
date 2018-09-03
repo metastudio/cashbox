@@ -37,9 +37,12 @@ module Api::V1
     def index
       authorize :transaction
 
-      @q = current_organization.transactions.without_out([]).ransack(params[:q])
+      @q = current_organization.transactions.ransack(params[:q])
       @q.sorts = ['date desc', 'created_at desc'] if @q.sorts.blank?
-      @transactions = @q.result.page(params[:page]).per(30)
+
+      @transactions = @q.result
+      @transactions = @transactions.without_out([*@q.bank_account_id_eq])
+      @transactions = @transactions.page(params[:page]).per(30)
     end
 
     api :GET, '/organizations/:organization_id/transactions/:id', 'Return transaction'

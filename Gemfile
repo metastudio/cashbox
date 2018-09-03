@@ -59,7 +59,7 @@ gem 'nokogiri', '~> 1.8.3'
 gem 'phony_rails'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.5.2'
+  gem 'rspec-rails'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
@@ -76,6 +76,7 @@ group :development do
   gem 'listen', '~> 3.1.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-commands-rspec'
 
   # Deployment
   gem 'capistrano', '~> 3.6.1', require: false
