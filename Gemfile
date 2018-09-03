@@ -55,7 +55,7 @@ gem 'redis', '~> 3' # up to v4 after upgrade rails > v5.0
 gem 'knock', '~> 1.4.2'
 gem 'apipie-rails'
 gem 'rack-cors', require: 'rack/cors'
-gem 'nokogiri', '= 1.8.2'
+gem 'nokogiri', '~> 1.8.3'
 gem 'phony_rails'
 
 group :development, :test do
