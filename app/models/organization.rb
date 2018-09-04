@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: organizations
@@ -10,11 +12,10 @@
 #
 
 class Organization < ApplicationRecord
-
   include DateLogic
 
   has_many :owners,
-    -> { where members: { role: "owner" } }, through: :members, source: :user
+    -> { where members: { role: 'owner' } }, through: :members, source: :user
   has_many :members, inverse_of: :organization, dependent: :destroy
   has_many :categories, dependent: :destroy
   has_many :users, through: :members
@@ -30,6 +31,10 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :categories, reject_if: :all_blank, allow_destroy: true
 
   validates :name, presence: true
+
+  def to_s
+    name.truncate(30)
+  end
 
   def ordered_curr
     currencies = bank_accounts.pluck(:currency).uniq.sort
@@ -47,7 +52,7 @@ class Organization < ApplicationRecord
       end
     end
 
-    bank_rates = Money.default_bank.rates.deep_dup.keep_if do |curr_to_curr, value|
+    Money.default_bank.rates.deep_dup.keep_if do |curr_to_curr, _value|
       org_rates.any? do |org_rate|
         curr_to_curr == org_rate
       end
@@ -57,33 +62,41 @@ class Organization < ApplicationRecord
   def total_balances
     bank = Money.default_bank
     balances = []
-    total_amount = Money.new(0, self.default_currency)
+    total_amount = Money.new(0, default_currency)
     Dictionaries.currencies.each do |currency|
-      total = self.bank_accounts.total_balance(currency)
-      total_amount = total_amount + total.exchange_to(self.default_currency)
-      if currency != self.default_currency
-        balances << { total: total, ex_total: total.exchange_to(self.default_currency), currency: currency,
-          rate: bank.get_rate(total.currency, self.default_currency).round(4), updated_at: bank.rates_updated_at }
-      else
-        balances << { total: total, ex_total: nil, currency: currency, rate: nil, updated_at: nil }
-      end
+      total = bank_accounts.total_balance(currency)
+      total_amount += total.exchange_to(default_currency)
+      balances <<
+        if currency != default_currency
+          {
+            total:      total,
+            ex_total:   total.exchange_to(default_currency),
+            currency:   currency,
+            rate:       bank.get_rate(total.currency, default_currency).round(4),
+            updated_at: bank.rates_updated_at,
+          }
+        else
+          {
+            total:      total,
+            ex_total:   nil,
+            currency:   currency,
+            rate:       nil,
+            updated_at: nil,
+          }
+        end
     end
-    balances.unshift({ total_amount: total_amount, default_currency: self.default_currency })
+    balances.unshift({ total_amount: total_amount, default_currency: default_currency })
   end
 
   def find_customer_name_by_id(customer_id)
-    self.customers.find(customer_id).to_s
-  rescue
+    customers.find(customer_id).to_s
+  rescue StandardError
     ''
   end
 
   def invoice_debtors
-    debtors_ids = self.invoices.unpaid.pluck(:customer_id).uniq
+    debtors_ids = invoices.unpaid.pluck(:customer_id).uniq
     Customer.where(id: debtors_ids)
-  end
-
-  def to_s
-    name.truncate(30)
   end
 
   def total_invoice_debt

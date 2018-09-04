@@ -1,41 +1,37 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'GET /api/organizations/#' do
-  let(:path) { "/api/organizations/#{organization.id}" }
+  let(:path)    { api_organization_path(org) }
+  let(:headers) { auth_header(user) }
 
-  let!(:owner) { create :user }
-  let!(:user) { create :user }
-  let!(:organization) { create :organization, owner: owner, with_user: user }
+  let(:org) { create :organization }
+  let(:user) { create :user, organization: org }
 
-  context 'unauthenticated' do
-    it { get(path) && expect(response).to(be_unauthorized) }
+  before do
+    get path, headers: headers
   end
 
-  context 'authenticated as owner' do
-    before { get path, headers: auth_header(owner) }
+  it 'returns organization' do
+    expect(response).to be_success
 
-    it 'returns organization' do
-      expect(response).to be_success
+    expect(json_body.organization).to be_organization_json(org)
+  end
 
-      expect(json).to include(
-        'id' => organization.id,
-        'name' => organization.name,
-        'default_currency' => organization.default_currency
-      )
+  context 'unauthenticated' do
+    let(:headers) { {} }
+
+    it 'return unauthorized error' do
+      expect(response).to be_unauthorized
     end
   end
 
-  context 'authenticated as user' do
-    before { get path, headers: auth_header(owner) }
+  context 'authenticated as user not associated with organization' do
+    let(:user) { create :user }
 
-    it 'returns organization' do
-      expect(response).to be_success
-
-      expect(json).to include(
-        'id' => organization.id,
-        'name' => organization.name,
-        'default_currency' => organization.default_currency
-      )
+    it 'returns not found error' do
+      expect(response).to be_not_found
     end
   end
 end

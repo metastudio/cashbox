@@ -1,32 +1,51 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'DELETE /api/organizations/#' do
-  let(:path) { "/api/organizations/#{organization.id}" }
+  let(:path)    { api_organization_path(org) }
+  let(:headers) { auth_header(user) }
 
-  let!(:owner) { create :user }
-  let!(:user) { create :user }
-  let!(:organization) { create :organization, owner: owner, with_user: user }
+  let(:org)  { create :organization }
+  let(:user) { create :user, owned_organization: org }
 
-  context 'unauthenticated' do
-    it { delete(path) && expect(response).to(be_unauthorized) }
+  before do
+    delete path, headers: headers
   end
 
-  context 'authenticated as owner' do
-    before { delete path, headers: auth_header(owner) }
+  it 'deletes organization' do
+    expect(response).to be_success
 
-    it 'delete organization' do
-      expect(response).to be_success
-      expect(response.body).to be_empty
+    expect(json_body.organization).to be_organization_json(org)
 
-      expect(Organization.all).to eq []
+    expect(Organization).not_to be_exists(org.id)
+  end
+
+  context 'authenticated as not owner' do
+    let(:user) { create :user, organization: org }
+
+    it 'returns forbidden error' do
+      expect(response).to be_forbidden
+
+      expect(Organization).to be_exists(org.id)
     end
   end
 
-  context 'authenticated as user' do
-    before { delete path, headers: auth_header(user) }
+  context 'unauthenticated' do
+    let(:headers) { {} }
 
-    it 'returns error' do
-      expect(response).to be_forbidden
+    it 'return unauthorized error' do
+      expect(response).to be_unauthorized
+    end
+  end
+
+  context 'authenticated as user not associated with organization' do
+    let(:user) { create :user }
+
+    it 'returns not found error' do
+      expect(response).to be_not_found
+
+      expect(Organization).to be_exists(org.id)
     end
   end
 end
