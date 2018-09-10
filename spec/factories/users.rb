@@ -35,12 +35,16 @@ FactoryBot.define do
     full_name
 
     transient do
-      organization nil
+      organization       nil
+      owned_organization nil
     end
 
     after :create do |u, e|
       [*e.organization].each do |o|
         create :member, organization: o, user: u
+      end
+      [*e.owned_organization].each do |o|
+        create :member, :owner, organization: o, user: u
       end
     end
 

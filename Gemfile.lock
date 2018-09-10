@@ -27,6 +27,11 @@ GEM
     active_link_to (1.0.5)
       actionpack
       addressable
+    active_model_serializers (0.10.7)
+      actionpack (>= 4.1, < 6)
+      activemodel (>= 4.1, < 6)
+      case_transform (>= 0.2)
+      jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
     activejob (5.0.6)
       activesupport (= 5.0.6)
       globalid (>= 0.3.6)
@@ -104,6 +109,8 @@ GEM
     capybara-webkit (1.14.0)
       capybara (>= 2.3.0, < 2.14.0)
       json
+    case_transform (0.2)
+      activesupport
     chronic (0.10.2)
     cocoon (1.2.11)
     coderay (1.1.2)
@@ -173,6 +180,7 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     json (2.1.0)
+    jsonapi-renderer (0.2.0)
     jwt (1.5.6)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
@@ -428,6 +436,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_link_to
+  active_model_serializers (~> 0.10.0)
   acts_as_list
   annotate
   apipie-rails
