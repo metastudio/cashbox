@@ -152,8 +152,13 @@ class Transfer
 
   def form_comment(comment)
     rate = currency_mismatch? ? "\nRate: " + exchange_rate.to_s : ''
-    comment.to_s + (comission == '0.00' ? '' : "\nComission: " +
-      humanized_money_with_symbol(money_comission, symbol_after_without_space: true)) + rate
+
+    comission_str = ''
+    if comission != '0.00'
+      comission_str = "\nComission: " + humanized_money_with_symbol(money_comission, symbol_after_without_space: true)
+    end
+
+    comment.to_s + comission_str + rate
   end
 
   def estimate_amount(out)
