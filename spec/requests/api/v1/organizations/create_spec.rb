@@ -1,38 +1,58 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'POST /api/organizations' do
-  let(:path) { "/api/organizations" }
+  let(:path)    { api_organizations_path }
+  let(:headers) { auth_header(user) }
 
-  let!(:user) { create :user }
+  let(:user) { create :user }
 
-  context 'unauthenticated' do
-    it { post(path) && expect(response).to(be_unauthorized) }
+  let(:name)     { generate :organization_name }
+  let(:currency) { 'USD' }
+
+  let(:params) do
+    {
+      organization: {
+        name:             name,
+        default_currency: currency,
+      },
+    }
   end
 
-  context 'authenticated' do
-    let(:params) {
-        {
-          organization: {
-            name: 'Organization Name',
-            default_currency: 'USD'
-          }
-        }
-      }
+  before do
+    post path, params: params, headers: headers
+  end
 
-    before { post path, params: params, headers: auth_header(user) }
+  it 'returns created organization' do
+    expect(response).to be_success
 
-    it 'returns created organization' do
-      expect(response).to be_success
+    org = Organization.unscoped.last
+    expect(org.name).to             eq name
+    expect(org.default_currency).to eq currency
 
-      expect(json).to include(
-        'id' => Organization.last.id,
-        'name' => 'Organization Name',
-        'default_currency' => 'USD'
-      )
+    user.reload
+    member = user.members.find_by!(organization_id: org.id)
+    expect(member.role).to eq 'owner'
 
-      expect(Member.last.organization_id).to eq Organization.last.id
-      expect(Member.last.user_id).to eq user.id
-      expect(Member.last.role).to eq 'owner'
+    expect(json_body.organization).to be_organization_json(org)
+  end
+
+  context 'with wrong params' do
+    let(:name) { '' }
+
+    it 'returns error' do
+      expect(response).not_to be_success
+
+      expect(json_body.name).to eq ['can\'t be blank']
+    end
+  end
+
+  context 'unauthenticated' do
+    let(:headers) { {} }
+
+    it 'return unauthorized error' do
+      expect(response).to be_unauthorized
     end
   end
 end

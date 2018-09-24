@@ -95,3 +95,15 @@ RSpec::Matchers.define :be_short_invoice_json do |p|
   failure_message{ |j| failure_messsages(p, j, fields) }
   description{ description_for(p, 'short') }
 end
+
+RSpec::Matchers.define :be_organization_json do |o|
+  include JSONMatcherHelpers
+
+  def fields
+    %i[id name default_currency].freeze
+  end
+
+  match{ |j| match_all_fields?(o, j, fields) }
+  failure_message{ |j| failure_messsages(o, j, fields) }
+  description{ description_for(o) }
+end

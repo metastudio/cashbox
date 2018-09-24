@@ -25,6 +25,7 @@ gem 'select2-rails', '~> 3.5.9.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+gem 'active_model_serializers', '~> 0.10.0'
 
 gem 'slim-rails'
 gem 'recursive-open-struct'
@@ -55,11 +56,11 @@ gem 'redis', '~> 3' # up to v4 after upgrade rails > v5.0
 gem 'knock', '~> 1.4.2'
 gem 'apipie-rails'
 gem 'rack-cors', require: 'rack/cors'
-gem 'nokogiri', '= 1.8.2'
+gem 'nokogiri', '~> 1.8.3'
 gem 'phony_rails'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.5.2'
+  gem 'rspec-rails'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
@@ -76,6 +77,7 @@ group :development do
   gem 'listen', '~> 3.1.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-commands-rspec'
 
   # Deployment
   gem 'capistrano', '~> 3.6.1', require: false

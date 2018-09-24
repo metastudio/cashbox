@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: categories
@@ -18,17 +20,17 @@ class Category < ApplicationRecord
   CATEGORY_TRANSFERS = 'Transfers'
   CATEGORY_TRANSFER_INCOME  = 'Transfer'
   CATEGORY_TRANSFER_OUTCOME = 'Transfer out'
-  CATEGORY_TYPES = [CATEGORY_INCOME, CATEGORY_EXPENSE]
+  CATEGORY_TYPES = [CATEGORY_INCOME, CATEGORY_EXPENSE].freeze
   CATEGORY_BANK_INCOME_PARAMS = {
-    type: Category::CATEGORY_INCOME,
-    name: Category::CATEGORY_TRANSFER_INCOME,
-    system: true
-  }
+    type:   Category::CATEGORY_INCOME,
+    name:   Category::CATEGORY_TRANSFER_INCOME,
+    system: true,
+  }.freeze
   CATEGORY_BANK_EXPENSE_PARAMS = {
-    type: Category::CATEGORY_EXPENSE,
-    name: Category::CATEGORY_TRANSFER_OUTCOME,
-    system: true
-  }
+    type:   Category::CATEGORY_EXPENSE,
+    name:   Category::CATEGORY_TRANSFER_OUTCOME,
+    system: true,
+  }.freeze
 
   acts_as_paranoid
 
@@ -39,23 +41,22 @@ class Category < ApplicationRecord
   belongs_to :organization, inverse_of: :categories
   has_many :transactions, inverse_of: :category, dependent: :destroy
 
-  validates :type, presence: true, inclusion: { in: CATEGORY_TYPES, message: "%{value} is not a valid category type" }
+  validates :type, presence: true, inclusion: { in: CATEGORY_TYPES, message: '%{value} is not a valid category type' }
   validates :name, presence: true
   validates :organization_id, presence: true, unless: :system?
 
-  scope :incomes,   -> { where(type: CATEGORY_INCOME)  }
-  scope :expenses,  -> { where(type: CATEGORY_EXPENSE) }
-  scope :receipts,  -> { where(name: CATEGORY_TRANSFER_INCOME) }
-  scope :transfers, -> { where(name: CATEGORY_TRANSFER_OUTCOME) }
-  scope :for_organization, ->(organization) {
-    where("categories.system = ? OR categories.organization_id = ?", true, organization.id) }
+  scope :incomes,   ->{ where(type: CATEGORY_INCOME)  }
+  scope :expenses,  ->{ where(type: CATEGORY_EXPENSE) }
+  scope :receipts,  ->{ where(name: CATEGORY_TRANSFER_INCOME) }
+  scope :transfers, ->{ where(name: CATEGORY_TRANSFER_OUTCOME) }
+  scope :for_organization, ->(organization){ where('categories.system = ? OR categories.organization_id = ?', true, organization.id) }
 
   class << self
     def grouped_by_type
       [
-        [CATEGORY_INCOME, incomes - receipts],
-        [CATEGORY_EXPENSE, expenses - transfers],
-        [CATEGORY_TRANSFERS, receipts]
+        [CATEGORY_INCOME,    incomes - receipts],
+        [CATEGORY_EXPENSE,   expenses - transfers],
+        [CATEGORY_TRANSFERS, receipts],
       ]
     end
 
@@ -67,14 +68,18 @@ class Category < ApplicationRecord
         )
       end
     end
+
+    def receipt_id
+      find_by(name: CATEGORY_TRANSFER_INCOME).try(:id)
+    end
+
+    def transfer_out_id
+      find_by(name: CATEGORY_TRANSFER_OUTCOME).try(:id)
+    end
   end
 
-  def self.receipt_id
-    find_by(name: CATEGORY_TRANSFER_INCOME).try(:id)
-  end
-
-  def self.transfer_out_id
-    find_by(name: CATEGORY_TRANSFER_OUTCOME).try(:id)
+  def to_s
+    name.truncate(30)
   end
 
   def income?
@@ -83,9 +88,5 @@ class Category < ApplicationRecord
 
   def expense?
     type == CATEGORY_EXPENSE
-  end
-
-  def to_s
-    name.truncate(30)
   end
 end
