@@ -53,7 +53,7 @@ module Api::V1
 
       @summary = TransactionsSummary.new(@q.result, current_organization.default_currency)
 
-      render json: @summary
+      render json: TransactionsSummarySerializer.new(@summary)
     end
 
     api :GET, '/organizations/:organization_id/transactions/:id', 'Return transaction'

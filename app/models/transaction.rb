@@ -133,7 +133,10 @@ class Transaction < ApplicationRecord
       amount_flow = amount_flow.to_a
       if amount_flow.empty?
         amount_flow << AmountFlow.new(
-          Money.empty(def_currency), Money.empty(def_currency), def_currency)
+          Money.empty(def_currency),
+          Money.empty(def_currency),
+          def_currency,
+        )
       else
         amount_flow.sort_by! do |flow|
           currencies.index(flow['currency'])
