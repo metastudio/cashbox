@@ -42,7 +42,7 @@ class CustomersController < ApplicationController
     @customers = current_organization.customers.with_name(query_params[:term])
 
     respond_to do |format|
-      format.json { render json: @customers , only: [:id, :name] }
+      format.json { render json: @customers.to_json(only: %i[id name]) }
     end
   end
 
