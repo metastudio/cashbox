@@ -7,6 +7,8 @@ class TransactionPolicy < ApplicationPolicy
     !!member
   end
 
+  alias summary? index?
+
   def create?
     !!member
   end

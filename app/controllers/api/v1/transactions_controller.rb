@@ -45,6 +45,17 @@ module Api::V1
       @transactions = @transactions.page(params[:page]).per(30)
     end
 
+    def summary
+      authorize :transaction
+
+      @q = current_organization.transactions.ransack(params[:q])
+      @q.sorts = ['date desc', 'created_at desc'] if @q.sorts.blank?
+
+      @summary = TransactionsSummary.new(@q.result, current_organization.default_currency)
+
+      render json: TransactionsSummarySerializer.new(@summary)
+    end
+
     api :GET, '/organizations/:organization_id/transactions/:id', 'Return transaction'
     def show
     end

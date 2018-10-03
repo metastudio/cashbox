@@ -79,6 +79,7 @@ Cashbox::Application.routes.draw do
         resources :customers, only: %i[show index create update destroy]
         resources :transactions, only: %i[show index create update destroy] do
           post :transfer, action: :create_transfer, on: :collection
+          get :summary, on: :collection
         end
         resources :members, only: %i[index show update destroy] do
           get :current
