@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BalanceDataCombainer
   include DateLogic
 
@@ -22,7 +24,7 @@ class BalanceDataCombainer
 
   def by_months
     keys = @period.map(&:beginning_of_month)
-      .uniq.map{ |date| date.strftime("%b, %Y") }
+      .uniq.map{ |date| date.strftime('%b, %Y') }
 
     array = tabletype_data(keys)
     array.unshift(['Month', 'Incomes', 'Expenses', 'Total balance'])
@@ -30,7 +32,7 @@ class BalanceDataCombainer
 
   def by_years
     keys = @period.map(&:beginning_of_year)
-      .uniq.map{ |date| date.strftime("%Y") }
+      .uniq.map{ |date| date.strftime('%Y') }
 
     @incomes, @expenses, @totals = [@incomes, @expenses, @totals].map do |s|
       combine_by_years(s)
@@ -42,7 +44,7 @@ class BalanceDataCombainer
 
   def by_quarters
     keys = @period.map(&:beginning_of_quarter)
-      .uniq.map{ |date| get_quarter(date.strftime("%b, %Y")) }
+      .uniq.map{ |date| get_quarter(date.strftime('%b, %Y')) }
 
     @incomes, @expenses, @totals = [@incomes, @expenses, @totals].map do |s|
       combine_by_quarters(s)
@@ -74,12 +76,12 @@ class BalanceDataCombainer
 
   def tabletype_data(keys)
     keys.map do |k|
-      @total_sum = @total_sum + (@totals[k].to_f || 0)/100
+      @total_sum += (@totals[k].to_f || 0) / 100
       [
         k,
-        ((@incomes[k].to_f || 0)/100).round(2),
-        ((@expenses[k].to_f || 0)/100).round(2),
-        @total_sum.round(2)
+        ((@incomes[k].to_f || 0) / 100).round(2),
+        ((@expenses[k].to_f || 0) / 100).round(2),
+        @total_sum.round(2),
       ]
     end
   end

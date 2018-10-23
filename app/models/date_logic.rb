@@ -1,5 +1,6 @@
-module DateLogic
+# frozen_string_literal: true
 
+module DateLogic
   def get_quarter(date)
     month, year = date.split(', ')
     case month
@@ -25,12 +26,11 @@ module DateLogic
     when 'years'
       (1.year.ago.to_date - step.year).beginning_of_month..(Date.current - step.year).end_of_month
     when 'quarters'
-      (1.year.ago.to_date - (3*step).month).beginning_of_month..(Date.current - (3*step).month).end_of_month
+      (1.year.ago.to_date - (3 * step).month).beginning_of_month..(Date.current - (3 * step).month).end_of_month
     end
   end
 
   def get_month(date)
     date.strftime('%b, %Y')
   end
-
 end
