@@ -6,11 +6,18 @@ class Api::V1::StatisticsController < Api::V1::BaseOrganizationController
 
   def balance
     params[:balance_scale] = 'months' if params[:balance_scale].blank?
-    params[:balance_step] = 0 if params[:balance_step].blank?
+    params[:page] = 0 if params[:page].blank?
     data = StatisticData::ColumnsChart.new(current_organization)
-      .data_balance(params[:balance_scale], params[:balance_step])
+      .data_balance(params[:balance_scale], params[:page])
 
-    render json: BalanceStatisticSerializer.new(current_organization, data)
+    render json: {
+      statistic:  BalanceStatisticSerializer.new(current_organization, data),
+      pagination: PaginationSerializer.new(Pagination.new({
+        current:  params[:page],
+        previous: params[:page].to_i.positive? ? params[:page].to_i - 1 : nil,
+        next:     data[:next_step_blank] ? nil : params[:page].to_i + 1,
+      })),
+    }
   end
 
   private

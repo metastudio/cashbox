@@ -65,6 +65,11 @@ describe 'GET /api/organizations/#/statistics/balance' do
     expect(currency_json.name).to            eq 'Russian Ruble'
     expect(currency_json.symbol).to          eq '₽'
     expect(currency_json.subunit_to_unit).to eq 100
+
+    pagination_json = json_body.pagination
+    expect(pagination_json.current).to  eq 0
+    expect(pagination_json.next).to     eq 1
+    expect(pagination_json.previous).to eq nil
   end
 
   context 'when not authenticated' do

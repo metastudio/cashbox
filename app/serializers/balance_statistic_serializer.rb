@@ -20,10 +20,8 @@ class BalanceStatisticSerializer
     end
 
     {
-      statistic: {
-        data:     data,
-        currency: Money.new(0, organization.default_currency).currency.as_json,
-      },
+      data:     data,
+      currency: Money.new(0, organization.default_currency).currency.as_json,
     }
   end
 end
