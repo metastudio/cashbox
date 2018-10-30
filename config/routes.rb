@@ -95,6 +95,9 @@ Cashbox::Application.routes.draw do
           post :resend, on: :member
         end
         resources :debtors, only: :index
+        resource :statistic, only: [] do
+          get :balance
+        end
       end
     end
   end
