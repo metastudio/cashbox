@@ -5,10 +5,10 @@ class Api::V1::StatisticsController < Api::V1::BaseOrganizationController
   before_action :authorize_statistic
 
   def balance
-    params[:balance_scale] = 'months' if params[:balance_scale].blank?
+    params[:scale] = 'months' if params[:scale].blank?
     params[:page] = 0 if params[:page].blank?
     data = StatisticData::ColumnsChart.new(current_organization)
-      .data_balance(params[:balance_scale], params[:page])
+      .data_balance(params[:scale], params[:page])
 
     render json: {
       statistic:  BalanceStatisticSerializer.new(current_organization, data),
