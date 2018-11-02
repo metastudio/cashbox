@@ -34,7 +34,7 @@ FactoryBot.define do
       end
       create :member, organization: org, user: evaluator.with_user if evaluator.with_user
       create :bank_account, organization: org unless evaluator.without_bank_accounts
-      create :category, organization: org unless evaluator.without_categories
+      create :category, organization: org, type: 'Income' unless evaluator.without_categories
     end
   end
 end
