@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe 'PUT /api/organizations/#/bank_accounts/#/sort' do
-  let(:path) { "/api/organizations/#{organization.id}/bank_accounts/#{bank_account3.id}/sort" }
+describe 'PUT /api/organizations/#/bank_accounts/#/position' do
+  let(:path) { "/api/organizations/#{organization.id}/bank_accounts/#{bank_account3.id}/position" }
 
   let!(:user) { create :user }
   let!(:organization) { create :organization, with_user: user }
