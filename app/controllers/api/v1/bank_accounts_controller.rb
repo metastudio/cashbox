@@ -2,7 +2,7 @@
 
 module Api::V1
   class BankAccountsController < BaseOrganizationController
-    before_action :set_bank_account, only: %i[show update destroy]
+    before_action :set_bank_account, only: %i[show update destroy update_position]
 
     def_param_group :bank_account do
       param :bank_account, Hash, required: true, action_aware: true do
@@ -56,6 +56,12 @@ module Api::V1
       render :show
     end
 
+    api :PUT, '/organizations/:organization_id/bank_accounts/:id/position', 'Update bank account position'
+    def update_position
+      @bank_account.insert_at(update_bank_account_position_params[:position]&.to_i)
+      render :show
+    end
+
     private
 
     def set_bank_account
@@ -64,6 +70,10 @@ module Api::V1
 
     def bank_account_params
       params.fetch(:bank_account, {}).permit(:name, :description, :currency, :residue, :invoice_details, :visible)
+    end
+
+    def update_bank_account_position_params
+      params.fetch(:bank_account, {}).permit(:position)
     end
   end
 end

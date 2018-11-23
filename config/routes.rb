@@ -74,6 +74,7 @@ Cashbox::Application.routes.draw do
       resources :organizations, only: %i[show index create update destroy] do
         resources :bank_accounts, only: %i[show index create update destroy] do
           get :visible, on: :collection
+          put :position, action: :update_position, on: :member
         end
         resources :categories, only: %i[show index create update destroy]
         resources :customers, only: %i[show index create update destroy]
