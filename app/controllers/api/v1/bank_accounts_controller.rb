@@ -56,7 +56,7 @@ module Api::V1
       render :show
     end
 
-    api :PUT, '/organizations/:organization_id/bank_accounts/:id/update_position', 'Update bank account position'
+    api :PUT, '/organizations/:organization_id/bank_accounts/:id/position', 'Update bank account position'
     def update_position
       @bank_account.insert_at(update_bank_account_position_params[:position]&.to_i)
       render :show
