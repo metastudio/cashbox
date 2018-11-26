@@ -110,11 +110,9 @@ module StatisticData
     def format_output(data)
       data = Hash[data.sort_by{ |_k, v| v[1] }.reverse]
       data = { nil => ['Hash', 'In default currency'] }.merge(data)
-      if data.keys.size > 1
-        { data: data.values, ids: data.keys, currency_format: currency_format }
-      else
-        { data: [], ids: [], currency_format: currency_format }
-      end
+      return nil if data.keys.size <= 1
+
+      { data: data.values, ids: data.keys, currency_format: currency_format }
     end
   end
 end

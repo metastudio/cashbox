@@ -5,11 +5,15 @@ class IncomeCategoriesStatisticSerializer
 
   def initialize(organization, statistic)
     @organization = organization
-    @statistic    = statistic[:data].dup
+    if statistic
+      @statistic = statistic[:data].dup
+      @statistic.shift # remove header
+    else
+      @statistic = []
+    end
   end
 
   def as_json(_opts)
-    statistic.shift # remove header
     data = statistic.map do |row|
       {
         name:  row[0],

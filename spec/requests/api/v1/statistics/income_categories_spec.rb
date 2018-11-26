@@ -93,6 +93,27 @@ describe 'GET /api/organizations/#/statistics/income_categories' do
     end
   end
 
+  context 'if no data for given preiod' do
+    let!(:income_category1_transactions) {}
+    let!(:previous_month_income_transaction) {}
+    let!(:income_category2_transactions) {}
+    let!(:income_category_transactions) {}
+
+    it 'returns empty data' do
+      expect(response).to be_success
+
+      statistic_json = json_body.statistic
+
+      expect(statistic_json.data).to eq []
+
+      currency_json = statistic_json.currency
+      expect(currency_json.iso_code).to        eq 'RUB'
+      expect(currency_json.name).to            eq 'Russian Ruble'
+      expect(currency_json.symbol).to          eq '₽'
+      expect(currency_json.subunit_to_unit).to eq 100
+    end
+  end
+
   context 'when not authenticated' do
     let(:headers) { {} }
 
