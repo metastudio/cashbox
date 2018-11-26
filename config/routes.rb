@@ -97,6 +97,7 @@ Cashbox::Application.routes.draw do
         resources :debtors, only: :index
         resource :statistic, only: [] do
           get :balance
+          get :income_categories
         end
       end
     end

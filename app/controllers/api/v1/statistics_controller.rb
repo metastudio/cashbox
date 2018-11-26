@@ -5,10 +5,10 @@ class Api::V1::StatisticsController < Api::V1::BaseOrganizationController
   before_action :authorize_statistic
 
   def balance
-    params[:scale] = 'months' if params[:scale].blank?
+    scale = params[:scale].presence || 'months'
     params[:page] = 0 if params[:page].blank?
     data = StatisticData::ColumnsChart.new(current_organization)
-      .data_balance(params[:scale], params[:page])
+      .data_balance(scale, params[:page])
 
     render json: {
       statistic:  BalanceStatisticSerializer.new(current_organization, data),
@@ -17,6 +17,16 @@ class Api::V1::StatisticsController < Api::V1::BaseOrganizationController
         previous: params[:page].to_i.positive? ? params[:page].to_i - 1 : nil,
         next:     data[:next_step_blank] ? nil : params[:page].to_i + 1,
       })),
+    }
+  end
+
+  def income_categories
+    period = params[:period].presence || 'current-month'
+    data = StatisticData::RoundChart.new(current_organization)
+      .by_categories(:incomes, period)
+
+    render json: {
+      statistic: IncomeCategoriesStatisticSerializer.new(current_organization, data),
     }
   end
 
