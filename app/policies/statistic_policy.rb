@@ -7,4 +7,5 @@ class StatisticPolicy < ApplicationPolicy
 
   alias balance?           access?
   alias income_categories? access?
+  alias income_customers?  access?
 end
