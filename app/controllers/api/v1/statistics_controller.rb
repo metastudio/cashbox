@@ -30,6 +30,16 @@ class Api::V1::StatisticsController < Api::V1::BaseOrganizationController
     }
   end
 
+  def income_customers
+    period = params[:period].presence || 'current-month'
+    data = StatisticData::RoundChart.new(current_organization)
+      .by_customers(:incomes, period)
+
+    render json: {
+      statistic: IncomeCustomersStatisticSerializer.new(current_organization, data),
+    }
+  end
+
   private
 
   def authorize_statistic
