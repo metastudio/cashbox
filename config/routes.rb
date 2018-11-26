@@ -100,6 +100,7 @@ Cashbox::Application.routes.draw do
           get :balance
           get :income_categories
           get :income_customers
+          get :expense_customers
         end
       end
     end
