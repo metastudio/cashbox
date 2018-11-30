@@ -5,5 +5,9 @@ class StatisticPolicy < ApplicationPolicy
     !!member
   end
 
-  alias balance? access?
+  alias balance?            access?
+  alias income_categories?  access?
+  alias expense_categories? access?
+  alias income_customers?   access?
+  alias expense_customers?  access?
 end

@@ -36,7 +36,7 @@ class Category < ApplicationRecord
 
   self.inheritance_column = nil
 
-  scope :ordered, -> { order('created_at DESC') }
+  scope :ordered, -> { order(:type, :name) }
 
   belongs_to :organization, inverse_of: :categories
   has_many :transactions, inverse_of: :category, dependent: :destroy
