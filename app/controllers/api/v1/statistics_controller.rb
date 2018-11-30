@@ -26,7 +26,17 @@ class Api::V1::StatisticsController < Api::V1::BaseOrganizationController
       .by_categories(:incomes, period)
 
     render json: {
-      statistic: IncomeCategoriesStatisticSerializer.new(current_organization, data),
+      statistic: CategoriesStatisticSerializer.new(current_organization, data),
+    }
+  end
+
+  def expense_categories
+    period = params[:period].presence || 'current-month'
+    data = StatisticData::RoundChart.new(current_organization)
+      .by_categories(:expenses, period)
+
+    render json: {
+      statistic: CategoriesStatisticSerializer.new(current_organization, data),
     }
   end
 

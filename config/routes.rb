@@ -99,6 +99,7 @@ Cashbox::Application.routes.draw do
         resource :statistic, only: [] do
           get :balance
           get :income_categories
+          get :expense_categories
           get :income_customers
           get :expense_customers
         end

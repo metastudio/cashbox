@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class IncomeCategoriesStatisticSerializer
+class CategoriesStatisticSerializer
   attr_reader :organization, :statistic
 
   def initialize(organization, statistic)
