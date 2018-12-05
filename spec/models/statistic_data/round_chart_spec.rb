@@ -325,7 +325,7 @@ describe StatisticData::RoundChart do
         it 'is counted with transaction amount' do
           expect(subject).to eq [
             invoice_item.customer.name + ' ' + Money.new(invoice_item.amount + transaction.amount, org.default_currency).format,
-            invoice_item.amount.to_f + transaction.amount.to_f,
+            (invoice_item.amount.to_f + transaction.amount.to_f).round(2),
           ]
         end
       end
