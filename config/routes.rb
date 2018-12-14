@@ -103,6 +103,7 @@ Cashbox::Application.routes.draw do
           get :income_customers
           get :expense_customers
           get :totals_by_customers
+          get :balances_by_customers
         end
       end
     end

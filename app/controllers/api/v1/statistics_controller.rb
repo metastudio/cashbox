@@ -69,6 +69,15 @@ class Api::V1::StatisticsController < Api::V1::BaseOrganizationController
     }
   end
 
+  def balances_by_customers
+    period = params[:period].presence || 'current-month'
+    data = StatisticData::ColumnsChart.new(current_organization)
+      .balances_by_customers(period)
+    render json: {
+      statistic: CustomersBalancesStatisticSerializer.new(current_organization, data),
+    }
+  end
+
   private
 
   def authorize_statistic
