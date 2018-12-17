@@ -54,12 +54,12 @@ describe 'GET /api/organizations/#/statistics/income_categories' do
 
     expect(statistic_json.data.map(&:to_h)).to eq([
       {
-        'name'  => income_category1.name,
-        'value' => income_category1_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
-      },
-      {
         'name'  => income_category2.name,
         'value' => income_category2_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
+      },
+      {
+        'name'  => income_category1.name,
+        'value' => income_category1_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
       },
     ])
 

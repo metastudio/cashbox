@@ -47,12 +47,12 @@ describe 'GET /api/organizations/#/statistics/income_customers' do
 
     expect(statistic_json.data.map(&:to_h)).to eq([
       {
-        'name'  => customer2.name,
-        'value' => customer2_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
-      },
-      {
         'name'  => customer1.name,
         'value' => customer1_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
+      },
+      {
+        'name'  => customer2.name,
+        'value' => customer2_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
       },
     ])
 

@@ -41,9 +41,9 @@ describe 'GET /api/organizations/#/statistics/balances_by_customers' do
   let(:customer2_income_items)  { [i2_invoice_item1, i2_invoice_item2, customer2_transaction1] }
   let(:customer2_expense_items) { [] }
 
-  let(:customer1_income)  { customer1_income_items.sum  { |i| i.amount.exchange_to(org.default_currency) }.to_f }
-  let(:customer1_expense) { customer1_expense_items.sum { |i| i.amount.exchange_to(org.default_currency) }.to_f.abs }
-  let(:customer2_income)  { customer2_income_items.sum  { |i| i.amount.exchange_to(org.default_currency) }.to_f }
+  let(:customer1_income)  { customer1_income_items.sum  { |i| i.amount.exchange_to(org.default_currency) }.to_f.round(2) }
+  let(:customer1_expense) { customer1_expense_items.sum { |i| i.amount.exchange_to(org.default_currency) }.to_f.round(2).abs }
+  let(:customer2_income)  { customer2_income_items.sum  { |i| i.amount.exchange_to(org.default_currency) }.to_f.round(2) }
   let(:customer2_expense) { 0 }
 
   let(:params) { {} }
@@ -56,7 +56,6 @@ describe 'GET /api/organizations/#/statistics/balances_by_customers' do
     expect(response).to be_success
 
     statistic_json = json_body.statistic
-
     expect(statistic_json.data.map(&:to_h)).to eq([
       {
         'name'    => customer1.name,
@@ -85,9 +84,9 @@ describe 'GET /api/organizations/#/statistics/balances_by_customers' do
     let(:customer2_income_items)  { [i2_invoice_item3] }
     let(:customer2_expense_items) { [] }
 
-    let(:customer1_income)  { customer1_income_items.sum  { |i| i.amount.exchange_to(org.default_currency) }.to_f }
+    let(:customer1_income)  { customer1_income_items.sum { |i| i.amount.exchange_to(org.default_currency) }.to_f.round(2) }
     let(:customer1_expense) { 0 }
-    let(:customer2_income)  { customer2_income_items.sum  { |i| i.amount.exchange_to(org.default_currency) }.to_f }
+    let(:customer2_income)  { customer2_income_items.sum { |i| i.amount.exchange_to(org.default_currency) }.to_f.round(2) }
     let(:customer2_expense) { 0 }
 
     it 'returns totals by customers statistic for provided period' do
