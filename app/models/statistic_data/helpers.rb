@@ -13,7 +13,6 @@ module StatisticData
         .select('sum(invoice_items.amount_cents) as total, invoice_items.customer_id, invoice_items.currency')
         .where('invoice_items.date IS NOT NULL')
         .group('invoice_items.customer_id, invoice_items.currency')
-
       customers_selection_format_output(nil_date_items) + customers_selection_format_output(items)
     end
 
