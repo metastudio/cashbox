@@ -9,9 +9,9 @@ describe 'GET /api/organizations/#/statistics/expense_categories' do
   let(:org)  { create :organization, default_currency: 'RUB' }
   let(:user) { create :user, organization: org }
 
-  let!(:income_category) { create :category, :income,  organization: org }
-  let!(:expense_category1) { create :category, :expense, organization: org }
-  let!(:expense_category2) { create :category, :expense, organization: org }
+  let!(:income_category) { create :category, :income, organization: org }
+  let!(:expense_category1) { create :category, :expense, organization: org, name: 'Category A' }
+  let!(:expense_category2) { create :category, :expense, organization: org, name: 'Category B' }
 
   let(:rub_ba) { create :bank_account, organization: org, currency: 'RUB' }
   let(:usd_ba) { create :bank_account, organization: org, currency: 'USD' }

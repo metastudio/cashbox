@@ -9,11 +9,11 @@ describe 'GET /api/organizations/#/statistics/income_customers' do
   let(:org)  { create :organization, default_currency: 'RUB' }
   let(:user) { create :user, organization: org }
 
-  let(:inc_category) { create :category, :income,  organization: org }
-  let(:exp_category) { create :category, :expense, organization: org }
+  let!(:inc_category) { create :category, :income,  organization: org }
+  let!(:exp_category) { create :category, :expense, organization: org }
 
-  let!(:customer1)    { create :customer, organization: org }
-  let!(:customer2)    { create :customer, organization: org }
+  let!(:customer1)    { create :customer, organization: org, name: 'Customer A' }
+  let!(:customer2)    { create :customer, organization: org, name: 'Customer B' }
   let!(:exp_customer) { create :customer, organization: org }
 
   let(:rub_ba) { create :bank_account, organization: org, currency: 'RUB' }

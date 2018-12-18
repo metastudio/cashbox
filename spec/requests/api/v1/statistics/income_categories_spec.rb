@@ -9,8 +9,8 @@ describe 'GET /api/organizations/#/statistics/income_categories' do
   let(:org)  { create :organization, default_currency: 'RUB' }
   let(:user) { create :user, organization: org }
 
-  let!(:income_category1) { create :category, :income,  organization: org }
-  let!(:income_category2) { create :category, :income,  organization: org }
+  let!(:income_category1) { create :category, :income,  organization: org, name: 'Category A' }
+  let!(:income_category2) { create :category, :income,  organization: org, name: 'Category B' }
   let!(:expense_category) { create :category, :expense, organization: org }
 
   let(:rub_ba) { create :bank_account, organization: org, currency: 'RUB' }
@@ -54,12 +54,12 @@ describe 'GET /api/organizations/#/statistics/income_categories' do
 
     expect(statistic_json.data.map(&:to_h)).to eq([
       {
-        'name'  => income_category2.name,
-        'value' => income_category2_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
-      },
-      {
         'name'  => income_category1.name,
         'value' => income_category1_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
+      },
+      {
+        'name'  => income_category2.name,
+        'value' => income_category2_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2),
       },
     ])
 

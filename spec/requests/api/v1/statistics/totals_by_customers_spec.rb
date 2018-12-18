@@ -9,8 +9,8 @@ describe 'GET /api/organizations/#/statistics/totals_by_customers' do
   let(:org)  { create :organization, default_currency: 'RUB' }
   let(:user) { create :user, organization: org }
 
-  let!(:customer1)    { create :customer, organization: org }
-  let!(:customer2)    { create :customer, organization: org }
+  let!(:customer1)    { create :customer, organization: org, name: 'Customer A' }
+  let!(:customer2)    { create :customer, organization: org, name: 'Customer B' }
 
   let!(:inc_category) { create :category, :income,  organization: org }
   let!(:exp_category) { create :category, :expense, organization: org }
@@ -55,12 +55,12 @@ describe 'GET /api/organizations/#/statistics/totals_by_customers' do
 
     expect(statistic_json.data.map(&:to_h)).to eq([
       {
-        'name'  => "#{customer2.name} #{Money.new(customer2_total * 100, 'RUB').format(symbol_after_without_space: true)}",
-        'value' => customer2_total,
-      },
-      {
         'name'  => "#{customer1.name} #{Money.new(customer1_total * 100, 'RUB').format(symbol_after_without_space: true)}",
         'value' => customer1_total,
+      },
+      {
+        'name'  => "#{customer2.name} #{Money.new(customer2_total * 100, 'RUB').format(symbol_after_without_space: true)}",
+        'value' => customer2_total,
       },
     ])
 
