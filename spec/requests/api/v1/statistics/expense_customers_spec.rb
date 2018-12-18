@@ -12,9 +12,9 @@ describe 'GET /api/organizations/#/statistics/expense_customers' do
   let(:inc_category) { create :category, :income,  organization: org }
   let(:exp_category) { create :category, :expense, organization: org }
 
-  let(:customer1)    { create :customer, organization: org }
-  let(:customer2)    { create :customer, organization: org }
-  let(:inc_customer) { create :customer, organization: org }
+  let!(:customer1)    { create :customer, organization: org }
+  let!(:customer2)    { create :customer, organization: org }
+  let!(:inc_customer) { create :customer, organization: org }
 
   let(:rub_ba) { create :bank_account, organization: org, currency: 'RUB' }
   let(:usd_ba) { create :bank_account, organization: org, currency: 'USD' }

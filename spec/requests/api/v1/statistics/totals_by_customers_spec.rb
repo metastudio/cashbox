@@ -12,8 +12,8 @@ describe 'GET /api/organizations/#/statistics/totals_by_customers' do
   let!(:customer1)    { create :customer, organization: org }
   let!(:customer2)    { create :customer, organization: org }
 
-  let(:inc_category) { create :category, :income,  organization: org }
-  let(:exp_category) { create :category, :expense, organization: org }
+  let!(:inc_category) { create :category, :income,  organization: org }
+  let!(:exp_category) { create :category, :expense, organization: org }
 
   let(:rub_ba) { create :bank_account, organization: org, currency: 'RUB' }
   let(:usd_ba) { create :bank_account, organization: org, currency: 'USD' }
