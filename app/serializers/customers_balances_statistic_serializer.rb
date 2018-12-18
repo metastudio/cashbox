@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CustomersStatisticSerializer
+class CustomersBalancesStatisticSerializer
   attr_reader :organization, :statistic
 
   def initialize(organization, statistic)
@@ -17,8 +17,9 @@ class CustomersStatisticSerializer
   def as_json(_opts)
     data = statistic.map do |row|
       {
-        name:  row[0],
-        value: row[1],
+        name:    row[0],
+        income:  row[1],
+        expense: row[2],
       }
     end
 
