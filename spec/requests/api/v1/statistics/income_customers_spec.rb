@@ -23,13 +23,27 @@ describe 'GET /api/organizations/#/statistics/income_customers' do
   let(:current_month)  { Date.current.beginning_of_month.to_date }
   let(:previous_month) { 1.month.ago.beginning_of_month.to_date }
 
-  let!(:customer1_inc_transaction1)   { create(:transaction, customer: customer1, bank_account: rub_ba, category: inc_category, date: current_month + rand(25)) }
-  let!(:customer1_inc_transaction2)   { create(:transaction, customer: customer1, bank_account: usd_ba, category: inc_category, date: current_month + rand(25)) }
-  let!(:customer1_inc_transaction3)   { create(:transaction, customer: customer1, bank_account: rub_ba, category: inc_category, date: previous_month + rand(25)) }
-  let!(:customer2_inc_transaction1)   { create(:transaction, customer: customer2, bank_account: usd_ba, category: inc_category, date: current_month + rand(25)) }
-  let!(:customer2_inc_transaction2)   { create(:transaction, customer: customer2, bank_account: eur_ba, category: inc_category, date: current_month + rand(25)) }
-  let!(:customer2_exp_transaction)    { create(:transaction, customer: customer2, bank_account: eur_ba, category: exp_category, date: current_month + rand(25)) }
-  let!(:exp_customer_exp_transaction) { create(:transaction, customer: exp_customer, bank_account: rub_ba, category: exp_category, date: current_month + rand(25)) }
+  let!(:customer1_inc_transaction1) do
+    create(:transaction, customer: customer1, bank_account: rub_ba, category: inc_category, date: current_month + rand(25), amount: 500_001.99)
+  end
+  let!(:customer1_inc_transaction2) do
+    create(:transaction, customer: customer1, bank_account: usd_ba, category: inc_category, date: current_month + rand(25))
+  end
+  let!(:customer1_inc_transaction3) do
+    create(:transaction, customer: customer1, bank_account: rub_ba, category: inc_category, date: previous_month + rand(25))
+  end
+  let!(:customer2_inc_transaction1) do
+    create(:transaction, customer: customer2, bank_account: usd_ba, category: inc_category, date: current_month + rand(25))
+  end
+  let!(:customer2_inc_transaction2) do
+    create(:transaction, customer: customer2, bank_account: eur_ba, category: inc_category, date: current_month + rand(25))
+  end
+  let!(:customer2_exp_transaction) do
+    create(:transaction, customer: customer2, bank_account: eur_ba, category: exp_category, date: current_month + rand(25))
+  end
+  let!(:exp_customer_exp_transaction) do
+    create(:transaction, customer: exp_customer, bank_account: rub_ba, category: exp_category, date: current_month + rand(25))
+  end
 
   let(:customer1_transactions) { [customer1_inc_transaction1, customer1_inc_transaction2] }
   let(:customer2_transactions) { [customer2_inc_transaction1, customer2_inc_transaction2] }

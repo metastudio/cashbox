@@ -22,25 +22,47 @@ describe 'GET /api/organizations/#/statistics/totals_by_customers' do
   let(:current_month)  { Date.current.beginning_of_month.to_date }
   let(:previous_month) { 1.month.ago.beginning_of_month.to_date }
 
-  let!(:invoice1)         { create :invoice, customer_name: customer1.name, organization: org, ends_at: current_month, currency: 'RUB' }
-  let!(:i1_invoice_item1) { create :invoice_item, invoice: invoice1, customer_name: customer1.name, date: current_month, amount: 500 }
-  let!(:i1_invoice_item2) { create :invoice_item, invoice: invoice1, customer_name: customer1.name, date: current_month, amount: 100 }
-  let!(:i1_invoice_item3) { create :invoice_item, invoice: invoice1, customer_name: customer1.name, date: previous_month, amount: 300 }
+  let!(:invoice1) do
+    create :invoice, customer_name: customer1.name, organization: org, ends_at: current_month, currency: 'RUB'
+  end
+  let!(:i1_invoice_item1) do
+    create :invoice_item, invoice: invoice1, customer_name: customer1.name, date: current_month, amount: 300_001.99, currency: 'RUB'
+  end
+  let!(:i1_invoice_item2) do
+    create :invoice_item, invoice: invoice1, customer_name: customer1.name, date: current_month, amount: 100, currency: 'RUB'
+  end
+  let!(:i1_invoice_item3) do
+    create :invoice_item, invoice: invoice1, customer_name: customer1.name, date: previous_month, amount: 300, currency: 'RUB'
+  end
 
-  let!(:invoice2)         { create :invoice, customer_name: customer2.name, organization: org, ends_at: current_month, currency: 'USD' }
-  let!(:i2_invoice_item1) { create :invoice_item, invoice: invoice2, customer_name: customer2.name, date: current_month, amount: 5 }
-  let!(:i2_invoice_item2) { create :invoice_item, invoice: invoice2, customer_name: customer2.name, date: current_month, amount: 1 }
-  let!(:i2_invoice_item3) { create :invoice_item, invoice: invoice2, customer_name: customer2.name, date: previous_month, amount: 3 }
+  let!(:invoice2) do
+    create :invoice, customer_name: customer2.name, organization: org, ends_at: current_month, currency: 'USD'
+  end
+  let!(:i2_invoice_item1) do
+    create :invoice_item, invoice: invoice2, customer_name: customer2.name, date: current_month, amount: 5
+  end
+  let!(:i2_invoice_item2) do
+    create :invoice_item, invoice: invoice2, customer_name: customer2.name, date: current_month, amount: 1
+  end
+  let!(:i2_invoice_item3) do
+    create :invoice_item, invoice: invoice2, customer_name: customer2.name, date: previous_month, amount: 3
+  end
 
-  let!(:customer1_transaction1) { create(:transaction, customer: customer1, bank_account: rub_ba, category: exp_category, date: current_month) }
-  let!(:customer1_transaction2) { create(:transaction, customer: customer1, bank_account: usd_ba, category: inc_category, date: previous_month) }
-  let!(:customer2_transaction1) { create(:transaction, customer: customer2, bank_account: usd_ba, category: inc_category, date: current_month) }
+  let!(:customer1_transaction1) do
+    create(:transaction, customer: customer1, bank_account: rub_ba, category: exp_category, date: current_month)
+  end
+  let!(:customer1_transaction2) do
+    create(:transaction, customer: customer1, bank_account: usd_ba, category: inc_category, date: previous_month)
+  end
+  let!(:customer2_transaction1) do
+    create(:transaction, customer: customer2, bank_account: usd_ba, category: inc_category, date: current_month)
+  end
 
   let(:customer1_items) { [i1_invoice_item1, i1_invoice_item2, customer1_transaction1] }
   let(:customer2_items) { [i2_invoice_item1, i2_invoice_item2, customer2_transaction1] }
 
-  let(:customer1_total) { customer1_items.sum{ |i| i.amount.exchange_to(org.default_currency) }.to_f.round(2) }
-  let(:customer2_total) { customer2_items.sum{ |i| i.amount.exchange_to(org.default_currency) }.to_f.round(2) }
+  let(:customer1_total) { customer1_items.sum(&:amount).exchange_to(org.default_currency).to_f.round(2) }
+  let(:customer2_total) { customer2_items.sum(&:amount).exchange_to(org.default_currency).to_f.round(2) }
 
   let(:params) { {} }
 

@@ -8,7 +8,7 @@ class CustomersBalancesStatisticSerializer
     if statistic
       @statistic = statistic[:data].dup
       @statistic.shift # remove header
-      @statistic.sort!
+      @statistic.sort_by!{ |name, _income, _expense| name }
     else
       @statistic = []
     end
