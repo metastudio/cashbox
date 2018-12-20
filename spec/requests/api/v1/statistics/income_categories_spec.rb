@@ -22,7 +22,7 @@ describe 'GET /api/organizations/#/statistics/income_categories' do
 
   let!(:income_category1_transactions) do
     [rub_ba, usd_ba, eur_ba].map do |ba|
-      create(:transaction, bank_account: ba, category: income_category1, date: current_month + rand(25))
+      create(:transaction, bank_account: ba, category: income_category1, date: current_month + rand(25), amount: 300_001.99)
     end
   end
   let!(:previous_month_income_transaction) do
