@@ -22,7 +22,7 @@ describe 'GET /api/organizations/#/statistics/expense_categories' do
 
   let!(:expense_category1_transactions) do
     [rub_ba, usd_ba, eur_ba].map do |ba|
-      create(:transaction, bank_account: ba, category: expense_category1, date: current_month + rand(25))
+      create(:transaction, bank_account: ba, category: expense_category1, date: current_month + rand(25), amount: 300_001.99)
     end
   end
   let!(:previous_month_expense_transaction) do
