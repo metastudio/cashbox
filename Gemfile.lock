@@ -71,6 +71,9 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     builder (3.2.3)
+    bundler-audit (0.6.0)
+      bundler (~> 1.2)
+      thor (~> 0.18)
     byebug (10.0.0)
     capistrano (3.6.1)
       airbrussh (>= 1.0.0)
@@ -333,6 +336,8 @@ GEM
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    ruby_audit (1.2.0)
+      bundler-audit (~> 0.6.0)
     ruby_dep (1.5.0)
     russian_central_bank (1.0.0)
       money (~> 6.0)
@@ -488,6 +493,7 @@ DEPENDENCIES
   rollbar (~> 2.15.5)
   rspec-collection_matchers
   rspec-rails
+  ruby_audit
   russian_central_bank
   sass-rails (~> 5.0.7)
   select2-rails (~> 3.5.9.3)
