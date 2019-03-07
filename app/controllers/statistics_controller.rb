@@ -20,7 +20,6 @@ class StatisticsController < ApplicationController
   def customers_chart
     data = StatisticData::ColumnsChart.new(current_organization)
       .customers_by_months(params[:customers_type])
-    puts "!!!!" + data.inspect
     respond_to do |format|
       format.json { render json: data }
       format.html { redirect_to statistics_path }
