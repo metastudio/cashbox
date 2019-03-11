@@ -24,7 +24,7 @@ module DateLogic
     when 'months'
       (1.year.ago.to_date - step.month).beginning_of_month..(Date.current - step.month).end_of_month
     when 'years'
-      (1.year.ago.to_date - step.year).beginning_of_month..(Date.current - step.year).end_of_month
+      (5.years.ago.to_date - step.year).beginning_of_year..(Date.current - step.year).end_of_month
     when 'quarters'
       (1.year.ago.to_date - (3 * step).month).beginning_of_month..(Date.current - (3 * step).month).end_of_month
     end
