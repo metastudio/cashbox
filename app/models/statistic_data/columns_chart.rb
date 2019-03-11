@@ -72,8 +72,7 @@ module StatisticData
       transacts = @organization.transactions.unscope(:order)
         .where('date BETWEEN ? AND ?', period.begin.beginning_of_month, period.end.end_of_month)
         .includes(:customer)
-      transacts = transacts.incomes if category_type == 'income'
-      transacts = transacts.expenses if category_type == 'expense'
+      transacts = category_type == 'income' ? transacts.incomes : transacts.expenses
       transacts = transacts.where.not(customer: nil)
 
       transacts.each do |transact|
