@@ -60,8 +60,7 @@ module StatisticData
       end
     end
 
-    def customers_by_months(type = 'income')
-      category_type = type
+    def customers_by_months(category_type = 'income')
       period = 1.year.ago.to_date..Date.current
       months = period.map { |date| get_month(date.beginning_of_month) }.uniq
       result = {}
@@ -71,7 +70,7 @@ module StatisticData
       end
 
       transacts = @organization.transactions.unscope(:order)
-        .where('date BETWEEN ? AND ?', period.begin, period.end)
+        .where('date BETWEEN ? AND ?', period.begin.beginning_of_month, period.end.end_of_month)
         .includes(:customer)
       transacts = category_type == 'income' ? transacts.incomes : transacts.expenses
       transacts = transacts.where.not(customer: nil)
@@ -80,13 +79,9 @@ module StatisticData
         date = get_month(transact.date)
         customer_name = transact.customer.name.to_s
         customers << customer_name
-        transact_amount = transact.amount
-          .exchange_to(default_currency)
-          .cents
-          .abs
-        transact_amount = (transact_amount / 100).round(2)
+        transact_amount = transact.amount.exchange_to(default_currency).to_f.round(2).abs
         if result[date][customer_name].present?
-          result[date][customer_name] += transact_amount
+          result[date][customer_name] = (result[date][customer_name] + transact_amount).round(2)
         else
           result[date][customer_name] = transact_amount
         end

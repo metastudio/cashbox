@@ -139,8 +139,8 @@ describe StatisticData::ColumnsChart do
       it 'have data about transactions in current month' do
         expect(subject).to match_array [
           Date.current.strftime('%b, %Y'),
-          (transaction1.amount.cents / 100).round(2),
-          (transaction2.amount.cents / 100).round(2),
+          (transaction1.amount.cents.to_f / 100).round(2),
+          (transaction2.amount.cents.to_f / 100).round(2),
           '',
         ]
       end
@@ -166,8 +166,8 @@ describe StatisticData::ColumnsChart do
       it 'have data about transactions in previous month' do
         expect(subject).to match_array [
           (Date.current - 1.month).strftime('%b, %Y'),
-          (transaction3.amount.cents / 100).round(2),
-          (transaction4.amount.cents / 100).round(2),
+          (transaction3.amount.cents.to_f / 100).round(2),
+          (transaction4.amount.cents.to_f / 100).round(2),
           '',
         ]
       end
@@ -189,9 +189,9 @@ describe StatisticData::ColumnsChart do
       it 'convert amounts to organization currency' do
         expect(subject).to match_array [
           Date.current.strftime('%b, %Y'),
-          (transaction1.amount.cents / 100).round(2),
-          (transaction2.amount.cents / 100).round(2),
-          (transaction3.amount.exchange_to('RUB').cents / 100).round(2),
+          (transaction1.amount.cents.to_f / 100).round(2),
+          (transaction2.amount.cents.to_f / 100).round(2),
+          (transaction3.amount.exchange_to('RUB').cents.to_f / 100).round(2),
           '',
         ]
       end
@@ -210,8 +210,8 @@ describe StatisticData::ColumnsChart do
       it 'have data about transactions in current month' do
         expect(subject).to match_array [
           Date.current.strftime('%b, %Y'),
-          (transaction1.amount.cents / 100).round(2),
-          (transaction2.amount.cents / 100).round(2),
+          (transaction1.amount.cents.to_f / 100).round(2),
+          (transaction2.amount.cents.to_f / 100).round(2),
           '',
         ]
       end
@@ -231,8 +231,8 @@ describe StatisticData::ColumnsChart do
       it 'not rised error' do
         expect(subject).to match_array [
           Date.current.strftime('%b, %Y'),
-          (transaction1.amount.cents / 100).round(2),
-          (transaction2.amount.cents / 100).round(2),
+          (transaction1.amount.cents.to_f / 100).round(2),
+          (transaction2.amount.cents.to_f / 100).round(2),
           '',
         ]
       end
