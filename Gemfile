@@ -75,6 +75,7 @@ group :development do
   gem 'annotate', require: false
   gem 'web-console'
   gem 'listen', '~> 3.1.5'
+  gem 'ruby_audit'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'spring-commands-rspec'

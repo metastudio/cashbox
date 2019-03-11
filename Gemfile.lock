@@ -71,6 +71,9 @@ GEM
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
     builder (3.2.3)
+    bundler-audit (0.6.0)
+      bundler (~> 1.2)
+      thor (~> 0.18)
     byebug (10.0.0)
     capistrano (3.6.1)
       airbrussh (>= 1.0.0)
@@ -106,8 +109,8 @@ GEM
     capybara-select2 (1.0.1)
       capybara
       rspec
-    capybara-webkit (1.14.0)
-      capybara (>= 2.3.0, < 2.14.0)
+    capybara-webkit (1.15.1)
+      capybara (>= 2.3, < 4.0)
       json
     case_transform (0.2)
       activesupport
@@ -212,9 +215,9 @@ GEM
     mail (2.7.1)
       mini_mime (>= 0.1.1)
     method_source (0.9.2)
-    mime-types (3.1)
+    mime-types (3.2.2)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2016.0521)
+    mime-types-data (3.2018.0812)
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
@@ -259,7 +262,7 @@ GEM
       method_source (~> 0.9.0)
     pry-rails (0.3.6)
       pry (>= 0.10.4)
-    public_suffix (3.0.1)
+    public_suffix (3.0.3)
     puma (3.11.3)
     pundit (1.1.0)
       activesupport (>= 3.0.0)
@@ -333,6 +336,8 @@ GEM
       rspec-mocks (~> 3.8.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    ruby_audit (1.2.0)
+      bundler-audit (~> 0.6.0)
     ruby_dep (1.5.0)
     russian_central_bank (1.0.0)
       money (~> 6.0)
@@ -488,6 +493,7 @@ DEPENDENCIES
   rollbar (~> 2.15.5)
   rspec-collection_matchers
   rspec-rails
+  ruby_audit
   russian_central_bank
   sass-rails (~> 5.0.7)
   select2-rails (~> 3.5.9.3)
@@ -510,4 +516,4 @@ DEPENDENCIES
   wkhtmltopdf-binary (= 0.12.3.0)
 
 BUNDLED WITH
-   1.16.2
+   1.17.2
