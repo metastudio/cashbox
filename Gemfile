@@ -16,8 +16,8 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'therubyracer', platforms: :ruby
 
 # Asset libraries
-gem 'jquery-rails'
-gem 'bootstrap-sass', '~> 3.3.7'
+gem 'jquery-rails', '>= 4.3.4'
+gem 'bootstrap-sass', '~> 3.4.0'
 gem 'momentjs-rails'
 gem 'jquery-ui-rails'
 gem 'bootstrap-datepicker-rails', '= 1.6.4.1'
