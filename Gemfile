@@ -29,7 +29,7 @@ gem 'active_model_serializers', '~> 0.10.7'
 
 gem 'slim-rails', '>= 3.1.3'
 gem 'recursive-open-struct'
-gem 'devise', '~> 4.6.0'
+gem 'devise', '>= 4.6.0'
 gem 'simple_form', '>= 3.5.0'
 gem 'money-rails', '~> 1.10.0'
 gem 'kaminari', '>= 1.1.1'
@@ -56,7 +56,7 @@ gem 'redis', '~> 3' # up to v4 after upgrade rails > v5.0
 gem 'knock', '~> 1.4.2'
 gem 'apipie-rails', '>= 0.5.6'
 gem 'rack-cors', require: 'rack/cors'
-gem 'nokogiri', '~> 1.8.3'
+gem 'nokogiri', '>= 1.8.3'
 gem 'phony_rails'
 
 group :development, :test do
