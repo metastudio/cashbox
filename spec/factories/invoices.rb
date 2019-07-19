@@ -23,16 +23,16 @@ FactoryBot.define do
     organization
     customer
     customer_name
-    ends_at { Date.current }
-    currency 'RUB'
-    amount 500
+    ends_at  { Date.current }
+    currency { 'RUB' }
+    amount   { 500 }
 
     trait :with_items do
       invoice_items { create_list :invoice_item, 3 }
     end
 
     trait :unpaid do
-      paid_at nil
+      paid_at { nil }
     end
 
     trait :paid do
