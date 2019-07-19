@@ -35,8 +35,8 @@ FactoryBot.define do
     full_name
 
     transient do
-      organization       nil
-      owned_organization nil
+      organization       { nil }
+      owned_organization { nil }
     end
 
     after :create do |u, e|

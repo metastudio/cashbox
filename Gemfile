@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0.7.1'
+gem 'rails', '5.0.7.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
@@ -16,36 +16,36 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'therubyracer', platforms: :ruby
 
 # Asset libraries
-gem 'jquery-rails'
-gem 'bootstrap-sass', '~> 3.3.7'
-gem 'momentjs-rails'
-gem 'jquery-ui-rails'
+gem 'jquery-rails', '>= 4.3.4'
+gem 'bootstrap-sass', '~> 3.4.0'
+gem 'momentjs-rails', '>= 2.17.1'
+gem 'jquery-ui-rails', '>= 6.0.1'
 gem 'bootstrap-datepicker-rails', '= 1.6.4.1'
 gem 'select2-rails', '~> 3.5.9.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-gem 'active_model_serializers', '~> 0.10.0'
+gem 'active_model_serializers', '~> 0.10.7'
 
-gem 'slim-rails'
+gem 'slim-rails', '>= 3.1.3'
 gem 'recursive-open-struct'
-gem 'devise', '~> 4.4.1'
-gem 'simple_form'
+gem 'devise', '~> 4.6.0'
+gem 'simple_form', '>= 3.5.0'
 gem 'money-rails', '~> 1.10.0'
-gem 'kaminari'
+gem 'kaminari', '>= 1.1.1'
 gem 'pundit'
 gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
 gem "paranoia", "~> 2.2.0.pre"
-gem 'ransack'
+gem 'ransack', '>= 1.8.7'
 gem 'rollbar', '~> 2.15.5'
 gem 'acts_as_list'
-gem 'active_link_to'
+gem 'active_link_to', '>= 1.0.5'
 gem 'russian_central_bank'
-gem 'gon'
+gem 'gon', '>= 6.2.0'
 gem 'whenever', require: false
 gem 'cocoon'
-gem 'validates_overlap'
+gem 'validates_overlap', '>= 0.8.6'
 gem 'date_validator'
 gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary', '= 0.12.3.0'
@@ -54,18 +54,18 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis', '~> 3' # up to v4 after upgrade rails > v5.0
 # https://github.com/nsarno/knock/issues/104
 gem 'knock', '~> 1.4.2'
-gem 'apipie-rails'
+gem 'apipie-rails', '>= 0.5.6'
 gem 'rack-cors', require: 'rack/cors'
 gem 'nokogiri', '~> 1.8.3'
 gem 'phony_rails'
 
 group :development, :test do
-  gem 'rspec-rails'
+  gem 'rspec-rails', '>= 3.8.0'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
   gem 'faker'
-  gem 'factory_bot_rails'
+  gem 'factory_bot_rails', '>= 4.8.2'
 end
 
 group :development do
@@ -73,7 +73,7 @@ group :development do
   gem 'guard', require: false
   gem 'guard-rspec', require: false
   gem 'annotate', require: false
-  gem 'web-console'
+  gem 'web-console', '>= 3.5.1'
   gem 'listen', '~> 3.1.5'
   gem 'ruby_audit'
   gem 'spring'
