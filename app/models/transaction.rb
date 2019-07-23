@@ -36,13 +36,14 @@ class Transaction < ApplicationRecord
 
   attr_accessor :customer_name, :comission, :leave_open
 
-  belongs_to :category, inverse_of: :transactions
+  belongs_to :category, inverse_of: :transactions, optional: true
   belongs_to :bank_account, inverse_of: :transactions
-  belongs_to :customer, inverse_of: :transactions
-  belongs_to :invoice
+  belongs_to :customer, inverse_of: :transactions, optional: true
+  belongs_to :invoice, optional: true
   belongs_to :transfer_out, class_name: 'Transaction',
-    foreign_key: 'transfer_out_id', dependent: :destroy
-  belongs_to :created_by, class_name: 'User', inverse_of: :transactions, foreign_key: 'created_by_id'
+    foreign_key: 'transfer_out_id', dependent: :destroy, optional: true
+  belongs_to :created_by, class_name: 'User', inverse_of: :transactions,
+    foreign_key: 'created_by_id', optional: true
   has_one :transfer_in, class_name: 'Transaction', # rubocop:disable Rails/HasManyOrHasOneDependent TODO
     foreign_key: 'transfer_out_id'
   accepts_nested_attributes_for :transfer_out
@@ -74,7 +75,6 @@ class Transaction < ApplicationRecord
     presence:     true,
     numericality: { less_than_or_equal_to: Dictionaries.money_max, other_than: 0 }
   validate  :amount_balance, if: :bank_account
-  validates :category, presence: true, unless: :residue?
   validates :category_id, presence: true, unless: :residue?
   validates :bank_account, presence: true
   validates :bank_account_id, presence: true
@@ -110,7 +110,7 @@ class Transaction < ApplicationRecord
   before_save :sync_date, if: :transfer?
   before_save :calculate_amount, if: :comission
   after_restore :recalculate_amount
-  after_save :update_invoice_paid_at, if: :invoice
+  after_commit :update_invoice_paid_at, if: :invoice, on: %i[create update]
   after_save :recalculate_amount
   after_save :send_notification
   after_destroy :recalculate_amount
@@ -278,7 +278,10 @@ class Transaction < ApplicationRecord
   end
 
   def recalculate_amount
-    BankAccount.find(bank_account_id_was).recalculate_amount! if bank_account_id_changed? && bank_account_id_was.present?
+    if saved_change_to_bank_account_id? && previous_changes.key?('bank_account_id').present?
+      ba = BankAccount.find_by(id: previous_changes[:bank_account_id].first)
+      ba.recalculate_amount! if ba.present?
+    end
     bank_account.recalculate_amount!
     nil
   end
@@ -297,8 +300,7 @@ class Transaction < ApplicationRecord
   end
 
   def update_invoice_paid_at
-    organization.invoices.find_by(id: invoice_id).try(:update, { paid_at: date })
-    invoice.reload
+    invoice&.update(paid_at: date)
   end
 
   def amount_balance

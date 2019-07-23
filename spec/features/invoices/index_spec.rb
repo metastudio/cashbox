@@ -24,8 +24,8 @@ describe 'invoices index page' do
     end
 
     it "invoice index page displays current organization's invoices" do
-      expect(page).to have_content(invoice.customer)
-      expect(page).to_not have_content(other_invoice.customer)
+      expect(page).to have_content(invoice.customer_name)
+      expect(page).to_not have_content(other_invoice.customer_name)
     end
   end
 
@@ -95,9 +95,11 @@ describe 'invoices index page' do
       end
 
       it 'invoice paid_at must present' do
+        invoice.reload
         within "tr##{dom_id(invoice)} td.paid_at" do
-          expect(page).to have_content(invoice.paid_at)
+          expect(page).to have_content(I18n.l(invoice.paid_at))
         end
+        expect(invoice.paid_at).not_to be_nil
       end
     end
 

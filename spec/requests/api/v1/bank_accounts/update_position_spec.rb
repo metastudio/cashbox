@@ -25,7 +25,7 @@ describe 'PUT /api/organizations/#/bank_accounts/#/position' do
     before { put path, params: params, headers: auth_header(user) }
 
     it 'returns updated bank_account' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       bank_account1.reload
       bank_account2.reload
@@ -49,7 +49,7 @@ describe 'PUT /api/organizations/#/bank_accounts/#/position' do
     before { put path, params: params, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

@@ -1,7 +1,7 @@
 module RequestMacros
   module OrganizationInvitation
     def returns_organization_invitations
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json[0]).to include(
         'id'       => invitation.id,
         'email'    => invitation.email,
@@ -22,7 +22,7 @@ module RequestMacros
     end
 
     def returns_organization_invitation
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json).to include(
         'id'       => invitation.id,
         'email'    => invitation.email,

@@ -21,7 +21,7 @@ describe 'GET /api/organizations/#/total_balances' do
     before { get path, headers: auth_header(owner) }
 
     it 'returns total_balances' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'total_amount'     => organization.total_balances.first[:total_amount].as_json,
@@ -48,7 +48,7 @@ describe 'GET /api/organizations/#/total_balances' do
     before { get path, headers: auth_header(owner) }
 
     it 'returns organization' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'total_amount'     => organization.total_balances.first[:total_amount].as_json,

@@ -37,7 +37,7 @@ describe 'POST /api/organizations/#/transactions' do
   end
 
   it 'returns created transaction' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     transaction = Transaction.unscoped.last
     expect(transaction.bank_account_id).to eq bank_account.id
@@ -82,7 +82,7 @@ describe 'POST /api/organizations/#/transactions' do
     end
 
     it 'marks invoice as completed' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       invoice.reload
       expect(invoice).to be_completed
@@ -110,9 +110,9 @@ describe 'POST /api/organizations/#/transactions' do
       expect(response.code).to eq '422'
 
       expect(json_body.amount).to           eq ['must be other than 0']
-      expect(json_body.category).to         eq ['can\'t be blank']
+      expect(json_body.category).to         eq nil
       expect(json_body.category_id).to      eq ['can\'t be blank']
-      expect(json_body.bank_account).to     eq ['can\'t be blank']
+      expect(json_body.bank_account).to     eq ["must exist", "can't be blank"]
       expect(json_body.bank_account_id).to  eq ['can\'t be blank']
     end
   end

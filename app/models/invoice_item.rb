@@ -22,7 +22,7 @@ class InvoiceItem < ApplicationRecord
   customer_concern_callbacks
 
   belongs_to :invoice, inverse_of: :invoice_items
-  belongs_to :customer
+  belongs_to :customer, optional: true
 
   monetize :amount_cents, with_model_currency: :currency
   delegate :organization, to: :invoice

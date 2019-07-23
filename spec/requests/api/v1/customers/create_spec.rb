@@ -22,7 +22,7 @@ describe 'POST /api/organizations/#/customers' do
     before { post path, params: params, headers: auth_header(owner) }
 
     it 'returns created customer' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'id' => Customer.last.id,
@@ -40,7 +40,7 @@ describe 'POST /api/organizations/#/customers' do
       }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
 
         expect(json).to include "name" => ["can't be blank"]
       end
@@ -51,7 +51,7 @@ describe 'POST /api/organizations/#/customers' do
     before { post path, params: params, headers: auth_header(user) }
 
     it 'returns created customer' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'id' => Customer.last.id,

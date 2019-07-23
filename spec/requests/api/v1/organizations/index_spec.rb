@@ -17,7 +17,7 @@ describe 'GET /api/organizations' do
   end
 
   it 'returns organizations' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     expect(json_body.organizations.size).to eq 2
     expect(json_body.organizations.map(&:id)).to eq [org1, org2].map(&:id)

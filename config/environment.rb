@@ -2,4 +2,4 @@
 require_relative 'application'
 
 # Initialize the Rails application.
-Cashbox::Application.initialize!
+Rails.application.initialize!

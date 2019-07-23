@@ -14,7 +14,7 @@ describe 'GET /api/organizations/#' do
   end
 
   it 'returns organization' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     expect(json_body.organization).to be_organization_json(org)
   end

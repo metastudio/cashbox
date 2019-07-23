@@ -19,7 +19,7 @@ require 'rails_helper'
 describe InvoiceItem do
   context 'association' do
     it { is_expected.to belong_to(:invoice) }
-    it { is_expected.to belong_to(:customer) }
+    it { is_expected.to belong_to(:customer).optional }
     it { is_expected.to delegate_method(:organization).to(:invoice) }
   end
 

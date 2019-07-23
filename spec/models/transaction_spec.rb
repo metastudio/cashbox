@@ -22,17 +22,17 @@ require 'rails_helper'
 
 describe Transaction do
   context "association" do
-    it { should belong_to(:category) }
-    it { should belong_to(:bank_account) }
-    it { expect(subject).to belong_to(:customer) }
-    it { should have_one(:organization).through(:bank_account) }
-    it { should belong_to(:created_by) }
+    it { is_expected.to belong_to(:category).optional }
+    it { is_expected.to belong_to(:bank_account) }
+    it { is_expected.to belong_to(:customer).optional }
+    it { is_expected.to have_one(:organization).through(:bank_account) }
+    it { is_expected.to belong_to(:created_by).optional }
   end
 
   context "validation" do
-    it { should validate_presence_of(:category)     }
-    it { should validate_presence_of(:bank_account) }
-    it { should validate_numericality_of(:amount).is_less_than_or_equal_to(Dictionaries.money_max) }
+    it { is_expected.to validate_presence_of(:category_id)     }
+    it { is_expected.to validate_presence_of(:bank_account) }
+    it { is_expected.to validate_numericality_of(:amount).is_less_than_or_equal_to(Dictionaries.money_max) }
 
     context "custom" do
       subject { transaction }

@@ -1,19 +1,21 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0.7.2'
+gem 'rails', '5.2.3'
 
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 0.18'
+gem 'pg'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0.7'
+gem 'sass-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+
+gem 'bootsnap', require: false
 
 # Asset libraries
 gem 'jquery-rails', '>= 4.3.4'
@@ -36,7 +38,7 @@ gem 'kaminari', '>= 1.1.1'
 gem 'pundit'
 gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
-gem "paranoia", "~> 2.2.0.pre"
+gem "paranoia"
 gem 'ransack', '>= 1.8.7'
 gem 'rollbar', '~> 2.15.5'
 gem 'acts_as_list'
@@ -49,11 +51,10 @@ gem 'validates_overlap', '>= 0.8.6'
 gem 'date_validator'
 gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary', '= 0.12.3.0'
-gem 'puma', '~> 3.0'
+gem 'puma'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'redis', '~> 3' # up to v4 after upgrade rails > v5.0
-# https://github.com/nsarno/knock/issues/104
-gem 'knock', '~> 1.4.2'
+gem 'redis'
+gem 'knock'
 gem 'apipie-rails', '>= 0.5.6'
 gem 'rack-cors', require: 'rack/cors'
 gem 'nokogiri', '>= 1.8.3'
@@ -74,10 +75,10 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'annotate', require: false
   gem 'web-console', '>= 3.5.1'
-  gem 'listen', '~> 3.1.5'
+  gem 'listen'
   gem 'ruby_audit'
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring-watcher-listen'
   gem 'spring-commands-rspec'
 
   # Deployment
@@ -92,10 +93,12 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  gem 'capybara-webkit'
-  gem 'capybara', '~> 2.9.0'
+  # TODO: fix after release
+  # https://github.com/thoughtbot/capybara-webkit/issues/1065
+  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
+  gem 'capybara'
   gem 'capybara-email'
-  gem 'capybara-select2', '~> 1.0.1'
+  gem 'capybara-select2'
   gem 'capybara-screenshot'
   gem 'timecop'
   gem 'simplecov', require: false

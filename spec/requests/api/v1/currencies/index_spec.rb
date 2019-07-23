@@ -15,7 +15,7 @@ describe 'GET /api/currencies' do
     before { get path, headers: auth_header(user) }
 
     it 'returns currencies' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to eq %w[USD RUB EUR]
     end

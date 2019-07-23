@@ -63,7 +63,7 @@ describe 'GET /api/organizations/#/transactions/summary' do
   end
 
   it 'returns transactions summary' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     rub_json = json_body.transactions_summary.RUB
     expect(rub_json.income.to_h).to     eq rub_income.as_json
@@ -111,7 +111,7 @@ describe 'GET /api/organizations/#/transactions/summary' do
     end
 
     it 'returns summary for transactions only within this bank account' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json_body.transactions_summary).not_to respond_to 'RUB'
       expect(json_body.transactions_summary).not_to respond_to 'EUR'

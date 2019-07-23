@@ -31,7 +31,7 @@ describe 'GET /api/users/:id/update_profile' do
       end
 
       it 'return 200' do
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(response.code).to eq('200')
       end
 
@@ -86,7 +86,7 @@ describe 'GET /api/users/:id/update_profile' do
       end
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
         expect(response.code).to eq('422')
         expect(json).to include 'full_name' => ["can't be blank"]
         expect(json).to include 'profile' => { 'phone_number' => ['is an invalid number'] }

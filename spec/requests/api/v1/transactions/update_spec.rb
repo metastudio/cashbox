@@ -35,7 +35,7 @@ describe 'PUT /api/organizations/#/transactions/#' do
     before { put path, params: params, headers: auth_header(user) }
 
     it 'returns updated transaction' do
-      expect(response).to be_success
+      expect(response).to be_successful
       transaction.reload
       expect(json).to include(
         'id'      => transaction.id,
@@ -63,7 +63,7 @@ describe 'PUT /api/organizations/#/transactions/#' do
       }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
         expect(json).to include "bank_account_id" => ["is not associated with current organization"]
       end
     end
@@ -75,7 +75,7 @@ describe 'PUT /api/organizations/#/transactions/#' do
     before { put path, params: params, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

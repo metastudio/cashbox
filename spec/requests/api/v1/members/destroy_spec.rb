@@ -20,7 +20,7 @@ describe 'DELETE /api/organizations/#/members/#' do
       before { delete path, headers: auth_header(admin) }
 
       it 'delete member' do
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(response.body).to be_empty
 
         expect(Member.where(role: 'user').all).to eq []
@@ -31,7 +31,7 @@ describe 'DELETE /api/organizations/#/members/#' do
       before { delete path, headers: auth_header(owner) }
 
       it 'delete member' do
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(response.body).to be_empty
 
         expect(Member.where(role: 'user').all).to eq []
@@ -53,7 +53,7 @@ describe 'DELETE /api/organizations/#/members/#' do
       before { delete path, headers: auth_header(wrong_user) }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
         expect(json).to be_empty
       end
     end
@@ -99,7 +99,7 @@ describe 'DELETE /api/organizations/#/members/#' do
       before { delete path, headers: auth_header(wrong_user) }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
         expect(json).to be_empty
       end
     end
@@ -125,7 +125,7 @@ describe 'DELETE /api/organizations/#/members/#' do
       before { delete path, headers: auth_header(owner) }
 
       it 'delete member' do
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(response.body).to be_empty
 
         expect(Member.where(role: 'admin').all).to eq []
@@ -147,7 +147,7 @@ describe 'DELETE /api/organizations/#/members/#' do
       before { delete path, headers: auth_header(wrong_user) }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
         expect(json).to be_empty
       end
     end
