@@ -462,7 +462,7 @@ DEPENDENCIES
   cocoon
   database_cleaner
   date_validator
-  devise (~> 4.6.0)
+  devise (>= 4.6.0)
   enumerize
   factory_bot_rails (>= 4.8.2)
   faker
@@ -478,7 +478,7 @@ DEPENDENCIES
   listen
   momentjs-rails (>= 2.17.1)
   money-rails (~> 1.10.0)
-  nokogiri
+  nokogiri (>= 1.8.3)
   parallel_tests
   paranoia
   pg
