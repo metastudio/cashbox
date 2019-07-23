@@ -47,7 +47,6 @@ gem 'russian_central_bank'
 gem 'gon', '>= 6.2.0'
 gem 'whenever', require: false
 gem 'cocoon'
-gem 'validates_overlap', '>= 0.8.6'
 gem 'date_validator'
 gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary', '= 0.12.3.0'
