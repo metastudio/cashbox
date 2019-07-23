@@ -55,7 +55,7 @@ describe 'GET /api/organizations/#/statistics/income_customers' do
   end
 
   it 'returns income customer statistic for current month' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     statistic_json = json_body.statistic
 
@@ -81,7 +81,7 @@ describe 'GET /api/organizations/#/statistics/income_customers' do
     let(:params) { { period: 'last-month' } }
 
     it 'returns income categories statistic for provided period' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       statistic_json = json_body.statistic
 
@@ -110,7 +110,7 @@ describe 'GET /api/organizations/#/statistics/income_customers' do
     let!(:exp_customer_exp_transaction) {}
 
     it 'returns empty data' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       statistic_json = json_body.statistic
 

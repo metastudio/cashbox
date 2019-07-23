@@ -84,9 +84,9 @@ describe 'Filter transactions' do
 
       it 'display nil flow' do
         within '#flow' do
-          expect(page).to have_content("Income: #{amount}")
-          expect(page).to have_content("Expense: #{amount}")
-          expect(page).to have_content("Total: #{amount}")
+          expect(page).to have_content("Income:\t#{amount}")
+          expect(page).to have_content("Expense:\t#{amount}")
+          expect(page).to have_content("Total:\t#{amount}")
         end
       end
     end
@@ -106,7 +106,7 @@ describe 'Filter transactions' do
 
       it 'display correct total amount' do
         within '#flow' do
-          expect(page).to have_content("Total: #{amount}")
+          expect(page).to have_content("Total:\t#{amount}")
         end
       end
     end

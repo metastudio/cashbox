@@ -38,7 +38,7 @@ class Category < ApplicationRecord
 
   scope :ordered, -> { order(:type, :name) }
 
-  belongs_to :organization, inverse_of: :categories
+  belongs_to :organization, inverse_of: :categories, optional: true
   has_many :transactions, inverse_of: :category, dependent: :destroy
 
   validates :type, presence: true, inclusion: { in: CATEGORY_TYPES, message: '%{value} is not a valid category type' }

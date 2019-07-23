@@ -25,7 +25,7 @@ describe 'GET /api/organizations/#/transactions' do
   end
 
   it 'returns transactions' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     expect(json_body.transactions.size).to eq 3
     expect(json_body.transactions.map(&:id)).to eq [transfer_in.id, transaction.id, seen_transaction.id]
@@ -68,7 +68,7 @@ describe 'GET /api/organizations/#/transactions' do
     let(:path) { api_organization_transactions_path(organization, q: { bank_account_id_eq: bank_account.id }) }
 
     it 'includes out transaction for this bank account' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json_body.transactions.size).to eq 3
       expect(json_body.transactions.map(&:id)).to eq [transfer_in.id, transaction.id, seen_transaction.id]

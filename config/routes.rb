@@ -2,7 +2,7 @@
 
 require 'api_constraints'
 
-Cashbox::Application.routes.draw do
+Rails.application.routes.draw do
   apipie
   devise_for :users, controllers: { registrations: 'user/registrations' }
   as :user do

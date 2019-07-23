@@ -20,7 +20,7 @@ describe 'POST /api/users/password' do
     end
 
     it 'send reset password instruction' do
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json).to be_empty
 
       expect(ActionMailer::Base.deliveries.count).to eq 1
@@ -54,7 +54,7 @@ describe 'POST /api/users/password' do
     end
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to include("email" => ["not found"])
 
       expect(ActionMailer::Base.deliveries.count).to eq 0

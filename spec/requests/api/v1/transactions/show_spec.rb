@@ -32,7 +32,7 @@ describe 'GET /api/organizations/#/transactions/#' do
   end
 
   it 'returns transaction' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     invoice.reload
 

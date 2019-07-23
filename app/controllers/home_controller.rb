@@ -14,6 +14,7 @@ class HomeController < ApplicationController
     else
       @transactions = @transactions.without_out(@q.bank_account_id_in).page(params[:page]).per(50)
     end
+
     gon.curr_org_exch_rates = current_organization.exchange_rates
 
     session[:filter] = params[:q]

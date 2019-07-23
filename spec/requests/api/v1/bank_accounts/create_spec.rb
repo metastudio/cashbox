@@ -24,7 +24,7 @@ describe 'POST /api/organizations/#/bank_accounts' do
     before { post path, params: params, headers: auth_header(user) }
 
     it 'returns created bank account' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'id'       => BankAccount.last.id,
@@ -45,7 +45,7 @@ describe 'POST /api/organizations/#/bank_accounts' do
       }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
 
         expect(json).to include "name"     => ["can't be blank"]
         expect(json).to include "currency" => ["can't be blank", ' is not a valid currency']
@@ -58,7 +58,7 @@ describe 'POST /api/organizations/#/bank_accounts' do
     before { post path, params: params, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

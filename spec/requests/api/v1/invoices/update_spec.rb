@@ -64,7 +64,7 @@ describe 'PUT /api/organizations/#/invoices/#' do
     before { put path, params: params, headers: auth_header(user) }
 
     it 'returns updated invoice' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       invoice.reload
 
@@ -113,7 +113,7 @@ describe 'PUT /api/organizations/#/invoices/#' do
       let(:item2_customer_name) { nil }
 
       it 'returns error' do
-        expect(response).not_to be_success
+        expect(response).not_to be_successful
 
         expect(json).to include 'ends_at' => ["can't be blank", 'is not a date']
         expect(json).to include 'invoice_items' => {
@@ -130,7 +130,7 @@ describe 'PUT /api/organizations/#/invoices/#' do
     before { put path, params: params, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

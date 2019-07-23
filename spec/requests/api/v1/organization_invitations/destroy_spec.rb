@@ -17,7 +17,7 @@ describe 'DELETE /api/organizations/#/organization_invitations/#' do
     before { delete path, headers: auth_header(owner) }
 
     it 'delete transaction' do
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to be_empty
 
       expect(OrganizationInvitation.all).to eq []
@@ -28,7 +28,7 @@ describe 'DELETE /api/organizations/#/organization_invitations/#' do
     before { delete path, headers: auth_header(user) }
 
     it 'delete transaction' do
-      expect(response).not_to be_success
+      expect(response).not_to be_successful
     end
   end
 
@@ -38,7 +38,7 @@ describe 'DELETE /api/organizations/#/organization_invitations/#' do
     before { delete path, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

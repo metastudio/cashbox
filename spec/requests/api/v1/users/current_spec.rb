@@ -13,7 +13,7 @@ describe 'GET /api/user_info' do
     before { get path, headers: auth_header(user) }
 
     it 'returns current user information' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'id' => user.id,

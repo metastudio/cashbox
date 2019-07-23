@@ -19,7 +19,7 @@ describe 'GET /api/organizations/#/bank_accounts/visible' do
     before { get path, headers: auth_header(user) }
 
     it 'returns bank_accounts' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json.size).to eq 2
       expect(json[0]).to include(
@@ -49,7 +49,7 @@ describe 'GET /api/organizations/#/bank_accounts/visible' do
     before { get path, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end
