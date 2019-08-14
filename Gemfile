@@ -7,7 +7,7 @@ gem 'rails', '5.2.3'
 gem 'pg'
 
 # Use SCSS for stylesheets
-gem 'sass-rails'
+gem 'sass-rails', '>= 5.0.7'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -18,33 +18,33 @@ gem 'uglifier', '>= 1.3.0'
 gem 'bootsnap', require: false
 
 # Asset libraries
-gem 'jquery-rails', '>= 4.3.4'
+gem 'jquery-rails', '>= 4.3.5'
 gem 'bootstrap-sass', '~> 3.4.0'
-gem 'momentjs-rails', '>= 2.17.1'
+gem 'momentjs-rails', '>= 2.20.1'
 gem 'jquery-ui-rails', '>= 6.0.1'
 gem 'bootstrap-datepicker-rails', '= 1.6.4.1'
 gem 'select2-rails', '~> 3.5.9.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-gem 'active_model_serializers', '~> 0.10.7'
+gem 'active_model_serializers', '~> 0.10.10'
 
-gem 'slim-rails', '>= 3.1.3'
+gem 'slim-rails', '>= 3.2.0'
 gem 'recursive-open-struct'
-gem 'devise', '>= 4.6.0'
-gem 'simple_form', '>= 3.5.0'
+gem 'devise', '>= 4.6.2'
+gem 'simple_form', '>= 4.1.0'
 gem 'money-rails', '~> 1.10.0'
 gem 'kaminari', '>= 1.1.1'
 gem 'pundit'
 gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
 gem "paranoia"
-gem 'ransack', '>= 1.8.7'
+gem 'ransack', '>= 2.1.1'
 gem 'rollbar', '~> 2.15.5'
 gem 'acts_as_list'
 gem 'active_link_to', '>= 1.0.5'
 gem 'russian_central_bank'
-gem 'gon', '>= 6.2.0'
+gem 'gon', '>= 6.2.1'
 gem 'whenever', require: false
 gem 'cocoon'
 gem 'date_validator'
@@ -53,19 +53,19 @@ gem 'wkhtmltopdf-binary', '= 0.12.3.0'
 gem 'puma'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
-gem 'knock'
-gem 'apipie-rails', '>= 0.5.6'
+gem 'knock', '>= 2.1.1'
+gem 'apipie-rails', '>= 0.5.16'
 gem 'rack-cors', require: 'rack/cors'
-gem 'nokogiri', '>= 1.8.3'
+gem 'nokogiri', '>= 1.10.4'
 gem 'phony_rails'
 
 group :development, :test do
-  gem 'rspec-rails', '>= 3.8.0'
+  gem 'rspec-rails', '>= 3.8.2'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
   gem 'faker'
-  gem 'factory_bot_rails', '>= 4.8.2'
+  gem 'factory_bot_rails', '>= 5.0.2'
 end
 
 group :development do
@@ -73,7 +73,7 @@ group :development do
   gem 'guard', require: false
   gem 'guard-rspec', require: false
   gem 'annotate', require: false
-  gem 'web-console', '>= 3.5.1'
+  gem 'web-console', '>= 3.7.0'
   gem 'listen'
   gem 'ruby_audit'
   gem 'spring'
@@ -95,10 +95,10 @@ group :test do
   # TODO: fix after release
   # https://github.com/thoughtbot/capybara-webkit/issues/1065
   gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
-  gem 'capybara'
-  gem 'capybara-email'
-  gem 'capybara-select2'
-  gem 'capybara-screenshot'
+  gem 'capybara', '>= 3.26.0'
+  gem 'capybara-email', '>= 3.0.1'
+  gem 'capybara-select2', '>= 1.0.1'
+  gem 'capybara-screenshot', '>= 1.0.23'
   gem 'timecop'
   gem 'simplecov', require: false
 end
