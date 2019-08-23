@@ -40,7 +40,7 @@ gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
 gem "paranoia"
 gem 'ransack', '>= 1.8.7'
-gem 'rollbar', '~> 2.15.5'
+gem 'rollbar', '~> 2.15', '>= 2.15.5'
 gem 'acts_as_list'
 gem 'active_link_to', '>= 1.0.5'
 gem 'russian_central_bank'
