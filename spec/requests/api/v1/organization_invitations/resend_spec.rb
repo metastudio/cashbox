@@ -20,7 +20,7 @@ describe 'POST /api/organizations/#/organization_invitations/#/resend' do
     end
 
     it 'resend transaction' do
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to be_empty
 
       expect(ActionMailer::Base.deliveries.count).to eq(1)
@@ -31,7 +31,7 @@ describe 'POST /api/organizations/#/organization_invitations/#/resend' do
     before { post path, headers: auth_header(user) }
 
     it 'returns error' do
-      expect(response).not_to be_success
+      expect(response).not_to be_successful
     end
   end
 
@@ -41,7 +41,7 @@ describe 'POST /api/organizations/#/organization_invitations/#/resend' do
     before { post path, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

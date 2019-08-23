@@ -9,25 +9,25 @@ FactoryBot.define do
     organization
 
     trait :admin do
-      role 'admin'
+      role { :admin }
     end
 
     trait :owner do
-      role :owner
+      role { :owner }
     end
 
     trait :user do
-      role :user
+      role { :user }
     end
   end
 
   sequence(:bank_account_name) { |n| "Bank account #{n}" }
   factory :bank_account do
     organization
-    name { generate :bank_account_name }
+    name            { generate :bank_account_name }
     invoice_details { generate :invoice_details }
-    balance 0
-    currency 'RUB'
+    balance         { 0 }
+    currency        { 'RUB' }
 
     trait :with_transactions do
       after(:create) { |b| create_list :transaction, 2, bank_account: b, amount: 50_000 }
@@ -42,26 +42,26 @@ FactoryBot.define do
   factory :category do
     organization
     name { generate :category_name }
-    type 'Income'
+    type { 'Income' }
 
     trait :income do
-      type 'Income'
+      type { 'Income' }
     end
 
     trait :expense do
-      type 'Expense'
+      type { 'Expense' }
     end
 
     trait :transfer do
-      type 'Expense'
-      name 'Transfer'
-      system true
+      type   { 'Expense' }
+      name   { 'Transfer' }
+      system { true }
     end
 
     trait :receipt do
-      type 'Income'
-      name 'Receipt'
-      system true
+      type   { 'Income' }
+      name   { 'Receipt' }
+      system { true }
     end
   end
 
@@ -69,7 +69,7 @@ FactoryBot.define do
 
   factory :customer do
     organization
-    name { generate :customer_name }
+    name            { generate :customer_name }
     invoice_details { generate :invoice_details }
   end
 

@@ -18,11 +18,11 @@ FactoryBot.define do
     name { generate :organization_name }
 
     transient do
-      user                  nil
-      owner                 nil
-      with_user             nil
-      without_bank_accounts false
-      without_categories    false
+      user                  { nil }
+      owner                 { nil }
+      with_user             { nil }
+      without_bank_accounts { false }
+      without_categories    { false }
     end
 
     after(:create) do |org, evaluator|

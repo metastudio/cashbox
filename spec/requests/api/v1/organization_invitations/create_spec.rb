@@ -24,7 +24,7 @@ describe 'POST /api/organizations/#/organization_invitations' do
     before { post path, params: params, headers: auth_header(owner) }
 
     it 'create the organization invitation' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'id' => OrganizationInvitation.last.id,
@@ -49,7 +49,7 @@ describe 'POST /api/organizations/#/organization_invitations' do
     before { post path, params: params, headers: auth_header(user) }
 
     it 'create the organization invitation' do
-      expect(response).not_to be_success
+      expect(response).not_to be_successful
     end
   end
 
@@ -58,7 +58,7 @@ describe 'POST /api/organizations/#/organization_invitations' do
     before { post path, params: params, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

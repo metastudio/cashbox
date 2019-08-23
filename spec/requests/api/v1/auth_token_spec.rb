@@ -9,7 +9,7 @@ describe 'POST /api/auth_token' do
     it 'returns jwt' do
       post '/api/auth_token', params: { auth: { email: user.email, password: 'password' } }
 
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json['jwt']).to be_present
     end
   end

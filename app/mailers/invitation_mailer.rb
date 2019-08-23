@@ -6,11 +6,11 @@ class InvitationMailer < ActionMailer::Base
   end
 
   def new_invitation(invitation)
-    invitaton_global(invitation)
+    invitation_global(invitation)
   end
 
   def resend_invitation(invitation)
-    invitaton_global(invitation)
+    invitation_global(invitation)
   end
 
   def resend_invitation_to_organization(invitation)
@@ -19,7 +19,7 @@ class InvitationMailer < ActionMailer::Base
 
   private
 
-  def invitaton_global(invitation)
+  def invitation_global(invitation)
     @invitation = invitation
     @unsubscribe = Unsubscribe.find_or_create_by(email: @invitation.email)
     unless @unsubscribe.active?

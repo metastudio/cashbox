@@ -20,7 +20,7 @@ class InvitationBase < ApplicationRecord
 
   has_secure_token :token
 
-  belongs_to :user, primary_key: :email, foreign_key: :email, inverse_of: :invitations
+  belongs_to :user, primary_key: :email, foreign_key: :email, inverse_of: :invitations, optional: true
 
   validates :email, presence: true
   validates :email, format: { with: Devise.email_regexp, message: "invalid format" }

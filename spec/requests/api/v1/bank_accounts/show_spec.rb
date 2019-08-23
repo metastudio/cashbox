@@ -15,7 +15,7 @@ describe 'GET /api/organizations/#/bank_accounts/#' do
     before { get path, headers: auth_header(user) }
 
     it 'returns bank_account' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'id'          => bank_account.id,
@@ -34,7 +34,7 @@ describe 'GET /api/organizations/#/bank_accounts/#' do
     before { get path, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

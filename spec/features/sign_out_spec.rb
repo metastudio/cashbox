@@ -7,11 +7,11 @@ describe 'sign out proccess' do
 
   before :each do
     sign_in user
-    click_on user
-    click_on("Sign out")
+    click_on user.to_s
+    click_on 'Sign out'
   end
 
-  it "signs out me", js: true do
-    expect(subject).to have_content("Sign in")
+  it 'signs out me', js: true do
+    is_expected.to have_content('Sign in')
   end
 end

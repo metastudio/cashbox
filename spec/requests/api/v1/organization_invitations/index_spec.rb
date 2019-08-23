@@ -35,7 +35,7 @@ describe 'GET /api/organizations/#/organization_invitations' do
     before { get path, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

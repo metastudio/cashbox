@@ -22,8 +22,8 @@ FactoryBot.define do
   factory :invoice_item do
     invoice
     customer_name
-    amount      Money.from_amount(5.00)
-    hours       0.5
-    description { generate :invoice_item_description }
+    amount        { Money.from_amount(5.00) }
+    hours         { 0.5 }
+    description   { generate :invoice_item_description }
   end
 end

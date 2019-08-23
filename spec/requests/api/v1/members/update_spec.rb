@@ -23,7 +23,7 @@ describe 'PUT /api/organizations/#/members/#' do
     before { put path, params: params, headers: auth_header(admin) }
 
     it 'returns updated member' do
-      expect(response).to be_success
+      expect(response).to be_successful
       user_member.reload
       expect(json).to be_empty
       expect(user_member.role).to eq :admin
@@ -34,7 +34,7 @@ describe 'PUT /api/organizations/#/members/#' do
     before { put path, params: params, headers: auth_header(owner) }
 
     it 'returns updated member' do
-      expect(response).to be_success
+      expect(response).to be_successful
       user_member.reload
       expect(json).to be_empty
       expect(user_member.role).to eq :admin
@@ -46,7 +46,7 @@ describe 'PUT /api/organizations/#/members/#' do
       }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
         expect(json).to include "role" => ["is not included in the list"]
       end
     end
@@ -67,7 +67,7 @@ describe 'PUT /api/organizations/#/members/#' do
     before { put path, params: params, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

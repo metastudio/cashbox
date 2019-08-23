@@ -2,7 +2,7 @@
 
 module Api::V1
   class AuthTokenController < BaseController
-    skip_before_action :authenticate
+    skip_before_action :authenticate_user
     before_action :authenticate_by_credentials!
 
     api :POST, '/auth_token', 'Create auth token'
@@ -17,7 +17,8 @@ module Api::V1
     private
 
     def authenticate_by_credentials!
-      result = AuthenticateUserService.perform(auth_params[Knock.handle_attr], auth_params[:password])
+      result = AuthenticateUserService.perform(auth_params[:email], auth_params[:password])
+
       if result.success?
         @auth_token = result.payload
       else
@@ -26,7 +27,7 @@ module Api::V1
     end
 
     def auth_params
-      params.require(:auth).permit Knock.handle_attr, :password
+      params.require(:auth).permit :email, :password
     end
   end
 end

@@ -43,7 +43,7 @@ describe 'GET /api/organizations/#/statistics/balance' do
   end
 
   it 'returns balance statistic by months' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     statistic_json = json_body.statistic
 

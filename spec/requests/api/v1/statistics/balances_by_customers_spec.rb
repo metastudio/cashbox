@@ -75,7 +75,7 @@ describe 'GET /api/organizations/#/statistics/balances_by_customers' do
   end
 
   it 'returns balances by customers statistic for current month' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     statistic_json = json_body.statistic
     expect(statistic_json.data.map(&:to_h)).to eq([
@@ -112,7 +112,7 @@ describe 'GET /api/organizations/#/statistics/balances_by_customers' do
     let(:customer2_expense) { 0 }
 
     it 'returns totals by customers statistic for provided period' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       statistic_json = json_body.statistic
 
@@ -149,7 +149,7 @@ describe 'GET /api/organizations/#/statistics/balances_by_customers' do
     let!(:customer2_transaction1) {}
 
     it 'returns empty data' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       statistic_json = json_body.statistic
 
