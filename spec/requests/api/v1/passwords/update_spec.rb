@@ -27,7 +27,7 @@ describe 'PUT /api/users/password' do
     end
 
     it 'updates password' do
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json).to be_empty
     end
   end
@@ -45,7 +45,7 @@ describe 'PUT /api/users/password' do
     before { put path, params: params, headers: auth_header(nil) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to include("reset_password_token" => ["can't be blank"])
     end
   end
@@ -64,7 +64,7 @@ describe 'PUT /api/users/password' do
     before { put path, params: params, headers: auth_header(nil) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to include("password_confirmation" => ["doesn't match Password"])
     end
   end
@@ -83,7 +83,7 @@ describe 'PUT /api/users/password' do
     before { put path, params: params, headers: auth_header(nil) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to include("password" => ["is too short (minimum is 6 characters)"])
     end
   end

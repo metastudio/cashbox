@@ -78,6 +78,20 @@ class Api::V1::StatisticsController < Api::V1::BaseOrganizationController
     }
   end
 
+  def income_customers_by_months
+    data = StatisticData::ColumnsChart.new(current_organization).customers_by_months('income')
+    render json: {
+      statistic: CustomersByMonthsStatisticSerializer.new(current_organization, data),
+    }
+  end
+  
+  def expense_customers_by_months
+    data = StatisticData::ColumnsChart.new(current_organization).customers_by_months('expense')
+    render json: {
+      statistic: CustomersByMonthsStatisticSerializer.new(current_organization, data),
+    }
+  end
+
   private
 
   def authorize_statistic

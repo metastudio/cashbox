@@ -28,7 +28,7 @@ describe 'PUT /api/users/#' do
     before { put path, params: params, headers: auth_header(user) }
 
     it 'returns updated transaction' do
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(json).to include(
         'id' => user.id,
         'email' => newemail

@@ -11,7 +11,7 @@ module Api::V1
 
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate_user!
-    before_action :authenticate
+    before_action :authenticate_user
 
     respond_to :json
 
@@ -40,6 +40,18 @@ module Api::V1
     end
 
     private
+
+    # overwrite current_user added by devise with
+    # a method for knock (gem would add this if it were not already defined)
+    # https://github.com/nsarno/knock/issues/220
+    def current_user
+      @current_user ||=
+        begin
+          Knock::AuthToken.new(token: @auth_token.token).entity_for(User)
+        rescue
+          nil
+        end
+    end
 
     def pundit_user
       current_user

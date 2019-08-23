@@ -81,16 +81,16 @@ describe 'update transaction', js: true do
       find("##{dom_id(transaction)} .comment").click
       page.has_css?("##{dom_id(transaction, :edit)}")
       within "##{dom_id(transaction, :edit)}" do
-        select new_account, from: 'transaction[bank_account_id]'
+        select new_account.name, from: 'transaction[bank_account_id]'
       end
       click_on 'Update'
       page.has_content?(/(Please review the problems below)/) # wait
     end
 
     it "recalculate boths account's balances" do
-      expect(subject).to have_css("##{dom_id(new_account)} td.amount",
+      is_expected.to have_css("##{dom_id(new_account)} td.amount",
         text: money_with_symbol(amount))
-      expect(subject).to have_css("##{dom_id(old_account)} td.amount",
+      is_expected.to have_css("##{dom_id(old_account)} td.amount",
         text: money_with_symbol(0))
     end
   end
@@ -107,8 +107,8 @@ describe 'update transaction', js: true do
       click_on 'Add...'
       page.has_content?(/(Please review the problems below)/) # wait
       click_on 'Transfer'
-      select usd_account, from: 'transfer[bank_account_id]'
-      select rub_account, from: 'transfer[reference_id]'
+      select usd_account.name, from: 'transfer[bank_account_id]'
+      select rub_account.name, from: 'transfer[reference_id]'
       fill_in 'transfer[amount]', with: amount
       fill_in 'transfer[calculate_sum]', with: calculate_sum
       page.execute_script("$(\'input[name=\"transfer[exchange_rate]\"]\').trigger(\'focus\')")

@@ -57,7 +57,7 @@ describe 'create transfer transaction', js: true do
         within '.transactions' do
           expect(page).to have_content(amount_str)
           expect(page).to_not have_content('Transfer out')
-          expect(page).to have_content(comment + "\nComission: " + comission_str)
+          expect(page).to have_content(comment + " Comission: " + comission_str)
         end
       end
 
@@ -191,8 +191,8 @@ describe 'create transfer transaction', js: true do
     it 'show transaction with calculate sum in transactions list and appends rate and comission to the comment' do
       within '.transactions' do
         expect(page).to have_content(money_with_symbol(sum))
-        expect(page).to have_content(comment + "\nComission: " + comission_str)
-        expect(page).to have_content("\nRate: #{(sum.to_d / amount.to_d).round(2)}")
+        expect(page).to have_content(comment + " Comission: " + comission_str)
+        expect(page).to have_content("Rate: #{(sum.to_d / amount.to_d).round(2)}")
       end
     end
   end

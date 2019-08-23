@@ -36,7 +36,7 @@ describe 'POST /api/organizations/#/transactions/transfer' do
     before { post path, params: params, headers: auth_header(user) }
 
     it 'returns ok and creates transfer' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(organization.transactions.count).to eq 2
 
@@ -66,7 +66,7 @@ describe 'POST /api/organizations/#/transactions/transfer' do
       end
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
 
         expect(json).to include 'amount' => ['must be other than 0']
         expect(json).to include 'bank_account_id' => ['can\'t be blank']
@@ -80,7 +80,7 @@ describe 'POST /api/organizations/#/transactions/transfer' do
     before { post path, params: params, headers: auth_header(wrong_user) }
 
     it 'returns error' do
-      expect(response).to_not be_success
+      expect(response).to_not be_successful
       expect(json).to be_empty
     end
   end

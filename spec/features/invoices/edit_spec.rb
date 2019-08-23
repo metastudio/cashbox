@@ -4,7 +4,7 @@ describe 'Edit invoice', js: true do
   let(:user)          { create :user }
   let!(:organization) { create :organization, with_user: user }
   let!(:customer)     { create :customer, organization: organization }
-  let!(:invoice)      { create :invoice, organization: organization, customer: customer }
+  let!(:invoice)      { create :invoice, organization: organization, customer: customer, number: 'A123' }
 
   before do
     sign_in user
@@ -17,7 +17,7 @@ describe 'Edit invoice', js: true do
     end
 
     it 'has edit text, invoice items title and add item link' do
-      expect(page).to have_content "Invoice #{invoice.number} #{invoice.customer} / Edit"
+      expect(page).to have_content "Invoice ##{invoice.number} #{invoice.customer} / Edit"
       expect(page).to have_content 'Invoice items'
       expect(page).to have_link 'Add item'
     end

@@ -36,13 +36,13 @@ describe 'Invoice show page' do
       end
 
       it 'show Invoice details' do
-        expect(subject).to have_content('Invoice')
-        expect(subject).to have_content(I18n.l(invoice.ends_at))
-        expect(subject).to have_content(money_with_symbol(invoice.amount))
-        expect(subject).to have_content(invoice.invoice_items.last.customer.to_s)
-        expect(subject).to have_content(invoice.customer.invoice_details)
-        expect(subject).to have_content(invoice.organization.bank_accounts.first.invoice_details)
-        expect(subject).to have_content("Invoice ##{invoice.number}")
+        is_expected.to have_content('Invoice')
+        is_expected.to have_content(I18n.l(invoice.ends_at))
+        is_expected.to have_content(money_with_symbol(invoice.amount))
+        is_expected.to have_content(invoice.invoice_items.last.customer.to_s)
+        is_expected.to have_content(invoice.customer.invoice_details.to_s)
+        is_expected.to have_content(invoice.organization.bank_accounts.first.invoice_details)
+        is_expected.to have_content("Invoice ##{invoice.number}")
       end
     end
 

@@ -13,7 +13,7 @@ describe 'DELETE /api/users/#' do
     before { delete path, headers: auth_header(user) }
 
     it 'delete transaction' do
-      expect(response).to be_success
+      expect(response).to be_successful
       expect(response.body).to be_empty
 
       expect(User.all).to eq []

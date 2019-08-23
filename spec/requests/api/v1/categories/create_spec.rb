@@ -23,7 +23,7 @@ describe 'POST /api/organizations/#/categories' do
     before { post path, params: params, headers: auth_header(owner) }
 
     it 'returns created category' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'id' => Category.last.id,
@@ -43,7 +43,7 @@ describe 'POST /api/organizations/#/categories' do
       }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
 
         expect(json).to include "name" => ["can't be blank"]
         expect(json).to include "type" => ["can't be blank", " is not a valid category type"]
@@ -55,7 +55,7 @@ describe 'POST /api/organizations/#/categories' do
     before { post path, params: params, headers: auth_header(user) }
 
     it 'returns created category' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       expect(json).to include(
         'id' => Category.last.id,
@@ -75,7 +75,7 @@ describe 'POST /api/organizations/#/categories' do
       }
 
       it 'returns error' do
-        expect(response).to_not be_success
+        expect(response).to_not be_successful
 
         expect(json).to include "name" => ["can't be blank"]
         expect(json).to include "type" => ["can't be blank", " is not a valid category type"]

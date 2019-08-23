@@ -14,7 +14,7 @@
 class Unsubscribe < ApplicationRecord
   has_secure_token :token
 
-  belongs_to :user, inverse_of: :unsubscribe
+  belongs_to :user, inverse_of: :unsubscribe, optional: true
 
   validates :email, presence: true
   validates :email, uniqueness: true

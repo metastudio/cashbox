@@ -26,7 +26,7 @@ describe 'PUT /api/organizations/#' do
   end
 
   it 'updates organization' do
-    expect(response).to be_success
+    expect(response).to be_successful
 
     org.reload
     expect(org.name).to             eq name
@@ -39,7 +39,7 @@ describe 'PUT /api/organizations/#' do
     let(:name) { '' }
 
     it 'returns error' do
-      expect(response).not_to be_success
+      expect(response).not_to be_successful
 
       expect(json_body.name).to eq ['can\'t be blank']
     end

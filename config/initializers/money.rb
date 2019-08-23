@@ -1,4 +1,5 @@
-# encoding : utf-8
+# frozen_string_literal: true
+
 require './lib/russian_central_bank_safe.rb'
 
 MoneyRails.configure do |config|

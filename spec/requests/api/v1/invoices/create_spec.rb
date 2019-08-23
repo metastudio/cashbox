@@ -60,7 +60,7 @@ describe 'POST /api/organizations/#/invoices' do
     before { post path, params: params, headers: auth_header(user) }
 
     it 'returns created invoice' do
-      expect(response).to be_success
+      expect(response).to be_successful
 
       invoice = Invoice.unscoped.last
 
@@ -106,7 +106,7 @@ describe 'POST /api/organizations/#/invoices' do
       let(:item2_customer_name) { nil }
 
       it 'returns error' do
-        expect(response).not_to be_success
+        expect(response).not_to be_successful
 
         expect(json).to include 'ends_at' => ["can't be blank", 'is not a date']
         expect(json).to include 'invoice_items' => {

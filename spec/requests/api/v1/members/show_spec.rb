@@ -18,7 +18,7 @@ describe 'GET /api/organizations/#/members/#' do
 
     context 'user belongs to member\'s organization' do
       it 'returns invoice' do
-        expect(response).to be_success
+        expect(response).to be_successful
 
         expect(json).to include(
           'id'              => member.id,

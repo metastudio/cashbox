@@ -25,8 +25,8 @@ describe 'Statistics' do
     it { expect(page).to have_link('Invoices')}
 
     it 'Statistics is active by def' do
-      expect(page).to have_css('.active', text: 'Income by categories Expense by categories')
-      expect(page).to have_css('.active', text: 'Income by customers Expense by customers')
+      expect(page).to have_css('.active', text: 'Income by categorie')
+      expect(page).to have_css('.active', text: 'Income by customers')
     end
 
     context 'when switch to other setting' do

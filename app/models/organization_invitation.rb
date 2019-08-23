@@ -22,7 +22,7 @@ class OrganizationInvitation < InvitationBase
     message: "Should be in user, admin, owner"}
   validate :email_uniq_in_organization
 
-  delegate :organization, to: :invited_by
+  delegate :organization, to: :invited_by, allow_nil: true
 
   after_create :send_invitation
 
@@ -51,6 +51,8 @@ class OrganizationInvitation < InvitationBase
   private
 
   def email_uniq_in_organization
+    return if organization.blank?
+
     unless organization.invitations.where(email: email).empty?
       errors.add(:email, "An invitation has already been sent")
     end
