@@ -56,7 +56,7 @@ gem 'redis'
 gem 'knock'
 gem 'apipie-rails', '>= 0.5.6'
 gem 'rack-cors', require: 'rack/cors'
-gem 'nokogiri', '>= 1.8.3'
+gem 'nokogiri', '>= 1.10.4'
 gem 'phony_rails'
 
 group :development, :test do
