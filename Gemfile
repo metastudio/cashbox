@@ -31,7 +31,7 @@ gem 'active_model_serializers', '~> 0.10.10'
 
 gem 'slim-rails', '>= 3.2.0'
 gem 'recursive-open-struct'
-gem 'devise', '>= 4.6.2'
+gem 'devise', '>= 4.7.1'
 gem 'simple_form', '>= 4.1.0'
 gem 'money-rails', '~> 1.10.0'
 gem 'kaminari', '>= 1.1.1'
