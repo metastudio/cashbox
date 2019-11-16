@@ -55,7 +55,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
 gem 'knock', '>= 2.1.1'
 gem 'apipie-rails', '>= 0.5.16'
-gem 'rack-cors', require: 'rack/cors'
+gem 'rack-cors', '1.0.5'
 gem 'nokogiri', '>= 1.10.4'
 gem 'phony_rails'
 
