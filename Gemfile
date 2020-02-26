@@ -56,7 +56,7 @@ gem 'redis'
 gem 'knock', '>= 2.1.1'
 gem 'apipie-rails', '>= 0.5.16'
 gem 'rack-cors', require: 'rack/cors'
-gem 'nokogiri', '>= 1.10.4'
+gem 'nokogiri', '>= 1.10.8'
 gem 'phony_rails'
 
 group :development, :test do
@@ -95,7 +95,7 @@ group :test do
   # TODO: fix after release
   # https://github.com/thoughtbot/capybara-webkit/issues/1065
   gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
-  gem 'capybara', '>= 3.26.0'
+  gem 'capybara', '>= 3.28.0'
   gem 'capybara-email', '>= 3.0.1'
   gem 'capybara-select2', '>= 1.0.1'
   gem 'capybara-screenshot', '>= 1.0.23'
