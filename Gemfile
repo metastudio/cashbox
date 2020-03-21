@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.3'
+gem 'rails', '5.2.4.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -86,7 +86,7 @@ group :development do
   gem 'capistrano-bundler', '~> 1.1.4', require: false
   gem 'capistrano-rvm',   '~> 0.1.2', require: false
   gem 'capistrano3-unicorn', '~> 0.2.1', require: false
-  gem 'slackistrano', '~> 0.1.0', require: false
+  gem 'slackistrano', '~> 0.1.12', require: false
 end
 
 group :test do
@@ -100,7 +100,7 @@ group :test do
   gem 'capybara-select2', '>= 1.0.1'
   gem 'capybara-screenshot', '>= 1.0.23'
   gem 'timecop'
-  gem 'simplecov', require: false
+  gem 'simplecov', '>= 0.17.0', require: false
 end
 
 group :staging do
