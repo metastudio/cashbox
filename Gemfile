@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.3'
+gem 'rails', '5.2.4.3'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -26,7 +26,7 @@ gem 'bootstrap-datepicker-rails', '= 1.6.4.1'
 gem 'select2-rails', '~> 3.5.9.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.9', '>= 2.9.1'
 gem 'active_model_serializers', '~> 0.10.10'
 
 gem 'slim-rails', '>= 3.2.0'
@@ -35,19 +35,19 @@ gem 'devise', '>= 4.6.2'
 gem 'simple_form', '>= 4.1.0'
 gem 'money-rails', '~> 1.10.0'
 gem 'kaminari', '>= 1.1.1'
-gem 'pundit'
-gem 'enumerize'
-gem 'has_secure_token', '~>0.0.2'
-gem 'paranoia'
+gem 'pundit', '>= 2.0.1'
+gem 'enumerize', '>= 2.3.1'
+gem 'has_secure_token', '~> 0.0.2'
+gem 'paranoia', '>= 2.4.2'
 gem 'ransack', '>= 2.1.1'
 gem 'rollbar', '~> 2.15', '>= 2.15.5'
-gem 'acts_as_list'
+gem 'acts_as_list', '>= 0.9.19'
 gem 'active_link_to', '>= 1.0.5'
 gem 'russian_central_bank'
 gem 'gon', '>= 6.2.1'
 gem 'whenever', require: false
 gem 'cocoon'
-gem 'date_validator'
+gem 'date_validator', '>= 0.9.0'
 gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary', '= 0.12.3.0'
 gem 'puma'
@@ -57,7 +57,7 @@ gem 'knock', '>= 2.1.1'
 gem 'apipie-rails', '>= 0.5.16'
 gem 'rack-cors', require: 'rack/cors'
 gem 'nokogiri', '>= 1.10.4'
-gem 'phony_rails'
+gem 'phony_rails', '>= 0.14.13'
 
 group :development, :test do
   gem 'rspec-rails', '>= 3.8.2'
@@ -72,7 +72,7 @@ group :development do
   gem 'pry-rails'
   gem 'guard', require: false
   gem 'guard-rspec', require: false
-  gem 'annotate', require: false
+  gem 'annotate', '>= 2.7.5', require: false
   gem 'web-console', '>= 3.7.0'
   gem 'listen'
   gem 'ruby_audit'
@@ -91,7 +91,7 @@ end
 
 group :test do
   gem 'database_cleaner'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '>= 4.1.1'
   # TODO: fix after release
   # https://github.com/thoughtbot/capybara-webkit/issues/1065
   gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
