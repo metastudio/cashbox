@@ -18,7 +18,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'bootsnap', require: false
 
 # Asset libraries
-gem 'jquery-rails', '>= 4.3.5'
+gem 'jquery-rails', '>= 4.4.0'
 gem 'bootstrap-sass', '~> 3.4.0'
 gem 'momentjs-rails', '>= 2.20.1'
 gem 'jquery-ui-rails', '>= 6.0.1'
@@ -95,7 +95,7 @@ group :test do
   # TODO: fix after release
   # https://github.com/thoughtbot/capybara-webkit/issues/1065
   gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
-  gem 'capybara', '>= 3.26.0'
+  gem 'capybara', '>= 3.28.0'
   gem 'capybara-email', '>= 3.0.1'
   gem 'capybara-select2', '>= 1.0.1'
   gem 'capybara-screenshot', '>= 1.0.23'
