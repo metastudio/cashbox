@@ -44,7 +44,7 @@ gem 'rollbar', '~> 2.15', '>= 2.15.5'
 gem 'acts_as_list'
 gem 'active_link_to', '>= 1.0.5'
 gem 'russian_central_bank'
-gem 'gon', '>= 6.2.1'
+gem 'gon', '>= 6.4.0'
 gem 'whenever', require: false
 gem 'cocoon'
 gem 'date_validator'
