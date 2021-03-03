@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.3'
+gem 'rails', '6.0.3.5'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '>= 5.0.7'
+gem 'sass-rails', '>= 5.0.8'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -31,17 +31,17 @@ gem 'active_model_serializers', '~> 0.10.10'
 
 gem 'slim-rails', '>= 3.2.0'
 gem 'recursive-open-struct'
-gem 'devise', '>= 4.6.2'
+gem 'devise', '>= 4.7.0'
 gem 'simple_form', '>= 4.1.0'
 gem 'money-rails', '~> 1.10.0'
 gem 'kaminari', '>= 1.1.1'
 gem 'pundit'
 gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
-gem 'paranoia'
+gem 'paranoia', '>= 2.4.2'
 gem 'ransack', '>= 2.1.1'
 gem 'rollbar', '~> 2.15', '>= 2.15.5'
-gem 'acts_as_list'
+gem 'acts_as_list', '>= 0.9.19'
 gem 'active_link_to', '>= 1.0.5'
 gem 'russian_central_bank'
 gem 'gon', '>= 6.2.1'
@@ -72,7 +72,7 @@ group :development do
   gem 'pry-rails'
   gem 'guard', require: false
   gem 'guard-rspec', require: false
-  gem 'annotate', require: false
+  gem 'annotate', '>= 2.7.5', require: false
   gem 'web-console', '>= 3.7.0'
   gem 'listen'
   gem 'ruby_audit'
