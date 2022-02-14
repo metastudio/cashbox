@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.3'
+gem 'rails', '5.2.6.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -50,7 +50,7 @@ gem 'cocoon'
 gem 'date_validator'
 gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary', '= 0.12.3.0'
-gem 'puma'
+gem 'puma', '>= 4.3.11'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
 gem 'knock', '>= 2.1.1'
