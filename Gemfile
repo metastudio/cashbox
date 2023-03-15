@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.3'
+gem 'rails', '6.1.7.3'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '>= 5.0.7'
+gem 'sass-rails', '>= 5.0.8'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -26,19 +26,19 @@ gem 'bootstrap-datepicker-rails', '= 1.6.4.1'
 gem 'select2-rails', '~> 3.5.9.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-gem 'active_model_serializers', '~> 0.10.10'
+gem 'jbuilder', '~> 2.9', '>= 2.9.1'
+gem 'active_model_serializers', '~> 0.10.12'
 
 gem 'slim-rails', '>= 3.2.0'
 gem 'recursive-open-struct'
-gem 'devise', '>= 4.6.2'
+gem 'devise', '>= 4.7.0'
 gem 'simple_form', '>= 4.1.0'
 gem 'money-rails', '~> 1.10.0'
 gem 'kaminari', '>= 1.1.1'
 gem 'pundit'
 gem 'enumerize'
-gem 'has_secure_token', '~>0.0.2'
-gem 'paranoia'
+gem 'has_secure_token', '~> 0.0.2'
+gem 'paranoia', '>= 2.4.3'
 gem 'ransack', '>= 2.1.1'
 gem 'rollbar', '~> 2.15', '>= 2.15.5'
 gem 'acts_as_list'
@@ -95,7 +95,7 @@ group :test do
   # TODO: fix after release
   # https://github.com/thoughtbot/capybara-webkit/issues/1065
   gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
-  gem 'capybara', '>= 3.26.0'
+  gem 'capybara', '>= 3.28.0'
   gem 'capybara-email', '>= 3.0.1'
   gem 'capybara-select2', '>= 1.0.1'
   gem 'capybara-screenshot', '>= 1.0.23'
