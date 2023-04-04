@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.3'
+gem 'rails', '6.1.7.3'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '>= 5.0.7'
+gem 'sass-rails', '>= 6.0.0'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -18,7 +18,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'bootsnap', require: false
 
 # Asset libraries
-gem 'jquery-rails', '>= 4.3.5'
+gem 'jquery-rails', '>= 4.4.0'
 gem 'bootstrap-sass', '~> 3.4.0'
 gem 'momentjs-rails', '>= 2.20.1'
 gem 'jquery-ui-rails', '>= 6.0.1'
@@ -26,37 +26,37 @@ gem 'bootstrap-datepicker-rails', '= 1.6.4.1'
 gem 'select2-rails', '~> 3.5.9.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-gem 'active_model_serializers', '~> 0.10.10'
+gem 'jbuilder', '~> 2.9', '>= 2.9.1'
+gem 'active_model_serializers', '~> 0.10.12'
 
 gem 'slim-rails', '>= 3.2.0'
 gem 'recursive-open-struct'
-gem 'devise', '>= 4.6.2'
-gem 'simple_form', '>= 4.1.0'
+gem 'devise', '>= 4.7.1'
+gem 'simple_form', '>= 5.0.0'
 gem 'money-rails', '~> 1.10.0'
-gem 'kaminari', '>= 1.1.1'
+gem 'kaminari', '>= 1.2.1'
 gem 'pundit'
 gem 'enumerize'
-gem 'has_secure_token', '~>0.0.2'
-gem 'paranoia'
+gem 'has_secure_token', '~> 0.0.2'
+gem 'paranoia', '>= 2.4.3'
 gem 'ransack', '>= 2.1.1'
 gem 'rollbar', '~> 2.15', '>= 2.15.5'
 gem 'acts_as_list'
 gem 'active_link_to', '>= 1.0.5'
 gem 'russian_central_bank'
-gem 'gon', '>= 6.2.1'
+gem 'gon', '>= 6.4.0'
 gem 'whenever', require: false
 gem 'cocoon'
 gem 'date_validator'
 gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary', '= 0.12.3.0'
-gem 'puma'
+gem 'puma', '>= 4.3.12'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
 gem 'knock', '>= 2.1.1'
 gem 'apipie-rails', '>= 0.5.16'
-gem 'rack-cors', require: 'rack/cors'
-gem 'nokogiri', '>= 1.10.4'
+gem 'rack-cors', '>= 1.0.5', require: 'rack/cors'
+gem 'nokogiri', '>= 1.13.9'
 gem 'phony_rails'
 
 group :development, :test do
@@ -86,7 +86,7 @@ group :development do
   gem 'capistrano-bundler', '~> 1.1.4', require: false
   gem 'capistrano-rvm',   '~> 0.1.2', require: false
   gem 'capistrano3-unicorn', '~> 0.2.1', require: false
-  gem 'slackistrano', '~> 0.1.0', require: false
+  gem 'slackistrano', '~> 0.1.12', require: false
 end
 
 group :test do
@@ -95,7 +95,7 @@ group :test do
   # TODO: fix after release
   # https://github.com/thoughtbot/capybara-webkit/issues/1065
   gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
-  gem 'capybara', '>= 3.26.0'
+  gem 'capybara', '>= 3.28.0'
   gem 'capybara-email', '>= 3.0.1'
   gem 'capybara-select2', '>= 1.0.1'
   gem 'capybara-screenshot', '>= 1.0.23'
