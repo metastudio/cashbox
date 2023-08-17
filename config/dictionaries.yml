@@ -2,4 +2,5 @@ currencies:
   - USD
   - RUB
   - EUR
+  - RSD
 money_max: 9_223_372_036_854_774
