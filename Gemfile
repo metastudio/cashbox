@@ -50,7 +50,7 @@ gem 'cocoon'
 gem 'date_validator'
 gem 'wicked_pdf', '~> 1.1.0'
 gem 'wkhtmltopdf-binary', '= 0.12.3.0'
-gem 'puma'
+gem 'puma', '>= 5.6.7'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
 gem 'knock', '>= 2.1.1'
