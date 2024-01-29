@@ -3,4 +3,5 @@ currencies:
   - RUB
   - EUR
   - RSD
+  - GBP
 money_max: 9_223_372_036_854_774
