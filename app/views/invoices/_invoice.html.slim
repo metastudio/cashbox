@@ -1,4 +1,5 @@
 tr.invoice id=dom_id(invoice) class=colorize_invoice(invoice) data-href=invoice_path(invoice)
+  td = invoice.number
   td = invoice.customer.to_s
   td
     => l invoice.starts_at if invoice.starts_at

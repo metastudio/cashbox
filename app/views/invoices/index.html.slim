@@ -11,6 +11,7 @@ ul.nav.nav-tabs
   table.table.table-stripped.table-hover.invoices.responsive-table#invoices_list data-min=8 data-max=18
     thead
       tr
+        th#invoice_number_col_head= sort_link(@q, :number, 'Number')
         th#customer_col_head= sort_link(@q, :customer_name, 'Customer')
         th#date_range_col_head= sort_link(@q, :ends_at, 'Date range')
         th#invoice_total_col_head= sort_link(@q, :amount_cents, 'Invoice total')
