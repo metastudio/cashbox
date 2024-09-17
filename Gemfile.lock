@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/thoughtbot/capybara-webkit.git
-  revision: 77fdac424cd6fdb5aa266b229a888cc58da8e95e
-  specs:
-    capybara-webkit (1.15.1)
-      capybara (>= 2.3, < 4.0)
-      json
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -226,7 +218,9 @@ GEM
     mime-types (3.2.2)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
-    mimemagic (0.3.3)
+    mimemagic (0.3.10)
+      nokogiri (~> 1)
+      rake
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
@@ -455,7 +449,6 @@ DEPENDENCIES
   capybara-email (>= 3.0.1)
   capybara-screenshot (>= 1.0.23)
   capybara-select2 (>= 1.0.1)
-  capybara-webkit!
   cocoon
   database_cleaner
   date_validator
