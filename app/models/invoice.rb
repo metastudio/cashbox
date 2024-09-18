@@ -67,7 +67,7 @@ class Invoice < ApplicationRecord
   end
 
   def overdue?
-    return false if self.sent_at.nil?
+    return false if sent_at.nil?
 
     Date.current - sent_at.to_date > OVERDUE_DAYS
   end
