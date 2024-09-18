@@ -32,7 +32,7 @@ class TransactionsController < ApplicationController
       if @invoice.present?
         @transaction = Transaction.new(customer_id: @invoice.customer_id,
           customer_name: current_organization.find_customer_name_by_id(@invoice.customer_id),
-          amount: @invoice.amount.to_d, invoice: @invoice)
+          amount: @invoice.amount.to_d, invoice: @invoice, bank_account_id: @invoice.bank_account_id)
       else
         @transaction = Transaction.new
         @transfer = Transfer.new
