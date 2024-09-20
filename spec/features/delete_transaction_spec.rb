@@ -61,6 +61,7 @@ describe 'delete transaction', js: true do
 
       before do
         delete_transaction
+        accept_alert 'Are you sure?'
       end
 
       it 'removes transaction from list' do

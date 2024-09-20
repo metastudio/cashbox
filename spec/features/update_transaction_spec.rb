@@ -109,7 +109,9 @@ describe 'update transaction', js: true do
       click_on 'Transfer'
       select usd_account.name, from: 'transfer[bank_account_id]'
       select rub_account.name, from: 'transfer[reference_id]'
+      find('#transfer_amount').click
       fill_in 'transfer[amount]', with: amount
+      find('#transfer_calculate_sum').click
       fill_in 'transfer[calculate_sum]', with: calculate_sum
       page.execute_script("$(\'input[name=\"transfer[exchange_rate]\"]\').trigger(\'focus\')")
     end

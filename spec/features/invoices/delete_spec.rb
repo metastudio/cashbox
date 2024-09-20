@@ -14,6 +14,7 @@ describe 'Delete invoice', js: true do
   context 'Delete invoice' do
     before do
       click_on 'Destroy'
+      accept_alert 'Are you sure?'
     end
 
     it 'has congradulation and has not invoice html element' do

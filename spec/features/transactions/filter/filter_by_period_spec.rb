@@ -120,7 +120,7 @@ describe 'Filter transactions by period' do
 
     before do
       visit root_path
-      find(:css, 'a#toggle_filter').trigger('click')
+      click_on 'Filters'
       select 'Custom', from: 'q[period]'
       page.has_content?('To:')
       fill_in 'From:', with: Date.parse('2012-12-10').strftime('%d/%m/%Y')
@@ -136,7 +136,6 @@ describe 'Filter transactions by period' do
 
       before do
         Timecop.travel(2012, 12, 12)
-        find(:css, 'a#toggle_filter').trigger('click')
         select 'Last month', from: 'q[period]'
         click_on 'Search'
       end
@@ -158,7 +157,7 @@ describe 'Filter transactions by period' do
 
       before do
         visit root_path
-        find(:css, 'a#toggle_filter').trigger('click')
+        click_on 'Filters'
         select 'Custom', from: 'q[period]'
         page.has_content?('To:')
         fill_in 'From:', with: (Date.current + 5.days).strftime('%d/%m/%Y')
