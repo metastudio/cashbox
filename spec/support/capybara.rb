@@ -20,7 +20,7 @@ end
 Capybara::Screenshot.prune_strategy = :keep_last_run
 
 Capybara.register_driver :chrome do |app|
-  options = Selenium::WebDriver::Chrome::Options.new_transaction
+  options = Selenium::WebDriver::Chrome::Options.new
 
   options.add_argument('--headless')
   options.add_argument('--disable-gpu')
