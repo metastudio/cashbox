@@ -16,7 +16,7 @@ describe 'invoices index page' do
   end
 
   context "show only current organization's invoices" do
-    let!(:invoice) { create :invoice, organization: org }
+    let!(:invoice) { create :invoice, organization: org, number: '0000#01' }
     let!(:other_invoice) { create :invoice, organization: create(:organization) }
 
     before do
@@ -26,6 +26,11 @@ describe 'invoices index page' do
     it "invoice index page displays current organization's invoices" do
       expect(page).to have_content(invoice.customer_name)
       expect(page).to_not have_content(other_invoice.customer_name)
+    end
+
+    it 'has column Number and displays correct invoice number' do
+      expect(page).to have_css('th#invoice_number_col_head', text: 'Number')
+      expect(page).to have_css('td', text: '0000#01')
     end
   end
 
@@ -84,6 +89,23 @@ describe 'invoices index page' do
       expect(page).to_not have_select('Bank Account', with_options: [wrong_account.name])
       expect(page).to have_field('Comission', with: comission)
       expect(page).to have_content("Total amount: #{invoice.amount - comission}" )
+    end
+
+    context "invoice has assigned bank account" do
+      let!(:invoice) { create :invoice, organization: org, bank_account: account }
+      let!(:account_next)  { create :bank_account, organization: org }
+
+      before do
+        visit invoice_path(invoice)
+        click_on 'Complete Invoice'
+      end
+
+      it 'displays transaction window with pre-filled bank account' do
+        expect(page).to have_css('select#transaction_bank_account_id')
+        expect(page).to have_css('select#transaction_bank_account_id option[selected]', text: account.name)
+        select account_next.name
+        expect(page).to have_css('select#transaction_bank_account_id', text: account_next.name)
+      end
     end
 
     subject{ create_transaction_by_invoice; page }
