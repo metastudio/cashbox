@@ -17,12 +17,12 @@ describe 'Create invoice', js: true do
     select2 customer.name, css: '#s2id_invoice_customer_name', search: true
     fill_in 'Ends at', with: Date.current.strftime('%d/%m/%Y')
     click_on 'Add item'
-    first('#invoice .nested-fields input.nested-amount').set(first_item_amount)
+    first('#invoice .nested-fields input.nested-amount').click.set(first_item_amount)
     first('#invoice .nested-fields input.nested-hours').set('1.1')
     first('#invoice .nested-fields textarea.nested-description').set('First Nested Description')
     click_on 'Add item'
     within all('#invoice .nested-fields').last do
-      find('input.nested-amount').set(last_item_amount)
+      find('input.nested-amount').click.set(last_item_amount)
       find('input.nested-hours').set(hours)
       find('textarea.nested-description').set('Last Nested Description')
     end
@@ -41,6 +41,7 @@ describe 'Create invoice', js: true do
       select bank_account.name, from: 'invoice[bank_account_id]'
       fill_in 'Ends at', with: Date.current.strftime('%d/%m/%Y')
       page.execute_script("$(\"invoice[amount]\").val('');")
+      find('#invoice_amount').click
       fill_in 'invoice[amount]', with: amount
       click_on 'Create Invoice'
     end
@@ -81,10 +82,10 @@ describe 'Create invoice', js: true do
 
     context 'calculate invoice amount' do
       before do
-        first('#invoice .nested-fields input.nested-amount').set('4.00')
+        first('#invoice .nested-fields input.nested-amount').click.set('4.00')
         click_on 'Add item'
         within all('#invoice .nested-fields').last do
-          find('input.nested-amount').set('2.00')
+          find('input.nested-amount').click.set('2.00')
         end
         # for exec change event
         find("#invoice_amount").click

@@ -30,7 +30,7 @@ describe 'invoices index page' do
   end
 
   context 'colorize invoice' do
-    let!(:overdue_invoice) { create :invoice, organization: org, ends_at: Date.current - 16.days }
+    let!(:overdue_invoice) { create :invoice, organization: org, sent_at: Date.current - 16.days }
     let!(:paid_invoice) { create :invoice, organization: org, paid_at: Date.current }
 
     before do

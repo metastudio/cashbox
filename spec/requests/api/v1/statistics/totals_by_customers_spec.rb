@@ -75,7 +75,7 @@ describe 'GET /api/organizations/#/statistics/totals_by_customers' do
 
     statistic_json = json_body.statistic
 
-    expect(statistic_json.data.map(&:to_h)).to eq([
+    expect(statistic_json.data.map(&:to_h).sort_by { |el| el['name'] }).to eq([
       {
         'name'  => "#{customer1.name} #{Money.new(customer1_total * 100, 'RUB').format(symbol_after_without_space: true)}",
         'value' => customer1_total,

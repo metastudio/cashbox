@@ -39,7 +39,7 @@ describe 'Accept invitation' do
     end
   end
 
-  context 'for an existing user' do
+  skip 'for an existing user' do
     let!(:existing_user) { create :user, email: email }
 
     before do

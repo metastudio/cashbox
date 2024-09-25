@@ -17,7 +17,7 @@ describe 'GET /api/currencies' do
     it 'returns currencies' do
       expect(response).to be_successful
 
-      expect(json).to eq %w[USD RUB EUR]
+      expect(json).to eq %w[USD RUB EUR RSD GBP]
     end
   end
 end

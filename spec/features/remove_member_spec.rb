@@ -23,6 +23,7 @@ describe 'delete member' do
       before do
         visit members_path
         click_on 'Remove'
+        accept_alert 'Are you sure?'
       end
 
       it { expect(page).to_not have_content(member_admin.user_full_name) }
@@ -34,6 +35,7 @@ describe 'delete member' do
       before do
         visit members_path
         click_on 'Remove'
+        accept_alert 'Are you sure?'
       end
 
       it { expect(page).to_not have_content(member_user.user_full_name) }
@@ -64,6 +66,7 @@ describe 'delete member' do
       before do
         visit members_path
         click_on 'Remove'
+        accept_alert 'Are you sure?'
       end
 
       it { expect(page).to_not have_content(other_member_admin.user_full_name) }
@@ -75,6 +78,7 @@ describe 'delete member' do
       before do
         visit members_path
         click_on 'Remove'
+        accept_alert 'Are you sure?'
       end
 
       it { expect(page).to_not have_content(member_user.user_full_name) }

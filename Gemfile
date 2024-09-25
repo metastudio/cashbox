@@ -92,9 +92,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  # TODO: fix after release
-  # https://github.com/thoughtbot/capybara-webkit/issues/1065
-  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git'
+  gem 'webdrivers'
   gem 'capybara', '>= 3.26.0'
   gem 'capybara-email', '>= 3.0.1'
   gem 'capybara-select2', '>= 1.0.1'
