@@ -16,7 +16,7 @@ describe 'invoices index page' do
   end
 
   context "show only current organization's invoices" do
-    let!(:invoice) { create :invoice, organization: org }
+    let!(:invoice) { create :invoice, organization: org, number: '0000#01' }
     let!(:other_invoice) { create :invoice, organization: create(:organization) }
 
     before do
@@ -27,20 +27,9 @@ describe 'invoices index page' do
       expect(page).to have_content(invoice.customer_name)
       expect(page).to_not have_content(other_invoice.customer_name)
     end
-  end
 
-  context "organization's invoices" do
-    let!(:invoice) { create :invoice, organization: org, number: '0000#01' }
-
-    before do
-      visit invoices_path
-    end
-
-    it 'has column Number' do
+    it 'has column Number and displays correct invoice number' do
       expect(page).to have_css('th#invoice_number_col_head', text: 'Number')
-    end
-  
-    it 'displays correct invoice number' do
       expect(page).to have_css('td', text: '0000#01')
     end
   end
@@ -110,13 +99,10 @@ describe 'invoices index page' do
         visit invoice_path(invoice)
         click_on 'Complete Invoice'
       end
-      
+
       it 'displays transaction window with pre-filled bank account' do
         expect(page).to have_css('select#transaction_bank_account_id')
         expect(page).to have_css('select#transaction_bank_account_id option[selected]', text: account.name)
-      end
-
-      it 'allow changing bank account' do
         select account_next.name
         expect(page).to have_css('select#transaction_bank_account_id', text: account_next.name)
       end
