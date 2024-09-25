@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.3'
+gem 'rails', '5.2.5'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -54,7 +54,7 @@ gem 'puma'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
 gem 'knock', '>= 2.1.1'
-gem 'apipie-rails', '>= 0.5.16'
+gem 'apipie-rails', '>= 0.6.0'
 gem 'rack-cors', require: 'rack/cors'
 gem 'nokogiri', '>= 1.10.4'
 gem 'phony_rails'
