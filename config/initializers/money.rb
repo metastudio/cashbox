@@ -3,6 +3,7 @@
 require './lib/russian_central_bank_safe.rb'
 
 MoneyRails.configure do |config|
+  Money.locale_backend = :i18n
   # To set the default currency
   #
   # config.default_currency = :usd
