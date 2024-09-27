@@ -28,16 +28,40 @@ describe Invoice do
   end
 
   context 'validation' do
+    let(:invoice) { Invoice.new(currency: currency) }
+
+    context 'when currency is valid' do
+      shared_examples 'valid currency' do |valid_currency|
+        let(:currency) { valid_currency }
+  
+        it 'no errors message' do
+          invoice.valid?
+          expect(invoice.errors[:currency]).to be_empty
+        end
+      end
+
+      it_behaves_like 'valid currency', 'USD'
+      it_behaves_like 'valid currency', 'RUB'
+      it_behaves_like 'valid currency', 'EUR'
+      it_behaves_like 'valid currency', 'RSD'
+      it_behaves_like 'valid currency', 'GBP'
+    end
+
+    context 'when currency is invalid' do
+      let(:currency) { 'InvalidCurrency' }
+  
+      it 'errors message' do
+        invoice.valid?
+        expect(invoice.errors[:currency]).to include('InvalidCurrency is not a valid currency')
+      end
+    end
+
     it { is_expected.to validate_presence_of(:organization) }
     it { is_expected.to validate_presence_of(:ends_at) }
     it { is_expected.to validate_presence_of(:currency) }
     it { is_expected.to validate_presence_of(:customer_name) }
     it { is_expected.to validate_numericality_of(:amount).
       is_greater_than(0).is_less_than_or_equal_to(Dictionaries.money_max) }
-    it do
-      is_expected.to validate_inclusion_of(:currency).in_array(Dictionaries.currencies)
-        .with_message('shoulda-matchers test string is not a valid currency')
-    end
 
     context 'check ends_at after starts_at if starts_at present' do
       let!(:org)      { create :organization }
