@@ -46,7 +46,7 @@ describe 'POST /api/organizations/#/transactions' do
     expect(transaction.amount).to          eq amount - comission
     expect(transaction.created_by_id).to   eq user.id
     expect(transaction.invoice_id).to      eq nil
-    expect(transaction.comment).to         eq "#{comment}\nComission: #{humanized_money_with_symbol(comission, symbol_after_without_space: true)}"
+    expect(transaction.comment).to         eq "#{comment}\nComission: #{humanized_money_with_symbol(comission, format: '%n%u')}"
 
     expect(json_body.id).to              eq transaction.id
     expect(json_body.amount.to_h).to     eq transaction.amount.as_json

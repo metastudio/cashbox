@@ -291,7 +291,7 @@ class Transaction < ApplicationRecord
       "\nComission: " +
       humanized_money_with_symbol(
         Money.new(comission.to_d * 100, bank_account.currency),
-        symbol_after_without_space: true
+        format: '%n%u'
       )
   end
 

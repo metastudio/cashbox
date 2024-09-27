@@ -26,6 +26,6 @@ module MoneyHelper
   end
 
   def money_with_symbol(money)
-    humanized_money_with_symbol(money, symbol_after_without_space: true)
+    humanized_money_with_symbol(money, format: '%n%u')
   end
 end
