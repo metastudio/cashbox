@@ -35,33 +35,12 @@ describe Category do
   end
 
   context "validation" do
-    let(:category) { Category.new(type: type_value) }
-
-    context 'when type is valid' do
-      shared_examples 'valid type' do |valid_type|
-        let(:type_value) { valid_type }
-  
-        it 'no errors message' do
-          category.valid?
-          expect(category.errors[:type]).to be_empty
-        end
-      end
-
-      it_behaves_like 'valid type', 'Income'
-      it_behaves_like 'valid type', 'Expense'
-    end
-
-    context 'when type is invalid' do
-      let(:type_value) { 'InvalidType' }
-  
-      it 'errors message' do
-        category.valid?
-        expect(category.errors[:type]).to include('InvalidType is not a valid category type')
-      end
-    end
-
     it { is_expected.to validate_presence_of(:type) }
     it { is_expected.to validate_presence_of(:name) }
+    it do
+      is_expected.to validate_inclusion_of(:type).in_array(%w[Income Expense])
+        .with_message('Shoulda::Matchers::ExampleClass is not a valid category type')
+    end
 
     context "if system" do
       before { subject.system = true }
