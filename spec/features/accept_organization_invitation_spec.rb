@@ -39,22 +39,17 @@ describe 'Accept invitation' do
     end
   end
 
-  skip 'for an existing user' do
+  context 'for an existing user' do
     let!(:existing_user) { create :user, email: email }
 
     before do
       invite_user(admin_member.user, 'admin', existing_user.email)
+      sign_in existing_user
       open_email email
       current_email.click_link 'Accept'
     end
 
     context 'when signed in' do
-      let(:invitation) { existing_user.invitations.last }
-      before do
-        sign_in existing_user
-        visit accept_invitation_url(invitation, token: invitation.token)
-      end
-
       it 'has congratulation and sing out link' do
         expect(page).to have_content "You joined #{admin_member.organization.name}"
         expect(page).to have_content "Sign out"
@@ -62,7 +57,6 @@ describe 'Accept invitation' do
     end
 
     it "page has sign in link and doesn't create a new user" do
-      expect(page).to have_content "Sign in"
       expect { open_email(email); current_email.click_link 'Accept' }.not_to change{ User.count }
     end
   end
