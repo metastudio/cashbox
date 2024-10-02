@@ -4,6 +4,8 @@ require './lib/russian_central_bank_safe.rb'
 
 MoneyRails.configure do |config|
   Money.locale_backend = :i18n
+  Money.default_currency = Money::Currency.new('USD')
+  Money.rounding_mode = BigDecimal::ROUND_HALF_EVEN
   # To set the default currency
   #
   # config.default_currency = :usd
