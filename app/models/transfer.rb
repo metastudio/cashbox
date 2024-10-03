@@ -155,7 +155,7 @@ class Transfer
 
     comission_str = ''
     if comission != '0.00'
-      comission_str = "\nComission: " + humanized_money_with_symbol(money_comission, format: '%n%u')
+      comission_str = "\nComission: " + humanized_money_with_symbol(money_comission, symbol_currency_format(money_comission.currency.iso_code))
     end
 
     comment.to_s + comission_str + rate
