@@ -59,6 +59,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'nokogiri', '>= 1.10.4'
 gem 'phony_rails'
 gem 'loofah', '~>2.19.1'
+gem 'net-http'
 
 group :development, :test do
   gem 'rspec-rails', '>= 3.8.2'

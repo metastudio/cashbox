@@ -78,7 +78,7 @@ describe 'GET /api/organizations/#/statistics/balances_by_customers' do
     expect(response).to be_successful
 
     statistic_json = json_body.statistic
-    expect(statistic_json.data.map(&:to_h)).to eq([
+    expect(statistic_json.data.map(&:to_h).sort_by { |el| el['name']}).to eq([
       {
         'name'    => customer1.name,
         'income'  => customer1_income,

@@ -252,6 +252,8 @@ GEM
     multi_json (1.15.0)
     multi_xml (0.6.0)
     nenv (0.3.0)
+    net-http (0.4.1)
+      uri
     net-imap (0.3.7)
       date
       net-protocol
@@ -455,6 +457,7 @@ GEM
     unicorn (6.1.0)
       kgio (~> 2.6)
       raindrops (~> 0.7)
+    uri (0.13.1)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (3.7.0)
@@ -518,6 +521,7 @@ DEPENDENCIES
   loofah (~> 2.19.1)
   momentjs-rails (~> 2.20.1)
   money-rails (~> 1.13.4)
+  net-http
   nokogiri (>= 1.10.4)
   parallel_tests
   paranoia
@@ -557,4 +561,4 @@ DEPENDENCIES
   wkhtmltopdf-binary (= 0.12.3.0)
 
 BUNDLED WITH
-   1.17.3
+   2.1.4
