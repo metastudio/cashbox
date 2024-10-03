@@ -89,9 +89,9 @@ describe 'update transaction', js: true do
 
     it "recalculate boths account's balances" do
       is_expected.to have_css("##{dom_id(new_account)} td.amount",
-        text: money_with_symbol(amount))
+        text: money_with_symbol(Money.new(amount * 100, 'USD')))
       is_expected.to have_css("##{dom_id(old_account)} td.amount",
-        text: money_with_symbol(0))
+        text: money_with_symbol(Money.new(0, 'USD')))
     end
   end
 
