@@ -29,8 +29,7 @@ module MoneyHelper
     humanized_money_with_symbol(money, symbol_currency_format(money.currency.iso_code))
   end
 
-  def symbol_currency_format(default_currency)
-    return if default_currency == nil
+  def symbol_currency_format(default_currency = '')
     return { sign_before_symbol: false, format: '%n%u' } if %w(RUB RSD).include?(default_currency)
     {}
   end
