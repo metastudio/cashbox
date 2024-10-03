@@ -59,7 +59,7 @@ describe 'GET /api/organizations/#/statistics/expense_customers' do
 
     statistic_json = json_body.statistic
 
-    expect(statistic_json.data.map(&:to_h)).to eq([
+    expect(statistic_json.data.map(&:to_h).sort_by { |el| el['name']}).to eq([
       {
         'name'  => customer1.name,
         'value' => customer1_transactions.sum{ |t| t.amount.exchange_to(org.default_currency) }.to_f.round(2).abs,
