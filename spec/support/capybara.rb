@@ -20,17 +20,13 @@ end
 Capybara::Screenshot.prune_strategy = :keep_last_run
 
 Capybara.register_driver :chrome do |app|
-  options = Selenium::WebDriver::Chrome::Options.new
-
-  options.add_argument('--headless')
-  options.add_argument('--disable-gpu')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-dev-shm-usage')
-  options.add_argument('window-size=1920,2024')
-
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(loggingPrefs: { browser: 'ALL'})
-
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  Capybara::Selenium::Driver.new app,
+    browser: :chrome,
+    clear_session_storage: true,
+    clear_local_storage: true,
+    capabilities: [Selenium::WebDriver::Chrome::Options.new(
+      args: %w[headless disable-gpu no-sandbox window-size=1024,768],
+    )]
 end
 
 Capybara.javascript_driver = :chrome
@@ -47,5 +43,3 @@ end
 Capybara::Screenshot.webkit_options = { width: 1920, height: 2024 }
 # Keep only the screenshots generated from the last failing test suite
 Capybara::Screenshot.prune_strategy = :keep_last_run
-
-Webdrivers::Chromedriver.required_version = '128.0.6613.84'

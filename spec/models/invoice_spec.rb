@@ -36,7 +36,7 @@ describe Invoice do
       is_greater_than(0).is_less_than_or_equal_to(Dictionaries.money_max) }
     it do
       is_expected.to validate_inclusion_of(:currency).in_array(Dictionaries.currencies)
-        .with_message('shoulda-matchers test string is not a valid currency')
+        .with_message('Shoulda::Matchers::ExampleClass is not a valid currency')
     end
 
     context 'check ends_at after starts_at if starts_at present' do

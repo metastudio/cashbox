@@ -39,7 +39,7 @@ describe Category do
     it { is_expected.to validate_presence_of(:name) }
     it do
       is_expected.to validate_inclusion_of(:type).in_array(%w[Income Expense])
-        .with_message('shoulda-matchers test string is not a valid category type')
+        .with_message('Shoulda::Matchers::ExampleClass is not a valid category type')
     end
 
     context "if system" do

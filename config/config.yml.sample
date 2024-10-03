@@ -1,6 +1,7 @@
 defaults: &defaults
 
   edit_password_url: https://staging.cashbox-frontend.metastudiohq.com
+  default_host: 'localhost:3000'
 
 development:
   <<: *defaults

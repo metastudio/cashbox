@@ -39,7 +39,7 @@ describe 'Accept invitation' do
     end
   end
 
-  skip 'for an existing user' do
+  context 'for an existing user' do
     let!(:existing_user) { create :user, email: email }
 
     before do
@@ -51,8 +51,14 @@ describe 'Accept invitation' do
     context 'when signed in' do
       let(:invitation) { existing_user.invitations.last }
       before do
-        sign_in existing_user
-        visit accept_invitation_url(invitation, token: invitation.token)
+        visit new_user_session_path
+
+        # We have to do SignIn here without using sign_in helper, because we show another flash message for invited user
+        within('#new_user') do
+          fill_in 'Email', with: existing_user.email
+          fill_in 'Password', with: existing_user.password
+          click_button 'Sign in'
+        end
       end
 
       it 'has congratulation and sing out link' do

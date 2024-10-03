@@ -20,7 +20,7 @@ module StatisticData
 
       total_incomes = invoice_incomes.merge(incomes) do |k, v1, v2|
         [
-          find_customer_name_by_id(k) + ' ' + Money.new((v1[1] + v2[1]) * 100, default_currency).format(symbol_after_without_space: true),
+          find_customer_name_by_id(k) + ' ' + Money.new((v1[1] + v2[1]) * 100, default_currency).format(symbol_currency_format(default_currency)),
           (v1[1] + v2[1]).round(2),
         ]
       end
@@ -31,7 +31,7 @@ module StatisticData
 
       data = total_incomes.merge(expenses) do |k, v1, v2|
         [
-          find_customer_name_by_id(k) + ' ' + Money.new((v1[1] + v2[1]) * 100, default_currency).format(symbol_after_without_space: true),
+          find_customer_name_by_id(k) + ' ' + Money.new((v1[1] + v2[1]) * 100, default_currency).format(symbol_currency_format(default_currency)),
           (v1[1] + v2[1]).to_f.positive? ? (v1[1] + v2[1]).round(2) : 0,
         ]
       end
@@ -70,7 +70,7 @@ module StatisticData
 
       if other_sum.positive?
         data[0] = [
-          'Other ' + Money.new(other_sum, default_currency).format(symbol_after_without_space: true),
+          'Other ' + Money.new(other_sum, default_currency).format(symbol_currency_format(default_currency)),
           other_sum.to_f / 100.round(2),
         ]
       end
