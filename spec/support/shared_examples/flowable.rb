@@ -1,20 +1,21 @@
 shared_examples_for "has flow" do
   context "right values according to created transactions" do
-    let(:transactions) { correct_items | wrong_items }
+    let(:transactions) { correct_items }
 
     def calc_amount(type)
       sum = Money.empty
-      transactions.each do |transaction|
+      transactions.map do |transaction|
         sum += transaction.amount if transaction.send(type)
       end
+      sum
     end
 
     def income
-      money_with_symbol(calc_amount('income?'))
+      calc_amount('income?')
     end
 
     def expense
-      money_with_symbol(calc_amount('expense?'))
+      calc_amount('expense?')
     end
 
     it 'for income' do
