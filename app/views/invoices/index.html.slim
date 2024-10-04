@@ -22,6 +22,9 @@ ul.nav.nav-tabs
 - else
   .alert.alert-warning No invoices
 
+.pull-right
+  = link_to 'Download as .CSV', invoices_path(format: :csv)
+
 #paginator.col-md-offset-5
   = paginate @invoices
 

@@ -8,6 +8,14 @@ class InvoicesController < ApplicationController
     @q = current_organization.invoices.ransack(params[:q])
     @q.sorts = ['ends_at desc', 'created_at desc'] if @q.sorts.empty?
     @invoices = @q.result.page(params[:page]).per(10)
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        filename = ['invoices', Date.today.strftime("%Y-%m-%d")].join('_')
+        send_data @invoices.to_csv, filename: filename, content_type: 'text/csv'
+      end
+    end
   end
 
   def unpaid
