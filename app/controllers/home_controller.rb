@@ -9,10 +9,20 @@ class HomeController < ApplicationController
     @transactions = @q.result
 
     @curr_flow = @transactions.flow_ordered(current_organization.default_currency) if params[:q]
-    if params[:q] && params[:q][:category_type_eq]
-      @transactions = @transactions.page(params[:page]).per(50)
-    else
-      @transactions = @transactions.without_out(@q.bank_account_id_in).page(params[:page]).per(50)
+
+    respond_to do |format|
+      format.any(:js, :html) do
+        if params[:q] && params[:q][:category_type_eq]
+          @transactions = @transactions.page(params[:page]).per(50)
+        else
+          @transactions = @transactions.without_out(@q.bank_account_id_in).page(params[:page]).per(50)
+        end
+      end
+
+      format.csv do
+        filename = ['transactions', Date.today.strftime("%Y-%m-%d")].join('_')
+        send_data @transactions.to_csv, filename: filename, content_type: 'text/csv'
+      end
     end
 
     gon.curr_org_exch_rates = current_organization.exchange_rates

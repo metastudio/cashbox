@@ -401,4 +401,40 @@ describe 'invoices index page' do
       end
     end
   end
+
+  describe 'GET #index.csv' do
+    let!(:invoice) { create :invoice, organization: org, number: '0000#01' }
+    let!(:unpaid) { create :invoice, organization: org }
+    let!(:paid) { create :invoice, :paid, organization: org }
+
+    before do
+      visit invoices_path
+    end
+    
+    context "when user export all his invoices" do
+      before do
+        click_link 'Download as .CSV'
+      end
+
+      it 'responds with CSV format' do
+        expect(page.response_headers['Content-Type']).to eq 'text/csv'
+      end
+    end
+
+    context "when user export only unpaid invoices" do
+      before do
+        click_link 'Unpaid (2)'
+      end
+
+      it 'responds with CSV format' do
+        expect(page).to have_link('Download as .CSV', href: '/invoices.csv?q%5Bunpaid%5D=true')
+        click_link 'Download as .CSV'
+        expect(page.response_headers['Content-Type']).to eq 'text/csv'
+      end
+    end
+
+    it 'has link to export invoices in csv format' do
+      expect(page).to have_link('Download as .CSV', href: '/invoices.csv')
+    end
+  end
 end

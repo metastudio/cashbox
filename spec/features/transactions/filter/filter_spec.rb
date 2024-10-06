@@ -111,4 +111,23 @@ describe 'Filter transactions' do
       end
     end
   end
+
+  describe 'GET #transactions.csv' do
+    let!(:transaction)  { create :transaction, bank_account: ba }
+
+    before do
+      visit root_path
+      click_on 'Filters'
+      within 'form#transaction_search' do
+        select 'Current month', from: 'q[period]'
+        click_on 'Search'
+      end
+    end
+
+    it 'has link to export select transactions in csv format' do
+      expect(page).to have_link('Download as .CSV')
+      click_link 'Download as .CSV'
+      expect(page.response_headers['Content-Type']).to eq 'text/csv'
+    end
+  end
 end

@@ -6,7 +6,7 @@ module GenerateCsv
     def to_csv
       CSV.generate(col_sep: ';') do |csv|
         csv << column_names_for_export
-        order(created_at: :desc).each do |item|
+        find_each do |item|
           csv << attributes_for_export(item)
         end
       end
@@ -19,7 +19,7 @@ module GenerateCsv
 
     def attributes_for_export(item)
       column_names_for_export.map {
-        |column| item.send(column)
+        |column| item.send(column.underscore)
       }
     end
   end

@@ -63,7 +63,7 @@ class Invoice < ApplicationRecord
     end
 
     def column_names_for_export
-      %w(number currency amount customer starts_at ends_at sent_at paid_at)
+      %w(Number Currency Amount Customer Starts_at Ends_at Sent_at Paid_at)
     end
   end
 

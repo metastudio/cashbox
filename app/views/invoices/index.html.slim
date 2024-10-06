@@ -23,7 +23,7 @@ ul.nav.nav-tabs
   .alert.alert-warning No invoices
 
 .pull-right
-  = link_to 'Download as .CSV', invoices_path(format: :csv)
+  = link_to 'Download as .CSV', invoices_path(q: request.params[:q], format: :csv)
 
 #paginator.col-md-offset-5
   = paginate @invoices
