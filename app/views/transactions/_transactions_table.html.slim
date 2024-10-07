@@ -11,7 +11,7 @@
     tbody
       - if request.params[:q].present?
         .pull-right
-          = link_to 'Download as .CSV', root_path(q: request.params[:q], format: :csv)
+          = link_to 'Download as .CSV', root_path(q: request.params[:q], format: :csv), class: 'btn btn-link', style: 'margin-top: 20px;'
       = render transactions
   .paginator.col-md-offset-5
     = paginate transactions, remote: true

@@ -113,7 +113,7 @@ describe 'Filter transactions' do
   end
 
   describe 'GET #transactions.csv' do
-    let!(:transaction)  { create :transaction, bank_account: ba }
+    let!(:transaction)  { create :transaction, bank_account: ba, date: Date.current.end_of_month }
 
     before do
       visit root_path
@@ -128,6 +128,10 @@ describe 'Filter transactions' do
       expect(page).to have_link('Download as .CSV')
       click_link 'Download as .CSV'
       expect(page.response_headers['Content-Type']).to eq 'text/csv'
+      expect(page.body).to eq <<~CSV
+          Transaction_type;Amount;Category;Customer_name;Bank_account;Currency;Comment;Date
+          #{transaction.transaction_type};#{transaction.amount};#{transaction.category};#{transaction.customer_name};#{transaction.bank_account};#{transaction.currency};#{transaction.comment};#{transaction.date}
+        CSV
     end
   end
 end
