@@ -198,11 +198,11 @@ class Transaction < ApplicationRecord
     end
 
     def column_names_for_title
-      ['Date', 'Currency', 'Amount (negative for outcome, positive for income)', 'Category', 'Customer name', 'Bank account', 'Comment']
+      ['Date', 'Currency', 'Amount', 'Category', 'Customer name', 'Bank account', 'Comment']
     end
 
     def column_names_for_row_csv
-      %w(Date Currency Amount Category Customer_name Bank_account Comment)
+      %w(date currency amount category customer_name bank_account comment)
     end
   end
 

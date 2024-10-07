@@ -4,7 +4,7 @@ module GenerateCsv
 
   class_methods do
     def to_csv
-      CSV.generate(col_sep: ';') do |csv|
+      CSV.generate(col_sep: ',') do |csv|
         csv << column_names_for_title
         find_each do |item|
           csv << attributes_for_export(item)

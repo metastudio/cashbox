@@ -419,10 +419,10 @@ describe 'invoices index page' do
       it 'responds with CSV format' do
         expect(page.response_headers['Content-Type']).to eq 'text/csv'
         expect(page.body).to eq <<~CSV
-          Number;Currency;Amount;Customer;Starts_at;Ends_at;Sent_at;Paid_at
-          #{invoice.number};#{invoice.currency};#{invoice.amount};#{invoice.customer};#{invoice.starts_at};#{invoice.ends_at};#{invoice.sent_at};#{invoice.paid_at}
-          #{unpaid.number};#{unpaid.currency};#{unpaid.amount};#{unpaid.customer};#{unpaid.starts_at};#{unpaid.ends_at};#{unpaid.sent_at};#{unpaid.paid_at}
-          #{paid.number};#{paid.currency};#{paid.amount};#{paid.customer};#{paid.starts_at};#{paid.ends_at};#{paid.sent_at};#{paid.paid_at}
+          Number,Currency,Amount,Customer,Starts at,Ends at,Sent at,Paid at
+          #{invoice.number},#{invoice.currency},#{invoice.amount},#{invoice.customer},#{invoice.starts_at},#{invoice.ends_at},#{invoice.sent_at},#{invoice.paid_at}
+          #{unpaid.number},#{unpaid.currency},#{unpaid.amount},#{unpaid.customer},#{unpaid.starts_at},#{unpaid.ends_at},#{unpaid.sent_at},#{unpaid.paid_at}
+          #{paid.number},#{paid.currency},#{paid.amount},#{paid.customer},#{paid.starts_at},#{paid.ends_at},#{paid.sent_at},#{paid.paid_at}
         CSV
       end
     end
@@ -437,9 +437,9 @@ describe 'invoices index page' do
         click_link 'Download as .CSV'
         expect(page.response_headers['Content-Type']).to eq 'text/csv'
         expect(page.body).to eq <<~CSV
-          Number;Currency;Amount;Customer;Starts_at;Ends_at;Sent_at;Paid_at
-          #{invoice.number};#{invoice.currency};#{invoice.amount};#{invoice.customer};#{invoice.starts_at};#{invoice.ends_at};#{invoice.sent_at};#{invoice.paid_at}
-          #{unpaid.number};#{unpaid.currency};#{unpaid.amount};#{unpaid.customer};#{unpaid.starts_at};#{unpaid.ends_at};#{unpaid.sent_at};#{unpaid.paid_at}
+          Number,Currency,Amount,Customer,Starts at,Ends at,Sent at,Paid at
+          #{invoice.number},#{invoice.currency},#{invoice.amount},#{invoice.customer},#{invoice.starts_at},#{invoice.ends_at},#{invoice.sent_at},#{invoice.paid_at}
+          #{unpaid.number},#{unpaid.currency},#{unpaid.amount},#{unpaid.customer},#{unpaid.starts_at},#{unpaid.ends_at},#{unpaid.sent_at},#{unpaid.paid_at}
         CSV
       end
     end

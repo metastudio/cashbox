@@ -63,7 +63,11 @@ class Invoice < ApplicationRecord
     end
 
     def column_names_for_title
-      %w(Number Currency Amount Customer Starts_at Ends_at Sent_at Paid_at)
+      ['Number', 'Currency', 'Amount', 'Customer', 'Starts at', 'Ends at', 'Sent at', 'Paid at']
+    end
+
+    def column_names_for_row_csv
+      %w(number currency amount customer starts_at ends_at sent_at paid_at)
     end
   end
 
