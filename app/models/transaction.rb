@@ -197,8 +197,12 @@ class Transaction < ApplicationRecord
       %i[amount_eq period amount_sort date_from date_to]
     end
 
-    def column_names_for_export
-      %w(Transaction_type Amount Category Customer_name Bank_account Currency Comment Date)
+    def column_names_for_title
+      ['Date', 'Currency', 'Amount (negative for outcome, positive for income)', 'Category', 'Customer name', 'Bank account', 'Comment']
+    end
+
+    def column_names_for_row_csv
+      %w(Date Currency Amount Category Customer_name Bank_account Comment)
     end
   end
 

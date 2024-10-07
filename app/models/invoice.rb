@@ -62,7 +62,7 @@ class Invoice < ApplicationRecord
       %i[unpaid]
     end
 
-    def column_names_for_export
+    def column_names_for_title
       %w(Number Currency Amount Customer Starts_at Ends_at Sent_at Paid_at)
     end
   end

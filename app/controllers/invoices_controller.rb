@@ -7,10 +7,10 @@ class InvoicesController < ApplicationController
   def index
     @q = current_organization.invoices.ransack(params[:q])
     @q.sorts = ['ends_at desc', 'created_at desc'] if @q.sorts.empty?
-    @invoices = @q.result.page(params[:page]).per(10)
+    @invoices = @q.result
 
     respond_to do |format|
-      format.html
+      format.any(:js, :html) { @invoices = @invoices.page(params[:page]).per(10) }
       format.csv do
         filename = ['invoices', Date.today.strftime("%Y-%m-%d")].join('_')
         send_data @invoices.to_csv, filename: filename, content_type: 'text/csv'

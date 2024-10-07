@@ -129,8 +129,8 @@ describe 'Filter transactions' do
       click_link 'Download as .CSV'
       expect(page.response_headers['Content-Type']).to eq 'text/csv'
       expect(page.body).to eq <<~CSV
-          Transaction_type;Amount;Category;Customer_name;Bank_account;Currency;Comment;Date
-          #{transaction.transaction_type};#{transaction.amount};#{transaction.category};#{transaction.customer_name};#{transaction.bank_account};#{transaction.currency};#{transaction.comment};#{transaction.date}
+          Date;Currency;Amount (negative for outcome, positive for income);Category;Customer name;Bank account;Comment
+          #{transaction.date};#{transaction.currency};#{transaction.amount};#{transaction.category};#{transaction.customer_name};#{transaction.bank_account};#{transaction.comment}
         CSV
     end
   end
