@@ -21,6 +21,7 @@
 class Invoice < ApplicationRecord
   include CustomerConcern
   include Period
+  include GenerateCsv
   customer_concern_callbacks
 
   OVERDUE_DAYS = 15
@@ -59,6 +60,14 @@ class Invoice < ApplicationRecord
   class << self
     def ransackable_scopes(_auth_object = nil)
       %i[unpaid]
+    end
+
+    def column_names_for_title
+      ['Number', 'Currency', 'Amount', 'Customer', 'Starts at', 'Ends at', 'Sent at', 'Paid at']
+    end
+
+    def column_names_for_row_csv
+      %w(number currency amount customer starts_at ends_at sent_at paid_at)
     end
   end
 

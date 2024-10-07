@@ -24,6 +24,7 @@ class Transaction < ApplicationRecord
   include MoneyRails::ActionViewExtension
   include Period
   include MainPageRefresher
+  include GenerateCsv
   TRANSACTION_TYPES = %w[Residue].freeze
 
   acts_as_paranoid
@@ -194,6 +195,14 @@ class Transaction < ApplicationRecord
 
     def ransackable_scopes(_auth_object = nil)
       %i[amount_eq period amount_sort date_from date_to]
+    end
+
+    def column_names_for_title
+      ['Date', 'Currency', 'Amount', 'Category', 'Customer name', 'Bank account', 'Comment']
+    end
+
+    def column_names_for_row_csv
+      %w(date currency amount category customer_name bank_account comment)
     end
   end
 
