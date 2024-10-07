@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Filter transactions by ban account' do
+describe 'Filter transactions by bank account' do
   include MoneyHelper
 
   subject { page }
@@ -12,12 +12,12 @@ describe 'Filter transactions by ban account' do
   let(:ba)       { create :bank_account, organization: org, balance: Money.from_amount(10_000_000) }
 
   let(:ba2)           { create :bank_account, organization: org }
-  let!(:transaction)  { create :transaction, bank_account: ba }
+  let!(:transaction)  { create :transaction, :income, bank_account: ba }
   let!(:transaction2) { create :transaction, bank_account: ba2 }
   let!(:transaction3) { create :transaction, bank_account: ba2 }
   let!(:transaction4) { create :transaction, bank_account: ba2 }
   let(:correct_items) { [transaction] }
-  let(:wrong_items)   { [transaction2, transaction4, transaction3] }
+  let(:wrong_items)   { [transaction2, transaction3, transaction4] }
 
   before do
     sign_in user
