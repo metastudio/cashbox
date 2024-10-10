@@ -50,7 +50,7 @@ describe 'Transactions sort' do
 
       it "sorts filtered" do
         correct_order.each_with_index do |elem, i|
-          expect(page).to have_selector(".transactions tbody tr:nth-child(#{i + 1})",
+          expect(page).to have_selector(".transactions tbody tr:nth-child(#{i + 2})",
             text: elem.comment)
         end
       end
@@ -64,7 +64,7 @@ describe 'Transactions sort' do
 
         it "sorts filtered" do
           correct_order.reverse.each_with_index do |elem, i|
-            expect(page).to have_selector(".transactions tbody tr:nth-child(#{i + 1})",
+            expect(page).to have_selector(".transactions tbody tr:nth-child(#{i + 2})",
               text: elem.comment)
           end
         end

@@ -35,7 +35,7 @@ shared_examples_for "sortable object" do |sort_by, field|
 
     it "shows correct order" do
       correct_order.each_with_index do |elem, i|
-        expect(page).to have_selector("tbody tr:nth-child(#{i + 1})",
+        expect(page).to have_selector("tbody tr:nth-child(#{i + 2})",
           text: to_view(elem, field))
       end
     end
@@ -49,7 +49,7 @@ shared_examples_for "sortable object" do |sort_by, field|
 
       it "shows correct order" do
         correct_order.reverse.each_with_index do |elem, i|
-          expect(page).to have_selector("tbody tr:nth-child(#{i + 1})",
+          expect(page).to have_selector("tbody tr:nth-child(#{i + 2})",
             text: to_view(elem, field))
         end
       end

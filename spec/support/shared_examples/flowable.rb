@@ -3,11 +3,13 @@ shared_examples_for "has flow" do
     let(:transactions) { correct_items }
 
     def calc_amount(type)
-      sum = Money.empty
+      rub = Money.new(0, 'RUB')
+      usd = Money.new(0, 'USD')
       transactions.map do |transaction|
-        sum += transaction.amount if transaction.send(type)
+        rub += transaction.amount if transaction.currency == 'RUB' && transaction.send(type)
+        usd += transaction.amount if transaction.currency == 'USD' && transaction.send(type)
       end
-      sum
+      sum = usd + rub
     end
 
     def income
