@@ -67,7 +67,7 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
   gem 'faker'
-  gem 'factory_bot_rails', '~> 5.0.2'
+  gem 'factory_bot_rails', '~> 6.5.0'
 end
 
 group :development do
