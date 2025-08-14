@@ -26,7 +26,7 @@ gem 'bootstrap-datepicker-rails', '= 1.6.4.1'
 gem 'select2-rails', '~> 3.5.9.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.14', '>= 2.14.0'
 gem 'active_model_serializers', '~> 0.10.10'
 
 gem 'slim-rails', '>= 3.2.0'
