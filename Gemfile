@@ -10,7 +10,7 @@ gem 'pg'
 gem 'sass-rails', '~> 5.0.7'
 
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '~> 1.3.0'
+gem 'uglifier', '~> 2.7.2'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -39,7 +39,7 @@ gem 'pundit'
 gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
 gem 'paranoia'
-gem 'ransack', '>= 2.1.1'
+gem 'ransack', '>= 2.4.0'
 gem 'rollbar', '~> 2.15', '>= 2.15.5'
 gem 'acts_as_list'
 gem 'active_link_to', '>= 1.0.5'
