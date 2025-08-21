@@ -62,7 +62,7 @@ gem 'loofah', '~>2.19.1'
 gem 'net-http'
 
 group :development, :test do
-  gem 'rspec-rails', '>= 3.8.2'
+  gem 'rspec-rails', '>= 8.0.0'
   gem 'rspec-collection_matchers'
   gem 'byebug', platform: :mri
   gem 'parallel_tests'
