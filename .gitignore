@@ -31,3 +31,4 @@ public/uploads
 
 # Ignoring test coverage output
 coverage
+.ruby-gemset
