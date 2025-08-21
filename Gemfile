@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.2.3'
+gem 'rails', '7.1.5.2'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -38,13 +38,13 @@ gem 'kaminari', '>= 1.1.1'
 gem 'pundit'
 gem 'enumerize'
 gem 'has_secure_token', '~>0.0.2'
-gem 'paranoia'
-gem 'ransack', '>= 2.1.1'
+gem 'paranoia', '>= 3.0.0'
+gem 'ransack', '>= 2.4.0'
 gem 'rollbar', '~> 2.15', '>= 2.15.5'
-gem 'acts_as_list'
+gem 'acts_as_list', '>= 1.2.0'
 gem 'active_link_to', '>= 1.0.5'
 gem 'russian_central_bank'
-gem 'gon', '>= 6.2.1'
+gem 'gon', '>= 6.5.0'
 gem 'whenever', require: false
 gem 'cocoon'
 gem 'date_validator'
@@ -54,7 +54,7 @@ gem 'puma', '~> 5.6', '>= 5.6.9'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'redis'
 gem 'knock', '>= 2.1.1'
-gem 'apipie-rails', '>= 0.5.16'
+gem 'apipie-rails', '>= 1.5.0'
 gem 'rack-cors', require: 'rack/cors'
 gem 'nokogiri', '>= 1.10.4'
 gem 'phony_rails'
@@ -92,7 +92,7 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner'
+  gem 'database_cleaner', '>= 2.1.0'
   gem 'shoulda-matchers'
   gem 'webdrivers', '= 5.3'
   gem 'capybara', '>= 3.28.0'
