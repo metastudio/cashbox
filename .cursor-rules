@@ -1,0 +1,216 @@
+# Cashbox Ruby on Rails Project - Cursor Rules
+
+## Project Overview
+Rails 5.2 multi-tenant financial application with PostgreSQL, organization-based architecture.
+
+## Code Style Requirements
+
+### File Structure
+- All Ruby files MUST start with `# frozen_string_literal: true`
+- Models include schema annotations via annotate gem at the top
+- Follow existing RuboCop configuration (.rubocop.yml)
+
+### Architecture Patterns
+- **Multi-tenancy**: Use `current_organization` pattern throughout controllers
+- **Authorization**: Pundit policies, use `current_member` as `pundit_user` (not `current_user`)
+- **Service Objects**: Inherit from `BaseService`, implement `.perform` class method with `ok(payload)` or `error(errors)` responses
+- **API Controllers**: Namespace under `Api::V1`, inherit from `Api::V1::BaseController`
+- **Money Handling**: Use money-rails gem, store as `_cents` fields, validate against `Dictionaries.currencies`
+
+## Model Conventions
+```ruby
+# frozen_string_literal: true
+
+# Schema annotations here (via annotate gem)
+
+class ModelName < ApplicationRecord
+  # Associations first
+  belongs_to :organization, inverse_of: :model_names
+  has_many :related_models, dependent: :destroy, inverse_of: :model_name
+  
+  # Scopes with lambda syntax
+  scope :visible, -> { where(visible: true) }
+  scope :by_currency, ->(currency) { where(currency: currency) if currency.present? }
+  
+  # Validations
+  validates :name, presence: true
+  validates :currency, inclusion: { in: Dictionaries.currencies }
+  
+  # Money fields
+  monetize :balance_cents, with_model_currency: :currency
+  
+  # Callbacks
+  after_create :setup_initial_state
+  
+  # Instance methods
+  # Class methods
+end
+```
+
+## Controller Conventions
+```ruby
+class ExampleController < ApplicationController
+  before_action :set_resource, only: [:show, :edit, :update, :destroy]
+  before_action :require_organization
+  
+  def index
+    @resources = current_organization.resources
+    authorize @resources
+  end
+  
+  private
+  
+  def set_resource
+    @resource = current_organization.resources.find(params[:id])
+  end
+  
+  def resource_params
+    params.require(:resource).permit(:name, :description)
+  end
+end
+```
+
+## API Controller Conventions
+```ruby
+# frozen_string_literal: true
+
+module Api::V1
+  class ExampleController < BaseController
+    def index
+      resources = current_user.resources
+      render json: resources, each_serializer: ResourceSerializer
+    end
+    
+    def create
+      result = CreateResourceService.perform(resource_params)
+      if result.success?
+        render json: result.payload, status: :created
+      else
+        render json: { errors: result.payload }, status: :unprocessable_entity
+      end
+    end
+  end
+end
+```
+
+## Service Object Pattern
+```ruby
+# frozen_string_literal: true
+
+class ExampleService < BaseService
+  attr_reader :param1, :param2
+  
+  def initialize(param1, param2)
+    @param1 = param1
+    @param2 = param2
+  end
+  
+  def perform
+    return error('Validation failed') unless valid?
+    
+    result = process_logic
+    ok(result)
+  rescue StandardError => e
+    error(e.message)
+  end
+  
+  private
+  
+  def valid?
+    param1.present? && param2.present?
+  end
+  
+  def process_logic
+    # Implementation here
+  end
+end
+```
+
+## Testing Conventions
+```ruby
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe ModelName do
+  context 'associations' do
+    it { expect(subject).to belong_to(:organization) }
+    it { expect(subject).to have_many(:related_models).dependent(:destroy) }
+  end
+  
+  context 'validations' do
+    it { expect(subject).to validate_presence_of(:name) }
+    it { expect(subject).to validate_inclusion_of(:currency).in_array(Dictionaries.currencies) }
+  end
+  
+  describe '#method_name' do
+    let(:model) { create(:model_name) }
+    
+    it 'returns expected result' do
+      expect(model.method_name).to eq(expected_value)
+    end
+  end
+end
+```
+
+## FactoryBot Conventions
+```ruby
+# frozen_string_literal: true
+
+FactoryBot.define do
+  sequence(:unique_field) { |n| "Value #{n}" }
+  
+  factory :model_name do
+    organization
+    name { generate(:unique_field) }
+    currency { 'USD' }
+    
+    trait :with_association do
+      after(:create) { |model| create(:related_model, model_name: model) }
+    end
+  end
+end
+```
+
+## Key Gems & Libraries
+- Pundit for authorization
+- money-rails for currency handling
+- paranoia for soft deletes
+- acts_as_list for sortable lists
+- kaminari for pagination
+- slim-rails for templates
+- factory_bot_rails for test data
+- rspec-rails for testing
+
+## JavaScript/Frontend Standards
+- ESLint configuration in .eslintrc.yml
+- 2-space indentation
+- Double quotes for strings
+- Always use semicolons
+- jQuery and browser environment
+- Follow eslint:recommended rules
+
+## Database Patterns
+- Use `deleted_at` timestamp for soft deletes with paranoia
+- Store money as `_cents` integer fields
+- Add `position` integer for sortable lists
+- Include `organization_id` for multi-tenancy
+- Use `inverse_of` in associations for better performance
+
+## Common Helpers Available
+- `current_organization` - current user's active organization
+- `current_member` - current user's membership in current organization
+- `pundit_user` - returns current_member for authorization
+- `params_unsafe_hash` - converts strong params to hash
+
+## Error Handling
+- Use Pundit for authorization errors
+- Service objects return ok/error responses
+- API controllers have standardized error responses
+- Feature specs use custom matchers for flash messages
+
+## View Conventions
+- Use Slim templates (.html.slim)
+- SCSS stylesheets with Bootstrap 3
+- jQuery-based JavaScript with Rails UJS
+- Simple Form for form helpers
