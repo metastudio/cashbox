@@ -94,7 +94,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
-  gem 'webdrivers', '= 5.3'
+  gem 'webdrivers', '= 5.3.1'
   gem 'capybara', '>= 3.28.0'
   gem 'capybara-email', '>= 3.0.1'
   gem 'capybara-select2', '>= 1.0.1'
